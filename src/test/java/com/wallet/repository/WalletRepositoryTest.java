@@ -1,3 +1,4 @@
+/*
 package com.wallet.repository;
 
 import com.wallet.Application;
@@ -35,9 +36,11 @@ public class WalletRepositoryTest {
     @Autowired
     UserRepository userRepository;
 
-    /**
+    */
+/**
      * Pretests test, use for cleaning test wallets in data base.
-     */
+     *//*
+
     @Test
     public void a0cleanTestWallets() throws InsufficientFundsException {
         List<Wallet> walletss = walletRepository.getWallets(new Long(1));
@@ -153,4 +156,4 @@ public class WalletRepositoryTest {
         }
     }
 
-}
+}*/
