@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.username">postgres</property>
+        <property name="hibernate.connection.password">admin</property>
+        <!--<property name="hibernate.connection.url">jdbc:postgresql://localhost:1234/rew3_financial</property>-->
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:1234/rew3_invoice</property>
+
+
+        <property name="show_sql">true</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.cache.use_second_level_cache">false</property>
+        <property name="hibernate.cache.use_query_cache">false</property>
+        <property name="hibernate.c3p0.max_statements">0</property>
+        <property name="hibernate.connection.isolation">2</property>
+
+
+        <mapping class="com.rew3.finance.accountingcode.model.AccountingCode"/>
+        <!--
+               <mapping class="com.rew3.finance.accountingcode.model.EntityCode" />
+        -->
+        <mapping class="com.rew3.finance.accountingcode.model.AccountingClass"/>
+        <mapping class="com.rew3.finance.accountingperiod.model.AccountingPeriod"/>
+        <mapping class="com.rew3.finance.accountingperiod.model.AccountingPeriodRequest"/>
+        <mapping class="com.rew3.finance.accountingjournal.model.AccountingJournal"/>
+
+        <mapping class="com.rew3.billing.user.model.User"/>
+        <mapping class="com.rew3.billing.invoice.model.Invoice"/>
+        <mapping class="com.rew3.billing.invoice.model.InvoiceItem"/>
+        <mapping class="com.rew3.billing.invoice.model.InvoiceReference"/>
+
+        <!--
+               <mapping class="com.rew3.billing.invoice.model.InvoiceAttachment" />
+        -->
+        <mapping class="com.rew3.billing.invoice.model.InvoiceRequest"/>
+
+        <mapping class="com.rew3.billing.catalog.product.model.Product"/>
+        <mapping class="com.rew3.billing.catalog.product.model.ProductCategoryLink"/>
+        <mapping class="com.rew3.billing.catalog.product.model.ProductFeatureLink"/>
+        <mapping class="com.rew3.billing.catalog.product.model.ProductRatePlanLink"/>
+        <mapping class="com.rew3.billing.catalog.productcategory.model.ProductCategory"/>
+        <mapping class="com.rew3.billing.catalog.productfeature.model.ProductFeature"/>
+        <mapping class="com.rew3.billing.catalog.productrateplan.model.ProductRatePlan"/>
+        <mapping class="com.rew3.billing.catalog.productrateplan.model.ProductRatePlanCharge"/>
+
+        <mapping class="com.rew3.billing.sales.model.Sales"/>
+
+        <mapping class="com.rew3.billing.payment.model.PaymentReceipt"/>
+        <mapping class="com.rew3.billing.payment.model.PaymentReceiptItem"/>
+        <!--
+               <mapping class="com.rew3.billing.payment.model.PaymentReceiptAttachment" />
+        -->
+        <mapping class="com.rew3.billing.payment.model.BillingAccount"/>
+        <mapping class="com.rew3.billing.payment.model.BankTransaction"/>
+        <mapping class="com.rew3.billing.payment.model.DepositItem"/>
+        <mapping class="com.rew3.billing.payment.model.BankDepositSlip"/>
+        <mapping class="com.rew3.billing.payment.model.BankReconciliation"/>
+        <mapping class="com.rew3.billing.invoice.model.PaymentTerm"/>
+        <mapping class="com.rew3.billing.shared.model.Address"/>
+        <mapping class="com.rew3.billing.normaluser.model.NormalUser"/>
+        <mapping class="com.rew3.billing.normaluser.model.PaymentOption"/>
+        <!--
+            <mapping class="com.rew3.billing.shared.model.Attachment" />
+        -->
+        <mapping class="com.rew3.finance.accountingcode.model.SubAccountingHead"/>
+
+
+        <!--
+            Commission Module
+        -->
+        <mapping class="com.rew3.commission.gcp.model.Gcp"/>
+        <mapping class="com.rew3.commission.acp.model.AcpAssociate"/>
+        <mapping class="com.rew3.commission.acp.model.SingleRateAcp"/>
+        <mapping class="com.rew3.commission.acp.model.Acp"/>
+        <mapping class="com.rew3.commission.acp.model.TieredAcp"/>
+        <mapping class="com.rew3.commission.acp.model.TieredStage"/>
+        <mapping class="com.rew3.commission.associate.model.Associate"/>
+        <mapping class="com.rew3.commission.deduction.model.Deduction"/>
+        <mapping class="com.rew3.commission.transaction.model.RmsTransaction"/>
+        <mapping class="com.rew3.commission.transaction.model.TransactionAssociate"/>
+        <mapping class="com.rew3.commission.transaction.model.TransactionDeduction"/>
+        <mapping class="com.rew3.commission.transaction.model.TransactionGcp"/>
+        <mapping class="com.rew3.commission.transaction.model.TransactionClosing"/>
+        <mapping class="com.rew3.commission.transaction.model.TransactionContact"/>
+        <mapping class="com.rew3.commission.transaction.model.TransactionStatusStage"/>
+        <mapping class="com.rew3.commission.transaction.model.TransactionReference"/>
+
+
+        <mapping class="com.rew3.commission.commissionplan.model.CommissionPlan"/>
+        <mapping class="com.rew3.commission.commissionplan.model.PreCommission"/>
+        <mapping class="com.rew3.commission.commissionplan.model.CommissionLevel"/>
+        <mapping class="com.rew3.commission.commissionplan.model.CommissionPlanAgent"/>
+        <mapping class="com.rew3.commission.commissionplan.model.CommissionPlanReference"/>
+
+
+
+        <mapping class="com.rew3.billing.expense.model.Expense"/>
+        <mapping class="com.rew3.billing.expense.model.ExpenseItem"/>
+        <mapping class="com.rew3.billing.expense.model.ExpenseReference"/>
+
+
+
+        <mapping class="com.rew3.commission.commissionplan.model.FlatFee"/>
+        <mapping class="com.rew3.commission.commissionplan.model.SlidingScale"/>
+
+
+        <mapping class="com.rew3.billing.invoice.model.RecurringInvoice"/>
+
+
+    </session-factory>
+</hibernate-configuration>

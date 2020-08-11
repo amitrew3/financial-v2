@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option java_package = "com.wallet.service";
+
+service BalanceService {
+
+    rpc GetBalance(GetBalanceRequest) returns (GetBalanceResponse){}
+
+}
+
+message GetBalanceRequest {
+    int64 userId = 1;
+}
+
+message GetBalanceResponse {
+    map<string, string> balance = 1;
+}
