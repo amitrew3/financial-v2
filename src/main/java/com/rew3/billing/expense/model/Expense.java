@@ -7,6 +7,7 @@ import com.rew3.common.model.DB;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = DB.Table.EXPENSE)
@@ -31,10 +32,10 @@ public class Expense extends AbstractEntity {
     private String categoryExpenseAccount;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "expense")
-    public List<ExpenseItem> items;
+    public Set<ExpenseItem> items;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "expense")
-    public List<ExpenseReference> reference;
+    public Set<ExpenseReference> reference;
 
     @Column(name = DB.Field.Expense.AMOUNT)
     private Double amount;
@@ -82,11 +83,11 @@ public class Expense extends AbstractEntity {
         this.categoryExpenseAccount = categoryExpenseAccount;
     }
 
-    public List<ExpenseItem> getItems() {
+    public Set<ExpenseItem> getItems() {
         return items;
     }
 
-    public void setItems(List<ExpenseItem> items) {
+    public void setItems(Set<ExpenseItem> items) {
         this.items = items;
     }
 

@@ -55,7 +55,7 @@ dependencies {
     compile group: 'org.json', name: 'json', version: '20200518'
     compile group: 'commons-io', name: 'commons-io', version: '2.2'
     compile group: 'org.postgresql', name: 'postgresql', version: '9.4-1200-jdbc4'
-    compile group: 'org.hibernate', name: 'hibernate-core', version: '4.3.10.Final'
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.20.Final'
 // https://mvnrepository.com/artifact/org.hibernate.javax.persistence/hibernate-jpa-2.1-api
     compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.0.Final'
 

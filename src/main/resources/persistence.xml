@@ -1,0 +1,129 @@
+<!--
+  ~ Hibernate, Relational Persistence for Idiomatic Java
+  ~
+  ~ License: GNU Lesser General Public License (LGPL), version 2.1 or later.
+  ~ See the lgpl.txt file in the root directory or <http://www.gnu.org/licenses/lgpl-2.1.html>.
+  -->
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+
+    <persistence-unit name="org.hibernate.tutorial.jpa">
+        <description>
+            Persistence unit for the JPA tutorial of the Hibernate Getting Started Guide
+        </description>
+
+        <class>com.rew3.finance.accountingcode.model.AccountingCode</class>
+        <!--
+              <class>com.rew3.finance.accountingcode.model.EntityCode" />
+        -->
+       <class>com.rew3.finance.accountingcode.model.AccountingClass</class>
+       <class>com.rew3.finance.accountingperiod.model.AccountingPeriod</class>
+       <class>com.rew3.finance.accountingperiod.model.AccountingPeriodRequest</class>
+       <class>com.rew3.finance.accountingjournal.model.AccountingJournal</class>
+
+       <class>com.rew3.billing.user.model.User</class>
+       <class>com.rew3.billing.invoice.model.Invoice</class>
+       <class>com.rew3.billing.invoice.model.InvoiceItem</class>
+       <class>com.rew3.billing.invoice.model.InvoiceReference</class>
+
+        <!--
+              <class>com.rew3.billing.invoice.model.InvoiceAttachment" />
+        -->
+       <class>com.rew3.billing.invoice.model.InvoiceRequest</class>
+
+       <class>com.rew3.billing.catalog.product.model.Product</class>
+       <class>com.rew3.billing.catalog.product.model.ProductCategoryLink</class>
+       <class>com.rew3.billing.catalog.product.model.ProductFeatureLink</class>
+       <class>com.rew3.billing.catalog.product.model.ProductRatePlanLink</class>
+       <class>com.rew3.billing.catalog.productcategory.model.ProductCategory</class>
+       <class>com.rew3.billing.catalog.productfeature.model.ProductFeature</class>
+       <class>com.rew3.billing.catalog.productrateplan.model.ProductRatePlan</class>
+       <class>com.rew3.billing.catalog.productrateplan.model.ProductRatePlanCharge</class>
+
+       <class>com.rew3.billing.sales.model.Sales</class>
+
+       <class>com.rew3.billing.payment.model.PaymentReceipt</class>
+       <class>com.rew3.billing.payment.model.PaymentReceiptItem</class>
+        <!--
+              <class>com.rew3.billing.payment.model.PaymentReceiptAttachment" />
+        -->
+       <class>com.rew3.billing.payment.model.BillingAccount</class>
+       <class>com.rew3.billing.payment.model.BankTransaction</class>
+       <class>com.rew3.billing.payment.model.DepositItem</class>
+       <class>com.rew3.billing.payment.model.BankDepositSlip</class>
+       <class>com.rew3.billing.payment.model.BankReconciliation</class>
+       <class>com.rew3.billing.invoice.model.PaymentTerm</class>
+       <class>com.rew3.billing.shared.model.Address</class>
+       <class>com.rew3.billing.normaluser.model.NormalUser</class>
+       <class>com.rew3.billing.normaluser.model.PaymentOption</class>
+        <!--
+           <class>com.rew3.billing.shared.model.Attachment" />
+        -->
+       <class>com.rew3.finance.accountingcode.model.SubAccountingHead</class>
+
+
+        <!--
+            Commission Module
+        -->
+       <class>com.rew3.commission.gcp.model.Gcp</class>
+       <class>com.rew3.commission.acp.model.AcpAssociate</class>
+       <class>com.rew3.commission.acp.model.SingleRateAcp</class>
+       <class>com.rew3.commission.acp.model.Acp</class>
+       <class>com.rew3.commission.acp.model.TieredAcp</class>
+       <class>com.rew3.commission.acp.model.TieredStage</class>
+       <class>com.rew3.commission.associate.model.Associate</class>
+       <class>com.rew3.commission.deduction.model.Deduction</class>
+       <class>com.rew3.commission.transaction.model.RmsTransaction</class>
+       <class>com.rew3.commission.transaction.model.TransactionAssociate</class>
+       <class>com.rew3.commission.transaction.model.TransactionDeduction</class>
+       <class>com.rew3.commission.transaction.model.TransactionGcp</class>
+       <class>com.rew3.commission.transaction.model.TransactionClosing</class>
+       <class>com.rew3.commission.transaction.model.TransactionContact</class>
+       <class>com.rew3.commission.transaction.model.TransactionStatusStage</class>
+       <class>com.rew3.commission.transaction.model.TransactionReference</class>
+
+
+       <class>com.rew3.commission.commissionplan.model.CommissionPlan</class>
+       <class>com.rew3.commission.commissionplan.model.PreCommission</class>
+       <class>com.rew3.commission.commissionplan.model.CommissionLevel</class>
+       <class>com.rew3.commission.commissionplan.model.CommissionPlanAgent</class>
+       <class>com.rew3.commission.commissionplan.model.CommissionPlanReference</class>
+
+
+
+       <class>com.rew3.billing.expense.model.Expense</class>
+       <class>com.rew3.billing.expense.model.ExpenseItem</class>
+       <class>com.rew3.billing.expense.model.ExpenseReference</class>
+
+
+
+       <class>com.rew3.commission.commissionplan.model.FlatFee</class>
+       <class>com.rew3.commission.commissionplan.model.SlidingScale</class>
+
+
+       <class>com.rew3.billing.invoice.model.RecurringInvoice</class>
+
+        <properties>
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.hbm2ddl.auto" value="create" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+            <property name="hibernate.connection.username" value="postgres"/>
+            <property name="hibernate.connection.password" value="admin"/>
+            <!--<property name="hibernate.connection.url" value="jdbc:postgresql://localhost:1234/rew3_fi~nancial</property>-->
+            <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:1234/rew3_invoice"/>
+
+
+            <property name="show_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.cache.use_second_level_cache" value="false"/>
+            <property name="hibernate.cache.use_query_cache" value="false"/>
+            <property name="hibernate.c3p0.max_statements" value="0"/>
+            <property name="hibernate.connection.isolation" value="2"/>
+        </properties>
+
+    </persistence-unit>
+
+</persistence>
