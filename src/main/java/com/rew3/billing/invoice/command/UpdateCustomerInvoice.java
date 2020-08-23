@@ -1,5 +1,7 @@
 package com.rew3.billing.invoice.command;
 
+import com.avenue.financial.services.grpc.proto.invoice.UpdateInvoiceProto;
+import com.avenue.financial.services.grpc.proto.invoice.UpdateInvoiceRequestProto;
 import com.rew3.billing.invoice.InvoiceQueryHandler;
 import com.rew3.billing.invoice.model.Invoice;
 import com.rew3.billing.invoice.model.RecurringInvoice;
@@ -10,6 +12,9 @@ import com.rew3.common.cqrs.ICommand;
 import java.util.HashMap;
 
 public class UpdateCustomerInvoice extends Command implements ICommand {
+    public UpdateInvoiceProto updateInvoiceProto;
+    public String id;
+
     public UpdateCustomerInvoice(HashMap<String, Object> data) throws CommandException {
         super(data);
         this.validationSchema = "billing/invoice/update_internal";
@@ -41,5 +46,11 @@ public class UpdateCustomerInvoice extends Command implements ICommand {
         System.out.println("hero");
 
 
+    }
+
+
+    public UpdateCustomerInvoice(UpdateInvoiceProto data) {
+        this.id=id;
+        this.updateInvoiceProto=data;
     }
 }

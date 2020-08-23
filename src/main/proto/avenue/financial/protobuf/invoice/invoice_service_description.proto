@@ -28,8 +28,6 @@ service InvoiceServiceProto {
   rpc invoicesAttachedToEntity (ListInvoicesAttachedToEntityRequestProto) returns (ListInvoiceResponseProto) {
   }
 
-
-
   rpc add (AddInvoiceRequestProto) returns (AddInvoiceResponseProto) {
   }
 

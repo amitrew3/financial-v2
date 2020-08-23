@@ -3,12 +3,7 @@ package com.rew3.common.database;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rew3.billing.invoice.model.AbstractDTO;
-import com.rew3.billing.invoice.model.Invoice;
-import com.rew3.billing.invoice.model.InvoiceDTO;
 import com.rew3.billing.shared.model.AbstractEntity;
-import com.rew3.billing.shared.model.Meta;
-import com.rew3.billing.shared.model.MiniUser;
 import com.rew3.common.application.AuthenticatedUser;
 import com.rew3.common.application.Authentication;
 import com.rew3.common.application.CommandException;
@@ -20,7 +15,6 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.transform.AliasToEntityMapResultTransformer;
 
-import javax.swing.text.html.Option;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -28,7 +22,6 @@ import java.text.ParseException;
 import java.time.Instant;
 import java.util.*;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class HibernateUtils {
@@ -324,9 +317,9 @@ public class HibernateUtils {
     public static synchronized Object defaultSave(Object obj) throws JsonProcessingException {
 
 
-       // Session session = null;
+        // Session session = null;
         try {
-           // session = HibernateUtils.openSession();
+            // session = HibernateUtils.openSession();
 
             s.saveOrUpdate(obj);
 
@@ -998,6 +991,8 @@ public class HibernateUtils {
         Session session = null;
         try {
             session = HibernateUtils.openSession();
+            Transaction trx=session.beginTransaction();
+
             AbstractEntity entity = (AbstractEntity) obj;
             entity.setStatus(Flags.EntityStatus.DELETED);
 
@@ -1008,17 +1003,14 @@ public class HibernateUtils {
             entity.setDeletedById(user.getId());
             entity.setDeletedByFirstName(user.getFirstName());
             entity.setDeletedByLastName(user.getLastName());
-
-            if (entity.hasDeletePermission(Authentication.getRew3UserId(), Authentication.getRew3GroupId())) {
-                session.saveOrUpdate(obj);
-            } else {
-                throw new CommandException("Permission Denied");
-            }
+            session.saveOrUpdate(obj);
+            session.flush();
+            trx.commit();
 
         } catch (Exception e) {
             e.printStackTrace();
-
-
+        } finally {
+            session.close();
         }
         return obj;
     }
@@ -1376,6 +1368,7 @@ public class HibernateUtils {
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            throw e;
 
 
         }

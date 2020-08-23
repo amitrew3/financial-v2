@@ -6,6 +6,7 @@ import com.rew3.common.model.DB;
 import com.rew3.common.model.Flags;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import java.sql.Timestamp;
 import java.util.Set;
 
@@ -93,7 +94,7 @@ public class Invoice extends AbstractEntity {
     private Double dueAmount;
 
 
-
+    @Valid
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true) 
     public Set<InvoiceItem> items;

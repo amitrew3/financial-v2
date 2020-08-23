@@ -7,6 +7,8 @@ import com.rew3.common.model.Flags;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = DB.Table.INVOICE_ITEM)
@@ -30,16 +32,18 @@ public class InvoiceItem {
     private Invoice invoice;
 
 
+    @NotEmpty
     @Column(name = DB.Field.InvoiceItem.TITLE)
     private String title;
 
     @Column(name = DB.Field.InvoiceItem.DESCRIPTION)
     private String description;
 
+    @NotNull
     @Column(name = DB.Field.InvoiceItem.QUANTITY)
     private Integer quantity;
 
-
+    @NotNull
     @Column(name = DB.Field.InvoiceItem.PRICE)
     private Double price;
 

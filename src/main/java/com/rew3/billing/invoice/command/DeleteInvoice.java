@@ -7,10 +7,18 @@ import org.hibernate.Transaction;
 import java.util.HashMap;
 
 public class DeleteInvoice extends Command implements ICommand {
-	public DeleteInvoice(HashMap<String, Object> data) {
-		super(data);
-	}
-	public DeleteInvoice(HashMap<String, Object> data, Transaction trx) {
-		super(data,trx);
-	}
+    public String id;
+
+    public DeleteInvoice(HashMap<String, Object> data) {
+        super(data);
+    }
+
+    public DeleteInvoice(HashMap<String, Object> data, Transaction trx) {
+        super(data, trx);
+    }
+
+    public DeleteInvoice(String id) {
+        this.id = id;
+
+    }
 }

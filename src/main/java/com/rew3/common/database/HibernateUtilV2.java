@@ -208,10 +208,10 @@ public class HibernateUtilV2 {
     public static synchronized Object save(Object obj, Transaction aTrx) throws JsonProcessingException {
 
 
-        Session session=HibernateUtilV2.openSession();
+        Session session = HibernateUtilV2.openSession();
         Transaction tx = null;
         try {
-           // session = HibernateUtilV2.openSession();
+            // session = HibernateUtilV2.openSession();
             Transaction trx = session.beginTransaction();
             AbstractEntity entity = (AbstractEntity) obj;
             entity.setDefaultAcl();
@@ -307,7 +307,7 @@ public class HibernateUtilV2 {
 
     public static synchronized Object save(Object obj, boolean isNew) throws JsonProcessingException {
 
-        Session session=HibernateUtilV2.openSession();
+        Session session = HibernateUtilV2.openSession();
         Transaction tx = null;
         try {
             // session = HibernateUtilV2.openSession();
@@ -328,12 +328,14 @@ public class HibernateUtilV2 {
             }
             entity.setVersion();
             entity.setMember(Authentication.getMemberId());
-            session.merge(obj);
+            entity.setStatus(Flags.EntityStatus.ACTIVE);
+            obj = session.merge(obj);
             session.flush();
             trx.commit();
             session.close();
             return obj;
         } catch (RuntimeException e) {
+            System.out.println(e);
             tx.rollback();
             throw e; // or display error message
         } finally {
@@ -837,19 +839,11 @@ public class HibernateUtilV2 {
     public static synchronized Object saveAsDeleted(List obj, Transaction aTrx) throws
             JsonProcessingException, CommandException {
 
-        boolean success = false;
-        boolean isCommitable = false;
-        if (aTrx == null) {
-            isCommitable = true;
-        }
-
         Session session = null;
         Transaction trx = aTrx;
         try {
             session = HibernateUtilV2.openSession();
-            if (isCommitable) {
-                trx = HibernateUtilV2.beginTransaction();
-            }
+            trx = session.beginTransaction();
             AuthenticatedUser user = Authentication.getAuthenticatedUser();
             for (Object o : obj) {
                 AbstractEntity entity = (AbstractEntity) o;
@@ -859,34 +853,21 @@ public class HibernateUtilV2 {
                 entity.setDeletedByFirstName(user.getFirstName());
                 entity.setDeletedByLastName(user.getLastName());
                 entity.setVersion();
-
-                if (entity.hasDeletePermission(Authentication.getRew3UserId(), Authentication.getRew3GroupId())) {
-                    session.saveOrUpdate(o);
-                } else {
-                    throw new CommandException("Permission Denied");
-                }
+                session.merge(o);
             }
-
-
             session.flush();
+            trx.commit();
 
-            if (isCommitable) {
-                commitTransaction(trx);
-            }
 
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
 
-            if (isCommitable) {
-                rollbackTransaction(trx);
-            }
+            rollbackTransaction(trx);
             throw e;
         } finally {
 
-            if (isCommitable) {
-                closeSession();
-            }
+            closeSession();
         }
         return obj;
     }
@@ -898,6 +879,7 @@ public class HibernateUtilV2 {
         Session session = null;
         try {
             session = HibernateUtilV2.openSession();
+            Transaction trx = session.beginTransaction();
 
             AbstractEntity entity = (AbstractEntity) obj;
             entity.setStatus(Flags.EntityStatus.DELETED);
@@ -910,16 +892,14 @@ public class HibernateUtilV2 {
             entity.setDeletedByFirstName(user.getFirstName());
             entity.setDeletedByLastName(user.getLastName());
 
-            if (entity.hasDeletePermission(Authentication.getRew3UserId(), Authentication.getRew3GroupId())) {
-                session.saveOrUpdate(obj);
-            } else {
-                throw new CommandException("Permission Denied");
-            }
+            session.saveOrUpdate(obj);
+            session.flush();
+            trx.commit();
 
         } catch (Exception e) {
             e.printStackTrace();
-
-
+        } finally {
+            session.close();
         }
         return obj;
     }
@@ -931,6 +911,8 @@ public class HibernateUtilV2 {
         Session session = null;
         try {
             session = HibernateUtilV2.openSession();
+            Transaction trx = session.beginTransaction();
+
             AbstractEntity entity = (AbstractEntity) obj;
             entity.setStatus(Flags.EntityStatus.DELETED);
 
@@ -941,17 +923,15 @@ public class HibernateUtilV2 {
             entity.setDeletedById(user.getId());
             entity.setDeletedByFirstName(user.getFirstName());
             entity.setDeletedByLastName(user.getLastName());
+            session.saveOrUpdate(obj);
+            session.flush();
+            trx.commit();
 
-            if (entity.hasDeletePermission(Authentication.getRew3UserId(), Authentication.getRew3GroupId())) {
-                session.saveOrUpdate(obj);
-            } else {
-                throw new CommandException("Permission Denied");
-            }
 
         } catch (Exception e) {
             e.printStackTrace();
-
-
+        } finally {
+            session.close();
         }
         return obj;
     }

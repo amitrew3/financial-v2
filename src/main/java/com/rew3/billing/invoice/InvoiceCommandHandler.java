@@ -3,8 +3,8 @@ package com.rew3.billing.invoice;
 import com.avenue.financial.services.grpc.proto.invoice.AddInvoiceProto;
 import com.avenue.financial.services.grpc.proto.invoice.InvoiceInfoProto;
 import com.avenue.financial.services.grpc.proto.invoice.InvoiceItemProto;
+import com.avenue.financial.services.grpc.proto.invoice.UpdateInvoiceProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.financial.service.ProtoConverter;
 import com.rew3.billing.catalog.product.model.Product;
 import com.rew3.billing.catalog.productrateplan.model.ProductRatePlan;
@@ -29,6 +29,11 @@ import com.rew3.common.utils.*;
 import com.rew3.finance.accountingjournal.command.CreateInvoiceAccountingJournal;
 import org.hibernate.Transaction;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import javax.validation.groups.Default;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -112,7 +117,7 @@ public class InvoiceCommandHandler implements ICommandHandler {
     public void handle(UpdateCustomerInvoice c) throws Exception {
         // Transaction trx = c.getTransaction();
         try {
-            Invoice invoice = this._handleSaveInvoice(c);
+            Invoice invoice = this._handleUpdateInvoice(c.updateInvoiceProto);
             if (invoice != null) {
 //                if (c.isCommittable()) {
 //                    HibernateUtils.commitTransaction(trx);
@@ -136,14 +141,14 @@ public class InvoiceCommandHandler implements ICommandHandler {
 
             String vendorId = (String) c.get("vendorId");
 
-            Invoice invoice = this._handleSaveInvoice(c);
+            // Invoice invoice = this._handleSaveInvoice(c);
 
             if (c.isCommittable()) {
                 HibernateUtils.commitTransaction(trx);
             }
 
             APILogger.add(APILogType.SUCCESS, "Invoice(s) has been created successfully.");
-            c.setObject(invoice);
+            // c.setObject(invoice);
 
         } catch (Exception ex) {
             HibernateUtils.rollbackTransaction(trx);
@@ -152,186 +157,12 @@ public class InvoiceCommandHandler implements ICommandHandler {
         }
     }
 
-    private Invoice _handleSaveInvoice(ICommand c) throws Exception {
-
+    private Invoice _handleUpdateInvoice(UpdateInvoiceProto c) throws Exception {
         Invoice invoice = null;
-        boolean isNew = true;
-
-        if (c.has("id")) {
-
-            invoice = (Invoice) new InvoiceQueryHandler().getById(c.get("id").toString());
-            isNew = false;
-        } else {
-            invoice = new Invoice();
+        if (c.hasId()) {
+            invoice = (Invoice) new InvoiceQueryHandler().getById(c.getId().getValue());
         }
-        if (c.has("userId")) {
-            invoice.setUserId(c.get("userId").toString());
-
-        }
-
-        ObjectMapper mapper = new ObjectMapper();
-        InvoiceInfo invoiceInfo = mapper.convertValue(c.get("invoiceInfo"), InvoiceInfo.class);
-
-        if (invoiceInfo != null) {
-            if (invoiceInfo.getDescription() != null) {
-                invoice.setDescription(invoiceInfo.getDescription());
-            }
-            if (invoiceInfo.getInvoiceNumber() != null) {
-                invoice.setInvoiceNumber(invoiceInfo.getInvoiceNumber());
-            }
-            if (invoiceInfo.getNote() != null) {
-                invoice.setNote(invoiceInfo.getNote());
-            }
-            if (invoiceInfo.getInvoiceStatus() != null) {
-                invoice.setInvoiceStatus(InvoiceStatus.valueOf(invoiceInfo.getInvoiceStatus()));
-            }
-            if (invoiceInfo.getDueStatus() != null) {
-                invoice.setDueStatus(InvoiceDueStatus.valueOf(invoiceInfo.getDueStatus()));
-            }
-            if (invoiceInfo.getPaymentStatus() != null) {
-                invoice.setPaymentStatus(InvoicePaymentStatus.valueOf(invoiceInfo.getPaymentStatus()));
-            }
-            if (invoiceInfo.getWriteOffStatus() != null) {
-                invoice.setWriteOffStatus(InvoiceWriteOffStatus.valueOf(invoiceInfo.getWriteOffStatus()));
-            }
-
-            if (invoiceInfo.getRefundStatus() != null) {
-                invoice.setRefundStatus(InvoiceRefundStatus.valueOf(invoiceInfo.getRefundStatus()));
-            }
-            if (invoiceInfo.getDiscount() != null) {
-                invoice.setDiscount(invoiceInfo.getDiscount());
-            }
-            if (invoiceInfo.getDiscountType() != null) {
-                invoice.setDiscountType(CalculationType.valueOf(invoiceInfo.getDiscountType()));
-            }
-            if (invoiceInfo.getTax() != null) {
-                invoice.setTax(invoiceInfo.getTax());
-            }
-
-            if (invoiceInfo.getTaxType() != null) {
-                invoice.setTaxType(CalculationType.valueOf(invoiceInfo.getTaxType()));
-            }
-        }
-
-
-        if (c.has("type")) {
-            InvoiceType type = InvoiceType.valueOf(c.get("type").toString());
-            invoice.setType(type);
-        }
-        if (c.has("paymentTermId")) {
-            PaymentTerm term = (PaymentTerm) new PaymentTermQueryHandler().getById(c.get("paymentTermId").toString());
-            invoice.setPaymentTerm(term);
-        }
-
-
-        if (c.has("invoiceDate")) {
-            invoice.setInvoiceDate(Rew3Date.convertToUTC((String) c.get("invoiceDate")));
-        }
-        if (c.has("dueDate")) {
-            invoice.setDueDate(Rew3Date.convertToUTC((String) c.get("dueDate")));
-        }
-        if (c.has("isRecurring")) {
-            boolean isRecurring = Parser.convertObjectToBoolean(c.get("isRecurring"));
-
-            invoice.setRecurring(isRecurring);
-        }
-
-        if (c.has("recurringInvoiceId") && c.has("isRecurring")) {
-            RecurringInvoice recurringInvoice = (RecurringInvoice) new RecurringInvoiceQueryHandler().getById(c.get("recurringInvoiceId").toString());
-
-
-            invoice.setRecurringInvoice(recurringInvoice);
-        }
-
-
-        if (c.has("data")) {
-            invoice.setData(c.get("data").toString());
-        }
-
-
-        if (c.has("items")) {
-            if (!isNew) {
-                if (invoice.getItems() != null) {
-                    invoice.getItems().clear();
-                }
-
-            }
-
-
-            List<HashMap<String, Object>> itemsMap = (List<HashMap<String, Object>>) c.get("items");
-
-
-            final Invoice finalInvoice = invoice;
-            Set<InvoiceItem> items = itemsMap.stream().map(x -> {
-                InvoiceItem item = new ObjectMapper().convertValue(x, InvoiceItem.class);
-                item.setInvoice(finalInvoice);
-                return item;
-            }).collect(Collectors.toSet());
-
-            if (invoice.getItems() != null) {
-                invoice.getItems().addAll(items);
-            } else {
-                invoice.setItems(items);
-            }
-        }
-
-        double line_totals = 0;
-
-        for (InvoiceItem item : invoice.getItems()) {
-
-            double line_total = item.getQuantity() * item.getPrice();
-
-
-            if (CalculationType.valueOf(item.getDiscountType()) == CalculationType.AMOUNT) {
-                line_total = line_total - item.getDiscount();
-
-            } else if (CalculationType.valueOf(item.getDiscountType()) == CalculationType.PERCENTAGE) {
-                line_total = line_total - item.getDiscount() * line_total / 100;
-            }
-
-            if (CalculationType.valueOf(item.getTaxType()) == CalculationType.AMOUNT) {
-                line_total = line_total - item.getTax();
-
-            } else if (CalculationType.valueOf(item.getTaxType()) == CalculationType.PERCENTAGE) {
-                line_total = line_total + item.getTax() * line_total / 100;
-            }
-            line_totals += line_total;
-        }
-
-        double total = line_totals;
-
-        if (CalculationType.valueOf(invoice.getDiscountType()) == CalculationType.AMOUNT) {
-            total = total - invoice.getDiscount();
-
-        } else if (CalculationType.valueOf(invoice.getDiscountType()) == CalculationType.PERCENTAGE) {
-            total = total - invoice.getDiscount() * total / 100;
-        }
-
-        if (CalculationType.valueOf(invoice.getTaxType()) == CalculationType.AMOUNT) {
-            total = total - invoice.getTax();
-
-        } else if (CalculationType.valueOf(invoice.getTaxType()) == CalculationType.PERCENTAGE) {
-            total = line_totals + invoice.getTax() * total / 100;
-        }
-
-        invoice.setTotalAmount(total);
-        invoice.setDueAmount(total);
-        invoice = (Invoice) HibernateUtils.save(invoice);
-
-
-        // If tax rate type is defined then tax rate should be defined
-        // too and vice versa.
-
-        invoice = (Invoice) HibernateUtils.save(invoice, c, isNew);
-
-
-        return invoice;
-    }
-
-
-    private Invoice _handleSaveInvoice(AddInvoiceProto c) throws Exception {
-        Invoice invoice = new Invoice();
-        boolean isNew = true;
+        boolean isNew = false;
         if (c.hasPaymentTermId()) {
             PaymentTerm term = null;
             term = (PaymentTerm) new PaymentTermQueryHandler().getById(c.getPaymentTermId().getValue());
@@ -467,7 +298,186 @@ public class InvoiceCommandHandler implements ICommandHandler {
 
         invoice.setTotalAmount(total);
         invoice.setDueAmount(total);
-        invoice = (Invoice) HibernateUtilV2.save(invoice,isNew);
+
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+
+        Set<ConstraintViolation<Invoice>> constraintViolations = validator.validate(invoice, Default.class);
+
+        System.out.println("------this point-------");
+        constraintViolations.forEach(x -> System.out.println(x.getMessage()));
+
+        System.out.println("hrere");
+
+
+        invoice = (Invoice) HibernateUtilV2.save(invoice, isNew);
+
+        // If tax rate type is defined then tax rate should be defined
+        // too and vice versa.
+
+        //invoice = (Invoice) HibernateUtils.save(invoice, c, isNew);
+
+
+        return invoice;
+    }
+
+
+    private Invoice _handleSaveInvoice(AddInvoiceProto c) throws Exception {
+
+
+        Invoice invoice = new Invoice();
+        boolean isNew = true;
+
+        if (c.hasPaymentTermId()) {
+            PaymentTerm term = null;
+            term = (PaymentTerm) new PaymentTermQueryHandler().getById(c.getPaymentTermId().getValue());
+            invoice.setPaymentTerm(term);
+        }
+        InvoiceInfoProto invoiceInfo = null;
+        if (c.hasInvoiceInfo()) {
+            invoiceInfo = c.getInvoiceInfo();
+            if (invoiceInfo.hasDescription()) {
+                invoice.setDescription(invoiceInfo.getDescription().getValue());
+            }
+            if (invoiceInfo.hasInvoiceNumber()) {
+                invoice.setInvoiceNumber(invoiceInfo.getInvoiceNumber().getValue());
+            }
+            if (invoiceInfo.hasNote()) {
+                invoice.setNote(invoiceInfo.getNote().getValue());
+            }
+            invoice.setInvoiceStatus(InvoiceStatus.valueOf(invoiceInfo.getInvoiceStatus().name()));
+            invoice.setDueStatus(InvoiceDueStatus.valueOf(invoiceInfo.getDueStatus().name()));
+            invoice.setPaymentStatus(InvoicePaymentStatus.valueOf(invoiceInfo.getPaymentStatus().name()));
+            invoice.setWriteOffStatus(InvoiceWriteOffStatus.valueOf(invoiceInfo.getWriteOfStatus().name()));
+
+            invoice.setRefundStatus(InvoiceRefundStatus.valueOf(invoiceInfo.getRefundStatus().name()));
+
+            if (invoiceInfo.hasDiscount()) {
+                invoice.setDiscount(invoiceInfo.getDiscount().getValue());
+            }
+            invoice.setDiscountType(CalculationType.valueOf(invoiceInfo.getDiscountType().name()));
+            if (invoiceInfo.hasTax()) {
+                invoice.setTax(invoiceInfo.getTax().getValue());
+            }
+
+            invoice.setTaxType(CalculationType.valueOf(invoiceInfo.getTaxType().name()));
+        }
+
+
+        invoice.setType(InvoiceType.valueOf(c.getType().name()));
+
+        if (c.hasPaymentTermId()) {
+            PaymentTerm term = (PaymentTerm) new PaymentTermQueryHandler().getById(c.getPaymentTermId().getValue());
+            invoice.setPaymentTerm(term);
+        }
+
+
+        if (c.hasInvoiceDate()) {
+            invoice.setInvoiceDate(Rew3Date.convertToUTC((String) c.getInvoiceDate().getValue()));
+        }
+        if (c.hasDueDate()) {
+            invoice.setDueDate(Rew3Date.convertToUTC((String) c.getDueDate().getValue()));
+        }
+
+
+        //TODO
+       /* if (c.is("isRecurring")) {
+            boolean isRecurring = Parser.convertObjectToBoolean(c.get("isRecurring"));
+
+            invoice.setRecurring(isRecurring);
+        }
+
+        if (c.has("recurringInvoiceId") && c.has("isRecurring")) {
+            RecurringInvoice recurringInvoice = (RecurringInvoice) new RecurringInvoiceQueryHandler().getById(c.get("recurringInvoiceId").toString());
+
+
+            invoice.setRecurringInvoice(recurringInvoice);
+        if (c.has("data")) {
+            invoice.setData(c.get("data").toString());
+        }*/
+
+        if (c.getItemsList().size() != 0) {
+            if (!isNew) {
+                if (invoice.getItems() != null) {
+                    invoice.getItems().clear();
+                }
+            }
+
+
+            List<InvoiceItemProto> protos = c.getItemsList();
+
+
+            final Invoice finalInvoice = invoice;
+            Set<InvoiceItem> items = protos.stream().map(x -> {
+                InvoiceItem item = ProtoConverter.convertToInvoiceItem(x);
+                item.setInvoice(finalInvoice);
+                return item;
+            }).collect(Collectors.toSet());
+
+            if (invoice.getItems() != null) {
+                invoice.getItems().addAll(items);
+            } else {
+                invoice.setItems(items);
+            }
+        }
+
+        double line_totals = 0;
+
+        for (
+                InvoiceItem item : invoice.getItems()) {
+
+            double line_total = item.getQuantity() * item.getPrice();
+
+
+            if (CalculationType.valueOf(item.getDiscountType()) == CalculationType.AMOUNT) {
+                line_total = line_total - item.getDiscount();
+
+            } else if (CalculationType.valueOf(item.getDiscountType()) == CalculationType.PERCENTAGE) {
+                line_total = line_total - item.getDiscount() * line_total / 100;
+            }
+
+            if (CalculationType.valueOf(item.getTaxType()) == CalculationType.AMOUNT) {
+                line_total = line_total - item.getTax();
+
+            } else if (CalculationType.valueOf(item.getTaxType()) == CalculationType.PERCENTAGE) {
+                line_total = line_total + item.getTax() * line_total / 100;
+            }
+            line_totals += line_total;
+        }
+
+        double total = line_totals;
+
+        if (CalculationType.valueOf(invoice.getDiscountType()) == CalculationType.AMOUNT) {
+            total = total - invoice.getDiscount();
+
+        } else if (CalculationType.valueOf(invoice.getDiscountType()) == CalculationType.PERCENTAGE) {
+            total = total - invoice.getDiscount() * total / 100;
+        }
+
+        if (CalculationType.valueOf(invoice.getTaxType()) == CalculationType.AMOUNT) {
+            total = total - invoice.getTax();
+
+        } else if (CalculationType.valueOf(invoice.getTaxType()) == CalculationType.PERCENTAGE) {
+            total = line_totals + invoice.getTax() * total / 100;
+        }
+
+        invoice.setTotalAmount(total);
+        invoice.setDueAmount(total);
+
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+
+        Set<ConstraintViolation<Invoice>> constraintViolations = validator.validate(invoice, Default.class);
+
+        System.out.println("------this point-------");
+        constraintViolations.forEach(x -> System.out.println(x.getMessage()));
+
+        System.out.println("hrere");
+
+
+        invoice = (Invoice) HibernateUtilV2.save(invoice, isNew);
 
         // If tax rate type is defined then tax rate should be defined
         // too and vice versa.
@@ -1079,24 +1089,14 @@ public class InvoiceCommandHandler implements ICommandHandler {
         // HibernateUtils.openSession();
         // Transaction trx = c.getTransaction();
 
-
-        String id = (String) c.get("id");
-
-
+        String id = c.id;
         Invoice invoice = (Invoice) new InvoiceQueryHandler().getById(id);
 
         if (invoice != null) {
-            if (!invoice.hasDeletePermission(Authentication.getRew3UserId(), Authentication.getRew3GroupId())) {
-                APILogger.add(APILogType.ERROR, "Permission denied");
-                throw new CommandException("Permission denied");
-            }
+
             invoice.setStatus(EntityStatus.DELETED);
-            invoice = (Invoice) HibernateUtils.saveAsDeleted(invoice);
-
-
+            invoice = (Invoice) HibernateUtilV2.saveAsDeleted(invoice);
         }
-
-
         c.setObject(invoice);
     }
 

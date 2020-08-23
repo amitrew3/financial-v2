@@ -4,6 +4,7 @@ package com.rew3.billing.shared.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rew3.billing.invoice.model.EditAction;
 import com.rew3.common.application.Authentication;
 import com.rew3.common.interceptor.ACL;
 import com.rew3.common.interceptor.Permission;
@@ -13,6 +14,9 @@ import com.rew3.common.utils.Parser;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import javax.validation.groups.Default;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -25,7 +29,10 @@ import java.sql.Timestamp;
 @MappedSuperclass
 public class AbstractEntity  implements Serializable {
 
-
+    @NotNull(
+            message = "Id must not be null",
+            groups = EditAction.class
+    )
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(

@@ -5,8 +5,11 @@ import com.avenue.financial.services.grpc.proto.invoice.*;
 import com.financial.service.ProtoConverter;
 import com.rew3.billing.invoice.InvoiceQueryHandler;
 import com.rew3.billing.invoice.command.CreateCustomerInvoice;
+import com.rew3.billing.invoice.command.DeleteInvoice;
+import com.rew3.billing.invoice.command.UpdateCustomerInvoice;
 import com.rew3.billing.invoice.model.Invoice;
 import com.rew3.common.application.CommandException;
+import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.Query;
 import io.grpc.stub.StreamObserver;
@@ -60,16 +63,91 @@ public class InvoiceService extends InvoiceServiceProtoGrpc.InvoiceServiceProtoI
 
         AddInvoiceResponseProto response = AddInvoiceResponseProto.newBuilder()
                 .setId(invoice.get_id())
-                .setAction("CREATE").
-                        setMessage("created").
-                        setStatus(StatusTypeProto.CREATED).
-                        setData(ProtoConverter.convertToInvoiceProto(invoice))
-                .setMessage("done")
+                .setAction("CreateInvoice")
+                .setMessage("Invoice successfully added")
+                .setStatus(StatusTypeProto.CREATED)
+                .setData(ProtoConverter.convertToInvoiceProto(invoice))
                 .build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
 
+    @Override
+    public void get(GetInvoiceRequestProto request,
+                    StreamObserver<GetInvoiceResponseProto> responseObserver) {
+
+        // HashMap<String, Object> map = loadMap(request.getData());
+
+
+        Invoice invoice = null;
+        try {
+            invoice = (Invoice) new InvoiceQueryHandler().getById(request.getId());
+        } catch (CommandException e) {
+            e.printStackTrace();
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
+
+        GetInvoiceResponseProto response = GetInvoiceResponseProto.newBuilder()
+                .setData(ProtoConverter.convertToInvoiceProto(invoice))
+                .build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void update(UpdateInvoiceRequestProto request,
+                       StreamObserver<UpdateInvoiceResponseProto> responseObserver) {
+
+        // HashMap<String, Object> map = loadMap(request.getData());
+
+
+        UpdateCustomerInvoice command = null;
+        command = new UpdateCustomerInvoice(request.getData());
+        try {
+            CommandRegister.getInstance().process(command);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Invoice invoice = (Invoice) command.getObject();
+
+        UpdateInvoiceResponseProto response = UpdateInvoiceResponseProto.newBuilder()
+                .setId(invoice.get_id())
+                .setAction("UpdateInvoice")
+                .setMessage("Invoice successfully updated")
+                .setStatus(StatusTypeProto.OK)
+                .setData(ProtoConverter.convertToInvoiceProto(invoice))
+                .build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void delete(DeleteInvoiceRequestProto request,
+                       StreamObserver<DeleteInvoiceResponseProto> responseObserver) {
+
+        // HashMap<String, Object> map = loadMap(request.getData());
+
+
+        DeleteInvoice command = null;
+        command = new DeleteInvoice(request.getId());
+        try {
+            CommandRegister.getInstance().process(command);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Invoice invoice = (Invoice) command.getObject();
+
+        DeleteInvoiceResponseProto response = DeleteInvoiceResponseProto.newBuilder()
+                .setId(invoice.get_id())
+                .setAction("DeleteInvoice")
+                .setMessage("Invoice successfully deleted")
+                .setStatus(StatusTypeProto.OK)
+                .setData(ProtoConverter.convertToInvoiceProto(invoice))
+                .build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
 }
 
 
