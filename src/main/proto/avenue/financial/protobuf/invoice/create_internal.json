@@ -1,0 +1,232 @@
+{
+  "$schema": "http://koderlabs.com/myschema#",
+  "type": "object",
+  "title": "Send Invoice",
+  "properties": {
+
+    "userId": {
+      "type": "string",
+      "title": "User id for sending invoice Date"
+    },
+    "paymentTermId": {
+      "type": "string",
+      "title": "Payment term id"
+    },
+    "invoiceDate": {
+      "title": "Invoice date",
+      "type": "string"
+    },
+    "dueDate": {
+      "title": "Due date ",
+      "type": "string"
+    },
+    "type": {
+      "title": "Custom Data",
+      "enum": [
+        "CUSTOMER_INVOICE",
+        "VENDOR_BILL"
+      ],
+      "description": "JSON for custom data fields"
+    },
+    "invoiceInfo": {
+      "title": "Invoice info",
+      "type": "object",
+      "properties": {
+        "invoiceNumber": {
+          "title": "Invoice number",
+          "type": "string"
+        },
+        "invoiceStatus": {
+          "title": "Invoice status",
+          "enum": [
+            "IN_ACTIVE",
+            "ACTIVE",
+            "PENDING"
+          ]
+        },
+        "paymentStatus": {
+          "title": "Payment status Type",
+          "enum": [
+            "UNPAID",
+            "PARTIAL_PAID",
+            "PAID"
+          ]
+        },
+        "dueStatus": {
+          "title": "Due status Type",
+          "enum": [
+            "UNDUE",
+            "DUE",
+            "OVERDUE"
+          ]
+        },
+        "refundStatus": {
+          "title": "Refund status Type",
+          "enum": [
+            "REFUND_REQUESTED",
+            "REFUND_APPROVED",
+            "REFUND_REJECTED",
+            "NO_REQUEST"
+          ]
+        },
+        "writeOffStatus": {
+          "title": "Write off status Type",
+          "enum": [
+            "WRITTEN_OFF",
+            "TAKEN_INTO_ACCOUNT"
+          ]
+        },
+        "taxType": {
+          "title": "Tax Rate type",
+          "enum": [
+            "AMOUNT",
+            "PERCENTAGE"
+          ]
+        },
+        "tax": {
+          "title": "Tax",
+          "type": "number"
+        },
+        "discountType": {
+          "title": "Discount Type",
+          "enum": [
+            "AMOUNT",
+            "PERCENTAGE"
+          ]
+        },
+        "discount": {
+          "title": "Discount",
+          "type": "number"
+        },
+        "note": {
+          "title": "Note",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        }
+      },
+      "required": [
+        "invoiceNumber",
+        "invoiceStatus",
+        "paymentStatus",
+        "dueStatus",
+        "refundStatus",
+        "invoiceStatus",
+        "writeOffStatus",
+        "taxType",
+        "tax",
+        "discountType",
+        "note",
+        "description"
+      ]
+    },
+
+    "items": {
+      "title": "Invoice items",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "title": "title of invoice item ",
+            "type": "string"
+          },
+          "description": {
+            "title": "description of invoice item",
+            "type": "string"
+          },
+          "quantity": {
+            "title": "quantity of invoice item",
+            "type": "number"
+          },
+          "price": {
+            "title": "price of invoice item",
+            "type": "number"
+          },
+          "taxType": {
+            "title": "Tax Rate type",
+            "enum": [
+              "AMOUNT",
+              "PERCENTAGE"
+            ]
+          },
+          "tax": {
+            "title": "Tax of invoice item",
+            "type": "number"
+          },
+          "discountType": {
+            "title": "Discount Type",
+            "enum": [
+              "AMOUNT",
+              "PERCENTAGE"
+            ]
+          },
+          "discount": {
+            "title": "Discount",
+            "type": "number"
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "quantity",
+          "price",
+          "taxType",
+          "tax",
+          "discountType",
+          "discount"
+        ]
+
+      }
+    },
+    "owner": {
+      "title": "Agent info",
+      "type": "object",
+      "properties": {
+        "_id": {
+          "title": "id of agent ",
+          "type": "string"
+        },
+        "firstName": {
+          "title": "first name of agent",
+          "type": "string"
+        },
+        "lastName": {
+          "title": "last name of agent",
+          "type": "string"
+        }
+      }
+    },
+    "status": {
+      "title": "Status",
+      "enum": [
+        "ACTIVE",
+        "IN_ACTIVE"
+      ]
+    },
+    "visibility": {
+      "title": "Visibility type",
+      "enum": [
+        "PRIVATE",
+        "EVERYONE",
+        "INDIVIDUAL",
+        "TEAMS"
+      ]
+    }
+
+  },
+  "required": [
+    "invoiceInfo",
+    "userId",
+    "paymentTermId",
+    "invoiceDate",
+    "type",
+    "items",
+    "isRecurring",
+    "owner",
+    "status",
+    "visibility"
+  ]
+}

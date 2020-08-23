@@ -3,7 +3,6 @@ package com.rew3.commission.commissionplan;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rew3.billing.shared.model.MiniUser;
-import com.rew3.commission.acp.command.DeleteAcp;
 import com.rew3.commission.commissionplan.command.*;
 import com.rew3.commission.commissionplan.model.*;
 import com.rew3.commission.service.CommissionPlanService;
@@ -225,7 +224,7 @@ public class CommissionPlanCommandHandler implements ICommandHandler {
             Set<CommissionPlanAgent> agents = agentsMap.stream().map(x -> {
                 MiniUser user = new ObjectMapper().convertValue(x, MiniUser.class);
 
-                CommissionPlanAgent agent = ConvertUtils.convertToCommisisonPlanAgent(user);
+                CommissionPlanAgent agent = Converters.convertToCommisisonPlanAgent(user);
 
                 agent.setCommissionPlan(finalPlan);
                 return agent;

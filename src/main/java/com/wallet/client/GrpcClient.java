@@ -1,7 +1,11 @@
 package com.wallet.client;
 
-import com.wallet.client.action.DepositRequestAction;
-import com.wallet.domain.Currency;
+import com.avenue.base.grpc.proto.core.RequestParamProto;
+import com.avenue.financial.services.grpc.proto.invoice.InvoiceServiceProtoGrpc;
+import com.avenue.financial.services.grpc.proto.invoice.ListInvoiceRequestProto;
+import com.avenue.financial.services.grpc.proto.invoice.ListInvoiceResponseProto;
+import com.google.protobuf.Int32Value;
+import com.google.protobuf.StringValue;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
@@ -37,7 +41,26 @@ public class GrpcClient {
                 .usePlaintext()
                 .build();
 
-        DepositRequestAction action = new DepositRequestAction(1L, "100", Currency.USD.toString());
-        action.doAction(channel);
+//        DepositRequestAction action = new DepositRequestAction(1L, "100", Currency.USD.toString());
+//        action.doAction(channel);
+
+//        Deposit.DepositFundsRequest depositRequest = Deposit.DepositFundsRequest.newBuilder()
+//                .setUserId(userId)
+//                .setAmount(amount)
+//                .setCurrency(currencyCode)
+//                .build();
+//        System.out.println("deposit action "+ currencyCode);
+//        Deposit.DepositFundsResponse response = DepositServiceGrpc.newBlockingStub(channel).depositFunds(depositRequest);
+        RequestParamProto requestParamProto = RequestParamProto.newBuilder()
+                .setLimit(Int32Value.of(2))
+                .setFilters(StringValue.of("invoice_info.invoice_number-non-empty"))
+                .build();
+
+        ListInvoiceRequestProto request = ListInvoiceRequestProto.newBuilder().setParam(requestParamProto).build();
+
+        ListInvoiceResponseProto res = InvoiceServiceProtoGrpc.newBlockingStub(channel).list(request);
+        res.getDataList().stream().forEach(x -> {
+            System.out.println("Id : --------> " + x.getId());
+        });
     }
 }

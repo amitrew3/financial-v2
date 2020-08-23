@@ -1,5 +1,6 @@
 package com.rew3.billing.invoice.command;
 
+import com.avenue.financial.services.grpc.proto.invoice.AddInvoiceProto;
 import com.rew3.billing.invoice.InvoiceQueryHandler;
 import com.rew3.billing.invoice.model.Invoice;
 import com.rew3.billing.invoice.model.RecurringInvoice;
@@ -10,8 +11,18 @@ import com.rew3.common.cqrs.ICommand;
 import java.util.HashMap;
 
 public class CreateCustomerInvoice extends Command implements ICommand {
+    public AddInvoiceProto addInvoiceProto;
     public CreateCustomerInvoice(HashMap<String, Object> data) throws CommandException {
         super(data);
+       /* this.validationSchema = "billing/invoice/create_internal";
+        boolean valid = this.validate();
+        if (!valid) {
+            throw new CommandException("invalid");
+        }*/
+    }
+    public CreateCustomerInvoice(AddInvoiceProto invoiceProto) throws CommandException {
+        this.addInvoiceProto=invoiceProto;
+        //super(data);
        /* this.validationSchema = "billing/invoice/create_internal";
         boolean valid = this.validate();
         if (!valid) {

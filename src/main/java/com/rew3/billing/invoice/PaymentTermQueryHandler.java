@@ -5,6 +5,7 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.PaginationParams;
@@ -19,7 +20,7 @@ public class PaymentTermQueryHandler implements IQueryHandler {
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
-        PaymentTerm acp = (PaymentTerm) HibernateUtils.get(PaymentTerm.class, id);
+        PaymentTerm acp = (PaymentTerm) HibernateUtilV2.get(PaymentTerm.class, id);
         if (acp == null) {
             throw new NotFoundException("Payment Term  id(" + id + ") not found.");
         }

@@ -153,14 +153,11 @@ public abstract class Flags {
         PARTIAL, FULL
     }
 
-    public enum TaxType {
+    public enum CalculationType {
         AMOUNT, PERCENTAGE;
 
     }
 
-    public enum InvoiceDiscountType {
-        AMOUNT, PERCENTAGE
-    }
 
     public enum TimePeriod {
         ONE_TIME, DAILY, WEEKLY, MONTHLY, QUARTERLY, HALF_YEARLY, YEARLY;

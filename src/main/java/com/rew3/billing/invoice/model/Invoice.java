@@ -14,7 +14,6 @@ import java.util.Set;
 @Table(name = DB.Table.INVOICE)
 public class Invoice extends AbstractEntity {
 
-
     @Column(name = DB.Field.Invoice.INVOICE_NUMBER)
     private String invoiceNumber;
 
@@ -195,7 +194,7 @@ public class Invoice extends AbstractEntity {
         return discountType;
     }
 
-    public void setDiscountType(Flags.InvoiceDiscountType discountType) {
+    public void setDiscountType(Flags.CalculationType discountType) {
         this.discountType = discountType.toString();
     }
 
@@ -243,7 +242,7 @@ public class Invoice extends AbstractEntity {
         return paymentTerm;
     }
 
-    public void setTaxType(Flags.TaxType taxType) {
+    public void setTaxType(Flags.CalculationType taxType) {
         this.taxType = taxType.toString();
     }
 

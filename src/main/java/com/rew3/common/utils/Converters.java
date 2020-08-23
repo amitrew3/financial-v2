@@ -1,5 +1,6 @@
 package com.rew3.common.utils;
 
+import com.avenue.financial.services.grpc.proto.invoice.InvoiceProto;
 import com.rew3.billing.expense.model.Expense;
 import com.rew3.billing.expense.model.ExpenseDTO;
 import com.rew3.billing.invoice.model.*;
@@ -20,7 +21,7 @@ import com.rew3.finance.accountingcode.model.SubAccountingHeadDTO;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ConvertUtils {
+public class Converters {
     public static List<Object> convertToTransaction(List<Object> transactions, List<TransactionContact> tc, boolean isFiltered) {
         Map<RmsTransaction, List<TransactionContact>> map =
                 tc.stream().collect(Collectors.groupingBy(s -> s.getTransaction()));
@@ -141,7 +142,7 @@ public class ConvertUtils {
             }
 
 
-            dto.setTieredAcp(ConvertUtils.convertToTieredAcpDTO(tacp));
+            dto.setTieredAcp(Converters.convertToTieredAcpDTO(tacp));
 
 
         }

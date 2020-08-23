@@ -1,20 +1,27 @@
 package com.rew3.billing.invoice;
 
+import com.avenue.financial.services.grpc.proto.invoice.AddInvoiceProto;
+import com.avenue.financial.services.grpc.proto.invoice.InvoiceInfoProto;
+import com.avenue.financial.services.grpc.proto.invoice.InvoiceItemProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.financial.service.ProtoConverter;
 import com.rew3.billing.catalog.product.model.Product;
 import com.rew3.billing.catalog.productrateplan.model.ProductRatePlan;
 import com.rew3.billing.catalog.productrateplan.model.ProductRatePlanCharge;
 import com.rew3.billing.invoice.command.*;
 import com.rew3.billing.invoice.model.*;
 import com.rew3.billing.normaluser.NormalUserQueryHandler;
-import com.rew3.billing.invoice.model.PaymentTerm;
 import com.rew3.billing.sales.model.Sales;
 import com.rew3.billing.service.PaymentService;
 import com.rew3.common.application.Authentication;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
-import com.rew3.common.cqrs.*;
+import com.rew3.common.cqrs.CommandRegister;
+import com.rew3.common.cqrs.ICommand;
+import com.rew3.common.cqrs.ICommandHandler;
+import com.rew3.common.cqrs.Query;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.Flags.*;
@@ -24,8 +31,12 @@ import org.hibernate.Transaction;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+
 public class InvoiceCommandHandler implements ICommandHandler {
     NormalUserQueryHandler queryHandler = new NormalUserQueryHandler();
 
@@ -83,7 +94,7 @@ public class InvoiceCommandHandler implements ICommandHandler {
     public void handle(CreateCustomerInvoice c) throws Exception {
         // Transaction trx = c.getTransaction();
         try {
-            Invoice invoice = this._handleSaveInvoice(c);
+            Invoice invoice = this._handleSaveInvoice(c.addInvoiceProto);
             if (invoice != null) {
 //                if (c.isCommittable()) {
 //                    HibernateUtils.commitTransaction(trx);
@@ -97,6 +108,7 @@ public class InvoiceCommandHandler implements ICommandHandler {
 
         }
     }
+
     public void handle(UpdateCustomerInvoice c) throws Exception {
         // Transaction trx = c.getTransaction();
         try {
@@ -190,14 +202,14 @@ public class InvoiceCommandHandler implements ICommandHandler {
                 invoice.setDiscount(invoiceInfo.getDiscount());
             }
             if (invoiceInfo.getDiscountType() != null) {
-                invoice.setDiscountType(InvoiceDiscountType.valueOf(invoiceInfo.getDiscountType()));
+                invoice.setDiscountType(CalculationType.valueOf(invoiceInfo.getDiscountType()));
             }
             if (invoiceInfo.getTax() != null) {
                 invoice.setTax(invoiceInfo.getTax());
             }
 
             if (invoiceInfo.getTaxType() != null) {
-                invoice.setTaxType(TaxType.valueOf(invoiceInfo.getTaxType()));
+                invoice.setTaxType(CalculationType.valueOf(invoiceInfo.getTaxType()));
             }
         }
 
@@ -225,7 +237,7 @@ public class InvoiceCommandHandler implements ICommandHandler {
         }
 
         if (c.has("recurringInvoiceId") && c.has("isRecurring")) {
-            RecurringInvoice recurringInvoice = (RecurringInvoice)new  RecurringInvoiceQueryHandler().getById(c.get("recurringInvoiceId").toString());
+            RecurringInvoice recurringInvoice = (RecurringInvoice) new RecurringInvoiceQueryHandler().getById(c.get("recurringInvoiceId").toString());
 
 
             invoice.setRecurringInvoice(recurringInvoice);
@@ -270,17 +282,17 @@ public class InvoiceCommandHandler implements ICommandHandler {
             double line_total = item.getQuantity() * item.getPrice();
 
 
-            if (InvoiceDiscountType.valueOf(item.getDiscountType()) == InvoiceDiscountType.AMOUNT) {
+            if (CalculationType.valueOf(item.getDiscountType()) == CalculationType.AMOUNT) {
                 line_total = line_total - item.getDiscount();
 
-            } else if (InvoiceDiscountType.valueOf(item.getDiscountType()) == InvoiceDiscountType.PERCENTAGE) {
+            } else if (CalculationType.valueOf(item.getDiscountType()) == CalculationType.PERCENTAGE) {
                 line_total = line_total - item.getDiscount() * line_total / 100;
             }
 
-            if (TaxType.valueOf(item.getTaxType()) == TaxType.AMOUNT) {
+            if (CalculationType.valueOf(item.getTaxType()) == CalculationType.AMOUNT) {
                 line_total = line_total - item.getTax();
 
-            } else if (TaxType.valueOf(item.getTaxType()) == TaxType.PERCENTAGE) {
+            } else if (CalculationType.valueOf(item.getTaxType()) == CalculationType.PERCENTAGE) {
                 line_total = line_total + item.getTax() * line_total / 100;
             }
             line_totals += line_total;
@@ -288,17 +300,17 @@ public class InvoiceCommandHandler implements ICommandHandler {
 
         double total = line_totals;
 
-        if (InvoiceDiscountType.valueOf(invoice.getDiscountType()) == InvoiceDiscountType.AMOUNT) {
+        if (CalculationType.valueOf(invoice.getDiscountType()) == CalculationType.AMOUNT) {
             total = total - invoice.getDiscount();
 
-        } else if (InvoiceDiscountType.valueOf(invoice.getDiscountType()) == InvoiceDiscountType.PERCENTAGE) {
+        } else if (CalculationType.valueOf(invoice.getDiscountType()) == CalculationType.PERCENTAGE) {
             total = total - invoice.getDiscount() * total / 100;
         }
 
-        if (TaxType.valueOf(invoice.getTaxType()) == TaxType.AMOUNT) {
+        if (CalculationType.valueOf(invoice.getTaxType()) == CalculationType.AMOUNT) {
             total = total - invoice.getTax();
 
-        } else if (TaxType.valueOf(invoice.getTaxType()) == TaxType.PERCENTAGE) {
+        } else if (CalculationType.valueOf(invoice.getTaxType()) == CalculationType.PERCENTAGE) {
             total = line_totals + invoice.getTax() * total / 100;
         }
 
@@ -313,7 +325,154 @@ public class InvoiceCommandHandler implements ICommandHandler {
         invoice = (Invoice) HibernateUtils.save(invoice, c, isNew);
 
 
+        return invoice;
+    }
 
+
+    private Invoice _handleSaveInvoice(AddInvoiceProto c) throws Exception {
+        Invoice invoice = new Invoice();
+        boolean isNew = true;
+        if (c.hasPaymentTermId()) {
+            PaymentTerm term = null;
+            term = (PaymentTerm) new PaymentTermQueryHandler().getById(c.getPaymentTermId().getValue());
+            invoice.setPaymentTerm(term);
+        }
+        InvoiceInfoProto invoiceInfo = null;
+        if (c.hasInvoiceInfo()) {
+            invoiceInfo = c.getInvoiceInfo();
+            if (invoiceInfo.hasDescription()) {
+                invoice.setDescription(invoiceInfo.getDescription().getValue());
+            }
+            if (invoiceInfo.hasInvoiceNumber()) {
+                invoice.setInvoiceNumber(invoiceInfo.getInvoiceNumber().getValue());
+            }
+            if (invoiceInfo.hasNote()) {
+                invoice.setNote(invoiceInfo.getNote().getValue());
+            }
+            invoice.setInvoiceStatus(InvoiceStatus.valueOf(invoiceInfo.getInvoiceStatus().name()));
+            invoice.setDueStatus(InvoiceDueStatus.valueOf(invoiceInfo.getDueStatus().name()));
+            invoice.setPaymentStatus(InvoicePaymentStatus.valueOf(invoiceInfo.getPaymentStatus().name()));
+            invoice.setWriteOffStatus(InvoiceWriteOffStatus.valueOf(invoiceInfo.getWriteOfStatus().name()));
+
+            invoice.setRefundStatus(InvoiceRefundStatus.valueOf(invoiceInfo.getRefundStatus().name()));
+
+            if (invoiceInfo.hasDiscount()) {
+                invoice.setDiscount(invoiceInfo.getDiscount().getValue());
+            }
+            invoice.setDiscountType(CalculationType.valueOf(invoiceInfo.getDiscountType().name()));
+            if (invoiceInfo.hasTax()) {
+                invoice.setTax(invoiceInfo.getTax().getValue());
+            }
+
+            invoice.setTaxType(CalculationType.valueOf(invoiceInfo.getTaxType().name()));
+        }
+
+
+        invoice.setType(InvoiceType.valueOf(c.getType().name()));
+
+        if (c.hasPaymentTermId()) {
+            PaymentTerm term = (PaymentTerm) new PaymentTermQueryHandler().getById(c.getPaymentTermId().getValue());
+            invoice.setPaymentTerm(term);
+        }
+
+
+        if (c.hasInvoiceDate()) {
+            invoice.setInvoiceDate(Rew3Date.convertToUTC((String) c.getInvoiceDate().getValue()));
+        }
+        if (c.hasDueDate()) {
+            invoice.setDueDate(Rew3Date.convertToUTC((String) c.getDueDate().getValue()));
+        }
+
+
+        //TODO
+       /* if (c.is("isRecurring")) {
+            boolean isRecurring = Parser.convertObjectToBoolean(c.get("isRecurring"));
+
+            invoice.setRecurring(isRecurring);
+        }
+
+        if (c.has("recurringInvoiceId") && c.has("isRecurring")) {
+            RecurringInvoice recurringInvoice = (RecurringInvoice) new RecurringInvoiceQueryHandler().getById(c.get("recurringInvoiceId").toString());
+
+
+            invoice.setRecurringInvoice(recurringInvoice);
+        if (c.has("data")) {
+            invoice.setData(c.get("data").toString());
+        }*/
+
+        if (c.getItemsList().size() != 0) {
+            if (!isNew) {
+                if (invoice.getItems() != null) {
+                    invoice.getItems().clear();
+                }
+            }
+
+
+            List<InvoiceItemProto> protos = c.getItemsList();
+
+
+            final Invoice finalInvoice = invoice;
+            Set<InvoiceItem> items = protos.stream().map(x -> {
+                InvoiceItem item = ProtoConverter.convertToInvoiceItem(x);
+                item.setInvoice(finalInvoice);
+                return item;
+            }).collect(Collectors.toSet());
+
+            if (invoice.getItems() != null) {
+                invoice.getItems().addAll(items);
+            } else {
+                invoice.setItems(items);
+            }
+        }
+
+        double line_totals = 0;
+
+        for (
+                InvoiceItem item : invoice.getItems()) {
+
+            double line_total = item.getQuantity() * item.getPrice();
+
+
+            if (CalculationType.valueOf(item.getDiscountType()) == CalculationType.AMOUNT) {
+                line_total = line_total - item.getDiscount();
+
+            } else if (CalculationType.valueOf(item.getDiscountType()) == CalculationType.PERCENTAGE) {
+                line_total = line_total - item.getDiscount() * line_total / 100;
+            }
+
+            if (CalculationType.valueOf(item.getTaxType()) == CalculationType.AMOUNT) {
+                line_total = line_total - item.getTax();
+
+            } else if (CalculationType.valueOf(item.getTaxType()) == CalculationType.PERCENTAGE) {
+                line_total = line_total + item.getTax() * line_total / 100;
+            }
+            line_totals += line_total;
+        }
+
+        double total = line_totals;
+
+        if (CalculationType.valueOf(invoice.getDiscountType()) == CalculationType.AMOUNT) {
+            total = total - invoice.getDiscount();
+
+        } else if (CalculationType.valueOf(invoice.getDiscountType()) == CalculationType.PERCENTAGE) {
+            total = total - invoice.getDiscount() * total / 100;
+        }
+
+        if (CalculationType.valueOf(invoice.getTaxType()) == CalculationType.AMOUNT) {
+            total = total - invoice.getTax();
+
+        } else if (CalculationType.valueOf(invoice.getTaxType()) == CalculationType.PERCENTAGE) {
+            total = line_totals + invoice.getTax() * total / 100;
+        }
+
+        invoice.setTotalAmount(total);
+        invoice.setDueAmount(total);
+        invoice = (Invoice) HibernateUtilV2.save(invoice,isNew);
+
+        // If tax rate type is defined then tax rate should be defined
+        // too and vice versa.
+
+        //invoice = (Invoice) HibernateUtils.save(invoice, c, isNew);
 
 
         return invoice;
@@ -524,7 +683,7 @@ public class InvoiceCommandHandler implements ICommandHandler {
         }
 
         if (c.has("taxType") && c.has("tax")) {
-            TaxType taxType = TaxType.valueOf(c.get("taxType").toString());
+            CalculationType taxType = CalculationType.valueOf(c.get("taxType").toString());
             item.setTaxType(taxType);
             item.setTax(Parser.convertObjectToDouble(c.get("tax")));
         }
@@ -532,7 +691,7 @@ public class InvoiceCommandHandler implements ICommandHandler {
         // If discount type is defined then discount should be defined
         // too and vice versa.
         if (c.has("discountType") && c.has("discount")) {
-            InvoiceDiscountType discountType = InvoiceDiscountType.valueOf(c.get("discountType").toString());
+            CalculationType discountType = CalculationType.valueOf(c.get("discountType").toString());
             item.setDiscountType(discountType);
             item.setDiscount(Parser.convertObjectToDouble(c.get("discount")));
         }
@@ -828,7 +987,7 @@ public class InvoiceCommandHandler implements ICommandHandler {
             balance = total - discount;
 
             inv.setDiscount(discount);
-            inv.setDiscountType(InvoiceDiscountType.AMOUNT);
+            inv.setDiscountType(CalculationType.AMOUNT);
             //	inv.setDiscountTotal(discount);
 //            inv.setBalanceAmount(balance);
 
@@ -1017,12 +1176,11 @@ public class InvoiceCommandHandler implements ICommandHandler {
         List<Object> invoices = new ArrayList<Object>();
 
 
-            for (HashMap<String, Object> data : inputs) {
-                Invoice invoice = paymentService.updateCustomerInvoice(data);
-                invoices.add(invoice);
-            }
-            c.setObject(invoices);
-
+        for (HashMap<String, Object> data : inputs) {
+            Invoice invoice = paymentService.updateCustomerInvoice(data);
+            invoices.add(invoice);
+        }
+        c.setObject(invoices);
 
 
     }

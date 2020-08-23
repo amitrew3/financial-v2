@@ -353,9 +353,11 @@ public class InvoiceQueryHandler implements IQueryHandler {
         }
         if (q.has("limit")) {
             limit = Parser.convertObjectToInteger(q.get("limit"));
+            q.getQuery().remove("limit");
         }
         if (q.has("offset")) {
             offset = Parser.convertObjectToInteger(q.get("offset"));
+            q.getQuery().remove(offset);
         }
 
 
@@ -373,7 +375,7 @@ public class InvoiceQueryHandler implements IQueryHandler {
         }
 
 
-        RequestFilter.doFilter(q, sqlParams, builder,Invoice.class);
+        RequestFilter.doFilter(q, sqlParams, builder, Invoice.class);
 
         if (q.has("page_number")) {
             offset = (limit * (page - 1));
@@ -383,7 +385,7 @@ public class InvoiceQueryHandler implements IQueryHandler {
         }
 
 
-        List<Object> invoices = HibernateUtils.select("SELECT distinct t FROM Invoice t left join t.items tc left join t.reference tr " + builder.getValue(),
+        List<Object> invoices = HibernateUtilV2.select("SELECT distinct t FROM Invoice t left join t.items tc left join t.reference tr " + builder.getValue(),
                 sqlParams, q.getQuery(), limit, offset, Invoice.class);
 
         return invoices;
@@ -400,10 +402,10 @@ public class InvoiceQueryHandler implements IQueryHandler {
 
         q.set("status", Flags.EntityStatus.ACTIVE.toString());
 
-        RequestFilter.doFilter(q, sqlParams, builder,Invoice.class);
+        RequestFilter.doFilter(q, sqlParams, builder, Invoice.class);
 
-        Long count = HibernateUtils.count("SELECT count(distinct t) FROM Invoice t left join t.items tc left join t.reference tr " + builder.getValue(),
-                sqlParams, q.getQuery(),Invoice.class);
+        Long count = HibernateUtilV2.count("SELECT count(distinct t) FROM Invoice t left join t.items tc left join t.reference tr " + builder.getValue(),
+                sqlParams, q.getQuery(), Invoice.class);
 
 
         return count;

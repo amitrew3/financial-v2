@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rew3.billing.shared.model.MiniUser;
 import com.rew3.commission.associate.AssociateQueryHandler;
 import com.rew3.commission.associate.model.Associate;
-import com.rew3.commission.commissionplan.CommissionPlanQueryHandler;
-import com.rew3.commission.commissionplan.model.CommissionPlan;
 import com.rew3.commission.deduction.DeductionQueryHandler;
 import com.rew3.commission.deduction.model.Deduction;
 import com.rew3.commission.gcp.GcpQueryHandler;
@@ -20,7 +18,6 @@ import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.database.HibernateUtils;
-import com.rew3.common.model.DB;
 import com.rew3.common.model.Flags;
 import com.rew3.common.utils.*;
 import org.hibernate.Transaction;
@@ -283,7 +280,7 @@ public class TransactionCommandHandler implements ICommandHandler {
             RmsTransaction finalTransaction = transaction;
             buyers = levelsMap.stream().map(x -> {
                 MiniUser buyer = new ObjectMapper().convertValue(x, MiniUser.class);
-                return ConvertUtils.convertMiniUserToTransactionContact(finalTransaction, buyer, Flags.ContactType.BUYER);
+                return Converters.convertMiniUserToTransactionContact(finalTransaction, buyer, Flags.ContactType.BUYER);
             }).collect(Collectors.toSet());
 
 
@@ -300,7 +297,7 @@ public class TransactionCommandHandler implements ICommandHandler {
             sellers = levelsMap.stream().map(x -> {
                 MiniUser seller = new ObjectMapper().convertValue(x, MiniUser.class);
 
-                return ConvertUtils.convertMiniUserToTransactionContact(finalTransaction, seller, Flags.ContactType.SELLER);
+                return Converters.convertMiniUserToTransactionContact(finalTransaction, seller, Flags.ContactType.SELLER);
             }).collect(Collectors.toSet());
 
 
@@ -317,7 +314,7 @@ public class TransactionCommandHandler implements ICommandHandler {
             agents = levelsMap.stream().map(x -> {
                 MiniUser agent = new ObjectMapper().convertValue(x, MiniUser.class);
 
-                return ConvertUtils.convertMiniUserToTransactionContact(finalTransaction, agent, Flags.ContactType.AGENT);
+                return Converters.convertMiniUserToTransactionContact(finalTransaction, agent, Flags.ContactType.AGENT);
             }).collect(Collectors.toSet());
 
 

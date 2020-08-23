@@ -9,12 +9,10 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.model.Flags;
-import com.rew3.common.utils.ConvertUtils;
+import com.rew3.common.utils.Converters;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 public class CommissionPlanService {
     public CommissionPlan createUpdateCommissionPlan(HashMap<String, Object> requestData) throws Exception {
@@ -43,12 +41,12 @@ public class CommissionPlanService {
 
     public List<Object> getCommissionPlan(HashMap<String, Object> requestData) {
         List<Object> lists = new CommissionPlanQueryHandler().get(new Query(requestData));
-        return ConvertUtils.convertToDTOs(lists);
+        return Converters.convertToDTOs(lists);
     }
 
     public CommissionPlanDTO getCommissionPlanById(String id) throws NotFoundException, CommandException {
         CommissionPlan plan = (CommissionPlan) new CommissionPlanQueryHandler().getById(id);
-        return ConvertUtils.convertToCommissionPlanDTO(plan);
+        return Converters.convertToCommissionPlanDTO(plan);
 
     }
 

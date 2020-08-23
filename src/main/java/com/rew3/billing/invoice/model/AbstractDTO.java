@@ -21,7 +21,6 @@ public  class AbstractDTO {
     private String visibility;
 
 
-
     public String getStatus() {
         return status;
     }

@@ -2,18 +2,11 @@ package com.rew3.billing.invoice.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.rew3.billing.catalog.product.model.Product;
-import com.rew3.billing.shared.model.AbstractEntity;
-import com.rew3.commission.transaction.model.RmsTransaction;
 import com.rew3.common.model.DB;
 import com.rew3.common.model.Flags;
-import com.rew3.common.utils.Parser;
-import com.rew3.finance.accountingcode.model.AccountingCode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.HashMap;
 
 @Entity
 @Table(name = DB.Table.INVOICE_ITEM)
@@ -126,7 +119,7 @@ public class InvoiceItem {
         this.discount = discount;
     }
 
-    public void setTaxType(Flags.TaxType taxType) {
+    public void setTaxType(Flags.CalculationType taxType) {
         this.taxType = taxType.toString();
     }
 
@@ -138,7 +131,7 @@ public class InvoiceItem {
         return discountType;
     }
 
-    public void setDiscountType(Flags.InvoiceDiscountType discountType) {
+    public void setDiscountType(Flags.CalculationType discountType) {
         this.discountType = discountType.toString();
     }
 

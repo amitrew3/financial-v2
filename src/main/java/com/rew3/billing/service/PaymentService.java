@@ -12,7 +12,7 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.utils.ConvertUtils;
+import com.rew3.common.utils.Converters;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,14 +41,14 @@ public class PaymentService {
 
     public InvoiceDTO getInvoiceById(String id) throws NotFoundException, CommandException {
         Invoice invoice = (Invoice) new InvoiceQueryHandler().getById(id);
-        return ConvertUtils.convertToInvoiceDTO(invoice);
+        return Converters.convertToInvoiceDTO(invoice);
 
     }
 
 
     public List<Object> getInvoices(HashMap<String, Object> requestData) {
         List<Object> lists = new InvoiceQueryHandler().get(new Query(requestData));
-        return ConvertUtils.convertToDTOs(lists);
+        return Converters.convertToDTOs(lists);
     }
 
     public Expense createUpdateExpense(HashMap<String, Object> requestData, String method) throws Exception {
@@ -61,7 +61,7 @@ public class PaymentService {
 
     public ExpenseDTO getExpenseById(String id) throws NotFoundException, CommandException {
         Expense expense = (Expense) new InvoiceQueryHandler().getById(id);
-        return ConvertUtils.convertToExpenseDTO(expense);
+        return Converters.convertToExpenseDTO(expense);
     }
 
     public PaymentTerm createUpdatePaymentTerm(HashMap<String, Object> requestData) throws Exception {
@@ -77,14 +77,14 @@ public class PaymentService {
 
     public PaymentTermDTO getPaymentTermById(String id) throws NotFoundException, CommandException {
         PaymentTerm paymentTerm = (PaymentTerm) new PaymentTermQueryHandler().getById(id);
-        return ConvertUtils.convertToPaymentTermDTO(paymentTerm);
+        return Converters.convertToPaymentTermDTO(paymentTerm);
 
     }
 
 
     public List<Object> getPaymentTerms(HashMap<String, Object> requestData) {
         List<Object> lists = new PaymentTermQueryHandler().get(new Query(requestData));
-        return ConvertUtils.convertToDTOs(lists);
+        return Converters.convertToDTOs(lists);
     }
 
 
@@ -112,14 +112,14 @@ public class PaymentService {
 
     public RecurringInvoiceDTO getRecurringInvoiceById(String id) throws NotFoundException, CommandException {
         RecurringInvoice recurringInvoice = (RecurringInvoice) new RecurringInvoiceQueryHandler().getById(id);
-        return ConvertUtils.convertToRecurringInvoiceDTO(recurringInvoice);
+        return Converters.convertToRecurringInvoiceDTO(recurringInvoice);
 
     }
 
 
     public List<Object> getRecurringInvoices(HashMap<String, Object> requestData) {
         List<Object> lists = new RecurringInvoiceQueryHandler().get(new Query(requestData));
-        return ConvertUtils.convertToDTOs(lists);
+        return Converters.convertToDTOs(lists);
     }
 
 

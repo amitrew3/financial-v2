@@ -58,8 +58,9 @@ dependencies {
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.20.Final'
 // https://mvnrepository.com/artifact/org.hibernate.javax.persistence/hibernate-jpa-2.1-api
     compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.0.Final'
+// https://mvnrepository.com/artifact/org.hibernate/hibernate-validator
 
-
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '6.1.5.Final'
 
 
 }

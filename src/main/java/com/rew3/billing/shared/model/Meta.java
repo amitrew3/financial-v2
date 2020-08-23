@@ -85,8 +85,8 @@ public class Meta {
         this._last_modified = _lastModified;
     }
 
-    public String get_deleted_by() {
-        return _deleted_by.get_id();
+    public MiniUser get_deleted_by() {
+        return _deleted_by;
     }
 
     public void set_deleted_by(MiniUser _deleted_by) {

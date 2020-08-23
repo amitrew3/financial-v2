@@ -7,10 +7,8 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.model.Flags;
-import com.rew3.common.utils.ConvertUtils;
-import org.hibernate.Transaction;
+import com.rew3.common.utils.Converters;
 
 import java.util.HashMap;
 import java.util.List;
@@ -151,12 +149,12 @@ public class CommissionService {
 
     public List<Object> getAssociateCommissionPlan(HashMap<String, Object> requestData) {
         List<Object> lists = new AcpQueryHandler().get(new Query(requestData));
-        return ConvertUtils.convertToAcpDTOs(lists);
+        return Converters.convertToAcpDTOs(lists);
     }
 
     public AcpDTO getCommissionPlanById(String id) throws NotFoundException, CommandException {
         Acp acp = (Acp) new AcpQueryHandler().getById(id);
-        return ConvertUtils.convertToAcpDTO(acp);
+        return Converters.convertToAcpDTO(acp);
 
     }
 
