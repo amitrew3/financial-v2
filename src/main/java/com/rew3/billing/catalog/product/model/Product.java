@@ -1,9 +1,9 @@
 package com.rew3.billing.catalog.product.model;
 
 import com.rew3.common.database.HibernateUtils;
-import com.rew3.billing.shared.model.AbstractEntity;
+import com.rew3.common.shared.model.AbstractEntity;
 import com.rew3.common.model.DB;
-import com.rew3.finance.accountingcode.model.AccountingCode;
+import com.rew3.accounting.accountingcode.model.AccountingCode;
 
 import javax.persistence.*;
 import java.util.List;

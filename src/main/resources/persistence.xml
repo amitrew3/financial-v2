@@ -14,24 +14,24 @@
             Persistence unit for the JPA tutorial of the Hibernate Getting Started Guide
         </description>
 
-        <class>com.rew3.finance.accountingcode.model.AccountingCode</class>
+        <class>com.rew3.accounting.accountingcode.model.AccountingCode</class>
         <!--
               <class>com.rew3.finance.accountingcode.model.EntityCode" />
         -->
-       <class>com.rew3.finance.accountingcode.model.AccountingClass</class>
-       <class>com.rew3.finance.accountingperiod.model.AccountingPeriod</class>
-       <class>com.rew3.finance.accountingperiod.model.AccountingPeriodRequest</class>
-       <class>com.rew3.finance.accountingjournal.model.AccountingJournal</class>
+       <class>com.rew3.accounting.accountingcode.model.AccountingClass</class>
+       <class>com.rew3.accounting.accountingperiod.model.AccountingPeriod</class>
+       <class>com.rew3.accounting.accountingperiod.model.AccountingPeriodRequest</class>
+       <class>com.rew3.accounting.accountingjournal.model.AccountingJournal</class>
 
        <class>com.rew3.billing.user.model.User</class>
-       <class>com.rew3.billing.invoice.model.Invoice</class>
-       <class>com.rew3.billing.invoice.model.InvoiceItem</class>
-       <class>com.rew3.billing.invoice.model.InvoiceReference</class>
+       <class>com.rew3.billing.sale.invoice.model.Invoice</class>
+       <class>com.rew3.billing.sale.invoice.model.InvoiceItem</class>
+       <class>com.rew3.billing.sale.invoice.model.InvoiceReference</class>
 
         <!--
-              <class>com.rew3.billing.invoice.model.InvoiceAttachment" />
+              <class>com.rew3.billing.sales.invoice.model.InvoiceAttachment" />
         -->
-       <class>com.rew3.billing.invoice.model.InvoiceRequest</class>
+       <class>com.rew3.billing.sale.invoice.model.InvoiceRequest</class>
 
        <class>com.rew3.billing.catalog.product.model.Product</class>
        <class>com.rew3.billing.catalog.product.model.ProductCategoryLink</class>
@@ -42,7 +42,7 @@
        <class>com.rew3.billing.catalog.productrateplan.model.ProductRatePlan</class>
        <class>com.rew3.billing.catalog.productrateplan.model.ProductRatePlanCharge</class>
 
-       <class>com.rew3.billing.sales.model.Sales</class>
+       <class>com.rew3.billing.salesv1.model.Sales</class>
 
        <class>com.rew3.billing.payment.model.PaymentReceipt</class>
        <class>com.rew3.billing.payment.model.PaymentReceiptItem</class>
@@ -54,56 +54,56 @@
        <class>com.rew3.billing.payment.model.DepositItem</class>
        <class>com.rew3.billing.payment.model.BankDepositSlip</class>
        <class>com.rew3.billing.payment.model.BankReconciliation</class>
-       <class>com.rew3.billing.invoice.model.PaymentTerm</class>
-       <class>com.rew3.billing.shared.model.Address</class>
-       <class>com.rew3.billing.normaluser.model.NormalUser</class>
-       <class>com.rew3.billing.normaluser.model.PaymentOption</class>
+       <class>com.rew3.billing.sale.invoice.model.PaymentTerm</class>
+       <class>com.rew3.common.shared.model.Address</class>
+       <class>com.rew3.billing.sale.customer.model.NormalUser</class>
+       <class>com.rew3.billing.sale.customer.model.PaymentOption</class>
         <!--
-           <class>com.rew3.billing.shared.model.Attachment" />
+           <class>com.rew3.common.shared.model.Attachment" />
         -->
-       <class>com.rew3.finance.accountingcode.model.SubAccountingHead</class>
+       <class>com.rew3.accounting.accountingcode.model.SubAccountingHead</class>
 
 
         <!--
             Commission Module
         -->
-       <class>com.rew3.commission.gcp.model.Gcp</class>
-       <class>com.rew3.commission.acp.model.AcpAssociate</class>
-       <class>com.rew3.commission.acp.model.SingleRateAcp</class>
-       <class>com.rew3.commission.acp.model.Acp</class>
-       <class>com.rew3.commission.acp.model.TieredAcp</class>
-       <class>com.rew3.commission.acp.model.TieredStage</class>
-       <class>com.rew3.commission.associate.model.Associate</class>
-       <class>com.rew3.commission.deduction.model.Deduction</class>
-       <class>com.rew3.commission.transaction.model.RmsTransaction</class>
-       <class>com.rew3.commission.transaction.model.TransactionAssociate</class>
-       <class>com.rew3.commission.transaction.model.TransactionDeduction</class>
-       <class>com.rew3.commission.transaction.model.TransactionGcp</class>
-       <class>com.rew3.commission.transaction.model.TransactionClosing</class>
-       <class>com.rew3.commission.transaction.model.TransactionContact</class>
-       <class>com.rew3.commission.transaction.model.TransactionStatusStage</class>
-       <class>com.rew3.commission.transaction.model.TransactionReference</class>
+       <class>com.rew3.brokerage.gcp.model.Gcp</class>
+       <class>com.rew3.brokerage.acp.model.AcpAssociate</class>
+       <class>com.rew3.brokerage.acp.model.SingleRateAcp</class>
+       <class>com.rew3.brokerage.acp.model.Acp</class>
+       <class>com.rew3.brokerage.acp.model.TieredAcp</class>
+       <class>com.rew3.brokerage.acp.model.TieredStage</class>
+       <class>com.rew3.brokerage.associate.model.Associate</class>
+       <class>com.rew3.brokerage.deduction.model.Deduction</class>
+       <class>com.rew3.brokerage.transaction.model.RmsTransaction</class>
+       <class>com.rew3.brokerage.transaction.model.TransactionAssociate</class>
+       <class>com.rew3.brokerage.transaction.model.TransactionDeduction</class>
+       <class>com.rew3.brokerage.transaction.model.TransactionGcp</class>
+       <class>com.rew3.brokerage.transaction.model.TransactionClosing</class>
+       <class>com.rew3.brokerage.transaction.model.TransactionContact</class>
+       <class>com.rew3.brokerage.transaction.model.TransactionStatusStage</class>
+       <class>com.rew3.brokerage.transaction.model.TransactionReference</class>
 
 
-       <class>com.rew3.commission.commissionplan.model.CommissionPlan</class>
-       <class>com.rew3.commission.commissionplan.model.PreCommission</class>
-       <class>com.rew3.commission.commissionplan.model.CommissionLevel</class>
-       <class>com.rew3.commission.commissionplan.model.CommissionPlanAgent</class>
-       <class>com.rew3.commission.commissionplan.model.CommissionPlanReference</class>
-
-
-
-       <class>com.rew3.billing.expense.model.Expense</class>
-       <class>com.rew3.billing.expense.model.ExpenseItem</class>
-       <class>com.rew3.billing.expense.model.ExpenseReference</class>
+       <class>com.rew3.brokerage.commissionplan.model.CommissionPlan</class>
+       <class>com.rew3.brokerage.commissionplan.model.PreCommission</class>
+       <class>com.rew3.brokerage.commissionplan.model.CommissionLevel</class>
+       <class>com.rew3.brokerage.commissionplan.model.CommissionPlanAgent</class>
+       <class>com.rew3.brokerage.commissionplan.model.CommissionPlanReference</class>
 
 
 
-       <class>com.rew3.commission.commissionplan.model.FlatFee</class>
-       <class>com.rew3.commission.commissionplan.model.SlidingScale</class>
+       <class>com.rew3.billing.purchase.expense.model.Expense</class>
+       <class>com.rew3.billing.purchase.expense.model.ExpenseItem</class>
+       <class>com.rew3.billing.purchase.expense.model.ExpenseReference</class>
 
 
-       <class>com.rew3.billing.invoice.model.RecurringInvoice</class>
+
+       <class>com.rew3.brokerage.commissionplan.model.FlatFee</class>
+       <class>com.rew3.brokerage.commissionplan.model.SlidingScale</class>
+
+
+       <class>com.rew3.billing.sale.invoice.model.RecurringInvoice</class>
 
         <properties>
             <property name="hibernate.show_sql" value="true" />

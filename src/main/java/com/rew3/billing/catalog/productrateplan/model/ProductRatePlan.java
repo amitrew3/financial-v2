@@ -1,7 +1,7 @@
 package com.rew3.billing.catalog.productrateplan.model;
 
 
-import com.rew3.billing.shared.model.AbstractEntity;
+import com.rew3.common.shared.model.AbstractEntity;
 import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.model.DB;
 

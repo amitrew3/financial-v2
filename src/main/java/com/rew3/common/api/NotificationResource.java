@@ -15,7 +15,7 @@ import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
-import com.rew3.billing.invoice.event.InvoiceCreated;
+import com.rew3.billing.sales.invoice.event.InvoiceCreated;
 import com.rew3.common.cqrs.EventBus;
 import com.rew3.common.cqrs.IEvent;
 import com.rew3.common.json.JSONValidatorEngine;

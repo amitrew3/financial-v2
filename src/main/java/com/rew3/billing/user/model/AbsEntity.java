@@ -1,21 +1,10 @@
 package com.rew3.billing.user.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rew3.billing.shared.model.Meta;
-import com.rew3.billing.shared.model.MiniUser;
-import com.rew3.common.application.Authentication;
-import com.rew3.common.interceptor.ACL;
-import com.rew3.common.interceptor.Permission;
 import com.rew3.common.model.DB;
-import com.rew3.common.model.Flags;
-import com.rew3.common.utils.Parser;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Timestamp;
 

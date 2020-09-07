@@ -1,21 +1,15 @@
 package com.rew3.billing.payment;
 
 import com.rew3.billing.payment.model.BankReconciliation;
-import com.rew3.billing.payment.model.BankTransaction;
-import com.rew3.common.application.Authentication;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
 import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.model.Flags;
-import com.rew3.common.utils.APILogType;
-import com.rew3.common.utils.APILogger;
-import com.rew3.common.utils.DateTime;
 import com.rew3.common.utils.Parser;
-import com.rew3.finance.accountingperiod.model.AccountingPeriod;
+import com.rew3.accounting.accountingperiod.model.AccountingPeriod;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Comparator;

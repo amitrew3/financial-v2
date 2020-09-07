@@ -1,13 +1,13 @@
 package com.rew3.billing.service;
 
-import com.rew3.billing.expense.command.CreateExpense;
-import com.rew3.billing.expense.model.Expense;
-import com.rew3.billing.expense.model.ExpenseDTO;
-import com.rew3.billing.invoice.InvoiceQueryHandler;
-import com.rew3.billing.invoice.PaymentTermQueryHandler;
-import com.rew3.billing.invoice.RecurringInvoiceQueryHandler;
-import com.rew3.billing.invoice.command.*;
-import com.rew3.billing.invoice.model.*;
+import com.rew3.billing.purchase.expense.command.CreateExpense;
+import com.rew3.billing.purchase.expense.model.Expense;
+import com.rew3.billing.purchase.expense.model.ExpenseDTO;
+import com.rew3.billing.sale.invoice.InvoiceQueryHandler;
+import com.rew3.billing.sale.invoice.PaymentTermQueryHandler;
+import com.rew3.billing.sale.invoice.RecurringInvoiceQueryHandler;
+import com.rew3.billing.sale.invoice.command.*;
+import com.rew3.billing.sale.invoice.model.*;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;

@@ -21,8 +21,8 @@ import com.rew3.common.utils.APILogType;
 import com.rew3.common.utils.APILogger;
 import com.rew3.common.utils.DateTime;
 import com.rew3.common.utils.Parser;
-import com.rew3.finance.accountingcode.command.CreateAccountingCode;
-import com.rew3.finance.accountingcode.model.AccountingCode;
+import com.rew3.accounting.accountingcode.command.CreateAccountingCode;
+import com.rew3.accounting.accountingcode.model.AccountingCode;
 import org.hibernate.Transaction;
 
 import java.util.ArrayList;

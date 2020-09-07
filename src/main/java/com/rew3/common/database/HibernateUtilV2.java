@@ -3,7 +3,7 @@ package com.rew3.common.database;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rew3.billing.shared.model.AbstractEntity;
+import com.rew3.common.shared.model.AbstractEntity;
 import com.rew3.common.application.AuthenticatedUser;
 import com.rew3.common.application.Authentication;
 import com.rew3.common.application.CommandException;

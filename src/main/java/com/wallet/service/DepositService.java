@@ -1,11 +1,8 @@
 package com.wallet.service;
 
 import com.google.rpc.Status;
-import com.rew3.billing.invoice.InvoiceQueryHandler;
-import com.rew3.billing.invoice.model.Car;
-import com.rew3.billing.invoice.model.EditAction;
-import com.rew3.billing.invoice.model.Invoice;
-import com.rew3.common.cqrs.Query;
+import com.rew3.billing.sale.invoice.InvoiceQueryHandler;
+import com.rew3.billing.sale.invoice.model.Car;
 import com.wallet.util.CurrencyUtil;
 import io.grpc.protobuf.StatusProto;
 import io.grpc.stub.StreamObserver;
@@ -17,7 +14,6 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import javax.validation.groups.Default;
-import java.util.List;
 import java.util.Set;
 
 @GRpcService

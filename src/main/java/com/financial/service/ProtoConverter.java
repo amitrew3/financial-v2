@@ -4,12 +4,12 @@ import com.avenue.base.grpc.proto.core.RequestParamProto;
 import com.avenue.base.grpc.proto.core.VisibilityTypeProto;
 import com.avenue.financial.services.grpc.proto.invoice.*;
 import com.google.protobuf.*;
-import com.rew3.billing.invoice.model.Invoice;
-import com.rew3.billing.invoice.model.InvoiceItem;
-import com.rew3.billing.invoice.model.PaymentTerm;
-import com.rew3.billing.invoice.model.RecurringInvoice;
-import com.rew3.billing.shared.model.Meta;
-import com.rew3.billing.shared.model.MiniUser;
+import com.rew3.billing.sale.invoice.model.Invoice;
+import com.rew3.billing.sale.invoice.model.InvoiceItem;
+import com.rew3.billing.sale.invoice.model.PaymentTerm;
+import com.rew3.billing.sale.invoice.model.RecurringInvoice;
+import com.rew3.common.shared.model.Meta;
+import com.rew3.common.shared.model.MiniUser;
 import com.rew3.common.model.Flags;
 import com.rew3.common.utils.Parser;
 

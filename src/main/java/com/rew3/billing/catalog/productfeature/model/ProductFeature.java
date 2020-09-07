@@ -1,7 +1,7 @@
 package com.rew3.billing.catalog.productfeature.model;
 
 
-import com.rew3.billing.shared.model.AbstractEntity;
+import com.rew3.common.shared.model.AbstractEntity;
 import com.rew3.common.model.DB;
 
 import javax.persistence.*;

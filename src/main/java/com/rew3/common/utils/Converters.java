@@ -1,22 +1,21 @@
 package com.rew3.common.utils;
 
-import com.avenue.financial.services.grpc.proto.invoice.InvoiceProto;
-import com.rew3.billing.expense.model.Expense;
-import com.rew3.billing.expense.model.ExpenseDTO;
-import com.rew3.billing.invoice.model.*;
-import com.rew3.billing.shared.model.MiniUser;
-import com.rew3.commission.acp.model.*;
-import com.rew3.commission.commissionplan.model.CommissionPlan;
-import com.rew3.commission.commissionplan.model.CommissionPlanAgent;
-import com.rew3.commission.commissionplan.model.CommissionPlanDTO;
-import com.rew3.commission.transaction.model.RmsTransaction;
-import com.rew3.commission.transaction.model.TransacationDTO;
-import com.rew3.commission.transaction.model.TransactionContact;
+import com.rew3.billing.purchase.expense.model.Expense;
+import com.rew3.billing.purchase.expense.model.ExpenseDTO;
+import com.rew3.billing.sale.invoice.model.*;
+import com.rew3.common.shared.model.MiniUser;
+import com.rew3.brokerage.acp.model.*;
+import com.rew3.brokerage.commissionplan.model.CommissionPlan;
+import com.rew3.brokerage.commissionplan.model.CommissionPlanAgent;
+import com.rew3.brokerage.commissionplan.model.CommissionPlanDTO;
+import com.rew3.brokerage.transaction.model.RmsTransaction;
+import com.rew3.brokerage.transaction.model.TransacationDTO;
+import com.rew3.brokerage.transaction.model.TransactionContact;
 import com.rew3.common.model.Flags;
-import com.rew3.finance.accountingcode.model.AccountingCode;
-import com.rew3.finance.accountingcode.model.AccountingCodeDTO;
-import com.rew3.finance.accountingcode.model.SubAccountingHead;
-import com.rew3.finance.accountingcode.model.SubAccountingHeadDTO;
+import com.rew3.accounting.accountingcode.model.AccountingCode;
+import com.rew3.accounting.accountingcode.model.AccountingCodeDTO;
+import com.rew3.accounting.accountingcode.model.SubAccountingHead;
+import com.rew3.accounting.accountingcode.model.SubAccountingHeadDTO;
 
 import java.util.*;
 import java.util.stream.Collectors;

@@ -2,7 +2,7 @@ package com.rew3.billing.catalog.product.model;
 
 
 import com.rew3.billing.catalog.productrateplan.model.ProductRatePlan;
-import com.rew3.billing.shared.model.AbstractEntity;
+import com.rew3.common.shared.model.AbstractEntity;
 import com.rew3.common.model.DB;
 
 import javax.persistence.*;

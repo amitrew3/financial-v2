@@ -2,11 +2,11 @@ package com.financial.service;
 
 import com.avenue.base.grpc.proto.core.StatusTypeProto;
 import com.avenue.financial.services.grpc.proto.invoice.*;
-import com.rew3.billing.invoice.InvoiceQueryHandler;
-import com.rew3.billing.invoice.command.CreateCustomerInvoice;
-import com.rew3.billing.invoice.command.DeleteInvoice;
-import com.rew3.billing.invoice.command.UpdateCustomerInvoice;
-import com.rew3.billing.invoice.model.Invoice;
+import com.rew3.billing.sale.invoice.InvoiceQueryHandler;
+import com.rew3.billing.sale.invoice.command.CreateCustomerInvoice;
+import com.rew3.billing.sale.invoice.command.DeleteInvoice;
+import com.rew3.billing.sale.invoice.command.UpdateCustomerInvoice;
+import com.rew3.billing.sale.invoice.model.Invoice;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;

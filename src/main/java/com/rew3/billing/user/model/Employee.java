@@ -1,10 +1,6 @@
 package com.rew3.billing.user.model;
 
 
-import com.rew3.billing.shared.model.AbstractEntity;
-import com.rew3.common.model.DB;
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 
 @Entity

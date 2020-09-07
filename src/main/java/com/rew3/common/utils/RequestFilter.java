@@ -1,15 +1,15 @@
 package com.rew3.common.utils;
 
-import com.rew3.billing.expense.model.Expense;
-import com.rew3.billing.invoice.model.Invoice;
-import com.rew3.billing.invoice.model.PaymentTerm;
-import com.rew3.billing.invoice.model.RecurringInvoice;
-import com.rew3.commission.commissionplan.model.CommissionPlan;
-import com.rew3.commission.transaction.model.RmsTransaction;
+import com.rew3.billing.purchase.expense.model.Expense;
+import com.rew3.billing.sale.invoice.model.Invoice;
+import com.rew3.billing.sale.invoice.model.PaymentTerm;
+import com.rew3.billing.sale.invoice.model.RecurringInvoice;
+import com.rew3.brokerage.commissionplan.model.CommissionPlan;
+import com.rew3.brokerage.transaction.model.RmsTransaction;
 import com.rew3.common.cqrs.Query;
 import com.rew3.common.database.HibernateUtils;
-import com.rew3.finance.accountingcode.model.AccountingCode;
-import com.rew3.finance.accountingcode.model.SubAccountingHead;
+import com.rew3.accounting.accountingcode.model.AccountingCode;
+import com.rew3.accounting.accountingcode.model.SubAccountingHead;
 
 import java.sql.Timestamp;
 import java.util.HashMap;

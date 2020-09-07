@@ -22,24 +22,24 @@
 
 
 
-        <mapping class="com.rew3.finance.accountingcode.model.AccountingCode"/>
+        <mapping class="com.rew3.accounting.accountingcode.model.AccountingCode"/>
         <!--
                <mapping class="com.rew3.finance.accountingcode.model.EntityCode" />
         -->
-        <mapping class="com.rew3.finance.accountingcode.model.AccountingClass"/>
-        <mapping class="com.rew3.finance.accountingperiod.model.AccountingPeriod"/>
-        <mapping class="com.rew3.finance.accountingperiod.model.AccountingPeriodRequest"/>
-        <mapping class="com.rew3.finance.accountingjournal.model.AccountingJournal"/>
+        <mapping class="com.rew3.accounting.accountingcode.model.AccountingClass"/>
+        <mapping class="com.rew3.accounting.accountingperiod.model.AccountingPeriod"/>
+        <mapping class="com.rew3.accounting.accountingperiod.model.AccountingPeriodRequest"/>
+        <mapping class="com.rew3.accounting.accountingjournal.model.AccountingJournal"/>
 
         <mapping class="com.rew3.billing.user.model.User"/>
-        <mapping class="com.rew3.billing.invoice.model.Invoice"/>
-        <mapping class="com.rew3.billing.invoice.model.InvoiceItem"/>
-        <mapping class="com.rew3.billing.invoice.model.InvoiceReference"/>
+        <mapping class="com.rew3.billing.sale.invoice.model.Invoice"/>
+        <mapping class="com.rew3.billing.sale.invoice.model.InvoiceItem"/>
+        <mapping class="com.rew3.billing.sale.invoice.model.InvoiceReference"/>
 
         <!--
-               <mapping class="com.rew3.billing.invoice.model.InvoiceAttachment" />
+               <mapping class="com.rew3.billing.sales.invoice.model.InvoiceAttachment" />
         -->
-        <mapping class="com.rew3.billing.invoice.model.InvoiceRequest"/>
+        <mapping class="com.rew3.billing.sale.invoice.model.InvoiceRequest"/>
 
         <mapping class="com.rew3.billing.catalog.product.model.Product"/>
         <mapping class="com.rew3.billing.catalog.product.model.ProductCategoryLink"/>
@@ -50,7 +50,7 @@
         <mapping class="com.rew3.billing.catalog.productrateplan.model.ProductRatePlan"/>
         <mapping class="com.rew3.billing.catalog.productrateplan.model.ProductRatePlanCharge"/>
 
-        <mapping class="com.rew3.billing.sales.model.Sales"/>
+        <mapping class="com.rew3.billing.salesv1.model.Sales"/>
 
         <mapping class="com.rew3.billing.payment.model.PaymentReceipt"/>
         <mapping class="com.rew3.billing.payment.model.PaymentReceiptItem"/>
@@ -62,56 +62,56 @@
         <mapping class="com.rew3.billing.payment.model.DepositItem"/>
         <mapping class="com.rew3.billing.payment.model.BankDepositSlip"/>
         <mapping class="com.rew3.billing.payment.model.BankReconciliation"/>
-        <mapping class="com.rew3.billing.invoice.model.PaymentTerm"/>
-        <mapping class="com.rew3.billing.shared.model.Address"/>
-        <mapping class="com.rew3.billing.normaluser.model.NormalUser"/>
-        <mapping class="com.rew3.billing.normaluser.model.PaymentOption"/>
+        <mapping class="com.rew3.billing.sale.invoice.model.PaymentTerm"/>
+        <mapping class="com.rew3.common.shared.model.Address"/>
+        <mapping class="com.rew3.billing.sale.customer.model.NormalUser"/>
+        <mapping class="com.rew3.billing.sale.customer.model.PaymentOption"/>
         <!--
-            <mapping class="com.rew3.billing.shared.model.Attachment" />
+            <mapping class="com.rew3.common.shared.model.Attachment" />
         -->
-        <mapping class="com.rew3.finance.accountingcode.model.SubAccountingHead"/>
+        <mapping class="com.rew3.accounting.accountingcode.model.SubAccountingHead"/>
 
 
         <!--
             Commission Module
         -->
-        <mapping class="com.rew3.commission.gcp.model.Gcp"/>
-        <mapping class="com.rew3.commission.acp.model.AcpAssociate"/>
-        <mapping class="com.rew3.commission.acp.model.SingleRateAcp"/>
-        <mapping class="com.rew3.commission.acp.model.Acp"/>
-        <mapping class="com.rew3.commission.acp.model.TieredAcp"/>
-        <mapping class="com.rew3.commission.acp.model.TieredStage"/>
-        <mapping class="com.rew3.commission.associate.model.Associate"/>
-        <mapping class="com.rew3.commission.deduction.model.Deduction"/>
-        <mapping class="com.rew3.commission.transaction.model.RmsTransaction"/>
-        <mapping class="com.rew3.commission.transaction.model.TransactionAssociate"/>
-        <mapping class="com.rew3.commission.transaction.model.TransactionDeduction"/>
-        <mapping class="com.rew3.commission.transaction.model.TransactionGcp"/>
-        <mapping class="com.rew3.commission.transaction.model.TransactionClosing"/>
-        <mapping class="com.rew3.commission.transaction.model.TransactionContact"/>
-        <mapping class="com.rew3.commission.transaction.model.TransactionStatusStage"/>
-        <mapping class="com.rew3.commission.transaction.model.TransactionReference"/>
+        <mapping class="com.rew3.brokerage.gcp.model.Gcp"/>
+        <mapping class="com.rew3.brokerage.acp.model.AcpAssociate"/>
+        <mapping class="com.rew3.brokerage.acp.model.SingleRateAcp"/>
+        <mapping class="com.rew3.brokerage.acp.model.Acp"/>
+        <mapping class="com.rew3.brokerage.acp.model.TieredAcp"/>
+        <mapping class="com.rew3.brokerage.acp.model.TieredStage"/>
+        <mapping class="com.rew3.brokerage.associate.model.Associate"/>
+        <mapping class="com.rew3.brokerage.deduction.model.Deduction"/>
+        <mapping class="com.rew3.brokerage.transaction.model.RmsTransaction"/>
+        <mapping class="com.rew3.brokerage.transaction.model.TransactionAssociate"/>
+        <mapping class="com.rew3.brokerage.transaction.model.TransactionDeduction"/>
+        <mapping class="com.rew3.brokerage.transaction.model.TransactionGcp"/>
+        <mapping class="com.rew3.brokerage.transaction.model.TransactionClosing"/>
+        <mapping class="com.rew3.brokerage.transaction.model.TransactionContact"/>
+        <mapping class="com.rew3.brokerage.transaction.model.TransactionStatusStage"/>
+        <mapping class="com.rew3.brokerage.transaction.model.TransactionReference"/>
 
 
-        <mapping class="com.rew3.commission.commissionplan.model.CommissionPlan"/>
-        <mapping class="com.rew3.commission.commissionplan.model.PreCommission"/>
-        <mapping class="com.rew3.commission.commissionplan.model.CommissionLevel"/>
-        <mapping class="com.rew3.commission.commissionplan.model.CommissionPlanAgent"/>
-        <mapping class="com.rew3.commission.commissionplan.model.CommissionPlanReference"/>
-
-
-
-        <mapping class="com.rew3.billing.expense.model.Expense"/>
-        <mapping class="com.rew3.billing.expense.model.ExpenseItem"/>
-        <mapping class="com.rew3.billing.expense.model.ExpenseReference"/>
+        <mapping class="com.rew3.brokerage.commissionplan.model.CommissionPlan"/>
+        <mapping class="com.rew3.brokerage.commissionplan.model.PreCommission"/>
+        <mapping class="com.rew3.brokerage.commissionplan.model.CommissionLevel"/>
+        <mapping class="com.rew3.brokerage.commissionplan.model.CommissionPlanAgent"/>
+        <mapping class="com.rew3.brokerage.commissionplan.model.CommissionPlanReference"/>
 
 
 
-        <mapping class="com.rew3.commission.commissionplan.model.FlatFee"/>
-        <mapping class="com.rew3.commission.commissionplan.model.SlidingScale"/>
+        <mapping class="com.rew3.billing.purchase.expense.model.Expense"/>
+        <mapping class="com.rew3.billing.purchase.expense.model.ExpenseItem"/>
+        <mapping class="com.rew3.billing.purchase.expense.model.ExpenseReference"/>
 
 
-        <mapping class="com.rew3.billing.invoice.model.RecurringInvoice"/>
+
+        <mapping class="com.rew3.brokerage.commissionplan.model.FlatFee"/>
+        <mapping class="com.rew3.brokerage.commissionplan.model.SlidingScale"/>
+
+
+        <mapping class="com.rew3.billing.sale.invoice.model.RecurringInvoice"/>
 
 
     </session-factory>

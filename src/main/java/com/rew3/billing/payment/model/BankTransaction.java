@@ -1,12 +1,12 @@
 package com.rew3.billing.payment.model;
 
 
-import com.rew3.billing.normaluser.model.NormalUser;
-import com.rew3.billing.shared.model.AbstractEntity;
+import com.rew3.billing.sale.customer.model.NormalUser;
+import com.rew3.common.shared.model.AbstractEntity;
 import com.rew3.common.model.DB;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.Flags.TrustTxnMemoType;
-import com.rew3.finance.accountingperiod.model.AccountingPeriod;
+import com.rew3.accounting.accountingperiod.model.AccountingPeriod;
 
 import javax.persistence.*;
 import java.sql.Timestamp;

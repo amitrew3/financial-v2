@@ -1,10 +1,10 @@
 package com.rew3.billing.payment;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.rew3.billing.invoice.InvoiceQueryHandler;
-import com.rew3.billing.invoice.model.Invoice;
-import com.rew3.billing.normaluser.NormalUserQueryHandler;
-import com.rew3.billing.normaluser.model.NormalUser;
+import com.rew3.billing.sale.invoice.InvoiceQueryHandler;
+import com.rew3.billing.sale.invoice.model.Invoice;
+import com.rew3.billing.sale.customer.NormalUserQueryHandler;
+import com.rew3.billing.sale.customer.model.NormalUser;
 import com.rew3.billing.payment.command.*;
 import com.rew3.billing.payment.model.*;
 import com.rew3.common.application.Authentication;
@@ -22,12 +22,12 @@ import com.rew3.common.utils.APILogType;
 import com.rew3.common.utils.APILogger;
 import com.rew3.common.utils.DateTime;
 import com.rew3.common.utils.Parser;
-import com.rew3.finance.accountingcode.command.CreateAccountingCode;
-import com.rew3.finance.accountingcode.model.AccountingCode;
-import com.rew3.finance.accountingjournal.command.*;
-import com.rew3.finance.accountingperiod.AccountingPeriodQueryHandler;
-import com.rew3.finance.accountingperiod.AccountingPeriodRequestQueryHandler;
-import com.rew3.finance.accountingperiod.model.AccountingPeriod;
+import com.rew3.accounting.accountingcode.command.CreateAccountingCode;
+import com.rew3.accounting.accountingcode.model.AccountingCode;
+import com.rew3.accounting.accountingjournal.command.*;
+import com.rew3.accounting.accountingperiod.AccountingPeriodQueryHandler;
+import com.rew3.accounting.accountingperiod.AccountingPeriodRequestQueryHandler;
+import com.rew3.accounting.accountingperiod.model.AccountingPeriod;
 import org.hibernate.Transaction;
 
 import java.sql.Timestamp;
