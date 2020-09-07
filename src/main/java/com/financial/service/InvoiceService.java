@@ -1,8 +1,7 @@
-package com.wallet.service;
+package com.financial.service;
 
 import com.avenue.base.grpc.proto.core.StatusTypeProto;
 import com.avenue.financial.services.grpc.proto.invoice.*;
-import com.financial.service.ProtoConverter;
 import com.rew3.billing.invoice.InvoiceQueryHandler;
 import com.rew3.billing.invoice.command.CreateCustomerInvoice;
 import com.rew3.billing.invoice.command.DeleteInvoice;
