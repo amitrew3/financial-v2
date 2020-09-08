@@ -9,9 +9,10 @@ import com.financial.service.ProtoConverter;
 import com.rew3.billing.catalog.product.model.Product;
 import com.rew3.billing.catalog.productrateplan.model.ProductRatePlan;
 import com.rew3.billing.catalog.productrateplan.model.ProductRatePlanCharge;
+import com.rew3.billing.paymentterm.PaymentTermQueryHandler;
 import com.rew3.billing.sale.invoice.command.*;
 import com.rew3.billing.sale.invoice.model.*;
-import com.rew3.billing.sale.customer.NormalUserQueryHandler;
+import com.rew3.billing.sale.customer.CustomerQueryHandler;
 import com.rew3.billing.salesv1.model.Sales;
 import com.rew3.billing.service.PaymentService;
 import com.rew3.common.application.Authentication;
@@ -43,7 +44,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class InvoiceCommandHandler implements ICommandHandler {
-    NormalUserQueryHandler queryHandler = new NormalUserQueryHandler();
+    CustomerQueryHandler queryHandler = new CustomerQueryHandler();
 
     public static void registerCommands() {
         CommandRegister.getInstance().registerHandler(CreateCustomerInvoice.class, InvoiceCommandHandler.class);

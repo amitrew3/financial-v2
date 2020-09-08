@@ -2,8 +2,8 @@ package com.rew3.billing.salesv1;
 
 import com.rew3.billing.catalog.product.model.Product;
 import com.rew3.billing.catalog.productrateplan.model.ProductRatePlan;
-import com.rew3.billing.sale.customer.NormalUserQueryHandler;
-import com.rew3.billing.sale.customer.model.NormalUser;
+import com.rew3.billing.sale.customer.CustomerQueryHandler;
+import com.rew3.billing.sale.customer.model.Customer;
 import com.rew3.billing.salesv1.command.CreateSales;
 import com.rew3.billing.salesv1.model.Sales;
 import com.rew3.common.application.ValidationException;
@@ -74,8 +74,8 @@ public class SalesCommandHandler implements ICommandHandler {
 			s.setProduct(p);
 			s.setProductRatePlan(rp);
 			String customerId= (String) c.get("customerId");
-			NormalUserQueryHandler queryHandler= new NormalUserQueryHandler();
-			NormalUser customer= (NormalUser) queryHandler.getById(customerId);
+			CustomerQueryHandler queryHandler= new CustomerQueryHandler();
+			Customer customer= (Customer) queryHandler.getById(customerId);
 
 			s.setCustomer(customer);
 

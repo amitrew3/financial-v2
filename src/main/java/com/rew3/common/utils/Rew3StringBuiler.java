@@ -3,7 +3,7 @@ package com.rew3.common.utils;
 import com.rew3.billing.purchase.expense.model.Expense;
 import com.rew3.billing.sale.invoice.model.Invoice;
 import com.rew3.billing.sale.invoice.model.RecurringInvoice;
-import com.rew3.billing.sale.customer.model.NormalUser;
+import com.rew3.billing.sale.customer.model.Customer;
 import com.rew3.billing.sale.invoice.model.PaymentTerm;
 import com.rew3.brokerage.acp.model.Acp;
 import com.rew3.brokerage.commissionplan.model.CommissionPlan;
@@ -413,7 +413,7 @@ public class Rew3StringBuiler {
                 return (TypeAndValue) allFields.get(field);
             }
         }
-        if (clazz == NormalUser.class) {
+        if (clazz == Customer.class) {
             HashMap<String, Object> allFields = getNormalUserMapping();
             if (allFields.containsKey(field)) {
                 return (TypeAndValue) allFields.get(field);

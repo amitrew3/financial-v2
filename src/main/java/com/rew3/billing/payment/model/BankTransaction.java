@@ -1,7 +1,7 @@
 package com.rew3.billing.payment.model;
 
 
-import com.rew3.billing.sale.customer.model.NormalUser;
+import com.rew3.billing.sale.customer.model.Customer;
 import com.rew3.common.shared.model.AbstractEntity;
 import com.rew3.common.model.DB;
 import com.rew3.common.model.Flags;
@@ -41,7 +41,7 @@ public class BankTransaction extends AbstractEntity {
 
     @JoinColumn(name = "contact_id")
     @ManyToOne
-    private NormalUser contact;
+    private Customer contact;
 
     @Column(name = "reconciliation_status")
     @Enumerated(EnumType.STRING)
@@ -222,11 +222,11 @@ public class BankTransaction extends AbstractEntity {
         return type;
     }
 
-    public NormalUser getContact() {
+    public Customer getContact() {
         return contact;
     }
 
-    public void setContact(NormalUser contact) {
+    public void setContact(Customer contact) {
         this.contact = contact;
     }
 }

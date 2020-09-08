@@ -4,6 +4,7 @@ import com.avenue.base.grpc.proto.core.RequestParamProto;
 import com.avenue.base.grpc.proto.core.VisibilityTypeProto;
 import com.avenue.financial.services.grpc.proto.invoice.*;
 import com.google.protobuf.*;
+import com.rew3.billing.purchase.bill.model.BillItem;
 import com.rew3.billing.sale.invoice.model.Invoice;
 import com.rew3.billing.sale.invoice.model.InvoiceItem;
 import com.rew3.billing.sale.invoice.model.PaymentTerm;
@@ -209,5 +210,9 @@ public class ProtoConverter {
         });
 
         return item;
+    }
+
+    public static BillItem convertToBillItem(InvoiceItemProto x) {
+        return null;
     }
 }

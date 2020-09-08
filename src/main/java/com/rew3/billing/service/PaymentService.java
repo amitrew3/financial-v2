@@ -4,7 +4,7 @@ import com.rew3.billing.purchase.expense.command.CreateExpense;
 import com.rew3.billing.purchase.expense.model.Expense;
 import com.rew3.billing.purchase.expense.model.ExpenseDTO;
 import com.rew3.billing.sale.invoice.InvoiceQueryHandler;
-import com.rew3.billing.sale.invoice.PaymentTermQueryHandler;
+import com.rew3.billing.paymentterm.PaymentTermQueryHandler;
 import com.rew3.billing.sale.invoice.RecurringInvoiceQueryHandler;
 import com.rew3.billing.sale.invoice.command.*;
 import com.rew3.billing.sale.invoice.model.*;

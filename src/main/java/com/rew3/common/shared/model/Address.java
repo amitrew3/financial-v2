@@ -5,7 +5,7 @@ import com.rew3.common.model.DB;
 
 import javax.persistence.*;
 
-@Entity
+@Embeddable
 @Table(name= DB.Table.ADDRESS)
 public class Address extends AbstractEntity {
 

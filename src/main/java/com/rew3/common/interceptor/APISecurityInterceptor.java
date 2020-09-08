@@ -3,8 +3,8 @@ package com.rew3.common.interceptor;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.Interceptor;
-import com.rew3.billing.user.UserQueryHandler;
-import com.rew3.billing.user.model.User;
+import com.rew3.user.UserQueryHandler;
+import com.rew3.user.model.User;
 import org.apache.struts2.ServletActionContext;
 import org.json.JSONObject;
 

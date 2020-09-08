@@ -31,15 +31,15 @@
         <mapping class="com.rew3.accounting.accountingperiod.model.AccountingPeriodRequest"/>
         <mapping class="com.rew3.accounting.accountingjournal.model.AccountingJournal"/>
 
-        <mapping class="com.rew3.billing.user.model.User"/>
-        <mapping class="com.rew3.billing.sale.invoice.model.Invoice"/>
-        <mapping class="com.rew3.billing.sale.invoice.model.InvoiceItem"/>
-        <mapping class="com.rew3.billing.sale.invoice.model.InvoiceReference"/>
+        <mapping class="com.rew3.user.model.User"/>
+        <mapping class="com.rew3.billing.sale.estimate.model.Invoice"/>
+        <mapping class="com.rew3.billing.sale.estimate.model.InvoiceItem"/>
+        <mapping class="com.rew3.billing.sale.estimate.model.InvoiceReference"/>
 
         <!--
-               <mapping class="com.rew3.billing.sales.invoice.model.InvoiceAttachment" />
+               <mapping class="com.rew3.billing.sales.estimate.model.InvoiceAttachment" />
         -->
-        <mapping class="com.rew3.billing.sale.invoice.model.InvoiceRequest"/>
+        <mapping class="com.rew3.billing.sale.estimate.model.InvoiceRequest"/>
 
         <mapping class="com.rew3.billing.catalog.product.model.Product"/>
         <mapping class="com.rew3.billing.catalog.product.model.ProductCategoryLink"/>
@@ -62,9 +62,9 @@
         <mapping class="com.rew3.billing.payment.model.DepositItem"/>
         <mapping class="com.rew3.billing.payment.model.BankDepositSlip"/>
         <mapping class="com.rew3.billing.payment.model.BankReconciliation"/>
-        <mapping class="com.rew3.billing.sale.invoice.model.PaymentTerm"/>
+        <mapping class="com.rew3.billing.sale.estimate.model.PaymentTerm"/>
         <mapping class="com.rew3.common.shared.model.Address"/>
-        <mapping class="com.rew3.billing.sale.customer.model.NormalUser"/>
+        <mapping class="com.rew3.billing.sale.customer.model.Customer"/>
         <mapping class="com.rew3.billing.sale.customer.model.PaymentOption"/>
         <!--
             <mapping class="com.rew3.common.shared.model.Attachment" />
@@ -111,7 +111,7 @@
         <mapping class="com.rew3.brokerage.commissionplan.model.SlidingScale"/>
 
 
-        <mapping class="com.rew3.billing.sale.invoice.model.RecurringInvoice"/>
+        <mapping class="com.rew3.billing.sale.estimate.model.RecurringInvoice"/>
 
 
     </session-factory>

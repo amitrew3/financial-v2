@@ -3,7 +3,7 @@ package com.rew3.billing.salesv1.model;
 
 import com.rew3.billing.catalog.product.model.Product;
 import com.rew3.billing.catalog.productrateplan.model.ProductRatePlan;
-import com.rew3.billing.sale.customer.model.NormalUser;
+import com.rew3.billing.sale.customer.model.Customer;
 import com.rew3.common.shared.model.AbstractEntity;
 
 import javax.persistence.*;
@@ -23,7 +23,7 @@ public class Sales extends AbstractEntity{
 	
 	@JoinColumn(name="customer_id")
 	@ManyToOne
-	private NormalUser customer;
+	private Customer customer;
 
 	@Column(name="start_date")
 	private Timestamp startDate;
@@ -79,11 +79,11 @@ public class Sales extends AbstractEntity{
 	}
 
 
-	public NormalUser getCustomer() {
+	public Customer getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(NormalUser customer) {
+	public void setCustomer(Customer customer) {
 		this.customer= customer;
 	}
 

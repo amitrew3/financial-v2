@@ -1,6 +1,6 @@
 package com.rew3.common.application;
 
-import com.rew3.billing.user.model.User;
+import com.rew3.user.model.User;
 
 public class Authentication {
 

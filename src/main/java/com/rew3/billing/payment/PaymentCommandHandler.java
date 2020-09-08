@@ -3,8 +3,8 @@ package com.rew3.billing.payment;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.rew3.billing.sale.invoice.InvoiceQueryHandler;
 import com.rew3.billing.sale.invoice.model.Invoice;
-import com.rew3.billing.sale.customer.NormalUserQueryHandler;
-import com.rew3.billing.sale.customer.model.NormalUser;
+import com.rew3.billing.sale.customer.CustomerQueryHandler;
+import com.rew3.billing.sale.customer.model.Customer;
 import com.rew3.billing.payment.command.*;
 import com.rew3.billing.payment.model.*;
 import com.rew3.common.application.Authentication;
@@ -474,7 +474,7 @@ public class PaymentCommandHandler implements ICommandHandler {
         BankTransaction txn = null;
         BankTransactionType type = null;
         AccountingPeriod ap = null;
-        NormalUser contact = null;
+        Customer contact = null;
         boolean isNew = true;
         String ownerId = Authentication.getUserId();
         if (c.has("id") && c instanceof UpdateBankTransaction || c.has("id") && c instanceof ClearBankTransaction || c.has("id") && c instanceof UpdateBulkBankTransaction) {
@@ -536,7 +536,7 @@ public class PaymentCommandHandler implements ICommandHandler {
 
         if (c.has("contactId")) {
 
-            contact = (NormalUser) new NormalUserQueryHandler().getById((String) c.get("contactId"));
+            contact = (Customer) new CustomerQueryHandler().getById((String) c.get("contactId"));
 
             txn.setContact(contact);
         }

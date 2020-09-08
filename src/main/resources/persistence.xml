@@ -23,15 +23,15 @@
        <class>com.rew3.accounting.accountingperiod.model.AccountingPeriodRequest</class>
        <class>com.rew3.accounting.accountingjournal.model.AccountingJournal</class>
 
-       <class>com.rew3.billing.user.model.User</class>
-       <class>com.rew3.billing.sale.invoice.model.Invoice</class>
-       <class>com.rew3.billing.sale.invoice.model.InvoiceItem</class>
-       <class>com.rew3.billing.sale.invoice.model.InvoiceReference</class>
+       <class>com.rew3.user.model.User</class>
+       <class>com.rew3.billing.sale.estimate.model.Invoice</class>
+       <class>com.rew3.billing.sale.estimate.model.InvoiceItem</class>
+       <class>com.rew3.billing.sale.estimate.model.InvoiceReference</class>
 
         <!--
-              <class>com.rew3.billing.sales.invoice.model.InvoiceAttachment" />
+              <class>com.rew3.billing.sales.estimate.model.InvoiceAttachment" />
         -->
-       <class>com.rew3.billing.sale.invoice.model.InvoiceRequest</class>
+       <class>com.rew3.billing.sale.estimate.model.InvoiceRequest</class>
 
        <class>com.rew3.billing.catalog.product.model.Product</class>
        <class>com.rew3.billing.catalog.product.model.ProductCategoryLink</class>
@@ -54,9 +54,9 @@
        <class>com.rew3.billing.payment.model.DepositItem</class>
        <class>com.rew3.billing.payment.model.BankDepositSlip</class>
        <class>com.rew3.billing.payment.model.BankReconciliation</class>
-       <class>com.rew3.billing.sale.invoice.model.PaymentTerm</class>
+       <class>com.rew3.billing.sale.estimate.model.PaymentTerm</class>
        <class>com.rew3.common.shared.model.Address</class>
-       <class>com.rew3.billing.sale.customer.model.NormalUser</class>
+       <class>com.rew3.billing.sale.customer.model.Customer</class>
        <class>com.rew3.billing.sale.customer.model.PaymentOption</class>
         <!--
            <class>com.rew3.common.shared.model.Attachment" />
@@ -103,7 +103,7 @@
        <class>com.rew3.brokerage.commissionplan.model.SlidingScale</class>
 
 
-       <class>com.rew3.billing.sale.invoice.model.RecurringInvoice</class>
+       <class>com.rew3.billing.sale.estimate.model.RecurringInvoice</class>
 
         <properties>
             <property name="hibernate.show_sql" value="true" />
