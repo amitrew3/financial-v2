@@ -38,11 +38,28 @@ public class DB {
         public static final String PRODUCT_RATE_PLAN = "product_rate_plan";
         public static final String PRODUCT_RATE_PLAN_CHARGE = "product_rate_plan_charge";
         public static final String INVOICE = "invoice";
+        public static final String BILL = "bill";
+        public static final String ESTIMATE = "estimate";
+
         public static final String RECURRING_INVOICE = "recurring_invoice";
 
         public static final String INVOICE_ITEM = "invoice_item";
+        public static final String BILL_ITEM = "bill_item";
+        public static final String ESTIMATE_ITEM = "estimate_item";
+
+
         public static final String INVOICE_REQUEST = "invoice_request";
         public static final String NORMAL_USER = "normal_user";
+        public static final String CUSTOMER = "customer";
+        public static final String RECEIPT = "receipt";
+
+        public static final String CREDIT_NOTE = "credit-note";
+        public static final String DEBIT_NOTE = "debit-note";
+
+
+
+        public static final String VENDOR = "vendor";
+
         public static final String PAYMENT_OPTION = "payment_option";
         public static final String PAYMENT_TERM = "payment_term";
         public static final String BANK_DEPOSIT_SLIP = "bank_deposit_slip";
@@ -70,17 +87,10 @@ public class DB {
         public static final String INVOICE_REFERENCE = "invoice_reference";
         public static final String TRANSACTION_REFERENCE = "transaction_reference";
 
-
-
-
-
-
-
     }
 
     public static class Field {
         public static class GrossCommissionPlan {
-
 
             public static final String NAME = "name";
             public static final String TYPE = "calculation_type";

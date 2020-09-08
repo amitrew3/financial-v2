@@ -13,7 +13,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = DB.Table.NORMAL_USER)
+@Table(name = DB.Table.VENDOR)
 public class Vendor extends AbstractEntity {
 
 

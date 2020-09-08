@@ -2,6 +2,7 @@ package com.rew3.billing.sale.customer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.rew3.billing.paymentoption.PaymentOptionQueryHandler;
+import com.rew3.billing.paymentoption.model.PaymentOption;
 import com.rew3.billing.paymentterm.PaymentTermQueryHandler;
 import com.rew3.billing.sale.customer.command.*;
 import com.rew3.billing.sale.customer.model.Customer;

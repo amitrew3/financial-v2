@@ -1,9 +1,10 @@
 package com.rew3.billing.purchase.debitnote;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.rew3.billing.purchase.debitnote.command.CreateDebitNote;
+import com.rew3.billing.purchase.debitnote.command.DeleteDebitNote;
+import com.rew3.billing.purchase.debitnote.command.UpdateDebitNote;
 import com.rew3.billing.purchase.debitnote.model.DebitNote;
-import com.rew3.billing.paymentterm.PaymentTermQueryHandler;
-import com.rew3.billing.sale.invoice.model.PaymentTerm;
 import com.rew3.common.application.Authentication;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
@@ -11,57 +12,51 @@ import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.database.HibernateUtils;
-import com.rew3.common.model.Flags;
 import com.rew3.common.model.Flags.EntityStatus;
 import com.rew3.common.shared.AddressQueryHandler;
-import com.rew3.common.shared.model.Address;
 import com.rew3.common.utils.APILogType;
 import com.rew3.common.utils.APILogger;
 import com.rew3.common.utils.DateTime;
-import com.rew3.common.utils.Parser;
 import org.hibernate.Transaction;
 
 import javax.servlet.ServletException;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 
 public class DebitNoteCommandHandler implements ICommandHandler {
 
 
     public static void registerCommands() {
-        CommandRegister.getInstance().registerHandler(CreateNormalUser.class, DebitNoteCommandHandler.class);
-        CommandRegister.getInstance().registerHandler(UpdateNormalUser.class, DebitNoteCommandHandler.class);
-        CommandRegister.getInstance().registerHandler(DeleteNormalUser.class, DebitNoteCommandHandler.class);
-        CommandRegister.getInstance().registerHandler(CreateBulkNormalUser.class, DebitNoteCommandHandler.class);
-        CommandRegister.getInstance().registerHandler(UpdateBulkNormalUser.class, DebitNoteCommandHandler.class);
-        CommandRegister.getInstance().registerHandler(DeleteBulkNormalUser.class, DebitNoteCommandHandler.class);
+        CommandRegister.getInstance().registerHandler(CreateDebitNote.class, DebitNoteCommandHandler.class);
+        CommandRegister.getInstance().registerHandler(UpdateDebitNote.class, DebitNoteCommandHandler.class);
+        CommandRegister.getInstance().registerHandler(DeleteDebitNote.class, DebitNoteCommandHandler.class);
+//        CommandRegister.getInstance().registerHandler(CreateBulkDebitNote.class, DebitNoteCommandHandler.class);
+//        CommandRegister.getInstance().registerHandler(UpdateBulkDebitNote.class, DebitNoteCommandHandler.class);
+//        CommandRegister.getInstance().registerHandler(DeleteBulkDebitNote.class, DebitNoteCommandHandler.class);
     }
 
     public void handle(ICommand c) throws CommandException, NotFoundException, JsonProcessingException, ServletException {
-        if (c instanceof CreateNormalUser) {
-            handle((CreateNormalUser) c);
-        } else if (c instanceof UpdateNormalUser) {
-            handle((UpdateNormalUser) c);
-        } else if (c instanceof DeleteNormalUser) {
-            handle((DeleteNormalUser) c);
-        } else if (c instanceof CreateBulkNormalUser) {
-            handle((CreateBulkNormalUser) c);
-        } else if (c instanceof UpdateBulkNormalUser) {
-            handle((UpdateBulkNormalUser) c);
-        } else if (c instanceof DeleteBulkNormalUser) {
-            handle((DeleteBulkNormalUser) c);
+        if (c instanceof CreateDebitNote) {
+            handle((CreateDebitNote) c);
+        } else if (c instanceof UpdateDebitNote) {
+            handle((UpdateDebitNote) c);
+        } else if (c instanceof DeleteDebitNote) {
+            handle((DeleteDebitNote) c);
         }
+        /*else if (c instanceof CreateBulkDebitNote) {
+            handle((CreateBulkDebitNote) c);
+        } else if (c instanceof UpdateBulkDebitNote) {
+            handle((UpdateBulkDebitNote) c);
+        } else if (c instanceof DeleteBulkDebitNote) {
+            handle((DeleteBulkDebitNote) c);
+        }*/
 
     }
 
 
-    public void handle(CreateNormalUser c) throws NotFoundException, CommandException, ServletException, JsonProcessingException {
+    public void handle(CreateDebitNote c) throws NotFoundException, CommandException, ServletException, JsonProcessingException {
         Transaction trx = c.getTransaction();
         try {
-            DebitNote normaluser = this._handleSaveNormalUser(c);
+            DebitNote normaluser = this._handleSaveDebitNote(c);
             if (normaluser != null) {
                 if (c.isCommittable()) {
                     HibernateUtils.commitTransaction(c.getTransaction());
@@ -83,12 +78,12 @@ public class DebitNoteCommandHandler implements ICommandHandler {
     }
 
 
-    public void handle(UpdateNormalUser c) throws CommandException, NotFoundException, ServletException, JsonProcessingException {
+    public void handle(UpdateDebitNote c) throws CommandException, NotFoundException, ServletException, JsonProcessingException {
         // HibernateUtils.openSession();
 
         Transaction trx = c.getTransaction();
         try {
-            DebitNote normaluser = this._handleSaveNormalUser(c);
+            DebitNote normaluser = this._handleSaveDebitNote(c);
             if (normaluser != null) {
                 if (c.isCommittable()) {
                     HibernateUtils.commitTransaction(c.getTransaction());
@@ -107,7 +102,7 @@ public class DebitNoteCommandHandler implements ICommandHandler {
 
     }
 
-    private DebitNote _handleSaveNormalUser(ICommand c) throws
+    private DebitNote _handleSaveDebitNote(ICommand c) throws
             CommandException, ServletException, JsonProcessingException, NotFoundException {
 
         DebitNote user = null;
@@ -115,7 +110,7 @@ public class DebitNoteCommandHandler implements ICommandHandler {
         AddressQueryHandler addressQueryHandler = new AddressQueryHandler();
 
 
-        if (c.has("id") && c instanceof UpdateNormalUser) {
+        if (c.has("id") && c instanceof UpdateDebitNote) {
             user = (DebitNote) (new DebitNoteQueryHandler()).getById((String) c.get("id"));
             isNew = false;
           /*  if (user == null) {
@@ -132,125 +127,6 @@ public class DebitNoteCommandHandler implements ICommandHandler {
             //   user.setDefaultAcl();
         }
 
-        if (c.has("firstName")) {
-            user.setFirstName((String) c.get("firstName"));
-        }
-        if (c.has("middleName")) {
-            user.setMiddleName((String) c.get("middleName"));
-        }
-        if (c.has("title")) {
-            user.setTitle((String) c.get("title"));
-        }
-        if (c.has("lastName")) {
-            user.setLastName((String) c.get("lastName"));
-        }
-        if (c.has("suffix")) {
-            user.setSuffix((String) c.get("suffix"));
-        }
-        if (c.has("email")) {
-            user.setEmail((String) c.get("email"));
-        }
-        if (c.has("phone")) {
-            user.setPhone((String) c.get("phone"));
-        }
-        if (c.has("company")) {
-            user.setCompany((String) c.get("company"));
-        }
-        if (c.has("mobile")) {
-            user.setMobile((String) c.get("mobile"));
-        }
-        if (c.has("fax")) {
-            user.setFax((String) c.get("fax"));
-        }
-        if (c.has("website")) {
-            user.setWebsite((String) c.get("website"));
-        }
-        if (c.has("data")) {
-            user.setData((String) c.get("data"));
-        }
-        if (c.has("displayNameType")) {
-            String displayType = (String) c.get("displayNameType");
-            user.setDisplayNameType(Flags.DisplayNameType.valueOf(displayType.toUpperCase()));
-        }
-        if (c.has("notes")) {
-            user.setNotes((String) c.get("notes"));
-        }
-        if (c.has("taxInfo")) {
-            user.setTaxInfo((String) c.get("taxInfo"));
-        }
-        if (c.has("busNo")) {
-            user.setBusNo((String) c.get("busNo"));
-        }
-
-        if (c.has("businessNumber")) {
-            user.setBusinessNumber((String) c.get("businessNumber"));
-        }
-        if (c.has("accountNumber")) {
-            user.setAccountNumber((String) c.get("accountNumber"));
-        }
-        if (c.has("openingBalance")) {
-            user.setOpeningBalance(Parser.convertObjectToDouble( c.get("openingBalance")));
-        }
-
-        if (c.has("openingBalanceDate")) {
-            try {
-                user.setOpeningBalanceDate((Parser.convertObjectToTimestamp(c.get("openingBalanceDate"))));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        if (c.has("termsId")) {
-
-            PaymentTermQueryHandler queryHandler = new PaymentTermQueryHandler();
-            PaymentTerm term = (PaymentTerm) queryHandler.getById((String) c.get("termsId"));
-            user.setTerms(term);
-        }
-        if (c.has("type")) {
-            String type = (String) c.get("type");
-
-            user.setType(Flags.NormalUserType.valueOf(type.toUpperCase()));
-        }
-        if (c.has("displayNameType")) {
-            String type = (String) c.get("displayNameType");
-
-            user.setDisplayNameType(Flags.DisplayNameType.valueOf(type.toUpperCase()));
-        }
-
-        if (c.has("paymentOptionId")) {
-
-            PaymentOptionQueryHandler queryHandler = new PaymentOptionQueryHandler();
-            PaymentOption pOption = (PaymentOption) queryHandler.getById((String) c.get("paymentOptionId"));
-            if (pOption == null) {
-
-                throw new NotFoundException("Payment Option not found");
-            }
-            user.setPaymentOption(pOption);
-
-        }
-        if (c.has("billingAddressId")) {
-            Address address = (Address) addressQueryHandler.getById((String) c.get("billingAddressId"));
-            if (address == null) {
-
-                throw new NotFoundException("Billing address not found");
-            }
-            user.setBillingAddress(address);
-        }
-        if (c.has("shippingAddressId")) {
-            Address address = (Address) addressQueryHandler.getById((String) c.get("shippingAddressId"));
-            if (address == null) {
-
-                throw new NotFoundException("Shipping address not found");
-            }
-            user.setShippingAddress(address);
-        }
-        if (c.has("parentId")) {
-            DebitNote parentUser = (DebitNote) (new DebitNoteQueryHandler()).getById((String) c.get("id"));
-            if (parentUser != null) {
-                user.setParentNormalUser(parentUser);
-            } else {
-                throw new CommandException("Parent Normal User with id " + (Long) c.get("parentId") + "not found");
-            }
-        }
 
         if (c.has("status")) {
             user.setStatus(EntityStatus.valueOf((String) c.get("status").toString().toUpperCase()));
@@ -264,7 +140,7 @@ public class DebitNoteCommandHandler implements ICommandHandler {
 
     }
 
-    public void handle(DeleteNormalUser c) throws NotFoundException, CommandException, JsonProcessingException {
+    public void handle(DeleteDebitNote c) throws NotFoundException, CommandException, JsonProcessingException {
         Transaction trx = c.getTransaction();
 
         try {
@@ -290,8 +166,8 @@ public class DebitNoteCommandHandler implements ICommandHandler {
             HibernateUtils.closeSession();
         }
     }
-
-    public void handle(CreateBulkNormalUser c) {
+/*
+    public void handle(CreateBulkDebitNote c) {
         Transaction trx = c.getTransaction();
         List<HashMap<String, Object>> normalusers = (List<HashMap<String, Object>>) c.getBulkData();
 
@@ -300,7 +176,7 @@ public class DebitNoteCommandHandler implements ICommandHandler {
         try {
 
             for (HashMap<String, Object> data : normalusers) {
-                ICommand command = new CreateNormalUser(data, trx);
+                ICommand command = new CreateDebitNote(data, trx);
                 CommandRegister.getInstance().process(command);
                 DebitNote nu = (DebitNote) command.getObject();
                 normalUsers.add(nu);
@@ -324,13 +200,13 @@ public class DebitNoteCommandHandler implements ICommandHandler {
 
     }
 
-    public void handle(UpdateBulkNormalUser c) {
+    public void handle(UpdateBulkDebitNote c) {
         Transaction trx = c.getTransaction();
         List<HashMap<String, Object>> txns = (List<HashMap<String, Object>>) c.getBulkData();
         try {
 
             for (HashMap<String, Object> data : txns) {
-                CommandRegister.getInstance().process(new UpdateNormalUser(data, trx));
+                CommandRegister.getInstance().process(new UpdateDebitNote(data, trx));
             }
 
             if (c.isCommittable()) {
@@ -341,9 +217,9 @@ public class DebitNoteCommandHandler implements ICommandHandler {
         } catch (Exception ex) {
             ex.printStackTrace();
 
-           /* if (c.isCommittable()) {
+           *//* if (c.isCommittable()) {
                 HibernateUtils.rollbackTransaction(trx);
-            }*/
+            }*//*
         } finally {
             if (c.isCommittable()) {
                 HibernateUtils.closeSession();
@@ -351,7 +227,7 @@ public class DebitNoteCommandHandler implements ICommandHandler {
         }
     }
 
-    public void handle(DeleteBulkNormalUser c) {
+    public void handle(DeleteBulkDebitNote c) {
         Transaction trx = c.getTransaction();
         List<Object> ids = (List<Object>) c.get("id");
         try {
@@ -360,7 +236,7 @@ public class DebitNoteCommandHandler implements ICommandHandler {
                 HashMap<String, Object> map = new HashMap<>();
                 String id = (String) o;
                 map.put("id", id);
-                CommandRegister.getInstance().process(new DeleteNormalUser(map, trx));
+                CommandRegister.getInstance().process(new DeleteDebitNote(map, trx));
             }
 
             if (c.isCommittable()) {
@@ -379,5 +255,5 @@ public class DebitNoteCommandHandler implements ICommandHandler {
         }
 
 
-    }
+    }*/
 }

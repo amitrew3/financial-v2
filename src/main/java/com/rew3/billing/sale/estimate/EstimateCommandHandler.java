@@ -7,6 +7,7 @@ import com.avenue.financial.services.grpc.proto.invoice.UpdateInvoiceProto;
 import com.financial.service.ProtoConverter;
 import com.rew3.billing.paymentterm.PaymentTermQueryHandler;
 import com.rew3.billing.paymentterm.model.PaymentTerm;
+import com.rew3.billing.purchase.bill.command.AcceptBill;
 import com.rew3.billing.sale.customer.CustomerQueryHandler;
 import com.rew3.billing.sale.estimate.command.*;
 import com.rew3.billing.sale.estimate.model.Estimate;
@@ -206,7 +207,7 @@ public class EstimateCommandHandler implements ICommandHandler {
 
             final Estimate finalEstimate = estimate;
             Set<EstimateItem> items = protos.stream().map(x -> {
-                EstimateItem item = ProtoConverter.convertToBillItem(x);
+                EstimateItem item = ProtoConverter.convertToEstimateItem(x);
                 item.setEstimate(finalEstimate);
                 return item;
             }).collect(Collectors.toSet());
@@ -372,7 +373,7 @@ public class EstimateCommandHandler implements ICommandHandler {
 
             final Estimate finalEstimate = estimate;
             Set<EstimateItem> items = protos.stream().map(x -> {
-                EstimateItem item = ProtoConverter.convertToBillItem(x);
+                EstimateItem item = ProtoConverter.convertToEstimateItem(x);
                 item.setEstimate(finalEstimate);
                 return item;
             }).collect(Collectors.toSet());

@@ -1,6 +1,7 @@
 package com.rew3.billing.paymentoption;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.rew3.billing.paymentoption.model.PaymentOption;
 import com.rew3.billing.sale.customer.command.CreatePaymentOption;
 import com.rew3.billing.sale.customer.command.DeletePaymentOption;
 import com.rew3.billing.sale.customer.command.UpdatePaymentOption;

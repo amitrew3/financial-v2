@@ -9,8 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = DB.Table.NORMAL_USER)
-public class CreditNote extends AbstractEntity {
+@Table(name = DB.Table.DEBIT_NOTE)
+public class DebitNote extends AbstractEntity {
 
 
     @Column(name = "name")

@@ -1,5 +1,6 @@
 package com.rew3.billing.paymentoption;
 
+import com.rew3.billing.paymentoption.model.PaymentOption;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;

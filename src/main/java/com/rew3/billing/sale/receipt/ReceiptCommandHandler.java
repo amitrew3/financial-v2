@@ -1,12 +1,8 @@
 package com.rew3.billing.sale.receipt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.rew3.billing.paymentterm.PaymentTermQueryHandler;
-import com.rew3.billing.sale.invoice.model.PaymentTerm;
 import com.rew3.billing.sale.receipt.command.*;
 import com.rew3.billing.sale.receipt.model.Receipt;
-import com.rew3.common.shared.AddressQueryHandler;
-import com.rew3.common.shared.model.Address;
 import com.rew3.common.application.Authentication;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
@@ -14,17 +10,14 @@ import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.database.HibernateUtils;
-import com.rew3.common.model.Flags;
 import com.rew3.common.model.Flags.EntityStatus;
+import com.rew3.common.shared.AddressQueryHandler;
 import com.rew3.common.utils.APILogType;
 import com.rew3.common.utils.APILogger;
 import com.rew3.common.utils.DateTime;
-import com.rew3.common.utils.Parser;
 import org.hibernate.Transaction;
 
 import javax.servlet.ServletException;
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,17 +26,16 @@ public class ReceiptCommandHandler implements ICommandHandler {
 
 
     public static void registerCommands() {
-        CommandRegister.getInstance().registerHandler(CreateNormalUser.class, ReceiptCommandHandler.class);
+        CommandRegister.getInstance().registerHandler(CreateReceipt.class, ReceiptCommandHandler.class);
         CommandRegister.getInstance().registerHandler(UpdateReceipt.class, ReceiptCommandHandler.class);
         CommandRegister.getInstance().registerHandler(DeleteReceipt.class, ReceiptCommandHandler.class);
-        CommandRegister.getInstance().registerHandler(CreateReceipt.class, ReceiptCommandHandler.class);
         CommandRegister.getInstance().registerHandler(CreateBulkReceipt.class, ReceiptCommandHandler.class);
         CommandRegister.getInstance().registerHandler(DeleteBulkReceipt.class, ReceiptCommandHandler.class);
     }
 
     public void handle(ICommand c) throws CommandException, NotFoundException, JsonProcessingException, ServletException {
-        if (c instanceof CreateNormalUser) {
-            handle((CreateNormalUser) c);
+        if (c instanceof CreateReceipt) {
+            handle((CreateReceipt) c);
         } else if (c instanceof UpdateReceipt) {
             handle((UpdateReceipt) c);
         } else if (c instanceof DeleteReceipt) {
@@ -59,7 +51,7 @@ public class ReceiptCommandHandler implements ICommandHandler {
     }
 
 
-    public void handle(CreateNormalUser c) throws NotFoundException, CommandException, ServletException, JsonProcessingException {
+    public void handle(CreateReceipt c) throws NotFoundException, CommandException, ServletException, JsonProcessingException {
         Transaction trx = c.getTransaction();
         try {
             Receipt normaluser = this._handleSaveNormalUser(c);
@@ -111,157 +103,51 @@ public class ReceiptCommandHandler implements ICommandHandler {
     private Receipt _handleSaveNormalUser(ICommand c) throws
             CommandException, ServletException, JsonProcessingException, NotFoundException {
 
-        Receipt user = null;
+        Receipt receipt = null;
         boolean isNew = true;
         AddressQueryHandler addressQueryHandler = new AddressQueryHandler();
 
 
         if (c.has("id") && c instanceof UpdateReceipt) {
-            user = (Receipt) (new ReceiptQueryHandler()).getById((String) c.get("id"));
+            receipt = (Receipt) (new ReceiptQueryHandler()).getById((String) c.get("id"));
             isNew = false;
-          /*  if (user == null) {
+          /*  if (receipt == null) {
                 throw new NotFoundException("Normal User (" + c.get("id") + ") not found.");
             }*/
-            if (!user.hasWritePermission(Authentication.getRew3UserId(), Authentication.getRew3GroupId())) {
+            if (!receipt.hasWritePermission(Authentication.getRew3UserId(), Authentication.getRew3GroupId())) {
                 APILogger.add(APILogType.ERROR, "Permission denied");
                 throw new CommandException("No permission to update");
             }
         }
 
-        if (user == null) {
-            user = new Receipt();
-            //   user.setDefaultAcl();
+        if (receipt == null) {
+            receipt = new Receipt();
+            //   receipt.setDefaultAcl();
         }
 
         if (c.has("firstName")) {
-            user.setFirstName((String) c.get("firstName"));
+            receipt.setFirstName((String) c.get("firstName"));
         }
         if (c.has("middleName")) {
-            user.setMiddleName((String) c.get("middleName"));
+            receipt.setMiddleName((String) c.get("middleName"));
         }
         if (c.has("title")) {
-            user.setTitle((String) c.get("title"));
+            receipt.setTitle((String) c.get("title"));
         }
         if (c.has("lastName")) {
-            user.setLastName((String) c.get("lastName"));
-        }
-        if (c.has("suffix")) {
-            user.setSuffix((String) c.get("suffix"));
-        }
-        if (c.has("email")) {
-            user.setEmail((String) c.get("email"));
-        }
-        if (c.has("phone")) {
-            user.setPhone((String) c.get("phone"));
-        }
-        if (c.has("company")) {
-            user.setCompany((String) c.get("company"));
-        }
-        if (c.has("mobile")) {
-            user.setMobile((String) c.get("mobile"));
-        }
-        if (c.has("fax")) {
-            user.setFax((String) c.get("fax"));
-        }
-        if (c.has("website")) {
-            user.setWebsite((String) c.get("website"));
-        }
-        if (c.has("data")) {
-            user.setData((String) c.get("data"));
-        }
-        if (c.has("displayNameType")) {
-            String displayType = (String) c.get("displayNameType");
-            user.setDisplayNameType(Flags.DisplayNameType.valueOf(displayType.toUpperCase()));
-        }
-        if (c.has("notes")) {
-            user.setNotes((String) c.get("notes"));
-        }
-        if (c.has("taxInfo")) {
-            user.setTaxInfo((String) c.get("taxInfo"));
-        }
-        if (c.has("busNo")) {
-            user.setBusNo((String) c.get("busNo"));
+            receipt.setLastName((String) c.get("lastName"));
         }
 
-        if (c.has("businessNumber")) {
-            user.setBusinessNumber((String) c.get("businessNumber"));
-        }
-        if (c.has("accountNumber")) {
-            user.setAccountNumber((String) c.get("accountNumber"));
-        }
-        if (c.has("openingBalance")) {
-            user.setOpeningBalance(Parser.convertObjectToDouble( c.get("openingBalance")));
-        }
-
-        if (c.has("openingBalanceDate")) {
-            try {
-                user.setOpeningBalanceDate((Parser.convertObjectToTimestamp(c.get("openingBalanceDate"))));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        if (c.has("termsId")) {
-
-            PaymentTermQueryHandler queryHandler = new PaymentTermQueryHandler();
-            PaymentTerm term = (PaymentTerm) queryHandler.getById((String) c.get("termsId"));
-            user.setTerms(term);
-        }
-        if (c.has("type")) {
-            String type = (String) c.get("type");
-
-            user.setType(Flags.NormalUserType.valueOf(type.toUpperCase()));
-        }
-        if (c.has("displayNameType")) {
-            String type = (String) c.get("displayNameType");
-
-            user.setDisplayNameType(Flags.DisplayNameType.valueOf(type.toUpperCase()));
-        }
-
-        if (c.has("paymentOptionId")) {
-
-            PaymentOptionQueryHandler queryHandler = new PaymentOptionQueryHandler();
-            PaymentOption pOption = (PaymentOption) queryHandler.getById((String) c.get("paymentOptionId"));
-            if (pOption == null) {
-
-                throw new NotFoundException("Payment Option not found");
-            }
-            user.setPaymentOption(pOption);
-
-        }
-        if (c.has("billingAddressId")) {
-            Address address = (Address) addressQueryHandler.getById((String) c.get("billingAddressId"));
-            if (address == null) {
-
-                throw new NotFoundException("Billing address not found");
-            }
-            user.setBillingAddress(address);
-        }
-        if (c.has("shippingAddressId")) {
-            Address address = (Address) addressQueryHandler.getById((String) c.get("shippingAddressId"));
-            if (address == null) {
-
-                throw new NotFoundException("Shipping address not found");
-            }
-            user.setShippingAddress(address);
-        }
-        if (c.has("parentId")) {
-            Receipt parentUser = (Receipt) (new ReceiptQueryHandler()).getById((String) c.get("id"));
-            if (parentUser != null) {
-                user.setParentNormalUser(parentUser);
-            } else {
-                throw new CommandException("Parent Normal User with id " + (Long) c.get("parentId") + "not found");
-            }
-        }
 
         if (c.has("status")) {
-            user.setStatus(EntityStatus.valueOf((String) c.get("status").toString().toUpperCase()));
+            receipt.setStatus(EntityStatus.valueOf((String) c.get("status").toString().toUpperCase()));
         } else if (isNew) {
-            user.setStatus(EntityStatus.ACTIVE);
+            receipt.setStatus(EntityStatus.ACTIVE);
         }
 
 
-        user = (Receipt) HibernateUtils.save(user, c.getTransaction());
-        return user;
+        receipt = (Receipt) HibernateUtils.save(receipt, c.getTransaction());
+        return receipt;
 
     }
 
@@ -292,38 +178,6 @@ public class ReceiptCommandHandler implements ICommandHandler {
         }
     }
 
-    public void handle(CreateReceipt c) {
-        Transaction trx = c.getTransaction();
-        List<HashMap<String, Object>> normalusers = (List<HashMap<String, Object>>) c.getBulkData();
-
-        List<Object> normalUsers = new ArrayList<Object>();
-
-        try {
-
-            for (HashMap<String, Object> data : normalusers) {
-                ICommand command = new CreateNormalUser(data, trx);
-                CommandRegister.getInstance().process(command);
-                Receipt nu = (Receipt) command.getObject();
-                normalUsers.add(nu);
-            }
-            c.setObject(normalUsers);
-
-            if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
-            }
-
-        } catch (Exception ex) {
-            if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
-            }
-        } finally {
-            if (c.isCommittable()) {
-                HibernateUtils.closeSession();
-            }
-        }
-
-
-    }
 
     public void handle(CreateBulkReceipt c) {
         Transaction trx = c.getTransaction();

@@ -21,35 +21,6 @@ public class CreateEstimate extends Command implements ICommand {
     }
     public CreateEstimate(AddInvoiceProto invoiceProto) throws CommandException {
         this.addInvoiceProto=invoiceProto;
-        //super(data);
-       /* this.validationSchema = "billing/invoice/create_internal";
-        boolean valid = this.validate();
-        if (!valid) {
-            throw new CommandException("invalid");
-        }*/
     }
 
-    public CreateEstimate(HashMap<String, Object> data, String method, RecurringInvoice recurringInvoice) throws Exception {
-        super(data);
-
-        if (method.equals("POST")) {
-            this.validationSchema = "billing/invoice/create_internal";
-        } else if (method.equals("PUT")) {
-            this.validationSchema = "billing/invoice/update_internal";
-        }
-        boolean valid = this.validate();
-//        if (!valid) {
-//            throw new CommandException("unable");
-//        }
-        if (data.get("id") != null) {
-            Estimate estimate = (Estimate) new EstimateQueryHandler().getById(data.get("id").toString());
-            this.data.put("invoice", estimate);
-
-        }
-
-        this.data.put("recurring", recurringInvoice);
-        System.out.println("hero");
-
-
-    }
 }

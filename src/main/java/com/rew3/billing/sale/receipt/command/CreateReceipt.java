@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class CreateReceipt extends Command implements ICommand {
-    public CreateReceipt(List<HashMap<String, Object>> data) {
+    public CreateReceipt(HashMap<String, Object> data) {
         super(data);
     }
 }

@@ -11,7 +11,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = DB.Table.INVOICE_ITEM)
+@Table(name = DB.Table.BILL_ITEM)
 public class BillItem {
 
 

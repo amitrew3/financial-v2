@@ -14,7 +14,7 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = DB.Table.INVOICE)
+@Table(name = DB.Table.ESTIMATE)
 public class Estimate extends AbstractEntity {
 
     @Column(name = DB.Field.Invoice.INVOICE_NUMBER)
