@@ -52,16 +52,16 @@
 
         <mapping class="com.rew3.billing.salesv1.model.Sales"/>
 
-        <mapping class="com.rew3.payment.model.PaymentReceipt"/>
-        <mapping class="com.rew3.payment.model.PaymentReceiptItem"/>
+        <mapping class="com.rew3.bank.model.PaymentReceipt"/>
+        <mapping class="com.rew3.bank.model.PaymentReceiptItem"/>
         <!--
-               <mapping class="com.rew3.payment.model.PaymentReceiptAttachment" />
+               <mapping class="com.rew3.payment.invoicepayment.model.PaymentReceiptAttachment" />
         -->
-        <mapping class="com.rew3.payment.model.BillingAccount"/>
-        <mapping class="com.rew3.payment.model.BankTransaction"/>
-        <mapping class="com.rew3.payment.model.DepositItem"/>
-        <mapping class="com.rew3.payment.model.BankDepositSlip"/>
-        <mapping class="com.rew3.payment.model.BankReconciliation"/>
+        <mapping class="com.rew3.bank.model.BillingAccount"/>
+        <mapping class="com.rew3.bank.model.BankTransaction"/>
+        <mapping class="com.rew3.bank.model.DepositItem"/>
+        <mapping class="com.rew3.bank.model.BankDepositSlip"/>
+        <mapping class="com.rew3.bank.model.BankReconciliation"/>
         <mapping class="com.rew3.sale.estimate.model.PaymentTerm"/>
         <mapping class="com.rew3.common.shared.model.Address"/>
         <mapping class="com.rew3.sale.customer.model.Customer"/>

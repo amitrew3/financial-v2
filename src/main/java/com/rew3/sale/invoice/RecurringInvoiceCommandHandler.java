@@ -2,7 +2,7 @@ package com.rew3.sale.invoice;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.rew3.sale.invoice.command.*;
-import com.rew3.sale.invoice.model.RecurringInvoice;
+import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
 import com.rew3.billing.service.PaymentService;
 import com.rew3.common.application.Authentication;
 import com.rew3.common.application.CommandException;

@@ -8,7 +8,7 @@ import com.rew3.purchase.bill.model.BillItem;
 import com.rew3.sale.estimate.model.EstimateItem;
 import com.rew3.sale.invoice.model.Invoice;
 import com.rew3.sale.invoice.model.InvoiceItem;
-import com.rew3.sale.invoice.model.RecurringInvoice;
+import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
 import com.rew3.common.shared.model.Meta;
 import com.rew3.common.shared.model.MiniUser;
 import com.rew3.common.model.Flags;

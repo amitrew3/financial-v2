@@ -4,7 +4,6 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.cqrs.Command;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.sale.recurringinvoice.model.Invoice;
-import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
 
 import java.util.HashMap;
 

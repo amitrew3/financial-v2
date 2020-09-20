@@ -1,6 +1,6 @@
 package com.rew3.sale.invoice;
 
-import com.rew3.sale.invoice.model.RecurringInvoice;
+import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;

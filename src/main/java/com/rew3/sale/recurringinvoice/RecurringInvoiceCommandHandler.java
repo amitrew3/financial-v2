@@ -15,7 +15,6 @@ import com.rew3.common.utils.APILogType;
 import com.rew3.common.utils.APILogger;
 import com.rew3.common.utils.Rew3Date;
 import com.rew3.sale.recurringinvoice.command.*;
-import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
 
 import java.util.ArrayList;
 import java.util.HashMap;

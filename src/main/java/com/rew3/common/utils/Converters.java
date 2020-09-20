@@ -16,6 +16,7 @@ import com.rew3.accounting.accountingcode.model.Account;
 import com.rew3.accounting.accountingcode.model.AccountCodeDTO;
 import com.rew3.accounting.accountingcode.model.AccountGroup;
 import com.rew3.accounting.accountingcode.model.AccountGroupDTO;
+import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
 
 import java.util.*;
 import java.util.stream.Collectors;

@@ -44,16 +44,16 @@
 
        <class>com.rew3.billing.salesv1.model.Sales</class>
 
-       <class>com.rew3.payment.model.PaymentReceipt</class>
-       <class>com.rew3.payment.model.PaymentReceiptItem</class>
+       <class>com.rew3.bank.model.PaymentReceipt</class>
+       <class>com.rew3.bank.model.PaymentReceiptItem</class>
         <!--
-              <class>com.rew3.payment.model.PaymentReceiptAttachment" />
+              <class>com.rew3.payment.invoicepayment.model.PaymentReceiptAttachment" />
         -->
-       <class>com.rew3.payment.model.BillingAccount</class>
-       <class>com.rew3.payment.model.BankTransaction</class>
-       <class>com.rew3.payment.model.DepositItem</class>
-       <class>com.rew3.payment.model.BankDepositSlip</class>
-       <class>com.rew3.payment.model.BankReconciliation</class>
+       <class>com.rew3.bank.model.BillingAccount</class>
+       <class>com.rew3.bank.model.BankTransaction</class>
+       <class>com.rew3.bank.model.DepositItem</class>
+       <class>com.rew3.bank.model.BankDepositSlip</class>
+       <class>com.rew3.bank.model.BankReconciliation</class>
        <class>com.rew3.sale.estimate.model.PaymentTerm</class>
        <class>com.rew3.common.shared.model.Address</class>
        <class>com.rew3.sale.customer.model.Customer</class>

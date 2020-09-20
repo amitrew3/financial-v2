@@ -1,6 +1,8 @@
 package com.rew3.sale.invoice.model;
 
 
+import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
+
 import java.util.Set;
 
 

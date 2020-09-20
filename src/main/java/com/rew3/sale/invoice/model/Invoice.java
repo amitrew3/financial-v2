@@ -23,8 +23,6 @@ public class Invoice extends AbstractEntity {
     @Column(name = DB.Field.Invoice.PO_SO_NUMBER)
     private String poSoNumber;
 
-
-
     @Column(name = DB.Field.Invoice.INVOICE_DATE)
     private Timestamp invoiceDate;
 
@@ -140,4 +138,119 @@ public class Invoice extends AbstractEntity {
         this.paymentTerm = paymentTerm;
     }
 
+    public String getPoSoNumber() {
+        return poSoNumber;
+    }
+
+    public void setPoSoNumber(String poSoNumber) {
+        this.poSoNumber = poSoNumber;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public String getMemos() {
+        return memos;
+    }
+
+    public void setMemos(String memos) {
+        this.memos = memos;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public Timestamp getSendDateTime() {
+        return sendDateTime;
+    }
+
+    public void setSendDateTime(Timestamp sendDateTime) {
+        this.sendDateTime = sendDateTime;
+    }
+
+    public String getInternalNotes() {
+        return internalNotes;
+    }
+
+    public void setInternalNotes(String internalNotes) {
+        this.internalNotes = internalNotes;
+    }
+
+    public String getFooterNotes() {
+        return footerNotes;
+    }
+
+    public void setFooterNotes(String footerNotes) {
+        this.footerNotes = footerNotes;
+    }
+
+    public Double getSubTotal() {
+        return subTotal;
+    }
+
+    public void setSubTotal(Double subTotal) {
+        this.subTotal = subTotal;
+    }
+
+    public Double getTaxTotal() {
+        return taxTotal;
+    }
+
+    public void setTaxTotal(Double taxTotal) {
+        this.taxTotal = taxTotal;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+
+    public String getBillingStreet() {
+        return billingStreet;
+    }
+
+    public void setBillingStreet(String billingStreet) {
+        this.billingStreet = billingStreet;
+    }
+
+    public String getBillingTown() {
+        return billingTown;
+    }
+
+    public void setBillingTown(String billingTown) {
+        this.billingTown = billingTown;
+    }
+
+    public Double getBillingCity() {
+        return billingCity;
+    }
+
+    public void setBillingCity(Double billingCity) {
+        this.billingCity = billingCity;
+    }
+
+    public String getBillingCountry() {
+        return billingCountry;
+    }
+
+    public void setBillingCountry(String billingCountry) {
+        this.billingCountry = billingCountry;
+    }
+
+    public boolean isRecurring() {
+        return isRecurring;
+    }
+
+    public void setRecurring(boolean recurring) {
+        isRecurring = recurring;
+    }
 }

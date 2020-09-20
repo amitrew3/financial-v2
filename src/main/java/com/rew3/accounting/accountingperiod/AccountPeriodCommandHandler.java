@@ -1,10 +1,10 @@
 package com.rew3.accounting.accountingperiod;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.rew3.payment.BankReconciliationQueryHandler;
-import com.rew3.payment.BillingAccountQueryHandler;
-import com.rew3.payment.model.BankReconciliation;
-import com.rew3.payment.model.BillingAccount;
+import com.rew3.bank.BankReconciliationQueryHandler;
+import com.rew3.bank.BillingAccountQueryHandler;
+import com.rew3.bank.model.BankReconciliation;
+import com.rew3.bank.model.BillingAccount;
 import com.rew3.common.application.Authentication;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;

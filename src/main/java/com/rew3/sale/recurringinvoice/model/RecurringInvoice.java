@@ -1,9 +1,9 @@
 package com.rew3.sale.recurringinvoice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rew3.common.shared.model.AbstractEntity;
 import com.rew3.common.model.DB;
 import com.rew3.common.model.Flags;
-import com.rew3.common.shared.model.AbstractEntity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -15,8 +15,8 @@ import java.util.Set;
 public class RecurringInvoice  extends AbstractEntity {
 
 
-    @Column(name = DB.Field.RecurringInvoice.RECURRING_PERIOD_TYPE)
-    private String recurringPeriodType;
+    @Column(name = DB.Field.RecurringInvoice.TITLE)
+    private String title;
 
 
     @Column(name = DB.Field.RecurringInvoice.START_DATE)
@@ -25,33 +25,60 @@ public class RecurringInvoice  extends AbstractEntity {
     @Column(name = DB.Field.RecurringInvoice.END_DATE)
     private Timestamp endDate;
 
+    @Column(name = DB.Field.RecurringInvoice.END_TYPE)
+    private String endType;
 
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "recurringInvoice", cascade = CascadeType.ALL)
-    public Set<Invoice> items;
+    @Column(name = DB.Field.RecurringInvoice.DESCRIPTION)
+    private String description;
 
+    @Column(name = DB.Field.RecurringInvoice.AFTER_INDEX)
+    private String afterIndex;
 
-    public String getRecurringPeriodType() {
-        return recurringPeriodType;
+    public String getTitle() {
+        return title;
     }
 
-    public void setRecurringPeriodType(Flags.RecurringPeriodType recurringPeriodType) {
-        this.recurringPeriodType = recurringPeriodType.toString();
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getStartDate() {
-        return startDate.toString();
+    public Timestamp getStartDate() {
+        return startDate;
     }
 
     public void setStartDate(Timestamp startDate) {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
-        return endDate.toString();
+    public Timestamp getEndDate() {
+        return endDate;
     }
 
     public void setEndDate(Timestamp endDate) {
         this.endDate = endDate;
+    }
+
+    public String getEndType() {
+        return endType;
+    }
+
+    public void setEndType(String endType) {
+        this.endType = endType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getAfterIndex() {
+        return afterIndex;
+    }
+
+    public void setAfterIndex(String afterIndex) {
+        this.afterIndex = afterIndex;
     }
 }

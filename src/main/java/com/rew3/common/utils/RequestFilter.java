@@ -2,7 +2,7 @@ package com.rew3.common.utils;
 
 import com.rew3.purchase.expense.model.Expense;
 import com.rew3.sale.invoice.model.Invoice;
-import com.rew3.sale.invoice.model.RecurringInvoice;
+import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
 import com.rew3.brokerage.commissionplan.model.CommissionPlan;
 import com.rew3.brokerage.transaction.model.RmsTransaction;
 import com.rew3.common.cqrs.Query;

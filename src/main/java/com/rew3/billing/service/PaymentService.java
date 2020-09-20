@@ -13,6 +13,7 @@ import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.Query;
 import com.rew3.common.utils.Converters;
+import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
 
 import java.util.HashMap;
 import java.util.List;

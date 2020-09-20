@@ -10,7 +10,6 @@ import com.rew3.common.model.PaginationParams;
 import com.rew3.common.utils.Parser;
 import com.rew3.common.utils.RequestFilter;
 import com.rew3.common.utils.Rew3StringBuiler;
-import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
 
 import java.util.HashMap;
 import java.util.List;

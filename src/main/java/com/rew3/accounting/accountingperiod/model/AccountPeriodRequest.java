@@ -2,7 +2,7 @@
 package com.rew3.accounting.accountingperiod.model;
 
 
-import com.rew3.payment.model.BillingAccount;
+import com.rew3.payment.invoicepayment.model.BillingAccount;
 import com.rew3.common.shared.model.AbstractEntity;
 import com.rew3.common.model.DB;
 import com.rew3.common.model.Flags;

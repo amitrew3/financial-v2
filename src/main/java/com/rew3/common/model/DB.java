@@ -43,6 +43,8 @@ public class DB {
 
         public static final String RECURRING_INVOICE = "recurring_invoice";
 
+        public static final String RECURRING_SCHEDULE = "recurring_schedule";
+
         public static final String INVOICE_ITEM = "invoice_item";
         public static final String BILL_ITEM = "bill_item";
         public static final String ESTIMATE_ITEM = "estimate_item";
@@ -87,8 +89,10 @@ public class DB {
         public static final String TRANSACTION_REFERENCE = "transaction_reference";
 
         public static final String TRANSACTION = "transaction";
-        public static final String JOURNAL = "transaction";
-        public static final String TRANSACTION_JOURNAL = "transaction";
+        public static final String JOURNAL = "journal";
+        public static final String TRANSACTION_JOURNAL = "transaction_journal";
+        public static final String INVOICEPAYMENT = "invoicepayment";
+        public static final String BILLPAYMENT = "billpayment";
 
 
 
@@ -866,11 +870,10 @@ public class DB {
         }
         public static class InvoicePayment {
             public static final String INVOICE_ID = "invoice_id";
-            public static final String PO_SO_NUMBER = "po_so_number";
             public static final String CUSTOMER_ID = "customer_id";
-            public static final String AMOUNT = "vendor_id";
-            public static final String DATE = "due_date";
-            public static final String IS_RECEIPT_SENT = "payment_status";
+            public static final String AMOUNT = "amount";
+            public static final String DATE = "date";
+            public static final String NOTES = "notes";
 
         }
         public static class BillPayment {
