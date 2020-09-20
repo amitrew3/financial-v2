@@ -4,7 +4,7 @@ package com.rew3.common.shared.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rew3.billing.sale.invoice.model.EditAction;
+import com.rew3.sale.invoice.model.EditAction;
 import com.rew3.common.application.Authentication;
 import com.rew3.common.interceptor.ACL;
 import com.rew3.common.interceptor.Permission;

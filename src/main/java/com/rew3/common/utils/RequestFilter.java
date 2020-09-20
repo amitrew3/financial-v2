@@ -1,15 +1,14 @@
 package com.rew3.common.utils;
 
-import com.rew3.billing.purchase.expense.model.Expense;
-import com.rew3.billing.sale.invoice.model.Invoice;
-import com.rew3.billing.sale.invoice.model.PaymentTerm;
-import com.rew3.billing.sale.invoice.model.RecurringInvoice;
+import com.rew3.purchase.expense.model.Expense;
+import com.rew3.sale.invoice.model.Invoice;
+import com.rew3.sale.invoice.model.RecurringInvoice;
 import com.rew3.brokerage.commissionplan.model.CommissionPlan;
 import com.rew3.brokerage.transaction.model.RmsTransaction;
 import com.rew3.common.cqrs.Query;
 import com.rew3.common.database.HibernateUtils;
-import com.rew3.accounting.accountingcode.model.AccountingCode;
-import com.rew3.accounting.accountingcode.model.SubAccountingHead;
+import com.rew3.accounting.accountingcode.model.Account;
+import com.rew3.accounting.accountingcode.model.AccountGroup;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -28,9 +27,9 @@ public class RequestFilter {
             map = Rew3StringBuiler.getCommissionPlanMapping();
         } else if (t.equals(PaymentTerm.class)) {
             map = Rew3StringBuiler.getPaymentTermMapping();
-        } else if (t.equals(SubAccountingHead.class)) {
+        } else if (t.equals(AccountGroup.class)) {
             map = Rew3StringBuiler.getSubAccountingHeadMapping();
-        } else if (t.equals(AccountingCode.class)) {
+        } else if (t.equals(Account.class)) {
             map = Rew3StringBuiler.getAccountingCodeMapping();
         } else if (t.equals(Invoice.class)) {
             map = Rew3StringBuiler.getInvoiceMapping();

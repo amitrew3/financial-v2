@@ -17,28 +17,28 @@ import java.util.stream.Collectors;
 @Entity
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
-@Table(name = DB.Table.TRANSACTION)
+@Table(name = DB.Table.RMSTRANSACTION)
 public class RmsTransaction extends AbstractEntity {
 
-    @Column(name = DB.Field.Transaction.NAME)
+    @Column(name = DB.Field.RmsTransaction.NAME)
     private String name;
 
-    @Column(name = DB.Field.Transaction.DESCRIPTION)
+    @Column(name = DB.Field.RmsTransaction.DESCRIPTION)
     private String description;
 
-    @Column(name = DB.Field.Transaction.SELL_PRICE)
+    @Column(name = DB.Field.RmsTransaction.SELL_PRICE)
     private Double sellPrice;
 
-    @Column(name = DB.Field.Transaction.LIST_PRICE)
+    @Column(name = DB.Field.RmsTransaction.LIST_PRICE)
     private Double listPrice;
 
-    @Column(name = DB.Field.Transaction.CLOSING_DATE)
+    @Column(name = DB.Field.RmsTransaction.CLOSING_DATE)
     private Timestamp closingDate;
 
-    @Column(name = DB.Field.Transaction.TRANSACTION_DATE)
+    @Column(name = DB.Field.RmsTransaction.TRANSACTION_DATE)
     private Timestamp transactionDate;
 
-    @Column(name = DB.Field.Transaction.LISTED_ON)
+    @Column(name = DB.Field.RmsTransaction.LISTED_ON)
     private Timestamp listedOn;
 
     public Timestamp getListedOn() {
@@ -50,25 +50,25 @@ public class RmsTransaction extends AbstractEntity {
     }
 
     //ENUM
-    @Column(name = DB.Field.Transaction.CLOSING_STATUS)
+    @Column(name = DB.Field.RmsTransaction.CLOSING_STATUS)
     private String closingStatus;
 
     //ENUM
-    @Column(name = DB.Field.Transaction.TRANSACTION_STATUS)
+    @Column(name = DB.Field.RmsTransaction.TRANSACTION_STATUS)
     private String transactionStatus;
 
     //ENUM
-    @Column(name = DB.Field.Transaction.TYPE)
+    @Column(name = DB.Field.RmsTransaction.TYPE)
     private String type;
 
     //ENUM
-    @Column(name = DB.Field.Transaction.SIDE)
+    @Column(name = DB.Field.RmsTransaction.SIDE)
     private String side;
 
-    @Column(name = DB.Field.Transaction.PROPERTY_ID)
+    @Column(name = DB.Field.RmsTransaction.PROPERTY_ID)
     private String propertyId;
 
-    @Column(name = DB.Field.Transaction.ACCEPTED_DATE)
+    @Column(name = DB.Field.RmsTransaction.ACCEPTED_DATE)
     private Timestamp acceptedDate;
 
     @JsonIgnore
@@ -79,7 +79,7 @@ public class RmsTransaction extends AbstractEntity {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "transaction")
     public Set<TransactionReference> reference;
 
-    @Column(name = DB.Field.Transaction.MLS)
+    @Column(name = DB.Field.RmsTransaction.MLS)
     private String mls;
 
     @Transient

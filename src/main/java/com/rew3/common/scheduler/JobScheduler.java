@@ -12,8 +12,8 @@ import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 
-import com.rew3.billing.sale.invoice.job.InvoiceRecurJob;
-import com.rew3.billing.sale.invoice.job.InvoiceStatusJob;
+import com.rew3.sale.invoice.job.InvoiceRecurJob;
+import com.rew3.sale.invoice.job.InvoiceStatusJob;
 import com.rew3.billing.salesv1.job.SalesInvoiceJob;
 import com.rew3.accounting.accountingjournal.job.InvoiceJournalJob;
 

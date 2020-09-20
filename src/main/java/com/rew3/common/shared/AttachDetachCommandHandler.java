@@ -1,12 +1,11 @@
 package com.rew3.common.shared;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.rew3.billing.purchase.expense.ExpenseQueryHandler;
-import com.rew3.billing.purchase.expense.model.Expense;
-import com.rew3.billing.purchase.expense.model.ExpenseReference;
-import com.rew3.billing.sale.invoice.InvoiceQueryHandler;
-import com.rew3.billing.sale.invoice.model.Invoice;
-import com.rew3.billing.sale.invoice.model.InvoiceReference;
+import com.rew3.purchase.expense.ExpenseQueryHandler;
+import com.rew3.purchase.expense.model.Expense;
+import com.rew3.sale.invoice.InvoiceQueryHandler;
+import com.rew3.sale.invoice.model.Invoice;
+import com.rew3.sale.invoice.model.InvoiceReference;
 import com.rew3.common.shared.command.*;
 import com.rew3.brokerage.commissionplan.CommissionPlanQueryHandler;
 import com.rew3.brokerage.commissionplan.model.CommissionPlan;

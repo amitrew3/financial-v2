@@ -1,8 +1,8 @@
 package com.rew3.common.utils;
 
-import com.rew3.billing.purchase.expense.model.Expense;
-import com.rew3.billing.purchase.expense.model.ExpenseDTO;
-import com.rew3.billing.sale.invoice.model.*;
+import com.rew3.purchase.expense.model.Expense;
+import com.rew3.purchase.expense.model.ExpenseDTO;
+import com.rew3.sale.invoice.model.*;
 import com.rew3.common.shared.model.MiniUser;
 import com.rew3.brokerage.acp.model.*;
 import com.rew3.brokerage.commissionplan.model.CommissionPlan;
@@ -12,10 +12,10 @@ import com.rew3.brokerage.transaction.model.RmsTransaction;
 import com.rew3.brokerage.transaction.model.TransacationDTO;
 import com.rew3.brokerage.transaction.model.TransactionContact;
 import com.rew3.common.model.Flags;
-import com.rew3.accounting.accountingcode.model.AccountingCode;
-import com.rew3.accounting.accountingcode.model.AccountingCodeDTO;
-import com.rew3.accounting.accountingcode.model.SubAccountingHead;
-import com.rew3.accounting.accountingcode.model.SubAccountingHeadDTO;
+import com.rew3.accounting.accountingcode.model.Account;
+import com.rew3.accounting.accountingcode.model.AccountCodeDTO;
+import com.rew3.accounting.accountingcode.model.AccountGroup;
+import com.rew3.accounting.accountingcode.model.AccountGroupDTO;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -242,9 +242,9 @@ public class Converters {
                 return convertToPaymentTermDTO(c);
             } else if (c instanceof RecurringInvoice) {
                 return convertToRecurringInvoiceDTO(c);
-            } else if (c instanceof SubAccountingHead) {
+            } else if (c instanceof AccountGroup) {
                 return convertToSubAccountingHeadDTO(c);
-            } else if (c instanceof AccountingCode) {
+            } else if (c instanceof Account) {
                 return convertToAccountingCodeDTO(c);
             }
             return null;
@@ -387,45 +387,45 @@ public class Converters {
     }
 
 
-    public static AccountingCodeDTO convertToAccountingCodeDTO(Object c) {
+    public static AccountCodeDTO convertToAccountingCodeDTO(Object c) {
 
-        AccountingCode accountingCode = (AccountingCode) c;
+        Account account = (Account) c;
 
-        AccountingCodeDTO dto = new AccountingCodeDTO();
+        AccountCodeDTO dto = new AccountCodeDTO();
 
-        Optional.ofNullable(accountingCode.get_id()).ifPresent(x -> dto.set_id(x));
-        Optional.ofNullable(accountingCode.getMeta()).ifPresent(x -> dto.setMeta(x));
-        Optional.ofNullable(accountingCode.getAcl()).ifPresent(x -> dto.setAcl(x));
-        Optional.ofNullable(accountingCode.getOwner()).ifPresent(x -> dto.setOwner(x));
-        Optional.ofNullable(accountingCode.getStatus()).ifPresent(x -> dto.setStatus(x));
-        Optional.ofNullable(accountingCode.getVisibility()).ifPresent(x -> dto.setVisibility(x));
+        Optional.ofNullable(account.get_id()).ifPresent(x -> dto.set_id(x));
+        Optional.ofNullable(account.getMeta()).ifPresent(x -> dto.setMeta(x));
+        Optional.ofNullable(account.getAcl()).ifPresent(x -> dto.setAcl(x));
+        Optional.ofNullable(account.getOwner()).ifPresent(x -> dto.setOwner(x));
+        Optional.ofNullable(account.getStatus()).ifPresent(x -> dto.setStatus(x));
+        Optional.ofNullable(account.getVisibility()).ifPresent(x -> dto.setVisibility(x));
 
-        Optional.ofNullable(accountingCode.getCode()).ifPresent(x -> dto.setCode(x));
-        Optional.ofNullable(accountingCode.getSegment()).ifPresent(x -> dto.setSegment(x));
-        Optional.ofNullable(accountingCode.getName()).ifPresent(x -> dto.setName(x));
-        Optional.ofNullable(accountingCode.getNote()).ifPresent(x -> dto.setNote(x));
-        Optional.ofNullable(accountingCode.getIsDefault()).ifPresent(x -> dto.setDefault(x));
+        Optional.ofNullable(account.getCode()).ifPresent(x -> dto.setCode(x));
+        Optional.ofNullable(account.getSegment()).ifPresent(x -> dto.setSegment(x));
+        Optional.ofNullable(account.getName()).ifPresent(x -> dto.setName(x));
+        Optional.ofNullable(account.getNote()).ifPresent(x -> dto.setNote(x));
+        Optional.ofNullable(account.getIsDefault()).ifPresent(x -> dto.setDefault(x));
 
 
         return dto;
     }
 
-    public static SubAccountingHeadDTO convertToSubAccountingHeadDTO(Object c) {
-        SubAccountingHead subAccountingHead = (SubAccountingHead) c;
+    public static AccountGroupDTO convertToSubAccountingHeadDTO(Object c) {
+        AccountGroup accountGroup = (AccountGroup) c;
 
-        SubAccountingHeadDTO dto = new SubAccountingHeadDTO();
+        AccountGroupDTO dto = new AccountGroupDTO();
 
-        Optional.ofNullable(subAccountingHead.get_id()).ifPresent(x -> dto.set_id(x));
-        Optional.ofNullable(subAccountingHead.getMeta()).ifPresent(x -> dto.setMeta(x));
-        Optional.ofNullable(subAccountingHead.getAcl()).ifPresent(x -> dto.setAcl(x));
-        Optional.ofNullable(subAccountingHead.getOwner()).ifPresent(x -> dto.setOwner(x));
-        Optional.ofNullable(subAccountingHead.getStatus()).ifPresent(x -> dto.setStatus(x));
-        Optional.ofNullable(subAccountingHead.getVisibility()).ifPresent(x -> dto.setVisibility(x));
+        Optional.ofNullable(accountGroup.get_id()).ifPresent(x -> dto.set_id(x));
+        Optional.ofNullable(accountGroup.getMeta()).ifPresent(x -> dto.setMeta(x));
+        Optional.ofNullable(accountGroup.getAcl()).ifPresent(x -> dto.setAcl(x));
+        Optional.ofNullable(accountGroup.getOwner()).ifPresent(x -> dto.setOwner(x));
+        Optional.ofNullable(accountGroup.getStatus()).ifPresent(x -> dto.setStatus(x));
+        Optional.ofNullable(accountGroup.getVisibility()).ifPresent(x -> dto.setVisibility(x));
 
-        Optional.ofNullable(subAccountingHead.getCode()).ifPresent(x -> dto.setCode(x));
-        Optional.ofNullable(subAccountingHead.getAccountingHead()).ifPresent(x -> dto.setAccountingHead(x));
-        Optional.ofNullable(subAccountingHead.getAccountingCodeType()).ifPresent(x -> dto.setAccountingCodeType(x));
-        Optional.ofNullable(subAccountingHead.getDescription()).ifPresent(x -> dto.setDescription(x));
+        Optional.ofNullable(accountGroup.getCode()).ifPresent(x -> dto.setCode(x));
+        Optional.ofNullable(accountGroup.getAccountingHead()).ifPresent(x -> dto.setAccountingHead(x));
+        Optional.ofNullable(accountGroup.getAccountingCodeType()).ifPresent(x -> dto.setAccountingCodeType(x));
+        Optional.ofNullable(accountGroup.getDescription()).ifPresent(x -> dto.setDescription(x));
 
 
         return dto;

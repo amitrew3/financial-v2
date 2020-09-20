@@ -1,7 +1,7 @@
 package com.rew3.brokerage.commissionplan.model;
 
 
-import com.rew3.billing.sale.invoice.model.AbstractDTO;
+import com.rew3.sale.invoice.model.AbstractDTO;
 import com.rew3.common.shared.model.MiniUser;
 
 import java.util.Set;

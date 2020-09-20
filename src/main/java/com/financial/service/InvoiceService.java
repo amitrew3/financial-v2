@@ -2,11 +2,11 @@ package com.financial.service;
 
 import com.avenue.base.grpc.proto.core.StatusTypeProto;
 import com.avenue.financial.services.grpc.proto.invoice.*;
-import com.rew3.billing.sale.invoice.InvoiceQueryHandler;
-import com.rew3.billing.sale.invoice.command.CreateCustomerInvoice;
-import com.rew3.billing.sale.invoice.command.DeleteInvoice;
-import com.rew3.billing.sale.invoice.command.UpdateCustomerInvoice;
-import com.rew3.billing.sale.invoice.model.Invoice;
+import com.rew3.sale.invoice.InvoiceQueryHandler;
+import com.rew3.sale.invoice.command.CreateInvoice;
+import com.rew3.sale.invoice.command.DeleteInvoice;
+import com.rew3.sale.invoice.command.UpdateInvoice;
+import com.rew3.sale.invoice.model.Invoice;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
@@ -47,9 +47,9 @@ public class InvoiceService extends InvoiceServiceProtoGrpc.InvoiceServiceProtoI
         // HashMap<String, Object> map = loadMap(request.getData());
 
 
-        CreateCustomerInvoice command = null;
+        CreateInvoice command = null;
         try {
-            command = new CreateCustomerInvoice(request.getData());
+            command = new CreateInvoice(request.getData());
         } catch (CommandException e) {
             e.printStackTrace();
         }
@@ -101,8 +101,8 @@ public class InvoiceService extends InvoiceServiceProtoGrpc.InvoiceServiceProtoI
         // HashMap<String, Object> map = loadMap(request.getData());
 
 
-        UpdateCustomerInvoice command = null;
-        command = new UpdateCustomerInvoice(request.getData());
+        UpdateInvoice command = null;
+        command = new UpdateInvoice(request.getData());
         try {
             CommandRegister.getInstance().process(command);
         } catch (Exception e) {

@@ -3,13 +3,13 @@ package com.rew3.accounting.accountingjournal.job;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.rew3.billing.sale.invoice.InvoiceQueryHandler;
+import com.rew3.sale.invoice.InvoiceQueryHandler;
 import com.rew3.common.application.NotFoundException;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import com.rew3.billing.sale.invoice.model.Invoice;
+import com.rew3.sale.invoice.model.Invoice;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.utils.DateTime;

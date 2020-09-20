@@ -13,13 +13,13 @@ import com.rew3.common.model.Flags;
 import com.rew3.common.model.Flags.EntityType;
 import com.rew3.common.model.PaginationParams;
 import com.rew3.common.utils.Parser;
-import com.rew3.accounting.accountingjournal.model.AccountingJournal;
+import com.rew3.accounting.accountingjournal.model.Journal;
 
 public class AccountingJournalQueryHandler implements IQueryHandler {
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
-        AccountingJournal aj = (AccountingJournal) HibernateUtils.get(AccountingJournal.class, id);
+        Journal aj = (Journal) HibernateUtils.get(Journal.class, id);
 
         if (aj == null) {
             throw new NotFoundException("Accounting journal id (" + id + ") not found.");
@@ -125,7 +125,7 @@ public class AccountingJournalQueryHandler implements IQueryHandler {
         List<Object> aJournals = HibernateUtils.select("From AccountingJournal" + whereSQL, sqlParams);
         return aJournals;
     }
-    public List<AccountingJournal> getByAccountingCodeId(Long accountingCodeId) {
+    public List<Journal> getByAccountingCodeId(Long accountingCodeId) {
         HashMap<String, Object> sqlParams = new HashMap<String, Object>();
         sqlParams.put("accountingCodeId", accountingCodeId);
 
@@ -133,7 +133,7 @@ public class AccountingJournalQueryHandler implements IQueryHandler {
         whereSQL += " where accounting_code_id = :accountingCodeId ";
 
 
-        List<AccountingJournal> aJournals = HibernateUtils.select("From AccountingJournal" + whereSQL, sqlParams);
+        List<Journal> aJournals = HibernateUtils.select("From AccountingJournal" + whereSQL, sqlParams);
         return aJournals;
     }
 

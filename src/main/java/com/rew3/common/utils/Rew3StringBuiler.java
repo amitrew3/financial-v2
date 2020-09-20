@@ -1,15 +1,14 @@
 package com.rew3.common.utils;
 
-import com.rew3.billing.purchase.expense.model.Expense;
-import com.rew3.billing.sale.invoice.model.Invoice;
-import com.rew3.billing.sale.invoice.model.RecurringInvoice;
-import com.rew3.billing.sale.customer.model.Customer;
-import com.rew3.billing.sale.invoice.model.PaymentTerm;
+import com.rew3.purchase.expense.model.Expense;
+import com.rew3.sale.invoice.model.Invoice;
+import com.rew3.sale.invoice.model.RecurringInvoice;
+import com.rew3.sale.customer.model.Customer;
 import com.rew3.brokerage.acp.model.Acp;
 import com.rew3.brokerage.commissionplan.model.CommissionPlan;
 import com.rew3.brokerage.transaction.model.RmsTransaction;
-import com.rew3.accounting.accountingcode.model.AccountingCode;
-import com.rew3.accounting.accountingcode.model.SubAccountingHead;
+import com.rew3.accounting.accountingcode.model.Account;
+import com.rew3.accounting.accountingcode.model.AccountGroup;
 
 import java.util.HashMap;
 
@@ -449,13 +448,13 @@ public class Rew3StringBuiler {
                 return (TypeAndValue) allFields.get(field);
             }
         }
-        if (clazz == AccountingCode.class) {
+        if (clazz == Account.class) {
             HashMap<String, Object> allFields = getAccountingCodeMapping();
             if (allFields.containsKey(field)) {
                 return (TypeAndValue) allFields.get(field);
             }
         }
-        if (clazz == SubAccountingHead.class) {
+        if (clazz == AccountGroup.class) {
             HashMap<String, Object> allFields = getSubAccountingHeadMapping();
             if (allFields.containsKey(field)) {
                 return (TypeAndValue) allFields.get(field);

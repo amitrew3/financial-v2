@@ -14,54 +14,54 @@
             Persistence unit for the JPA tutorial of the Hibernate Getting Started Guide
         </description>
 
-        <class>com.rew3.accounting.accountingcode.model.AccountingCode</class>
+        <class>com.rew3.accounting.accountingcode.model.Account</class>
         <!--
               <class>com.rew3.finance.accountingcode.model.EntityCode" />
         -->
        <class>com.rew3.accounting.accountingcode.model.AccountingClass</class>
-       <class>com.rew3.accounting.accountingperiod.model.AccountingPeriod</class>
-       <class>com.rew3.accounting.accountingperiod.model.AccountingPeriodRequest</class>
-       <class>com.rew3.accounting.accountingjournal.model.AccountingJournal</class>
+       <class>com.rew3.accounting.accountingperiod.model.AccountPeriod</class>
+       <class>com.rew3.accounting.accountingperiod.model.AccountPeriodRequest</class>
+       <class>com.rew3.accounting.accountingjournal.model.Journal</class>
 
        <class>com.rew3.user.model.User</class>
-       <class>com.rew3.billing.sale.estimate.model.Invoice</class>
-       <class>com.rew3.billing.sale.estimate.model.InvoiceItem</class>
-       <class>com.rew3.billing.sale.estimate.model.InvoiceReference</class>
+       <class>com.rew3.sale.estimate.model.Invoice</class>
+       <class>com.rew3.sale.estimate.model.InvoiceItem</class>
+       <class>com.rew3.sale.estimate.model.InvoiceReference</class>
 
         <!--
               <class>com.rew3.billing.sales.estimate.model.InvoiceAttachment" />
         -->
-       <class>com.rew3.billing.sale.estimate.model.InvoiceRequest</class>
+       <class>com.rew3.sale.estimate.model.InvoiceRequest</class>
 
-       <class>com.rew3.billing.catalog.product.model.Product</class>
-       <class>com.rew3.billing.catalog.product.model.ProductCategoryLink</class>
-       <class>com.rew3.billing.catalog.product.model.ProductFeatureLink</class>
-       <class>com.rew3.billing.catalog.product.model.ProductRatePlanLink</class>
-       <class>com.rew3.billing.catalog.productcategory.model.ProductCategory</class>
-       <class>com.rew3.billing.catalog.productfeature.model.ProductFeature</class>
-       <class>com.rew3.billing.catalog.productrateplan.model.ProductRatePlan</class>
-       <class>com.rew3.billing.catalog.productrateplan.model.ProductRatePlanCharge</class>
+       <class>com.rew3.catalog.product.model.Product</class>
+       <class>com.rew3.catalog.product.model.ProductCategoryLink</class>
+       <class>com.rew3.catalog.product.model.ProductFeatureLink</class>
+       <class>com.rew3.catalog.product.model.ProductRatePlanLink</class>
+       <class>com.rew3.catalog.productcategory.model.ProductCategory</class>
+       <class>com.rew3.catalog.productfeature.model.ProductFeature</class>
+       <class>com.rew3.catalog.productrateplan.model.ProductRatePlan</class>
+       <class>com.rew3.catalog.productrateplan.model.ProductRatePlanCharge</class>
 
        <class>com.rew3.billing.salesv1.model.Sales</class>
 
-       <class>com.rew3.billing.payment.model.PaymentReceipt</class>
-       <class>com.rew3.billing.payment.model.PaymentReceiptItem</class>
+       <class>com.rew3.payment.model.PaymentReceipt</class>
+       <class>com.rew3.payment.model.PaymentReceiptItem</class>
         <!--
-              <class>com.rew3.billing.payment.model.PaymentReceiptAttachment" />
+              <class>com.rew3.payment.model.PaymentReceiptAttachment" />
         -->
-       <class>com.rew3.billing.payment.model.BillingAccount</class>
-       <class>com.rew3.billing.payment.model.BankTransaction</class>
-       <class>com.rew3.billing.payment.model.DepositItem</class>
-       <class>com.rew3.billing.payment.model.BankDepositSlip</class>
-       <class>com.rew3.billing.payment.model.BankReconciliation</class>
-       <class>com.rew3.billing.sale.estimate.model.PaymentTerm</class>
+       <class>com.rew3.payment.model.BillingAccount</class>
+       <class>com.rew3.payment.model.BankTransaction</class>
+       <class>com.rew3.payment.model.DepositItem</class>
+       <class>com.rew3.payment.model.BankDepositSlip</class>
+       <class>com.rew3.payment.model.BankReconciliation</class>
+       <class>com.rew3.sale.estimate.model.PaymentTerm</class>
        <class>com.rew3.common.shared.model.Address</class>
-       <class>com.rew3.billing.sale.customer.model.Customer</class>
-       <class>com.rew3.billing.sale.customer.model.PaymentOption</class>
+       <class>com.rew3.sale.customer.model.Customer</class>
+       <class>com.rew3.sale.customer.model.PaymentOption</class>
         <!--
            <class>com.rew3.common.shared.model.Attachment" />
         -->
-       <class>com.rew3.accounting.accountingcode.model.SubAccountingHead</class>
+       <class>com.rew3.accounting.accountingcode.model.AccountGroup</class>
 
 
         <!--
@@ -93,9 +93,9 @@
 
 
 
-       <class>com.rew3.billing.purchase.expense.model.Expense</class>
-       <class>com.rew3.billing.purchase.expense.model.ExpenseItem</class>
-       <class>com.rew3.billing.purchase.expense.model.ExpenseReference</class>
+       <class>com.rew3.purchase.expense.model.Expense</class>
+       <class>com.rew3.purchase.expense.model.ExpenseItem</class>
+       <class>com.rew3.purchase.expense.model.ExpenseReference</class>
 
 
 
@@ -103,7 +103,7 @@
        <class>com.rew3.brokerage.commissionplan.model.SlidingScale</class>
 
 
-       <class>com.rew3.billing.sale.estimate.model.RecurringInvoice</class>
+       <class>com.rew3.sale.estimate.model.RecurringInvoice</class>
 
         <properties>
             <property name="hibernate.show_sql" value="true" />

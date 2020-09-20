@@ -1,9 +1,9 @@
 package com.rew3.billing.salesv1;
 
-import com.rew3.billing.catalog.product.model.Product;
-import com.rew3.billing.catalog.productrateplan.model.ProductRatePlan;
-import com.rew3.billing.sale.customer.CustomerQueryHandler;
-import com.rew3.billing.sale.customer.model.Customer;
+import com.rew3.catalog.product.model.Product;
+import com.rew3.catalog.productrateplan.model.ProductRatePlan;
+import com.rew3.sale.customer.CustomerQueryHandler;
+import com.rew3.sale.customer.model.Customer;
 import com.rew3.billing.salesv1.command.CreateSales;
 import com.rew3.billing.salesv1.model.Sales;
 import com.rew3.common.application.ValidationException;

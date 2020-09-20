@@ -6,7 +6,6 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import com.rew3.billing.sale.invoice.command.CreateSalesInvoice;
 import com.rew3.billing.salesv1.SalesQueryHandler;
 import com.rew3.billing.salesv1.model.Sales;
 import com.rew3.common.cqrs.CommandRegister;

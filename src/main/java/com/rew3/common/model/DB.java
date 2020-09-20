@@ -11,7 +11,7 @@ public class DB {
         public static final String DEDUCTION = "deduction";
         public static final String ASSOCIATE = "associate";
         public static final String ACP_ASSOCIATE = "acp_associate";
-        public static final String TRANSACTION = "transaction";
+        public static final String RMSTRANSACTION = "transaction";
         public static final String TRANSACTION_STATUS_STAGE = "transaction_status_stage";
 
         public static final String TRANSACTION_ASSOCIATE = "transaction_associate";
@@ -53,9 +53,8 @@ public class DB {
         public static final String CUSTOMER = "customer";
         public static final String RECEIPT = "receipt";
 
-        public static final String CREDIT_NOTE = "credit-note";
-        public static final String DEBIT_NOTE = "debit-note";
-
+        public static final String CREDIT_NOTE = "credit_note";
+        public static final String DEBIT_NOTE = "debit_note";
 
 
         public static final String VENDOR = "vendor";
@@ -86,6 +85,13 @@ public class DB {
         public static final String EXPENSE_REFERENCE = "expense_reference";
         public static final String INVOICE_REFERENCE = "invoice_reference";
         public static final String TRANSACTION_REFERENCE = "transaction_reference";
+
+        public static final String TRANSACTION = "transaction";
+        public static final String JOURNAL = "transaction";
+        public static final String TRANSACTION_JOURNAL = "transaction";
+
+
+
 
     }
 
@@ -172,7 +178,7 @@ public class DB {
 
         }
 
-        public static class Transaction {
+        public static class RmsTransaction {
             public static final String NAME = "name";
             public static final String TYPE = "type";
             public static final String SELL_PRICE = "sell_price";
@@ -305,22 +311,21 @@ public class DB {
             public static final String ACCOUNTING_CODE_ID = "accounting_code_id";
         }
 
-        public static class AccountingCode {
+        public static class Account {
+            public static final String TITLE = "title";
+            public static final String DESCRIPTION = "description";
+            public static final String ACCOUNT_GROUP_ID = "account_group_id";
             public static final String CODE = "code";
-            public static final String NAME = "name";
-            public static final String SUB_ACCOUNTING_HEAD_ID = "sub_accounting_head_id";
-            public static final String SEGMENT = "segment";
-            public static final String NOTE = "note";
-            public static final String IS_DEFAULT = "is_default";
+            public static final String ACCOUNT_HEAD = "account_head";
 
 
         }
 
-        public static class SubAccountingHead {
-            public static final String ACCOUNTING_CODE_TYPE = "accounting_code_type";
-            public static final String ACCOUNTING_HEAD = "accounting_head";
-            public static final String CODE = "code";
+        public static class AccountGroup {
+            public static final String TITLE = "accounting_code_type";
             public static final String DESCRIPTION = "description";
+            public static final String CODE = "code";
+            public static final String ACCOUNT_HEAD = "account_head";
 
         }
 
@@ -351,8 +356,13 @@ public class DB {
 
         public static class Product {
             public static final String TITLE = "title";
+            public static final String price = "price";
             public static final String DESCRIPTION = "description";
-            public static final String ACCOUNTING_CODE_ID = "accounting_code_id";
+            public static final String STATUS = "status";
+            public static final String SIDE = "side";
+            public static final String TAX1 = "tax1";
+            public static final String TAX2 = "tax2";
+
         }
 
         public static class ProductCategoryLink {
@@ -401,47 +411,43 @@ public class DB {
 
         public static class Invoice {
             public static final String INVOICE_NUMBER = "invoice_number";
-            public static final String USER_ID = "user_id";
-            public static final String PAYMENT_TERM_ID = "payment_term_id";
+            public static final String PO_SO_NUMBER = "po_so_number";
             public static final String INVOICE_DATE = "invoice_date";
-            public static final String DUE_DATE = "due_date";
-            public static final String NOTE = "note";
-            public static final String DESCRIPTION = "description";
-            public static final String INVOICE_STATUS = "invoice_status";
+            public static final String DUE_DATE = "invoice_date";
+            public static final String CUSTOMER_ID = "customer_id";
+            public static final String PAYMENT_TERM_ID = "payment_term_id";
+            public static final String MEMOS = "memos";
             public static final String PAYMENT_STATUS = "payment_status";
-            public static final String DUE_STATUS = "due_status";
-            public static final String REFUND_STATUS = "refund_status";
-            public static final String WRITE_OFF_STATUS = "write_off_status";
-
-            public static final String TOTAL_AMOUNT = "total_amount";
-
-
-            public static final String DUE_AMOUNT = "due_amount";
-            public static final String TYPE = "type";
-
-            public static final String IS_RECURRING_INVOICE = "is_recurring_invoice";
-
-            public static final String RECURRING_INVOICE_ID = "recurring_invoice_id";
-
-
-            public static final String DISCOUNT_TYPE = "discount_type";
-            public static final String DISCOUNT = "discount";
-
-            public static final String TAX_TYPE = "tax_type";
-            public static final String TAX = "tax";
-            public static final String DATA = "data";
-
-
+            public static final String SEND_DATE_TIME = "send_date_time";
+            public static final String INTERNAL_NOTES = "internal_notes";
+            public static final String FOOTER_NOTES = "footer_notes";
+            public static final String SUB_TOTAL = "sub_total";
+            public static final String TAX_TOTAL = "tax_total";
+            public static final String TOTAL = "total";
+            public static final String BILLING_STREET = "billing_street";
+            public static final String BILLING_TOWN = "billing_town";
+            public static final String BILLING_CITY = "billing_city";
+            public static final String BILLING_COUNTRY = "billing_country";
+            public static final String IS_DRAFT = "is_draft";
         }
 
         public static class RecurringInvoice {
-            public static final String RECURRING_PERIOD_TYPE = "recurring_period_type";
-
-            public static final String END_DATE = "end_date";
-
-
+            public static final String TITLE = "title";
             public static final String START_DATE = "start_date";
-
+            public static final String END_DATE = "end_date";
+            public static final String END_TYPE = "end_type";
+            public static final String AFTER_INDEX = "after_index";
+            public static final String DESCRIPTION = "description";
+        }
+        public static class RecurringSchedule {
+            public static final String TITLE = "title";
+            public static final String SCHEDULE_TYPE = "schedule_type";
+            public static final String DAY_INDEX = "day_index";
+            public static final String MONTH_INDEX = "month_index";
+            public static final String WEEK_INDEX = "week_index";
+            public static final String WEEK_DAY_INDEX = "week_day_index";
+            public static final String YEAR_INDEX = "year_index";
+            public static final String DESCRIPTION = "description";
 
         }
 
@@ -449,34 +455,24 @@ public class DB {
         public static class InvoiceItem {
             public static final String ID = "_id";
             public static final String INVOICE_ID = "invoice_id";
-            public static final String PRODUCT_ID = "product_id";
-            public static final String TITLE = "title";
-            public static final String DESCRIPTION = "description";
-            public static final String ACCOUNTING_CODE_ID = "accounting_code_id";
-            public static final String CUSTOMER_ACCOUNTING_CODE_ID = "customer_accounting_code_id";
-
             public static final String QUANTITY = "quantity";
+            public static final String UOM = "uom";
             public static final String PRICE = "price";
-            public static final String IS_TAXABLE = "is_taxable";
-
-            public static final String DISCOUNT_TYPE = "discount_type";
-            public static final String DISCOUNT = "discount";
-
-            public static final String TAX_TYPE = "tax_type";
-            public static final String TAX = "tax";
-
+            public static final String PRODUCT_ID = "product_id";
+            public static final String TAX1 = "tax1";
+            public static final String TAX2 = "tax2";
 
         }
 
 
         public static class Expense {
-            public static final String EXPENSE_NUMBER = "expense_number";
-            public static final String EXPENSE_DATE = "expense_date";
+            public static final String TITLE  = "title";
+            public static final String MERCHANT = "merchant";
+            public static final String DATE = "date";
+            public static final String NOTES = "notes";
+            public static final String TOTAL = "total";
+            public static final String CURRENCY = "currency";
             public static final String DESCRIPTION = "description";
-            public static final String VENDOR_ID = "vendor_id";
-            public static final String PAY_FROM_ACCOUNT_ID = "pay_from_account_id";
-            public static final String CATEGORY_EXPENSE_ACCOUNT = "category_expense_account";
-            public static final String AMOUNT = "amount";
 
 
         }
@@ -505,45 +501,79 @@ public class DB {
 
         }
 
-        public static class NormalUser {
-            public static final String TYPE = "type";
-            public static final String PARENT_ID = "parent_id";
-            public static final String TITLE = "title";
+        public static class Customer {
             public static final String FIRST_NAME = "first_name";
             public static final String MIDDLE_NAME = "middle_name";
             public static final String LAST_NAME = "last_name";
-            public static final String SUFFIX = "suffix";
             public static final String EMAIL = "email";
             public static final String COMPANY = "company";
-            public static final String PHONE = "phone";
+            public static final String PHONE1 = "phone1";
+            public static final String PHONE2 = "phone2";
             public static final String MOBILE = "mobile";
+            public static final String CURRENCY = "currency";
             public static final String FAX = "fax";
             public static final String WEBSITE = "website";
-            public static final String DATA = "data";
-            public static final String DISPLAY_NAME_TYPE = "display_name_type";
-            public static final String SHIPPING_ADDRESS_ID = "shipping_address_id";
-            public static final String BILLING_ADDRESS_ID = "billing_address_id";
-            public static final String NOTES = "notes";
-            public static final String TAX_INFO = "tax_info";
-            public static final String BUS_NO = "bus_no";
-            public static final String PAYMENT_OPTION_ID = "payment_option_id";
-            public static final String BUSINESS_NUMBER = "business_number";
+            public static final String TOLL_FREE = "toll_free";
+            public static final String INTERNAL_NOTES = "internal_notes";
             public static final String ACCOUNT_NUMBER = "account_number";
-            public static final String OPENING_BALANCE = "opening_balance";
-            public static final String OPENING_BALANCE_DATE = "opening_balance_date";
-            public static final String TERMS_ID = "terms_id";
+            public static final String BILLING_STREET = "shipping_address_id";
+            public static final String BILLING_TOWN = "billing_town";
+            public static final String BILLING_CITY = "billing_city";
+            public static final String BILLING_POSTAL_CODE = "billing_postal_code";
+            public static final String BILLING_COUNTRY = "billing_country";
+            public static final String SHIPPING_STREET = "shipping_street";
+            public static final String SHIPPING_TOWN = "shipping_town";
+            public static final String SHIPPING_CITY = "shipping_city";
+            public static final String SHIPPING_POSTAL_CODE = "shipping_postal_code";
+            public static final String SHIPPING_COUNTRY = "shipping_country";
+            public static final String DELIVERY_INSTRUCTIONS = "delivery_instructions";
+            public static final String SHIP_TO_CONTACT = "ship_to_contact";
 
         }
 
+        public static class Vendor {
+            public static final String FIRST_NAME = "first_name";
+            public static final String MIDDLE_NAME = "middle_name";
+            public static final String LAST_NAME = "last_name";
+            public static final String EMAIL = "email";
+            public static final String COMPANY = "company";
+            public static final String PHONE1 = "phone1";
+            public static final String PHONE2 = "phone2";
+            public static final String MOBILE = "mobile";
+            public static final String CURRENCY = "currency";
+            public static final String FAX = "fax";
+            public static final String WEBSITE = "website";
+            public static final String TOLL_FREE = "toll_free";
+            public static final String INTERNAL_NOTES = "internal_notes";
+            public static final String ACCOUNT_NUMBER = "account_number";
+            public static final String BILLING_STREET = "shipping_address_id";
+            public static final String BILLING_TOWN = "billing_town";
+            public static final String BILLING_CITY = "billing_city";
+            public static final String BILLING_POSTAL_CODE = "billing_postal_code";
+            public static final String BILLING_COUNTRY = "billing_country";
+
+        }
+
+        public static class SalesTax {
+            public static final String TITLE = "title ";
+            public static final String ABBREVIATION = "abbreviation";
+            public static final String DESCRIPTION = "description";
+            public static final String TAX_NUMBER = "tax_number";
+            public static final String SHOW_TAX_NUMBER = "show_tax_number";
+            public static final String RATE = "rate";
+        }
+
+
         public static class PaymentOption {
-            public static final String NAME = "name";
+            public static final String TITLE = "name";
             public static final String DESCRIPTION = "description";
             public static final String CONTACT_TYPE = "contact_type";
         }
 
         public static class PaymentTerm {
-            public static final String NAME = "name";
+            public static final String TITLE = "title";
             public static final String VALUE = "value";
+            public static final String DESCRIPTION = "description";
 
 
 //            public static final String FIXED_DAYS = "fixed_days";
@@ -652,7 +682,6 @@ public class DB {
             public static final String SLIDING_SCALE_ID = "sliding_scale_id";
 
 
-
             // public static final String HAS_PRE_COMMISSION_TYPE = "has_pre_commission_type";
             // public static final String IS_PRO_RATE = "is_pro_rate";
             public static final String PRO_RATE_TYPE = "pro_rate_type";
@@ -712,6 +741,7 @@ public class DB {
 
 
         }
+
         public static class FlatFee {
             public static final String COMMISSION = "commission";
             public static final String CLOSING_FEE_ITEM = "closing_fee_item";
@@ -722,6 +752,7 @@ public class DB {
 
 
         }
+
         public static class SlidingScale {
 
             public static final String ROLL_OVER_DATE = "roll_over_date";
@@ -735,6 +766,7 @@ public class DB {
 
 
         }
+
         public static class CommissionPlanReference {
 
             public static final String COMMISSION_PLAN_ID = "commission_plan_id";
@@ -745,8 +777,8 @@ public class DB {
             public static final String TITLE = "title";
 
 
-
         }
+
         public static class InvoiceReference {
 
             public static final String INVOICE_ID = "invoice_id";
@@ -756,8 +788,8 @@ public class DB {
             public static final String TYPE = "type";
 
 
-
         }
+
         public static class ExpenseReference {
             public static final String EXPENSE_ID = "expense_id";
             public static final String ENTITY_ID = "entity_id";
@@ -766,8 +798,8 @@ public class DB {
             public static final String TYPE = "type";
 
 
-
         }
+
         public static class TransactionReference {
 
             public static final String TRANSACTION_ID = "transaction_id";
@@ -777,6 +809,95 @@ public class DB {
 
             public static final String TYPE = "type";
 
+
+        }
+
+
+        public static class Estimate {
+            public static final String ESTIMATE_NUMBER = "ESTIMATE_NUMBER";
+            public static final String PO_SO_NUMBER = "po_so_number";
+            public static final String ESTIMATE_DATE = "invoice_date";
+            public static final String CUSTOMER_ID = "customer_id";
+            public static final String PAYMENT_TERM_ID = "payment_term_id";
+            public static final String NOTES = "notes";
+            public static final String SUB_TOTAL = "sub_total";
+            public static final String TAX_TOTAL = "tax_total";
+            public static final String TOTAL = "total";
+        }
+
+        public static class EstimateItem {
+            public static final String ID = "_id";
+            public static final String QUANTITY = "quantity";
+            public static final String UOM = "uom";
+            public static final String PRICE = "price";
+            public static final String AMOUNT = "amount";
+            public static final String PRODUCT_ID = "product_id";
+            public static final String ESTIMATE_ID = "estimate_id";
+
+            public static final String TAX1 = "tax1";
+            public static final String TAX2 = "tax2";
+
+        }
+
+        public static class Bill {
+            public static final String BILL_NUMBER = "bill_number";
+            public static final String PO_SO_NUMBER = "po_so_number";
+            public static final String BILL_DATE = "bill_date";
+            public static final String DUE_DATE = "due_date";
+            public static final String VENDOR_ID = "vendor_id";
+            public static final String NOTES = "notes";
+            public static final String SUB_TOTAL = "sub_total";
+            public static final String TAX_TOTAL = "tax_total";
+            public static final String TOTAL = "total";
+        }
+
+        public static class BillItem {
+            public static final String BILL_NUMBER = "bill_number";
+            public static final String PO_SO_NUMBER = "po_so_number";
+            public static final String BILL_DATE = "bill_date";
+            public static final String VENDOR_ID = "vendor_id";
+            public static final String DUE_DATE = "due_date";
+            public static final String PAYMENT_STATUS = "payment_status";
+            public static final String INTERNAL_NOTES = "internal_notes";
+            public static final String SUB_TOTAL = "sub_total";
+            public static final String TAX_TOTAL = "tax_total";
+            public static final String TOTAL = "total";
+
+        }
+        public static class InvoicePayment {
+            public static final String INVOICE_ID = "invoice_id";
+            public static final String PO_SO_NUMBER = "po_so_number";
+            public static final String CUSTOMER_ID = "customer_id";
+            public static final String AMOUNT = "vendor_id";
+            public static final String DATE = "due_date";
+            public static final String IS_RECEIPT_SENT = "payment_status";
+
+        }
+        public static class BillPayment {
+            public static final String BILL_ID = "bill_id";
+            public static final String VENDOR_ID = "vendor_id";
+            public static final String AMOUNT = "amount";
+            public static final String DATE = "date";
+            public static final String NOTES = "notes";
+
+        }
+        public static class Transaction {
+            public static final String DATE = "date";
+            public static final String AMOUNT = "amount";
+            public static final String DESCRIPTION = "description";
+
+        }
+        public static class TransactionJournal {
+            public static final String TRANSACTION_ID = "transaction_id";
+            public static final String JOURNAL_ID = "journal_id";
+
+        }
+        public static class Journal {
+            public static final String ACCOUNT_ID = "account_id";
+            public static final String SIDE = "side";
+            public static final String AMOUNT = "amount";
+            public static final String DATE = "date";
+            public static final String DESCRIPTION = "description";
 
 
         }

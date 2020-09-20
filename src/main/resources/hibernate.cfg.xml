@@ -10,7 +10,7 @@
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">admin</property>
         <!--<property name="hibernate.connection.url">jdbc:postgresql://localhost:1234/rew3_fi~nancial</property>-->
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:1234/rew3_invoice</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:1234/rew3_finance</property>
 
 
         <property name="show_sql">true</property>
@@ -22,54 +22,54 @@
 
 
 
-        <mapping class="com.rew3.accounting.accountingcode.model.AccountingCode"/>
+        <mapping class="com.rew3.accounting.accountingcode.model.Account"/>
         <!--
                <mapping class="com.rew3.finance.accountingcode.model.EntityCode" />
         -->
         <mapping class="com.rew3.accounting.accountingcode.model.AccountingClass"/>
-        <mapping class="com.rew3.accounting.accountingperiod.model.AccountingPeriod"/>
-        <mapping class="com.rew3.accounting.accountingperiod.model.AccountingPeriodRequest"/>
-        <mapping class="com.rew3.accounting.accountingjournal.model.AccountingJournal"/>
+        <mapping class="com.rew3.accounting.accountingperiod.model.AccountPeriod"/>
+        <mapping class="com.rew3.accounting.accountingperiod.model.AccountPeriodRequest"/>
+        <mapping class="com.rew3.accounting.accountingjournal.model.Journal"/>
 
         <mapping class="com.rew3.user.model.User"/>
-        <mapping class="com.rew3.billing.sale.estimate.model.Invoice"/>
-        <mapping class="com.rew3.billing.sale.estimate.model.InvoiceItem"/>
-        <mapping class="com.rew3.billing.sale.estimate.model.InvoiceReference"/>
+        <mapping class="com.rew3.sale.estimate.model.Invoice"/>
+        <mapping class="com.rew3.sale.estimate.model.InvoiceItem"/>
+        <mapping class="com.rew3.sale.estimate.model.InvoiceReference"/>
 
         <!--
                <mapping class="com.rew3.billing.sales.estimate.model.InvoiceAttachment" />
         -->
-        <mapping class="com.rew3.billing.sale.estimate.model.InvoiceRequest"/>
+        <mapping class="com.rew3.sale.estimate.model.InvoiceRequest"/>
 
-        <mapping class="com.rew3.billing.catalog.product.model.Product"/>
-        <mapping class="com.rew3.billing.catalog.product.model.ProductCategoryLink"/>
-        <mapping class="com.rew3.billing.catalog.product.model.ProductFeatureLink"/>
-        <mapping class="com.rew3.billing.catalog.product.model.ProductRatePlanLink"/>
-        <mapping class="com.rew3.billing.catalog.productcategory.model.ProductCategory"/>
-        <mapping class="com.rew3.billing.catalog.productfeature.model.ProductFeature"/>
-        <mapping class="com.rew3.billing.catalog.productrateplan.model.ProductRatePlan"/>
-        <mapping class="com.rew3.billing.catalog.productrateplan.model.ProductRatePlanCharge"/>
+        <mapping class="com.rew3.catalog.product.model.Product"/>
+        <mapping class="com.rew3.catalog.product.model.ProductCategoryLink"/>
+        <mapping class="com.rew3.catalog.product.model.ProductFeatureLink"/>
+        <mapping class="com.rew3.catalog.product.model.ProductRatePlanLink"/>
+        <mapping class="com.rew3.catalog.productcategory.model.ProductCategory"/>
+        <mapping class="com.rew3.catalog.productfeature.model.ProductFeature"/>
+        <mapping class="com.rew3.catalog.productrateplan.model.ProductRatePlan"/>
+        <mapping class="com.rew3.catalog.productrateplan.model.ProductRatePlanCharge"/>
 
         <mapping class="com.rew3.billing.salesv1.model.Sales"/>
 
-        <mapping class="com.rew3.billing.payment.model.PaymentReceipt"/>
-        <mapping class="com.rew3.billing.payment.model.PaymentReceiptItem"/>
+        <mapping class="com.rew3.payment.model.PaymentReceipt"/>
+        <mapping class="com.rew3.payment.model.PaymentReceiptItem"/>
         <!--
-               <mapping class="com.rew3.billing.payment.model.PaymentReceiptAttachment" />
+               <mapping class="com.rew3.payment.model.PaymentReceiptAttachment" />
         -->
-        <mapping class="com.rew3.billing.payment.model.BillingAccount"/>
-        <mapping class="com.rew3.billing.payment.model.BankTransaction"/>
-        <mapping class="com.rew3.billing.payment.model.DepositItem"/>
-        <mapping class="com.rew3.billing.payment.model.BankDepositSlip"/>
-        <mapping class="com.rew3.billing.payment.model.BankReconciliation"/>
-        <mapping class="com.rew3.billing.sale.estimate.model.PaymentTerm"/>
+        <mapping class="com.rew3.payment.model.BillingAccount"/>
+        <mapping class="com.rew3.payment.model.BankTransaction"/>
+        <mapping class="com.rew3.payment.model.DepositItem"/>
+        <mapping class="com.rew3.payment.model.BankDepositSlip"/>
+        <mapping class="com.rew3.payment.model.BankReconciliation"/>
+        <mapping class="com.rew3.sale.estimate.model.PaymentTerm"/>
         <mapping class="com.rew3.common.shared.model.Address"/>
-        <mapping class="com.rew3.billing.sale.customer.model.Customer"/>
-        <mapping class="com.rew3.billing.sale.customer.model.PaymentOption"/>
+        <mapping class="com.rew3.sale.customer.model.Customer"/>
+        <mapping class="com.rew3.sale.customer.model.PaymentOption"/>
         <!--
             <mapping class="com.rew3.common.shared.model.Attachment" />
         -->
-        <mapping class="com.rew3.accounting.accountingcode.model.SubAccountingHead"/>
+        <mapping class="com.rew3.accounting.accountingcode.model.AccountGroup"/>
 
 
         <!--
@@ -101,9 +101,9 @@
 
 
 
-        <mapping class="com.rew3.billing.purchase.expense.model.Expense"/>
-        <mapping class="com.rew3.billing.purchase.expense.model.ExpenseItem"/>
-        <mapping class="com.rew3.billing.purchase.expense.model.ExpenseReference"/>
+        <mapping class="com.rew3.purchase.expense.model.Expense"/>
+        <mapping class="com.rew3.purchase.expense.model.ExpenseItem"/>
+        <mapping class="com.rew3.purchase.expense.model.ExpenseReference"/>
 
 
 
@@ -111,7 +111,7 @@
         <mapping class="com.rew3.brokerage.commissionplan.model.SlidingScale"/>
 
 
-        <mapping class="com.rew3.billing.sale.estimate.model.RecurringInvoice"/>
+        <mapping class="com.rew3.sale.estimate.model.RecurringInvoice"/>
 
 
     </session-factory>

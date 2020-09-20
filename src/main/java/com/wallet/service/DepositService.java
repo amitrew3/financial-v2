@@ -1,8 +1,8 @@
 package com.wallet.service;
 
 import com.google.rpc.Status;
-import com.rew3.billing.sale.invoice.InvoiceQueryHandler;
-import com.rew3.billing.sale.invoice.model.Car;
+import com.rew3.sale.invoice.InvoiceQueryHandler;
+import com.rew3.sale.invoice.model.Car;
 import com.wallet.util.CurrencyUtil;
 import io.grpc.protobuf.StatusProto;
 import io.grpc.stub.StreamObserver;

@@ -19,11 +19,11 @@ import com.rew3.common.model.Flags.EntityType;
 import com.rew3.common.utils.APILogType;
 import com.rew3.common.utils.APILogger;
 import com.rew3.common.utils.Parser;
-import com.rew3.accounting.accountingcode.model.AccountingCode;
-import com.rew3.accounting.accountingjournal.model.AccountingJournal;
-import com.rew3.accounting.accountingperiod.AccountingPeriodQueryHandler;
+import com.rew3.accounting.accountingcode.model.Account;
+import com.rew3.accounting.accountingjournal.model.Journal;
+import com.rew3.accounting.accountingperiod.AccountPeriodQueryHandler;
 import com.rew3.accounting.accountingperiod.command.CreateAccountingPeriod;
-import com.rew3.accounting.accountingperiod.model.AccountingPeriod;
+import com.rew3.accounting.accountingperiod.model.AccountPeriod;
 
 public class AccountingJournalCommandHandler implements ICommandHandler {
 
@@ -121,7 +121,7 @@ public class AccountingJournalCommandHandler implements ICommandHandler {
                 ownerId = (String) c.get("ownerId");
             }
 
-            AccountingPeriod ap = (AccountingPeriod) (new AccountingPeriodQueryHandler())
+            AccountPeriod ap = (AccountPeriod) (new AccountPeriodQueryHandler())
                     .getByTimestamp((Timestamp) c.get("date"), ownerId);
 
             if (ap == null) {
@@ -130,7 +130,7 @@ public class AccountingJournalCommandHandler implements ICommandHandler {
                 apData.put("ownerId", ownerId);
                 ICommand apCommand = new CreateAccountingPeriod(apData, trx);
                 CommandRegister.getInstance().process(apCommand);
-                ap = (AccountingPeriod) apCommand.getObject();
+                ap = (AccountPeriod) apCommand.getObject();
             }
 
             Integer entryNumber = Parser.convertObjectToInteger(c.get("entryNumber"));
@@ -140,11 +140,11 @@ public class AccountingJournalCommandHandler implements ICommandHandler {
             String refId = (String) c.get("refId");
             AccountingCodeSegment acs = AccountingCodeSegment.valueOf((String) c.get("segment").toString().toUpperCase());
             EntityType et = EntityType.valueOf((String) c.get("refType").toString().toUpperCase());
-            AccountingCode ac = (AccountingCode) c.get("code");
+            Account ac = (Account) c.get("code");
 
-            AccountingJournal aj = new AccountingJournal();
+            Journal aj = new Journal();
             aj.setEntryNumber(entryNumber);
-            aj.setAccountingPeriod(ap);
+            aj.setAccountPeriod(ap);
             aj.setSegment(acs);
             aj.setDate(date);
             aj.setDebit(true);
@@ -155,7 +155,7 @@ public class AccountingJournalCommandHandler implements ICommandHandler {
 
                 aj.setRefType(et.getFlag());
             }
-            aj.setAccountingCode(ac);
+            aj.setAccount(ac);
 
             HibernateUtils.save(aj, trx);
 
@@ -1674,7 +1674,7 @@ public class AccountingJournalCommandHandler implements ICommandHandler {
         try {
 
             String id = (String) c.get("id");
-            AccountingJournal journal = (AccountingJournal) new AccountingJournalQueryHandler().getById(id);
+            Journal journal = (Journal) new AccountingJournalQueryHandler().getById(id);
 
             if (journal != null) {
                 if (!journal.hasDeletePermission(Authentication.getRew3UserId(), Authentication.getRew3GroupId())) {
@@ -1682,7 +1682,7 @@ public class AccountingJournalCommandHandler implements ICommandHandler {
                     throw new CommandException("Permission denied");
                 }
                 journal.setStatus(EntityStatus.DELETED);
-                journal = (AccountingJournal) HibernateUtils.save(journal, trx);
+                journal = (Journal) HibernateUtils.save(journal, trx);
 
             }
 

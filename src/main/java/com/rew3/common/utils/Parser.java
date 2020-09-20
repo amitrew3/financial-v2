@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rew3.billing.sale.invoice.model.AbstractDTO;
+import com.rew3.sale.invoice.model.AbstractDTO;
 import com.rew3.common.interceptor.ACL;
 
 import java.io.IOException;

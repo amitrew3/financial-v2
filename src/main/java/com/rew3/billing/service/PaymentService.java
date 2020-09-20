@@ -1,13 +1,13 @@
 package com.rew3.billing.service;
 
-import com.rew3.billing.purchase.expense.command.CreateExpense;
-import com.rew3.billing.purchase.expense.model.Expense;
-import com.rew3.billing.purchase.expense.model.ExpenseDTO;
-import com.rew3.billing.sale.invoice.InvoiceQueryHandler;
-import com.rew3.billing.paymentterm.PaymentTermQueryHandler;
-import com.rew3.billing.sale.invoice.RecurringInvoiceQueryHandler;
-import com.rew3.billing.sale.invoice.command.*;
-import com.rew3.billing.sale.invoice.model.*;
+import com.rew3.purchase.expense.command.CreateExpense;
+import com.rew3.purchase.expense.model.Expense;
+import com.rew3.purchase.expense.model.ExpenseDTO;
+import com.rew3.sale.invoice.InvoiceQueryHandler;
+import com.rew3.paymentterm.PaymentTermQueryHandler;
+import com.rew3.sale.invoice.RecurringInvoiceQueryHandler;
+import com.rew3.sale.invoice.command.*;
+import com.rew3.sale.invoice.model.*;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
@@ -21,7 +21,7 @@ public class PaymentService {
     public Invoice createCustomerInvoice(HashMap<String, Object> requestData) throws Exception {
 
 
-        CreateCustomerInvoice command = new CreateCustomerInvoice(requestData);
+        CreateInvoice command = new CreateInvoice(requestData);
         CommandRegister.getInstance().process(command);
         Invoice invoice = (Invoice) command.getObject();
         return invoice;
@@ -31,7 +31,7 @@ public class PaymentService {
     public Invoice updateCustomerInvoice(HashMap<String, Object> requestData) throws Exception {
 
 
-        UpdateCustomerInvoice command = new UpdateCustomerInvoice(requestData);
+        UpdateInvoice command = new UpdateInvoice(requestData);
         CommandRegister.getInstance().process(command);
         Invoice invoice = (Invoice) command.getObject();
 

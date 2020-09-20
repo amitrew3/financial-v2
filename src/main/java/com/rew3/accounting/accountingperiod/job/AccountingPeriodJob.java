@@ -10,9 +10,9 @@ import org.quartz.JobExecutionException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.utils.DateTime;
-import com.rew3.accounting.accountingperiod.AccountingPeriodQueryHandler;
+import com.rew3.accounting.accountingperiod.AccountPeriodQueryHandler;
 import com.rew3.accounting.accountingperiod.command.CloseAccountingPeriod;
-import com.rew3.accounting.accountingperiod.model.AccountingPeriod;
+import com.rew3.accounting.accountingperiod.model.AccountPeriod;
 
 public class AccountingPeriodJob implements Job {
 	public static boolean isRunning = false;
@@ -29,11 +29,11 @@ public class AccountingPeriodJob implements Job {
 			System.out.println("Accounting Period Job Started");
 			System.out.println(DateTime.getCurrentTimestamp());
 			
-			AccountingPeriodQueryHandler q = new AccountingPeriodQueryHandler();
-			List<AccountingPeriod> acpList = q.getCloseable();
+			AccountPeriodQueryHandler q = new AccountPeriodQueryHandler();
+			List<AccountPeriod> acpList = q.getCloseable();
 
 			
-			for(AccountingPeriod acp: acpList) {
+			for(AccountPeriod acp: acpList) {
 				HashMap<String,Object> data= new HashMap<>();
 				data.put("id",acp.get_id());
 				ICommand c = new CloseAccountingPeriod(data);

@@ -1,14 +1,5 @@
 package com.rew3.common.model;
 
-import com.rew3.billing.payment.model.BankTransaction;
-import org.hibernate.type.EntityType;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 public abstract class Flags {
 
 
@@ -369,12 +360,12 @@ public abstract class Flags {
 
 
     public enum EntityClassType implements EntityFlags {
-        PRODUCT("com.rew3.billing.catalog.product.model.Product"),
-        PRODUCT_CATEGORY_LINK("com.rew3.billing.catalog.product.model.ProductCategoryLink"),
-        PRODUCT_FEATURE_LINK("com.rew3.billing.catalog.product.model.ProductFeatureLink"),
-        PRODUCT_RATE_PLAN_LINK("com.rew3.billing.catalog.product.model.ProductRatePlanLink"),
-        PRODUCT_CATEGORY("com.rew3.billing.catalog.productcategory.model.ProductCategory"),
-        PRODUCT_FEATURE("com.rew3.billing.catalog.productfeature.model.ProductFeature"),
+        PRODUCT("com.rew3.catalog.product.model.Product"),
+        PRODUCT_CATEGORY_LINK("com.rew3.catalog.product.model.ProductCategoryLink"),
+        PRODUCT_FEATURE_LINK("com.rew3.catalog.product.model.ProductFeatureLink"),
+        PRODUCT_RATE_PLAN_LINK("com.rew3.catalog.product.model.ProductRatePlanLink"),
+        PRODUCT_CATEGORY("com.rew3.catalog.productcategory.model.ProductCategory"),
+        PRODUCT_FEATURE("com.rew3.catalog.productfeature.model.ProductFeature"),
         INVOICE("com.rew3.billing.sales.invoice.model.Invoice"),
         INVOICE_ATTACHMENT("com.rew3.billing.sales.invoice.model.InvoiceAttachment"),
         INVOICE_ITEM("com.rew3.billing.sales.invoice.model.InvoiceItem"),
@@ -382,13 +373,13 @@ public abstract class Flags {
         NORMAL_USER("com.rew3.billing.sales.customer.model.TieredAcp"),
         PAYMENT_OPTION("com.rew3.billing.sales.customer.model.PaymentOption"),
         TERMS("com.rew3.billing.sales.invoice.model.PaymentTerm"),
-        BANK_DEPOSIT_SLIP("com.rew3.billing.payment.model.BankDepositSlip"),
-        BANK_TRANSACTION("com.rew3.billing.payment.model.BankTransaction"),
-        BILLING_ACCOUNT("com.rew3.billing.payment.model.BillingAccount"),
-        DEPOSIT_ITEM("com.rew3.billing.payment.model.DepositItem"),
-        PAYMENT_RECEIPT("com.rew3.billing.payment.model.PaymentReceipt"),
-        PAYMENT_RECEIPT_ATTACHMENT("com.rew3.billing.payment.model.PaymentReceiptAttachment"),
-        PAYMENT_RECEIPT_ITEM("com.rew3.billing.payment.model.PaymentReceiptItem"),
+        BANK_DEPOSIT_SLIP("com.rew3.payment.model.BankDepositSlip"),
+        BANK_TRANSACTION("com.rew3.payment.model.BankTransaction"),
+        BILLING_ACCOUNT("com.rew3.payment.model.BillingAccount"),
+        DEPOSIT_ITEM("com.rew3.payment.model.DepositItem"),
+        PAYMENT_RECEIPT("com.rew3.payment.model.PaymentReceipt"),
+        PAYMENT_RECEIPT_ATTACHMENT("com.rew3.payment.model.PaymentReceiptAttachment"),
+        PAYMENT_RECEIPT_ITEM("com.rew3.payment.model.PaymentReceiptItem"),
         SALES("com.rew3.billing.salesv1.model.Sales"),
         ADDRESS("com.rew3.common.shared.model.Address"),
         ATTACHMENT("com.rew3.common.shared.model.Attachment"),

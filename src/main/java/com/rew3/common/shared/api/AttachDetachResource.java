@@ -1,9 +1,9 @@
 /*
 package com.rew3.common.shared.api;
 
-import com.rew3.billing.purchase.expense.ExpenseQueryHandler;
-import com.rew3.billing.purchase.expense.model.Expense;
-import com.rew3.billing.purchase.expense.model.ExpenseReference;
+import com.rew3.purchase.expense.ExpenseQueryHandler;
+import com.rew3.purchase.expense.model.Expense;
+import com.rew3.purchase.expense.model.ExpenseReference;
 import com.wallet.repository.InvoiceQueryHandler;
 import com.rew3.billing.sales.invoice.model.Invoice;
 import com.rew3.billing.sales.invoice.model.InvoiceReference;

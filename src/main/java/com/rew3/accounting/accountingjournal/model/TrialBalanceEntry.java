@@ -10,7 +10,7 @@ public class TrialBalanceEntry {
     AccountingCodeSegment segment;
     double debit;
     double credit;
-    List<AccountingJournal> journalList;
+    List<Journal> journalList;
 
     public String getAccountingCode() {
         return accountingCode;
@@ -52,11 +52,11 @@ public class TrialBalanceEntry {
         this.credit = credit;
     }
 
-    public List<AccountingJournal> getJournalList() {
+    public List<Journal> getJournalList() {
         return journalList;
     }
 
-    public void setJournalList(List<AccountingJournal> journalList) {
+    public void setJournalList(List<Journal> journalList) {
         this.journalList = journalList;
     }
 }

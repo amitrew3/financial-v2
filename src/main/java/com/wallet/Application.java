@@ -1,15 +1,15 @@
 package com.wallet;
 
-import com.rew3.billing.catalog.product.ProductCommandHandler;
-import com.rew3.billing.catalog.productcategory.ProductCategoryCommandHandler;
-import com.rew3.billing.catalog.productfeature.ProductFeatureCommandHandler;
-import com.rew3.billing.catalog.productrateplan.ProductRatePlanCommandHandler;
-import com.rew3.billing.paymentterm.PaymentTermCommandHandler;
-import com.rew3.billing.sale.invoice.*;
-import com.rew3.billing.sale.customer.CustomerCommandHandler;
-import com.rew3.billing.paymentoption.PaymentOptionCommandHandler;
-import com.rew3.billing.payment.PaymentCommandHandler;
-import com.rew3.billing.payment.PaymentEventHandler;
+import com.rew3.catalog.product.ProductCommandHandler;
+import com.rew3.catalog.productcategory.ProductCategoryCommandHandler;
+import com.rew3.catalog.productfeature.ProductFeatureCommandHandler;
+import com.rew3.catalog.productrateplan.ProductRatePlanCommandHandler;
+import com.rew3.paymentterm.PaymentTermCommandHandler;
+import com.rew3.sale.invoice.*;
+import com.rew3.sale.customer.CustomerCommandHandler;
+import com.rew3.paymentoption.PaymentOptionCommandHandler;
+import com.rew3.payment.PaymentCommandHandler;
+import com.rew3.payment.PaymentEventHandler;
 import com.rew3.billing.salesv1.SalesCommandHandler;
 import com.rew3.billing.salesv1.SalesEventHandler;
 import com.rew3.common.shared.AclCommandHandler;
@@ -22,9 +22,9 @@ import com.rew3.brokerage.commissionplan.CommissionPlanCommandHandler;
 import com.rew3.brokerage.deduction.DeductionCommandHandler;
 import com.rew3.brokerage.gcp.GcpCommandHandler;
 import com.rew3.brokerage.transaction.TransactionCommandHandler;
-import com.rew3.accounting.accountingcode.AccountingCodeCommandHandler;
+import com.rew3.accounting.accountingcode.AccountCodeCommandHandler;
 import com.rew3.accounting.accountingjournal.AccountingJournalCommandHandler;
-import com.rew3.accounting.accountingperiod.AccountingPeriodCommandHandler;
+import com.rew3.accounting.accountingperiod.AccountPeriodCommandHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -46,9 +46,9 @@ public class Application {
         SalesCommandHandler.registerCommands();
         AclCommandHandler.registerCommands();
 
-        AccountingCodeCommandHandler.registerCommands();
+        AccountCodeCommandHandler.registerCommands();
         AccountingJournalCommandHandler.registerCommands();
-        AccountingPeriodCommandHandler.registerCommands();
+        AccountPeriodCommandHandler.registerCommands();
         PaymentTermCommandHandler.registerCommands();
         CustomerCommandHandler.registerCommands();
         AddressCommandHandler.registerCommands();

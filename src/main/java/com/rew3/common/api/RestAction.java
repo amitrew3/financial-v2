@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rew3.billing.sales.invoice.model.AbstractDTO;
 import com.rew3.billing.sales.invoice.model.InvoiceItem;
-import com.rew3.billing.payment.model.BillingAccount;
+import com.rew3.payment.model.BillingAccount;
 import com.rew3.common.shared.model.AbstractEntity;
 import com.rew3.commission.transaction.model.RmsTransaction;
 import com.rew3.common.application.CommandException;

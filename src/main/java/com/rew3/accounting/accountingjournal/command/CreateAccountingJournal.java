@@ -9,20 +9,20 @@ import com.rew3.common.cqrs.Command;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.model.Flags.AccountingCodeSegment;
 import com.rew3.common.model.Flags.EntityType;
-import com.rew3.accounting.accountingcode.model.AccountingCode;
+import com.rew3.accounting.accountingcode.model.Account;
 
 public class CreateAccountingJournal extends Command implements ICommand {
 	public CreateAccountingJournal(HashMap<String, Object> data) {
 		super(data);
 	}
 
-	public CreateAccountingJournal(Integer entryNumber, Timestamp date, AccountingCodeSegment segment, AccountingCode code,
+	public CreateAccountingJournal(Integer entryNumber, Timestamp date, AccountingCodeSegment segment, Account code,
 			Double debit, Double credit, String refId, EntityType refType, String ownerId) {
 		this(entryNumber, date, segment, code, debit, credit, refId, refType, ownerId, null);
 		
 	}
 	
-	public CreateAccountingJournal(Integer entryNumber, Timestamp date, AccountingCodeSegment segment, AccountingCode code,
+	public CreateAccountingJournal(Integer entryNumber, Timestamp date, AccountingCodeSegment segment, Account code,
 			Double debit, Double credit, String refId, EntityType refType, String ownerId, Transaction trx) {
 		super(null, trx);
 		this.set("entryNumber", entryNumber);
@@ -37,7 +37,7 @@ public class CreateAccountingJournal extends Command implements ICommand {
 		
 	}
 
-	public CreateAccountingJournal(Integer entryNumber, Timestamp date, AccountingCodeSegment segment, AccountingCode code,
+	public CreateAccountingJournal(Integer entryNumber, Timestamp date, AccountingCodeSegment segment, Account code,
 								   boolean isDebit, Double amount, String refId, EntityType refType, String ownerId, Transaction trx) {
 		super(null, trx);
 		this.set("entryNumber", entryNumber);
