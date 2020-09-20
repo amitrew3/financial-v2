@@ -21,51 +21,24 @@
         <property name="hibernate.connection.isolation">2</property>
 
 
-
         <mapping class="com.rew3.accounting.accountingcode.model.Account"/>
-        <!--
-               <mapping class="com.rew3.finance.accountingcode.model.EntityCode" />
-        -->
-        <mapping class="com.rew3.accounting.accountingcode.model.AccountingClass"/>
         <mapping class="com.rew3.accounting.accountingperiod.model.AccountPeriod"/>
-        <mapping class="com.rew3.accounting.accountingperiod.model.AccountPeriodRequest"/>
         <mapping class="com.rew3.accounting.accountingjournal.model.Journal"/>
 
-        <mapping class="com.rew3.user.model.User"/>
-        <mapping class="com.rew3.sale.estimate.model.Invoice"/>
-        <mapping class="com.rew3.sale.estimate.model.InvoiceItem"/>
-        <mapping class="com.rew3.sale.estimate.model.InvoiceReference"/>
 
-        <!--
-               <mapping class="com.rew3.billing.sales.estimate.model.InvoiceAttachment" />
-        -->
-        <mapping class="com.rew3.sale.estimate.model.InvoiceRequest"/>
 
         <mapping class="com.rew3.catalog.product.model.Product"/>
-        <mapping class="com.rew3.catalog.product.model.ProductCategoryLink"/>
-        <mapping class="com.rew3.catalog.product.model.ProductFeatureLink"/>
-        <mapping class="com.rew3.catalog.product.model.ProductRatePlanLink"/>
-        <mapping class="com.rew3.catalog.productcategory.model.ProductCategory"/>
-        <mapping class="com.rew3.catalog.productfeature.model.ProductFeature"/>
-        <mapping class="com.rew3.catalog.productrateplan.model.ProductRatePlan"/>
-        <mapping class="com.rew3.catalog.productrateplan.model.ProductRatePlanCharge"/>
 
-        <mapping class="com.rew3.billing.salesv1.model.Sales"/>
-
-        <mapping class="com.rew3.bank.model.PaymentReceipt"/>
-        <mapping class="com.rew3.bank.model.PaymentReceiptItem"/>
-        <!--
-               <mapping class="com.rew3.payment.invoicepayment.model.PaymentReceiptAttachment" />
-        -->
-        <mapping class="com.rew3.bank.model.BillingAccount"/>
+        <!--<mapping class="com.rew3.bank.model.BillingAccount"/>
         <mapping class="com.rew3.bank.model.BankTransaction"/>
         <mapping class="com.rew3.bank.model.DepositItem"/>
         <mapping class="com.rew3.bank.model.BankDepositSlip"/>
-        <mapping class="com.rew3.bank.model.BankReconciliation"/>
-        <mapping class="com.rew3.sale.estimate.model.PaymentTerm"/>
-        <mapping class="com.rew3.common.shared.model.Address"/>
+        <mapping class="com.rew3.bank.model.BankReconciliation"/>-->
+
         <mapping class="com.rew3.sale.customer.model.Customer"/>
-        <mapping class="com.rew3.sale.customer.model.PaymentOption"/>
+        <mapping class="com.rew3.purchase.vendor.model.Vendor"/>
+
+        <mapping class="com.rew3.paymentoption.model.PaymentOption"/>
         <!--
             <mapping class="com.rew3.common.shared.model.Attachment" />
         -->
@@ -75,43 +48,65 @@
         <!--
             Commission Module
         -->
-        <mapping class="com.rew3.brokerage.gcp.model.Gcp"/>
-        <mapping class="com.rew3.brokerage.acp.model.AcpAssociate"/>
-        <mapping class="com.rew3.brokerage.acp.model.SingleRateAcp"/>
-        <mapping class="com.rew3.brokerage.acp.model.Acp"/>
-        <mapping class="com.rew3.brokerage.acp.model.TieredAcp"/>
-        <mapping class="com.rew3.brokerage.acp.model.TieredStage"/>
-        <mapping class="com.rew3.brokerage.associate.model.Associate"/>
-        <mapping class="com.rew3.brokerage.deduction.model.Deduction"/>
-        <mapping class="com.rew3.brokerage.transaction.model.RmsTransaction"/>
-        <mapping class="com.rew3.brokerage.transaction.model.TransactionAssociate"/>
-        <mapping class="com.rew3.brokerage.transaction.model.TransactionDeduction"/>
-        <mapping class="com.rew3.brokerage.transaction.model.TransactionGcp"/>
-        <mapping class="com.rew3.brokerage.transaction.model.TransactionClosing"/>
-        <mapping class="com.rew3.brokerage.transaction.model.TransactionContact"/>
-        <mapping class="com.rew3.brokerage.transaction.model.TransactionStatusStage"/>
-        <mapping class="com.rew3.brokerage.transaction.model.TransactionReference"/>
+        <!-- <mapping class="com.rew3.brokerage.gcp.model.Gcp"/>
+         <mapping class="com.rew3.brokerage.acp.model.AcpAssociate"/>
+         <mapping class="com.rew3.brokerage.acp.model.SingleRateAcp"/>
+         <mapping class="com.rew3.brokerage.acp.model.Acp"/>
+         <mapping class="com.rew3.brokerage.acp.model.TieredAcp"/>
+         <mapping class="com.rew3.brokerage.acp.model.TieredStage"/>
+         <mapping class="com.rew3.brokerage.associate.model.Associate"/>
+         <mapping class="com.rew3.brokerage.deduction.model.Deduction"/>
+         <mapping class="com.rew3.brokerage.transaction.model.RmsTransaction"/>
+         <mapping class="com.rew3.brokerage.transaction.model.TransactionAssociate"/>
+         <mapping class="com.rew3.brokerage.transaction.model.TransactionDeduction"/>
+         <mapping class="com.rew3.brokerage.transaction.model.TransactionGcp"/>
+         <mapping class="com.rew3.brokerage.transaction.model.TransactionClosing"/>
+         <mapping class="com.rew3.brokerage.transaction.model.TransactionContact"/>
+         <mapping class="com.rew3.brokerage.transaction.model.TransactionStatusStage"/>
+         <mapping class="com.rew3.brokerage.transaction.model.TransactionReference"/>
 
 
-        <mapping class="com.rew3.brokerage.commissionplan.model.CommissionPlan"/>
-        <mapping class="com.rew3.brokerage.commissionplan.model.PreCommission"/>
-        <mapping class="com.rew3.brokerage.commissionplan.model.CommissionLevel"/>
-        <mapping class="com.rew3.brokerage.commissionplan.model.CommissionPlanAgent"/>
-        <mapping class="com.rew3.brokerage.commissionplan.model.CommissionPlanReference"/>
-
+         <mapping class="com.rew3.brokerage.commissionplan.model.CommissionPlan"/>
+         <mapping class="com.rew3.brokerage.commissionplan.model.PreCommission"/>
+         <mapping class="com.rew3.brokerage.commissionplan.model.CommissionLevel"/>
+         <mapping class="com.rew3.brokerage.commissionplan.model.CommissionPlanAgent"/>
+         <mapping class="com.rew3.brokerage.commissionplan.model.CommissionPlanReference"/>-->
 
 
         <mapping class="com.rew3.purchase.expense.model.Expense"/>
-        <mapping class="com.rew3.purchase.expense.model.ExpenseItem"/>
-        <mapping class="com.rew3.purchase.expense.model.ExpenseReference"/>
+        <!-- <mapping class="com.rew3.purchase.expense.model.ExpenseItem"/>
+         <mapping class="com.rew3.purchase.expense.model.ExpenseReference"/>
 
 
 
-        <mapping class="com.rew3.brokerage.commissionplan.model.FlatFee"/>
-        <mapping class="com.rew3.brokerage.commissionplan.model.SlidingScale"/>
+         <mapping class="com.rew3.brokerage.commissionplan.model.FlatFee"/>
+         <mapping class="com.rew3.brokerage.commissionplan.model.SlidingScale"/>
+ -->
+
+        <mapping class="com.rew3.sale.invoice.model.Invoice"/>
+        <mapping class="com.rew3.sale.invoice.model.InvoiceItem"/>
+
+        <mapping class="com.rew3.sale.estimate.model.Estimate"/>
+        <mapping class="com.rew3.sale.estimate.model.EstimateItem"/>
 
 
-        <mapping class="com.rew3.sale.estimate.model.RecurringInvoice"/>
+        <mapping class="com.rew3.purchase.bill.model.Bill"/>
+        <mapping class="com.rew3.purchase.bill.model.BillItem"/>
+
+        <mapping class="com.rew3.payment.invoicepayment.model.InvoicePayment"/>
+        <mapping class="com.rew3.payment.billpayment.model.BillPayment"/>
+        <mapping class="com.rew3.paymentoption.model.PaymentOption"/>
+        <mapping class="com.rew3.paymentterm.model.PaymentTerm"/>
+
+
+        <mapping class="com.rew3.paymentterm.model.PaymentTerm"/>
+        <mapping class="com.rew3.paymentoption.model.PaymentOption"/>
+
+        <mapping class="com.rew3.sale.recurringinvoice.model.RecurringInvoice"/>
+        <mapping class="com.rew3.sale.recurringinvoice.model.RecurringSchedule"/>
+
+
+
 
 
     </session-factory>

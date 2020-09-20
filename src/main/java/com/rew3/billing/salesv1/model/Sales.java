@@ -1,3 +1,4 @@
+/*
 package com.rew3.billing.salesv1.model;
 
 
@@ -37,7 +38,8 @@ public class Sales extends AbstractEntity{
 	@Column(name="next_invoice_at")
 	private Timestamp nextInvoiceAt;
 
-	/*public Long getProductId() {
+	*/
+/*public Long getProductId() {
 		return productId;
 	}
 
@@ -53,7 +55,8 @@ public class Sales extends AbstractEntity{
 		this.productRatePlanId = productRatePlanId;
 	}
 
-*/
+*//*
+
 	public Timestamp getStartDate() {
 		return startDate;
 	}
@@ -112,3 +115,4 @@ public class Sales extends AbstractEntity{
 		isInvoiced = invoiced;
 	}
 }
+*/
