@@ -1,5 +1,6 @@
 package com.rew3.common.utils;
 
+import com.rew3.paymentterm.model.PaymentTerm;
 import com.rew3.purchase.expense.model.Expense;
 import com.rew3.sale.invoice.model.Invoice;
 import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
@@ -7,8 +8,8 @@ import com.rew3.sale.customer.model.Customer;
 import com.rew3.brokerage.acp.model.Acp;
 import com.rew3.brokerage.commissionplan.model.CommissionPlan;
 import com.rew3.brokerage.transaction.model.RmsTransaction;
-import com.rew3.accounting.accountingcode.model.Account;
-import com.rew3.accounting.accountingcode.model.AccountGroup;
+import com.rew3.accounting.account.model.Account;
+import com.rew3.accounting.account.model.AccountGroup;
 
 import java.util.HashMap;
 

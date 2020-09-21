@@ -524,14 +524,12 @@ public abstract class Flags {
     }
 
     public enum FeeCalculationOption {
-
         BROKERAGE_COMMISSION, AGENT_COMMISSION, SALES_PRICE
 
 
     }
 
     public enum TierBasedOption {
-
         COMPANY_CONTRIBUTION,
         SALES_VOLUME,
         GROSS_COMMISSION,
@@ -541,11 +539,17 @@ public abstract class Flags {
     }
 
     public enum TierPeriodOption {
-
         PRODUCTION_START_DATE,
         CUSTOM_DATE,
         COMPANY_ANNIVERSARY_DATE,
         THIS_TRANSACTION_ONLY
+
+
+    }
+
+    public enum AccountSide {
+        DR,
+        CR
 
 
     }

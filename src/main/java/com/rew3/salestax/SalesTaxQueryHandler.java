@@ -11,6 +11,7 @@ import com.rew3.common.model.PaginationParams;
 import com.rew3.common.utils.Parser;
 import com.rew3.common.utils.RequestFilter;
 import com.rew3.common.utils.Rew3StringBuiler;
+import com.rew3.salestax.model.SalesTax;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +20,7 @@ public class SalesTaxQueryHandler implements IQueryHandler {
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
-        PaymentTerm acp = (PaymentTerm) HibernateUtilV2.get(PaymentTerm.class, id);
+        SalesTax acp = (SalesTax) HibernateUtilV2.get(SalesTax.class, id);
         if (acp == null) {
             throw new NotFoundException("Payment Term  id(" + id + ") not found.");
         }
@@ -66,7 +67,7 @@ public class SalesTaxQueryHandler implements IQueryHandler {
         }
 
         //all the filtering options....
-        RequestFilter.doFilter(q, sqlParams, builder,PaymentTerm.class);
+        RequestFilter.doFilter(q, sqlParams, builder, SalesTax.class);
 
         if (q.has("page_number")) {
             offset = (limit * (page - 1));
@@ -77,7 +78,7 @@ public class SalesTaxQueryHandler implements IQueryHandler {
 
 
         List<Object> terms = HibernateUtils.select("SELECT distinct t FROM PaymentTerm t " + builder.getValue(), sqlParams, q.getQuery(), limit, offset,
-                PaymentTerm.class);
+                SalesTax.class);
 
         return terms;
     }
@@ -93,9 +94,9 @@ public class SalesTaxQueryHandler implements IQueryHandler {
 
         q.set("status", Flags.EntityStatus.ACTIVE.toString());
 
-        RequestFilter.doFilter(q, sqlParams, builder,PaymentTerm.class);
+        RequestFilter.doFilter(q, sqlParams, builder, SalesTax.class);
 
-        Long count = HibernateUtils.count("SELECT  count(distinct t) FROM PaymentTerm t " + builder.getValue(), sqlParams, q.getQuery(), PaymentTerm.class);
+        Long count = HibernateUtils.count("SELECT  count(distinct t) FROM PaymentTerm t " + builder.getValue(), sqlParams, q.getQuery(), SalesTax.class);
 
 
         return count;

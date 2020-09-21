@@ -1,7 +1,6 @@
 package com.rew3.sale.recurringinvoice;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.rew3.billing.service.PaymentService;
 import com.rew3.common.application.Authentication;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
@@ -9,16 +8,14 @@ import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.database.HibernateUtils;
-import com.rew3.common.model.Flags;
 import com.rew3.common.model.Flags.EntityStatus;
 import com.rew3.common.utils.APILogType;
 import com.rew3.common.utils.APILogger;
 import com.rew3.common.utils.Rew3Date;
-import com.rew3.sale.recurringinvoice.command.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import com.rew3.sale.recurringinvoice.command.CreateRecurringInvoice;
+import com.rew3.sale.recurringinvoice.command.DeleteRecurringInvoice;
+import com.rew3.sale.recurringinvoice.command.UpdateRecurringInvoice;
+import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
 
 public class RecurringInvoiceCommandHandler implements ICommandHandler {
 
@@ -26,9 +23,6 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
         CommandRegister.getInstance().registerHandler(CreateRecurringInvoice.class, RecurringInvoiceCommandHandler.class);
         CommandRegister.getInstance().registerHandler(UpdateRecurringInvoice.class, RecurringInvoiceCommandHandler.class);
         CommandRegister.getInstance().registerHandler(DeleteRecurringInvoice.class, RecurringInvoiceCommandHandler.class);
-        CommandRegister.getInstance().registerHandler(CreateBulkRecurringInvoice.class, RecurringInvoiceCommandHandler.class);
-        CommandRegister.getInstance().registerHandler(UpdateBulkRecurringInvoice.class, RecurringInvoiceCommandHandler.class);
-        CommandRegister.getInstance().registerHandler(DeleteBulkRecurringInvoice.class, RecurringInvoiceCommandHandler.class);
 
     }
 
@@ -39,12 +33,6 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
             handle((UpdateRecurringInvoice) c);
         } else if (c instanceof DeleteRecurringInvoice) {
             handle((DeleteRecurringInvoice) c);
-        } else if (c instanceof CreateBulkRecurringInvoice) {
-            handle((CreateBulkRecurringInvoice) c);
-        } else if (c instanceof UpdateBulkRecurringInvoice) {
-            handle((UpdateBulkRecurringInvoice) c);
-        } else if (c instanceof DeleteBulkRecurringInvoice) {
-            handle((DeleteBulkRecurringInvoice) c);
         }
     }
 
@@ -65,8 +53,6 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
     }
 
 
-
-
     private RecurringInvoice _handleSaveRecurringInvoice(ICommand c) throws Exception {
 
         boolean isNew = true;
@@ -81,14 +67,13 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
         if (c.has("startDate")) {
             recurringInvoice.setStartDate(Rew3Date.convertToUTC(c.get("startDate").toString()));
         }
-        if (c.has("recurringPeriodType")) {
+       /* if (c.has("recurringPeriodType")) {
             Flags.RecurringPeriodType recurringPeriodType = Flags.RecurringPeriodType.valueOf((String) c.get("recurringPeriodType"));
             recurringInvoice.setRecurringPeriodType(recurringPeriodType);
-        }
+        }*/
         if (c.has("endDate")) {
             recurringInvoice.setEndDate(Rew3Date.convertToUTC(c.get("endDate").toString()));
         }
-
 
 
         if (c.has("status")) {
@@ -118,58 +103,6 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
             c.setObject(plan);
         }
 
-    }
-
-    public void handle(CreateBulkRecurringInvoice c) throws Exception {
-        List<HashMap<String, Object>> inputs = (List<HashMap<String, Object>>) c.getBulkData();
-
-        PaymentService service = new PaymentService();
-
-        List<Object> plans = new ArrayList<Object>();
-
-
-        for (HashMap<String, Object> data : inputs) {
-            RecurringInvoice acp = service.createRecurringInvoice(data);
-
-            plans.add(acp);
-        }
-        c.setObject(plans);
-
-    }
-
-    public void handle(UpdateBulkRecurringInvoice c) throws Exception {
-        List<HashMap<String, Object>> inputs = (List<HashMap<String, Object>>) c.getBulkData();
-
-        PaymentService service = new PaymentService();
-
-        List<Object> plans = new ArrayList<Object>();
-
-
-        for (HashMap<String, Object> data : inputs) {
-            RecurringInvoice invoice = service.updateRecurringInvoice(data);
-            plans.add(invoice);
-        }
-        c.setObject(plans);
-
-    }
-
-    public void handle(DeleteBulkRecurringInvoice c) throws Exception {
-        List<Object> ids = (List<Object>) c.get("ids");
-
-        List<Object> plans = new ArrayList<Object>();
-
-        for (Object obj : ids) {
-            HashMap<String, Object> map = new HashMap<>();
-            String id = (String) obj;
-            map.put("id", id);
-
-            ICommand command = new DeleteBulkRecurringInvoice(map);
-            CommandRegister.getInstance().process(command);
-            RecurringInvoice nu = (RecurringInvoice) command.getObject();
-            plans.add(nu);
-        }
-
-        c.setObject(plans);
     }
 
 }

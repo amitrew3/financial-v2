@@ -1,3 +1,4 @@
+/*
 package com.rew3.common.shared;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -476,3 +477,4 @@ public class AttachDetachCommandHandler implements ICommandHandler {
 
 
 }
+*/

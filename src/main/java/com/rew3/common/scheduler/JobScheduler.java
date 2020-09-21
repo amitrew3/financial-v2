@@ -1,21 +1,9 @@
 package com.rew3.common.scheduler;
 
+import org.quartz.*;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-
-import com.rew3.accounting.accountingperiod.job.AccountingPeriodJob;
-import org.quartz.CronScheduleBuilder;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
-
-import com.rew3.sale.invoice.job.InvoiceRecurJob;
-import com.rew3.sale.invoice.job.InvoiceStatusJob;
-import com.rew3.billing.salesv1.job.SalesInvoiceJob;
-import com.rew3.accounting.accountingjournal.job.InvoiceJournalJob;
 
 public class JobScheduler implements ServletContextListener {
     Scheduler scheduler = null;
@@ -58,20 +46,20 @@ public class JobScheduler implements ServletContextListener {
             JobDetail heroJob = JobBuilder.newJob(EventJob.class)
                     .withIdentity("HeroJob", "cron60").build();
 
-            JobDetail invoiceStatusJob = JobBuilder.newJob(InvoiceStatusJob.class)
-                    .withIdentity("InvoiceStatusJob", "cron60").build();
+//            JobDetail invoiceStatusJob = JobBuilder.newJob(InvoiceStatusJob.class)
+//                    .withIdentity("InvoiceStatusJob", "cron60").build();
+//
+//            JobDetail invoiceJournalJob = JobBuilder.newJob(InvoiceJournalJob.class)
+//                    .withIdentity("SalesInvoiceJob", "cron60").build();
+//
+//            JobDetail invoiceRecurJob = JobBuilder.newJob(InvoiceRecurJob.class)
+//                    .withIdentity("InvoiceRecurJob", "cron5").build();
 
-            JobDetail invoiceJournalJob = JobBuilder.newJob(InvoiceJournalJob.class)
-                    .withIdentity("SalesInvoiceJob", "cron60").build();
-
-            JobDetail invoiceRecurJob = JobBuilder.newJob(InvoiceRecurJob.class)
-                    .withIdentity("InvoiceRecurJob", "cron5").build();
-
-            JobDetail salesInvoiceJob = JobBuilder.newJob(SalesInvoiceJob.class)
-                    .withIdentity("SalesInvoiceJob", "cron5").build();
-
-            JobDetail accountingPeriodJob = JobBuilder.newJob(AccountingPeriodJob.class)
-                    .withIdentity("AccountingPeriodJob", "cron24").build();
+//            JobDetail salesInvoiceJob = JobBuilder.newJob(SalesInvoiceJob.class)
+//                    .withIdentity("SalesInvoiceJob", "cron5").build();
+//
+//            JobDetail accountingPeriodJob = JobBuilder.newJob(AccountingPeriodJob.class)
+//                    .withIdentity("AccountingPeriodJob", "cron24").build();
 
 
 //            scheduler = new StdSchedulerFactory().getScheduler();

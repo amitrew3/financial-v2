@@ -11,6 +11,7 @@ import com.rew3.common.model.PaginationParams;
 import com.rew3.common.utils.Parser;
 import com.rew3.common.utils.RequestFilter;
 import com.rew3.common.utils.Rew3StringBuiler;
+import com.rew3.paymentterm.model.PaymentTerm;
 
 import java.util.HashMap;
 import java.util.List;
@@ -66,7 +67,7 @@ public class PaymentTermQueryHandler implements IQueryHandler {
         }
 
         //all the filtering options....
-        RequestFilter.doFilter(q, sqlParams, builder,PaymentTerm.class);
+        RequestFilter.doFilter(q, sqlParams, builder, PaymentTerm.class);
 
         if (q.has("page_number")) {
             offset = (limit * (page - 1));

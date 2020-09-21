@@ -1,3 +1,4 @@
+/*
 package com.rew3.sale.invoice;
 
 import com.rew3.sale.invoice.event.InvoiceAccepted;
@@ -18,15 +19,16 @@ public class InvoiceEventHandler implements IEventHandler {
 			handle((InvoiceCreated) e);
 		} else if (e instanceof InvoiceAccepted) {
 			handle((InvoiceAccepted) e);
-		} 
+		}
 	}
-	
+
 	public void handle(InvoiceCreated e) {
 		System.out.println("--INVOICE CREATED EVENT TRIGGERED--");
 	}
-	
+
 	public void handle(InvoiceAccepted e) {
 		System.out.println("--INVOICE ACCEPTED EVENT TRIGGERED--");
 	}
-	
+
 }
+*/

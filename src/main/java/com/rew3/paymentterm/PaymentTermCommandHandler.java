@@ -1,8 +1,6 @@
 package com.rew3.paymentterm;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.rew3.sale.invoice.command.*;
-import com.rew3.billing.service.PaymentService;
 import com.rew3.common.application.Authentication;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
@@ -10,14 +8,12 @@ import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.database.HibernateUtils;
-import com.rew3.common.model.Flags.EntityStatus;
 import com.rew3.common.utils.APILogType;
 import com.rew3.common.utils.APILogger;
-import com.rew3.common.utils.Parser;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import com.rew3.paymentterm.command.CreateTerm;
+import com.rew3.paymentterm.command.DeleteTerm;
+import com.rew3.paymentterm.command.UpdateTerm;
+import com.rew3.paymentterm.model.PaymentTerm;
 
 public class PaymentTermCommandHandler implements ICommandHandler {
 
@@ -25,9 +21,6 @@ public class PaymentTermCommandHandler implements ICommandHandler {
         CommandRegister.getInstance().registerHandler(CreateTerm.class, PaymentTermCommandHandler.class);
         CommandRegister.getInstance().registerHandler(UpdateTerm.class, PaymentTermCommandHandler.class);
         CommandRegister.getInstance().registerHandler(DeleteTerm.class, PaymentTermCommandHandler.class);
-        CommandRegister.getInstance().registerHandler(CreateBulkTerm.class, PaymentTermCommandHandler.class);
-        CommandRegister.getInstance().registerHandler(UpdateBulkTerm.class, PaymentTermCommandHandler.class);
-        CommandRegister.getInstance().registerHandler(DeleteBulkTerm.class, PaymentTermCommandHandler.class);
 
     }
 
@@ -38,12 +31,6 @@ public class PaymentTermCommandHandler implements ICommandHandler {
             handle((UpdateTerm) c);
         } else if (c instanceof DeleteTerm) {
             handle((DeleteTerm) c);
-        } else if (c instanceof CreateBulkTerm) {
-            handle((CreateBulkTerm) c);
-        } else if (c instanceof UpdateBulkTerm) {
-            handle((UpdateBulkTerm) c);
-        } else if (c instanceof DeleteBulkTerm) {
-            handle((DeleteBulkTerm) c);
         }
     }
 
@@ -64,8 +51,6 @@ public class PaymentTermCommandHandler implements ICommandHandler {
     }
 
 
-
-
     private PaymentTerm _handleSavePaymentTerm(ICommand c) throws Exception {
 
         boolean isNew = true;
@@ -77,35 +62,6 @@ public class PaymentTermCommandHandler implements ICommandHandler {
             term = (PaymentTerm) new PaymentTermQueryHandler().getById(c.get("id").toString());
             isNew = false;
         }
-        if (c.has("name")) {
-            term.setName((String) c.get("name"));
-        }
-
-       /* if (c.has("fixedDays")) {
-            term.setFixedDays((Integer) c.get("fixedDays"));
-        }
-
-        if (c.has("dayOfMonth")) {
-            term.setDayOfMonth((Integer) c.get("dayOfMonth"));
-        }
-
-        if (c.has("type")) {
-            String type = (String) c.get("type");
-            term.setDueRuleType(Flags.DueRuleType.valueOf(type.toUpperCase()));
-        }
-        if (c.has("daysOfDueDate")) {
-            term.setDaysOfDueDate((Integer) c.get("daysOfDueDate"));
-        }*/
-
-        if (c.has("value")) {
-            term.setValue(Parser.convertObjectToInteger(c.get("value")));
-        }
-        if (c.has("status")) {
-            term.setStatus(EntityStatus.valueOf(c.get("status").toString().toUpperCase()));
-        } else if (isNew) {
-            term.setStatus(EntityStatus.ACTIVE);
-        }
-
 
         term = (PaymentTerm) HibernateUtils.save(term, c, isNew);
 
@@ -129,56 +85,5 @@ public class PaymentTermCommandHandler implements ICommandHandler {
 
     }
 
-    public void handle(CreateBulkTerm c) throws Exception {
-        List<HashMap<String, Object>> inputs = (List<HashMap<String, Object>>) c.getBulkData();
-
-        PaymentService service = new PaymentService();
-
-        List<Object> plans = new ArrayList<Object>();
-
-
-        for (HashMap<String, Object> data : inputs) {
-            PaymentTerm acp = service.createUpdatePaymentTerm(data);
-
-            plans.add(acp);
-        }
-        c.setObject(plans);
-
-    }
-
-    public void handle(UpdateBulkTerm c) throws Exception {
-        List<HashMap<String, Object>> inputs = (List<HashMap<String, Object>>) c.getBulkData();
-
-        PaymentService service = new PaymentService();
-
-        List<Object> plans = new ArrayList<Object>();
-
-
-        for (HashMap<String, Object> data : inputs) {
-            PaymentTerm invoice = service.createUpdatePaymentTerm(data);
-            plans.add(invoice);
-        }
-        c.setObject(plans);
-
-    }
-
-    public void handle(DeleteBulkTerm c) throws Exception {
-        List<Object> ids = (List<Object>) c.get("ids");
-
-        List<Object> plans = new ArrayList<Object>();
-
-        for (Object obj : ids) {
-            HashMap<String, Object> map = new HashMap<>();
-            String id = (String) obj;
-            map.put("id", id);
-
-            ICommand command = new DeleteBulkTerm(map);
-            CommandRegister.getInstance().process(command);
-            PaymentTerm nu = (PaymentTerm) command.getObject();
-            plans.add(nu);
-        }
-
-        c.setObject(plans);
-    }
 
 }

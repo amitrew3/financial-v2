@@ -21,28 +21,33 @@
         <property name="hibernate.connection.isolation">2</property>
 
 
-        <mapping class="com.rew3.accounting.accountingcode.model.Account"/>
-        <mapping class="com.rew3.accounting.accountingperiod.model.AccountPeriod"/>
-        <mapping class="com.rew3.accounting.accountingjournal.model.Journal"/>
+        <!--Accounting-->
+
+        <mapping class="com.rew3.accounting.account.model.Account"/>
+        <mapping class="com.rew3.accounting.accountperiod.model.AccountPeriod"/>
+        <mapping class="com.rew3.accounting.transaction.model.Journal"/>
+        <mapping class="com.rew3.accounting.account.model.AccountGroup"/>
 
 
-
+        <!--Purchase and Sales-->
         <mapping class="com.rew3.catalog.product.model.Product"/>
-
-        <!--<mapping class="com.rew3.bank.model.BillingAccount"/>
-        <mapping class="com.rew3.bank.model.BankTransaction"/>
-        <mapping class="com.rew3.bank.model.DepositItem"/>
-        <mapping class="com.rew3.bank.model.BankDepositSlip"/>
-        <mapping class="com.rew3.bank.model.BankReconciliation"/>-->
-
         <mapping class="com.rew3.sale.customer.model.Customer"/>
         <mapping class="com.rew3.purchase.vendor.model.Vendor"/>
-
+        <mapping class="com.rew3.purchase.expense.model.Expense"/>
+        <mapping class="com.rew3.sale.invoice.model.Invoice"/>
+        <mapping class="com.rew3.sale.invoice.model.InvoiceItem"/>
+        <mapping class="com.rew3.sale.estimate.model.Estimate"/>
+        <mapping class="com.rew3.sale.estimate.model.EstimateItem"/>
+        <mapping class="com.rew3.purchase.bill.model.Bill"/>
+        <mapping class="com.rew3.purchase.bill.model.BillItem"/>
+        <mapping class="com.rew3.payment.invoicepayment.model.InvoicePayment"/>
+        <mapping class="com.rew3.payment.billpayment.model.BillPayment"/>
         <mapping class="com.rew3.paymentoption.model.PaymentOption"/>
-        <!--
-            <mapping class="com.rew3.common.shared.model.Attachment" />
-        -->
-        <mapping class="com.rew3.accounting.accountingcode.model.AccountGroup"/>
+        <mapping class="com.rew3.paymentterm.model.PaymentTerm"/>
+        <mapping class="com.rew3.paymentoption.model.PaymentOption"/>
+        <mapping class="com.rew3.sale.recurringinvoice.model.RecurringInvoice"/>
+        <mapping class="com.rew3.sale.recurringinvoice.model.RecurringSchedule"/>
+
 
 
         <!--
@@ -73,7 +78,6 @@
          <mapping class="com.rew3.brokerage.commissionplan.model.CommissionPlanReference"/>-->
 
 
-        <mapping class="com.rew3.purchase.expense.model.Expense"/>
         <!-- <mapping class="com.rew3.purchase.expense.model.ExpenseItem"/>
          <mapping class="com.rew3.purchase.expense.model.ExpenseReference"/>
 
@@ -82,29 +86,6 @@
          <mapping class="com.rew3.brokerage.commissionplan.model.FlatFee"/>
          <mapping class="com.rew3.brokerage.commissionplan.model.SlidingScale"/>
  -->
-
-        <mapping class="com.rew3.sale.invoice.model.Invoice"/>
-        <mapping class="com.rew3.sale.invoice.model.InvoiceItem"/>
-
-        <mapping class="com.rew3.sale.estimate.model.Estimate"/>
-        <mapping class="com.rew3.sale.estimate.model.EstimateItem"/>
-
-
-        <mapping class="com.rew3.purchase.bill.model.Bill"/>
-        <mapping class="com.rew3.purchase.bill.model.BillItem"/>
-
-        <mapping class="com.rew3.payment.invoicepayment.model.InvoicePayment"/>
-        <mapping class="com.rew3.payment.billpayment.model.BillPayment"/>
-        <mapping class="com.rew3.paymentoption.model.PaymentOption"/>
-        <mapping class="com.rew3.paymentterm.model.PaymentTerm"/>
-
-
-        <mapping class="com.rew3.paymentterm.model.PaymentTerm"/>
-        <mapping class="com.rew3.paymentoption.model.PaymentOption"/>
-
-        <mapping class="com.rew3.sale.recurringinvoice.model.RecurringInvoice"/>
-        <mapping class="com.rew3.sale.recurringinvoice.model.RecurringSchedule"/>
-
 
 
 

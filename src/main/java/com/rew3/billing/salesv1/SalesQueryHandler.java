@@ -1,3 +1,4 @@
+/*
 package com.rew3.billing.salesv1;
 
 import java.sql.Timestamp;
@@ -131,3 +132,4 @@ public class SalesQueryHandler implements IQueryHandler {
 	}
 
 }
+*/

@@ -2,8 +2,10 @@ package com.rew3.purchase.bill.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rew3.catalog.product.model.Product;
 import com.rew3.common.model.DB;
 import com.rew3.common.model.Flags;
+import com.rew3.sale.invoice.model.Invoice;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -22,42 +24,37 @@ public class BillItem {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator")
 
-    @Column(name = DB.Field.InvoiceItem.ID, updatable = false)
+    @Column(name = DB.Field.BillItem.ID, updatable = false)
     private String id;
 
 
     @JsonIgnore
-    @JoinColumn(name = DB.Field.InvoiceItem.INVOICE_ID)
+    @JoinColumn(name = DB.Field.BillItem.BILL_ID)
     @ManyToOne
-    private Bill bill;
+    private Invoice invoice;
 
-
-    @NotEmpty
-    @Column(name = DB.Field.InvoiceItem.TITLE)
-    private String title;
-
-    @Column(name = DB.Field.InvoiceItem.DESCRIPTION)
-    private String description;
+    @JsonIgnore
+    @JoinColumn(name = DB.Field.BillItem.PRODUCT_ID)
+    @ManyToOne
+    private Product product;
 
     @NotNull
-    @Column(name = DB.Field.InvoiceItem.QUANTITY)
+    @Column(name = DB.Field.BillItem.QUANTITY)
     private Integer quantity;
 
     @NotNull
-    @Column(name = DB.Field.InvoiceItem.PRICE)
+    @Column(name = DB.Field.BillItem.UOM)
+    private Integer uom;
+
+    @NotNull
+    @Column(name = DB.Field.BillItem.PRICE)
     private Double price;
 
-    @Column(name = DB.Field.InvoiceItem.TAX_TYPE)
-    private String taxType;
+    @Column(name = DB.Field.BillItem.TAX1)
+    private Double tax1;
 
-    @Column(name = DB.Field.InvoiceItem.TAX)
-    private Double tax;
-
-    @Column(name = DB.Field.InvoiceItem.DISCOUNT_TYPE)
-    private String discountType;
-
-    @Column(name = DB.Field.InvoiceItem.DISCOUNT)
-    private Double discount;
+    @Column(name = DB.Field.BillItem.TAX2)
+    private Double tax2;
 
     public String getId() {
         return id;
@@ -67,28 +64,20 @@ public class BillItem {
         this.id = id;
     }
 
-    public Bill getBill() {
-        return bill;
+    public Invoice getInvoice() {
+        return invoice;
     }
 
-    public void setBill(Bill bill) {
-        this.bill = bill;
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
     }
 
-    public String getTitle() {
-        return title;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public Integer getQuantity() {
@@ -99,6 +88,14 @@ public class BillItem {
         this.quantity = quantity;
     }
 
+    public Integer getUom() {
+        return uom;
+    }
+
+    public void setUom(Integer uom) {
+        this.uom = uom;
+    }
+
     public Double getPrice() {
         return price;
     }
@@ -107,37 +104,19 @@ public class BillItem {
         this.price = price;
     }
 
-    public Double getTax() {
-        return tax;
+    public Double getTax1() {
+        return tax1;
     }
 
-    public void setTax(Double tax) {
-        this.tax = tax;
+    public void setTax1(Double tax1) {
+        this.tax1 = tax1;
     }
 
-    public Double getDiscount() {
-        return discount;
+    public Double getTax2() {
+        return tax2;
     }
 
-    public void setDiscount(Double discount) {
-        this.discount = discount;
+    public void setTax2(Double tax2) {
+        this.tax2 = tax2;
     }
-
-    public void setTaxType(Flags.CalculationType taxType) {
-        this.taxType = taxType.toString();
-    }
-
-    public String getTaxType() {
-        return taxType;
-    }
-
-    public String getDiscountType() {
-        return discountType;
-    }
-
-    public void setDiscountType(Flags.CalculationType discountType) {
-        this.discountType = discountType.toString();
-    }
-
-
 }

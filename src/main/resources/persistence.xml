@@ -14,14 +14,14 @@
             Persistence unit for the JPA tutorial of the Hibernate Getting Started Guide
         </description>
 
-        <class>com.rew3.accounting.accountingcode.model.Account</class>
+        <class>com.rew3.accounting.account.model.Account</class>
         <!--
               <class>com.rew3.finance.accountingcode.model.EntityCode" />
         -->
-       <class>com.rew3.accounting.accountingcode.model.AccountingClass</class>
-       <class>com.rew3.accounting.accountingperiod.model.AccountPeriod</class>
-       <class>com.rew3.accounting.accountingperiod.model.AccountPeriodRequest</class>
-       <class>com.rew3.accounting.accountingjournal.model.Journal</class>
+       <class>com.rew3.accounting.account.model.AccountingClass</class>
+       <class>com.rew3.accounting.accountperiod.model.AccountPeriod</class>
+       <class>com.rew3.accounting.accountperiod.model.AccountPeriodRequest</class>
+       <class>com.rew3.accounting.transaction.model.Journal</class>
 
        <class>com.rew3.user.model.User</class>
        <class>com.rew3.sale.estimate.model.Invoice</class>
@@ -61,7 +61,7 @@
         <!--
            <class>com.rew3.common.shared.model.Attachment" />
         -->
-       <class>com.rew3.accounting.accountingcode.model.AccountGroup</class>
+       <class>com.rew3.accounting.account.model.AccountGroup</class>
 
 
         <!--

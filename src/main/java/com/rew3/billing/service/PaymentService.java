@@ -1,5 +1,7 @@
 package com.rew3.billing.service;
 
+import com.rew3.paymentterm.command.CreateTerm;
+import com.rew3.paymentterm.model.PaymentTerm;
 import com.rew3.purchase.expense.command.CreateExpense;
 import com.rew3.purchase.expense.model.Expense;
 import com.rew3.purchase.expense.model.ExpenseDTO;
@@ -13,7 +15,9 @@ import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.Query;
 import com.rew3.common.utils.Converters;
+import com.rew3.sale.recurringinvoice.command.CreateRecurringInvoice;
 import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
+import com.rew3.sale.recurringinvoice.model.RecurringInvoiceDTO;
 
 import java.util.HashMap;
 import java.util.List;
@@ -73,12 +77,6 @@ public class PaymentService {
         PaymentTerm paymentTerm = (PaymentTerm) command.getObject();
 
         return paymentTerm;
-
-    }
-
-    public PaymentTermDTO getPaymentTermById(String id) throws NotFoundException, CommandException {
-        PaymentTerm paymentTerm = (PaymentTerm) new PaymentTermQueryHandler().getById(id);
-        return Converters.convertToPaymentTermDTO(paymentTerm);
 
     }
 

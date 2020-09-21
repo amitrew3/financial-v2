@@ -101,7 +101,7 @@ public class InvoicePaymentCommandHandler implements ICommandHandler {
         }
 
         if (c.has("name")) {
-            paymentOption.setName((String) c.get("name"));
+//            paymentOption.setName((String) c.get("name"));
         }
 
         if (c.has("description")) {

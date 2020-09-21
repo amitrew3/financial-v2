@@ -1,3 +1,4 @@
+/*
 package com.rew3.bank.command;
 
 import com.rew3.bank.model.DepositItem;
@@ -64,3 +65,4 @@ public class DepositItemQueryHandler implements IQueryHandler {
 
 
 }
+*/

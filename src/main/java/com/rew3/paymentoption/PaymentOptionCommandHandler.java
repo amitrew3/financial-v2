@@ -1,6 +1,9 @@
 package com.rew3.paymentoption;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.rew3.paymentoption.command.CreatePaymentOption;
+import com.rew3.paymentoption.command.DeletePaymentOption;
+import com.rew3.paymentoption.command.UpdatePaymentOption;
 import com.rew3.paymentoption.model.PaymentOption;
 import com.rew3.common.application.Authentication;
 import com.rew3.common.application.CommandException;

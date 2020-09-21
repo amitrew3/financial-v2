@@ -22,10 +22,9 @@ public class DB {
         public static final String TRANSACTION_CONTACT = "transaction_contact";
 
         public static final String ACCOUNTING_CLASS = "accounting_class";
-        public static final String ACCOUNTING_CODE = "accounting_code";
-        public static final String ACCOUNTING_JOURNAL = "accounting_journal";
+        public static final String ACCOUNT = "accounting_code";
 
-        public static final String SUB_ACCOUNTING_HEAD = "sub_accounting_head";
+        public static final String ACCOUNTGROUP = "accountgroup";
         public static final String ACCOUNTING_PERIOD = "accounting_period";
         public static final String ACCOUNTING_PERIOD_REQUEST = "accounting_period_request";
         public static final String PRODUCT = "product";
@@ -858,16 +857,14 @@ public class DB {
         }
 
         public static class BillItem {
-            public static final String BILL_NUMBER = "bill_number";
-            public static final String PO_SO_NUMBER = "po_so_number";
-            public static final String BILL_DATE = "bill_date";
-            public static final String VENDOR_ID = "vendor_id";
-            public static final String DUE_DATE = "due_date";
-            public static final String PAYMENT_STATUS = "payment_status";
-            public static final String INTERNAL_NOTES = "internal_notes";
-            public static final String SUB_TOTAL = "sub_total";
-            public static final String TAX_TOTAL = "tax_total";
-            public static final String TOTAL = "total";
+            public static final String ID = "_id";
+            public static final String BILL_ID = "bill_id";
+            public static final String QUANTITY = "quantity";
+            public static final String UOM = "uom";
+            public static final String PRICE = "price";
+            public static final String PRODUCT_ID = "product_id";
+            public static final String TAX1 = "tax1";
+            public static final String TAX2 = "tax2";
 
         }
         public static class InvoicePayment {
@@ -899,6 +896,7 @@ public class DB {
         }
         public static class Journal {
             public static final String ACCOUNT_ID = "account_id";
+            public static final String TRANSACTION_ID = "transaction_id";
             public static final String SIDE = "side";
             public static final String AMOUNT = "amount";
             public static final String DATE = "date";

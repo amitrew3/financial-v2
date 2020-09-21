@@ -1,5 +1,6 @@
 package com.rew3.common.utils;
 
+import com.rew3.paymentterm.model.PaymentTerm;
 import com.rew3.purchase.expense.model.Expense;
 import com.rew3.purchase.expense.model.ExpenseDTO;
 import com.rew3.sale.invoice.model.*;
@@ -12,11 +13,12 @@ import com.rew3.brokerage.transaction.model.RmsTransaction;
 import com.rew3.brokerage.transaction.model.TransacationDTO;
 import com.rew3.brokerage.transaction.model.TransactionContact;
 import com.rew3.common.model.Flags;
-import com.rew3.accounting.accountingcode.model.Account;
-import com.rew3.accounting.accountingcode.model.AccountCodeDTO;
-import com.rew3.accounting.accountingcode.model.AccountGroup;
-import com.rew3.accounting.accountingcode.model.AccountGroupDTO;
+import com.rew3.accounting.account.model.Account;
+import com.rew3.accounting.account.model.AccountCodeDTO;
+import com.rew3.accounting.account.model.AccountGroup;
+import com.rew3.accounting.account.model.AccountGroupDTO;
 import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
+import com.rew3.sale.recurringinvoice.model.RecurringInvoiceDTO;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -156,36 +158,18 @@ public class Converters {
         dto.set_id(invoice.get_id());
         dto.setMeta(invoice.getMeta());
         dto.setAcl(invoice.getAcl());
-        dto.setType(invoice.getType());
         dto.setOwner(invoice.getOwner());
         dto.setStatus(invoice.getStatus());
 
         InvoiceInfo info = new InvoiceInfo();
-        info.setDescription(invoice.getDescription());
-        info.setDiscount(invoice.getDiscount());
-        info.setDiscountType(invoice.getDiscountType());
-        info.setDueStatus(invoice.getDueStatus());
         info.setInvoiceNumber(invoice.getInvoiceNumber());
-        info.setInvoiceStatus(invoice.getInvoiceStatus());
-        info.setNote(invoice.getNote());
         info.setPaymentStatus(invoice.getPaymentStatus());
-        info.setRefundStatus(invoice.getRefundStatus());
-        info.setWriteOffStatus(invoice.getWriteOffStatus());
-        info.setTax(invoice.getTax());
-        info.setTaxType(invoice.getTaxType());
-        info.setNote(invoice.getNote());
 
         dto.setInvoiceInfo(info);
 
         // dto.setRecurringInvoice(invoice.isRecurringInvoice());
-        dto.setRecurringInvoice(invoice.getRecurringInvoice());
         dto.setDueDate(dto.getDueDate());
         dto.setInvoiceDate(dto.getInvoiceDate());
-        dto.setPaymentTerm(invoice.getPaymentTerm());
-        dto.setTotalAmount(invoice.getTotalAmount());
-        dto.setDueAmount(invoice.getTotalAmount());
-        dto.setData(invoice.getData());
-        dto.setUserId(invoice.getUserId());
         dto.setItems(invoice.getItems());
         return dto;
     }
@@ -239,8 +223,6 @@ public class Converters {
                 return convertToCommissionPlanDTO(c);
             } else if (c instanceof CommissionPlanAgent) {
                 return convertToMiniUser(c);
-            } else if (c instanceof PaymentTerm) {
-                return convertToPaymentTermDTO(c);
             } else if (c instanceof RecurringInvoice) {
                 return convertToRecurringInvoiceDTO(c);
             } else if (c instanceof AccountGroup) {
@@ -271,9 +253,7 @@ public class Converters {
         Optional.ofNullable(expense.getStatus()).ifPresent(x -> dto.setStatus(x));
         Optional.ofNullable(expense.getVisibility()).ifPresent(x -> dto.setVisibility(x));
 
-        Optional.ofNullable(expense.getAmount()).ifPresent(x -> dto.setAmount(x));
         Optional.ofNullable(expense.getExpenseNumber()).ifPresent(x -> dto.setExpenseNumber(x));
-        Optional.ofNullable(expense.getExpenseDate()).ifPresent(x -> dto.setExpenseDate(x));
         Optional.ofNullable(expense.getDescription()).ifPresent(x -> dto.setDescription(x));
 
         return dto;
@@ -335,38 +315,21 @@ public class Converters {
         return dto;
     }
 
-    public static PaymentTermDTO convertToPaymentTermDTO(Object c) {
-        PaymentTerm paymentTerm = (PaymentTerm) c;
-
-        PaymentTermDTO dto = new PaymentTermDTO();
-
-        Optional.ofNullable(paymentTerm.get_id()).ifPresent(x -> dto.set_id(x));
-        Optional.ofNullable(paymentTerm.getMeta()).ifPresent(x -> dto.setMeta(x));
-        Optional.ofNullable(paymentTerm.getAcl()).ifPresent(x -> dto.setAcl(x));
-        Optional.ofNullable(paymentTerm.getOwner()).ifPresent(x -> dto.setOwner(x));
-        Optional.ofNullable(paymentTerm.getStatus()).ifPresent(x -> dto.setStatus(x));
-        Optional.ofNullable(paymentTerm.getVisibility()).ifPresent(x -> dto.setVisibility(x));
-        Optional.ofNullable(paymentTerm.getName()).ifPresent(x -> dto.setName(x));
-        Optional.ofNullable(paymentTerm.getValue()).ifPresent(x -> dto.setValue(x));
-
-
-        return dto;
-    }
 
     public static RecurringInvoiceDTO convertToRecurringInvoiceDTO(Object c) {
         RecurringInvoice recurringInvoice = (RecurringInvoice) c;
 
         RecurringInvoiceDTO dto = new RecurringInvoiceDTO();
 
-        Optional.ofNullable(recurringInvoice.get_id()).ifPresent(x -> dto.set_id(x));
-        Optional.ofNullable(recurringInvoice.getMeta()).ifPresent(x -> dto.setMeta(x));
-        Optional.ofNullable(recurringInvoice.getAcl()).ifPresent(x -> dto.setAcl(x));
-        Optional.ofNullable(recurringInvoice.getOwner()).ifPresent(x -> dto.setOwner(x));
-        Optional.ofNullable(recurringInvoice.getStatus()).ifPresent(x -> dto.setStatus(x));
-        Optional.ofNullable(recurringInvoice.getVisibility()).ifPresent(x -> dto.setVisibility(x));
-        Optional.ofNullable(recurringInvoice.getStartDate()).ifPresent(x -> dto.setStartDate(x));
-        Optional.ofNullable(recurringInvoice.getEndDate()).ifPresent(x -> dto.setEndDate(x));
-        Optional.ofNullable(recurringInvoice.getRecurringPeriodType()).ifPresent(x -> dto.setRecurringPeriodType(x));
+//        Optional.ofNullable(recurringInvoice.get_id()).ifPresent(x -> dto.set_id(x));
+//        Optional.ofNullable(recurringInvoice.getMeta()).ifPresent(x -> dto.setMeta(x));
+//        Optional.ofNullable(recurringInvoice.getAcl()).ifPresent(x -> dto.setAcl(x));
+//        Optional.ofNullable(recurringInvoice.getOwner()).ifPresent(x -> dto.setOwner(x));
+//        Optional.ofNullable(recurringInvoice.getStatus()).ifPresent(x -> dto.setStatus(x));
+//        Optional.ofNullable(recurringInvoice.getVisibility()).ifPresent(x -> dto.setVisibility(x));
+//        Optional.ofNullable(recurringInvoice.getStartDate()).ifPresent(x -> dto.setStartDate(x));
+//        Optional.ofNullable(recurringInvoice.getEndDate()).ifPresent(x -> dto.setEndDate(x));
+//        Optional.ofNullable(recurringInvoice.getRecurringPeriodType()).ifPresent(x -> dto.setRecurringPeriodType(x));
 
         return dto;
 
@@ -402,10 +365,6 @@ public class Converters {
         Optional.ofNullable(account.getVisibility()).ifPresent(x -> dto.setVisibility(x));
 
         Optional.ofNullable(account.getCode()).ifPresent(x -> dto.setCode(x));
-        Optional.ofNullable(account.getSegment()).ifPresent(x -> dto.setSegment(x));
-        Optional.ofNullable(account.getName()).ifPresent(x -> dto.setName(x));
-        Optional.ofNullable(account.getNote()).ifPresent(x -> dto.setNote(x));
-        Optional.ofNullable(account.getIsDefault()).ifPresent(x -> dto.setDefault(x));
 
 
         return dto;

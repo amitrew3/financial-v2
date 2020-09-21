@@ -2,6 +2,7 @@ package com.rew3.sale.recurringinvoice.model;
 
 
 import com.rew3.common.model.Flags;
+import com.rew3.sale.invoice.model.AbstractDTO;
 
 public class RecurringInvoiceDTO extends AbstractDTO {
 

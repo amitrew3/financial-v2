@@ -4,6 +4,7 @@ import com.avenue.base.grpc.proto.core.RequestParamProto;
 import com.avenue.base.grpc.proto.core.VisibilityTypeProto;
 import com.avenue.financial.services.grpc.proto.invoice.*;
 import com.google.protobuf.*;
+import com.rew3.paymentterm.model.PaymentTerm;
 import com.rew3.purchase.bill.model.BillItem;
 import com.rew3.sale.estimate.model.EstimateItem;
 import com.rew3.sale.invoice.model.Invoice;
@@ -41,18 +42,18 @@ public class ProtoConverter {
 
         Optional.ofNullable(x).ifPresent(y -> builder.addAllItems(convertToInvoiceItems(y.getItems())));
 
-        Optional.ofNullable(x.getUserId()).ifPresent(y -> builder.setUserId(StringValue.of(y)));
+        //Optional.ofNullable(x.getUserId()).ifPresent(y -> builder.setUserId(StringValue.of(y)));
         Optional.ofNullable(x.getPaymentTerm()).ifPresent(y -> builder.setPaymentTerm(convertToPaymentTermProto(y)));
 
         Optional.ofNullable(x.getInvoiceDate()).ifPresent(y -> builder.setInvoiceDate(StringValue.of(y.toString())));
         Optional.ofNullable(x.getDueDate()).ifPresent(y -> builder.setDueDate(StringValue.of(y)));
-        Optional.ofNullable(x.getData()).ifPresent(y -> builder.setData(StringValue.of(y)));
-        Optional.ofNullable(x.getType()).ifPresent(y -> builder.setType(InvoiceType.valueOf(x.getType())));
-        Optional.ofNullable(x.isRecurring()).ifPresent(y -> builder.setIsRecurring(BoolValue.of(y)));
-        Optional.ofNullable(x.getTotalAmount()).ifPresent(y -> builder.setTotalAmount(DoubleValue.of(y)));
-        Optional.ofNullable(x.getDueAmount()).ifPresent(y -> builder.setDueAmount(DoubleValue.of(y)));
-
-        Optional.ofNullable(x.getRecurringInvoice()).ifPresent(y -> builder.setRecurringInvoice(convertToRecurringInvoiceProto(x.getRecurringInvoice())));
+//        Optional.ofNullable(x.getData()).ifPresent(y -> builder.setData(StringValue.of(y)));
+//        Optional.ofNullable(x.getType()).ifPresent(y -> builder.setType(InvoiceType.valueOf(x.getType())));
+//        Optional.ofNullable(x.isRecurring()).ifPresent(y -> builder.setIsRecurring(BoolValue.of(y)));
+//        Optional.ofNullable(x.getTotalAmount()).ifPresent(y -> builder.setTotalAmount(DoubleValue.of(y)));
+//        Optional.ofNullable(x.getDueAmount()).ifPresent(y -> builder.setDueAmount(DoubleValue.of(y)));
+//
+//        Optional.ofNullable(x.getRecurringInvoice()).ifPresent(y -> builder.setRecurringInvoice(convertToRecurringInvoiceProto(x.getRecurringInvoice())));
 
         return builder.build();
 
@@ -61,8 +62,8 @@ public class ProtoConverter {
     private static RecurringInvoiceProto convertToRecurringInvoiceProto(RecurringInvoice x) {
         RecurringInvoiceProto.Builder builder = RecurringInvoiceProto.newBuilder();
         Optional.ofNullable(x.get_id()).ifPresent(y -> builder.setRecurringPeriodType(StringValue.of(y)));
-        Optional.ofNullable(x.getStartDate()).ifPresent(y -> builder.setStartDate(StringValue.of(y)));
-        Optional.ofNullable(x.getEndDate()).ifPresent(y -> builder.setEndDate(StringValue.of(y)));
+//        Optional.ofNullable(x.getStartDate()).ifPresent(y -> builder.setStartDate(StringValue.of(y)));
+//        Optional.ofNullable(x.getEndDate()).ifPresent(y -> builder.setEndDate(StringValue.of(y)));
         return builder.build();
     }
 
@@ -72,8 +73,8 @@ public class ProtoConverter {
         Optional.ofNullable(x.getMeta()).ifPresent(y -> builder.setMeta(convertToMetaProto(y)));
         Optional.ofNullable(x.getOwner()).ifPresent(y -> builder.setOwner(miniUserProto(y)));
         Optional.ofNullable(x.getStatus()).ifPresent(y -> builder.setStatus(EntityStatusWrapper.EntityStatus.valueOf(x.getStatus())));
-        Optional.ofNullable(x.getName()).ifPresent(y -> builder.setName(StringValue.of(y)));
-        Optional.ofNullable(x.getValue()).ifPresent(y -> builder.setValue(Int32Value.of(y)));
+        Optional.ofNullable(x.getTitle()).ifPresent(y -> builder.setName(StringValue.of(y)));
+        //Optional.ofNullable(x.getValue()).ifPresent(y -> builder.setValue(Int32Value.of(y)));
         return builder.build();
     }
 
@@ -89,15 +90,15 @@ public class ProtoConverter {
         InvoiceItemProto.Builder builder = InvoiceItemProto.newBuilder();
 
         Optional.ofNullable(x.getId()).ifPresent(y -> builder.setId(StringValue.of(y)));
-        Optional.ofNullable(x.getTitle()).ifPresent(y -> builder.setTitle(StringValue.of(y)));
-        Optional.ofNullable(x.getDescription()).ifPresent(y -> builder.setDescription(StringValue.of(y)));
+//        Optional.ofNullable(x.getTitle()).ifPresent(y -> builder.setTitle(StringValue.of(y)));
+//        Optional.ofNullable(x.getDescription()).ifPresent(y -> builder.setDescription(StringValue.of(y)));
         Optional.ofNullable(x.getQuantity()).ifPresent(y -> builder.setQuantity(Int32Value.of(y)));
         Optional.ofNullable(x.getPrice()).ifPresent(y -> builder.setPrice(DoubleValue.of(y)));
-        Optional.ofNullable(x.getTaxType()).ifPresent(y -> builder.setTaxType(CalculationType.valueOf(x.getTaxType())));
-        Optional.ofNullable(x.getDiscountType()).ifPresent(y -> builder.setDiscountType(CalculationType.valueOf(x.getDiscountType())));
-
-        Optional.ofNullable(x.getDiscount()).ifPresent(y -> builder.setDiscount(DoubleValue.of(x.getDiscount())));
-        Optional.ofNullable(x.getTax()).ifPresent(y -> builder.setTax(DoubleValue.of(x.getTax())));
+//        Optional.ofNullable(x.getTaxType()).ifPresent(y -> builder.setTaxType(CalculationType.valueOf(x.getTaxType())));
+//        Optional.ofNullable(x.getDiscountType()).ifPresent(y -> builder.setDiscountType(CalculationType.valueOf(x.getDiscountType())));
+//
+//        Optional.ofNullable(x.getDiscount()).ifPresent(y -> builder.setDiscount(DoubleValue.of(x.getDiscount())));
+//        Optional.ofNullable(x.getTax()).ifPresent(y -> builder.setTax(DoubleValue.of(x.getTax())));
         return builder.build();
     }
 
@@ -105,20 +106,20 @@ public class ProtoConverter {
     private static InvoiceInfoProto convertToInvoiceInfoProto(Invoice x) {
         InvoiceInfoProto.Builder builder = InvoiceInfoProto.newBuilder();
         Optional.ofNullable(x.getInvoiceNumber()).ifPresent(y -> builder.setInvoiceNumber(StringValue.of(y)));
-        Optional.ofNullable(x.getInvoiceStatus()).ifPresent(y -> builder.setInvoiceStatus(InvoiceStatus.valueOf(x.getInvoiceStatus())));
+       // Optional.ofNullable(x.getInvoiceStatus()).ifPresent(y -> builder.setInvoiceStatus(InvoiceStatus.valueOf(x.getInvoiceStatus())));
         Optional.ofNullable(x.getPaymentStatus()).ifPresent(y -> builder.setPaymentStatus(InvoicePaymentStatus.valueOf(x.getPaymentStatus())));
 
-        Optional.ofNullable(x.getDueStatus()).ifPresent(y -> builder.setDueStatus(InvoiceDueStatus.valueOf(x.getDueStatus())));
-        Optional.ofNullable(x.getRefundStatus()).ifPresent(y -> builder.setRefundStatus(InvoiceRefundStatus.valueOf(x.getRefundStatus())));
-        Optional.ofNullable(x.getWriteOffStatus()).ifPresent(y -> builder.setWriteOfStatus(InvoiceWriteOffStatus.valueOf(x.getWriteOffStatus())));
-
-        Optional.ofNullable(x.getTaxType()).ifPresent(y -> builder.setTaxType(CalculationType.valueOf(x.getTaxType())));
-        Optional.ofNullable(x.getDiscountType()).ifPresent(y -> builder.setDiscountType(CalculationType.valueOf(x.getDiscountType())));
-
-        Optional.ofNullable(x.getDiscount()).ifPresent(y -> builder.setDiscount(DoubleValue.of(x.getDiscount())));
-        Optional.ofNullable(x.getTax()).ifPresent(y -> builder.setTax(DoubleValue.of(x.getTax())));
-        Optional.ofNullable(x.getNote()).ifPresent(y -> builder.setNote(StringValue.of(y)));
-        Optional.ofNullable(x.getDescription()).ifPresent(y -> builder.setDescription(StringValue.of(y)));
+//        Optional.ofNullable(x.getDueStatus()).ifPresent(y -> builder.setDueStatus(InvoiceDueStatus.valueOf(x.getDueStatus())));
+//        Optional.ofNullable(x.getRefundStatus()).ifPresent(y -> builder.setRefundStatus(InvoiceRefundStatus.valueOf(x.getRefundStatus())));
+//        Optional.ofNullable(x.getWriteOffStatus()).ifPresent(y -> builder.setWriteOfStatus(InvoiceWriteOffStatus.valueOf(x.getWriteOffStatus())));
+//
+//        Optional.ofNullable(x.getTaxType()).ifPresent(y -> builder.setTaxType(CalculationType.valueOf(x.getTaxType())));
+//        Optional.ofNullable(x.getDiscountType()).ifPresent(y -> builder.setDiscountType(CalculationType.valueOf(x.getDiscountType())));
+//
+//        Optional.ofNullable(x.getDiscount()).ifPresent(y -> builder.setDiscount(DoubleValue.of(x.getDiscount())));
+//        Optional.ofNullable(x.getTax()).ifPresent(y -> builder.setTax(DoubleValue.of(x.getTax())));
+//        Optional.ofNullable(x.getNote()).ifPresent(y -> builder.setNote(StringValue.of(y)));
+//        Optional.ofNullable(x.getDescription()).ifPresent(y -> builder.setDescription(StringValue.of(y)));
 
         return builder.build();
     }
@@ -184,30 +185,30 @@ public class ProtoConverter {
         Optional.ofNullable(x.getId()).ifPresent(y -> {
             item.setId(y.getValue());
         });
-        Optional.ofNullable(x.getTitle()).ifPresent(y -> {
-            item.setTitle(y.getValue());
-        });
-        Optional.ofNullable(x.getDescription()).ifPresent(y -> {
-            item.setDescription(y.getValue());
-        });
-        Optional.ofNullable(x.getQuantity()).ifPresent(y -> {
-            item.setQuantity(y.getValue());
-        });
-        Optional.ofNullable(x.getPrice()).ifPresent(y -> {
-            item.setPrice(y.getValue());
-        });
-        Optional.ofNullable(x.getDiscountType()).ifPresent(y -> {
-            item.setDiscountType(Flags.CalculationType.valueOf(y.name()));
-        });
-        Optional.ofNullable(x.getDiscount()).ifPresent(y -> {
-            item.setDiscount(y.getValue());
-        });
-        Optional.ofNullable(x.getTaxType()).ifPresent(y -> {
-            item.setTaxType(Flags.CalculationType.valueOf(y.name()));
-        });
-        Optional.ofNullable(x.getTax()).ifPresent(y -> {
-            item.setTax(y.getValue());
-        });
+//        Optional.ofNullable(x.getTitle()).ifPresent(y -> {
+//            item.setTitle(y.getValue());
+//        });
+//        Optional.ofNullable(x.getDescription()).ifPresent(y -> {
+//            item.setDescription(y.getValue());
+//        });
+//        Optional.ofNullable(x.getQuantity()).ifPresent(y -> {
+//            item.setQuantity(y.getValue());
+//        });
+//        Optional.ofNullable(x.getPrice()).ifPresent(y -> {
+//            item.setPrice(y.getValue());
+//        });
+//        Optional.ofNullable(x.getDiscountType()).ifPresent(y -> {
+//            item.setDiscountType(Flags.CalculationType.valueOf(y.name()));
+//        });
+//        Optional.ofNullable(x.getDiscount()).ifPresent(y -> {
+//            item.setDiscount(y.getValue());
+//        });
+//        Optional.ofNullable(x.getTaxType()).ifPresent(y -> {
+//            item.setTaxType(Flags.CalculationType.valueOf(y.name()));
+//        });
+//        Optional.ofNullable(x.getTax()).ifPresent(y -> {
+//            item.setTax(y.getValue());
+//        });
 
         return item;
     }

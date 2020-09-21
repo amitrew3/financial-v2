@@ -8,7 +8,6 @@ import java.util.List;
 
 public class ExpenseDTO extends AbstractDTO {
 
-    private List<ExpenseItem> items;
     private String expenseNumber;
 
     private String expenseDate;
@@ -23,7 +22,6 @@ public class ExpenseDTO extends AbstractDTO {
 
     private Double amount;
 
-    public List<ExpenseReference> reference;
 
     public Double getAmount() {
         return amount;
@@ -33,21 +31,6 @@ public class ExpenseDTO extends AbstractDTO {
         this.amount = amount;
     }
 
-    public List<ExpenseReference> getReference() {
-        return reference;
-    }
-
-    public void setReference(List<ExpenseReference> reference) {
-        this.reference = reference;
-    }
-
-    public List<ExpenseItem> getItems() {
-        return items;
-    }
-
-    public void setItems(List<ExpenseItem> items) {
-        this.items = items;
-    }
 
     public String getExpenseNumber() {
         return expenseNumber;

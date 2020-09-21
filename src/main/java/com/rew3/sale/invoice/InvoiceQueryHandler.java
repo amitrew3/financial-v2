@@ -325,15 +325,6 @@ public class InvoiceQueryHandler implements IQueryHandler {
         return invoices;
     }
 
-    public InvoiceRequest getRequestById(String id) throws CommandException {
-        InvoiceRequest invoiceRequest = (InvoiceRequest) HibernateUtils.get(InvoiceRequest.class, id);
-        return invoiceRequest;
-    }
-
-    public List<InvoiceRequest> getRequest() {
-        List<InvoiceRequest> requests = HibernateUtils.select("FROM InvoiceRequest", null);
-        return requests;
-    }
 
 
     @Override

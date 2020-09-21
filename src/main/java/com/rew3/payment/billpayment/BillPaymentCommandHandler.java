@@ -100,13 +100,13 @@ public class BillPaymentCommandHandler implements ICommandHandler {
             billPayment = new BillPayment();
         }
 
-        if (c.has("name")) {
-            billPayment.setName((String) c.get("name"));
-        }
-
-        if (c.has("description")) {
-            billPayment.setDescription((String) c.get("description"));
-        }
+//        if (c.has("name")) {
+//            billPayment.setName((String) c.get("name"));
+//        }
+//
+//        if (c.has("description")) {
+//            billPayment.setDescription((String) c.get("description"));
+//        }
 
         if (c.has("status")) {
             billPayment.setStatus(EntityStatus.valueOf((String) c.get("status")));

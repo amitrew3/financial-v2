@@ -3,6 +3,7 @@ package com.rew3.sale.estimate.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rew3.common.model.DB;
 import com.rew3.common.shared.model.AbstractEntity;
+import com.rew3.paymentterm.model.PaymentTerm;
 import com.rew3.sale.customer.model.Customer;
 
 import javax.persistence.*;
