@@ -1,6 +1,5 @@
 package com.rew3.common.utils;
 
-import com.rew3.paymentterm.model.PaymentTerm;
 import com.rew3.purchase.expense.model.Expense;
 import com.rew3.purchase.expense.model.ExpenseDTO;
 import com.rew3.sale.invoice.model.*;
@@ -170,7 +169,7 @@ public class Converters {
         // dto.setRecurringInvoice(invoice.isRecurringInvoice());
         dto.setDueDate(dto.getDueDate());
         dto.setInvoiceDate(dto.getInvoiceDate());
-        dto.setItems(invoice.getItems());
+       // dto.setItems(invoice.getItems());
         return dto;
     }
 
@@ -383,8 +382,8 @@ public class Converters {
         Optional.ofNullable(accountGroup.getVisibility()).ifPresent(x -> dto.setVisibility(x));
 
         Optional.ofNullable(accountGroup.getCode()).ifPresent(x -> dto.setCode(x));
-        Optional.ofNullable(accountGroup.getAccountingHead()).ifPresent(x -> dto.setAccountingHead(x));
-        Optional.ofNullable(accountGroup.getAccountingCodeType()).ifPresent(x -> dto.setAccountingCodeType(x));
+        Optional.ofNullable(accountGroup.getAccountHead()).ifPresent(x -> dto.setAccountingHead(x));
+        //Optional.ofNullable(accountGroup .getAccountingCodeType()).ifPresent(x -> dto.setAccountingCodeType(x));
         Optional.ofNullable(accountGroup.getDescription()).ifPresent(x -> dto.setDescription(x));
 
 

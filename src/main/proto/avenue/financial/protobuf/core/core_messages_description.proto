@@ -379,5 +379,26 @@ message ReferenceProto {
   google.protobuf.StringValue entity_id = 4;
   google.protobuf.StringValue title = 5;
 }
+message AddressProto{
+  google.protobuf.StringValue street = 1;
+  google.protobuf.StringValue town = 1;
+  google.protobuf.StringValue province = 1;
+  google.protobuf.StringValue postal_code = 1;
+  google.protobuf.StringValue country = 1;
+}
+message MetaProto{
+  google.protobuf.Int64Value _version = 1;
+  google.protobuf.StringValue _created = 2;
+  avenue.financial.protobuf.core.MiniUserProto _created_by = 3;
+  google.protobuf.StringValue _last_modified = 4;
+  avenue.financial.protobuf.core.MiniUserProto _modified_by = 5;
+  avenue.financial.protobuf.core.MiniUserProto _deleted_by = 6;
+  google.protobuf.StringValue _deleted = 7;
+  avenue.financial.protobuf.core.MiniUserProto _owner = 8;
+  google.protobuf.StringValue _member = 9;
+  google.protobuf.StringValue _master = 10;
+  google.protobuf.StringValue _entity = 11;
+  google.protobuf.StringValue _module = 12;
+}
 
 

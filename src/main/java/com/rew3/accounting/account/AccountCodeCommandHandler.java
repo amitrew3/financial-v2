@@ -424,7 +424,7 @@ public class AccountCodeCommandHandler implements ICommandHandler {
             accountGroup = (AccountGroup) (queryHandler.getById((String) c.get("id")));
             isNew = false;
 
-            if (c.has("accountingHead") && !accountGroup.getAccountingHead().equals(c.get("accountingHead").toString())) {
+            if (c.has("accountingHead") && !accountGroup.getAccountHead().equals(c.get("accountingHead").toString())) {
                 accountingHeadChange = true;
             }
 
@@ -450,12 +450,12 @@ public class AccountCodeCommandHandler implements ICommandHandler {
 
 
         if (c.has("accountingHead")) {
-            accountGroup.setAccountingHead(AccountingHead.valueOf(accountingHead));
+            accountGroup.setAccountHead(AccountingHead.valueOf(accountingHead));
 
         }
         if (c.has("accountingCodeType")) {
 
-            accountGroup.setAccountingCodeType(name);
+          //  accountGroup.setAccountingCodeType(name);
         }
 
 

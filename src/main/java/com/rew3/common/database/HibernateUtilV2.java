@@ -3,12 +3,12 @@ package com.rew3.common.database;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rew3.common.shared.model.AbstractEntity;
 import com.rew3.common.application.AuthenticatedUser;
 import com.rew3.common.application.Authentication;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.model.Flags;
+import com.rew3.common.shared.model.AbstractEntity;
 import com.rew3.common.utils.*;
 import org.hibernate.*;
 import org.hibernate.boot.MetadataSources;
@@ -936,8 +936,7 @@ public class HibernateUtilV2 {
         return obj;
     }
 
-    public static <
-            T> List<T> select(String hql, HashMap<String, Object> params, HashMap<String, Object> requestParams,
+    public static <T> List<T> select(String hql, HashMap<String, Object> params, HashMap<String, Object> requestParams,
                               int limit, int offset, T t) {
         Session session = null;
         List<T> results = null;

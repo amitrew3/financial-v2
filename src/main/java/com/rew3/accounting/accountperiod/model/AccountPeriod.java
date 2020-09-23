@@ -12,7 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name= DB.Table.ACCOUNTING_PERIOD)
+@Table(name= DB.Table.ACCOUNT_PERIOD)
 public class AccountPeriod extends AbstractEntity {
 
 	@Column(name=DB.Field.AccountingPeriod.START_DATE)

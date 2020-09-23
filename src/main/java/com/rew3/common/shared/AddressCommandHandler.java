@@ -112,11 +112,8 @@ public class AddressCommandHandler implements ICommandHandler {
             address.setCountry((String) c.get("country"));
         }
 
-        if (c.has("status")) {
-            address.setStatus(EntityStatus.valueOf((String) c.get("status")));
-        } else if (isNew) {
-            address.setStatus(EntityStatus.ACTIVE);
-        }
+
+
 
 
         address = (Address) HibernateUtils.save(address, c.getTransaction());
@@ -124,32 +121,4 @@ public class AddressCommandHandler implements ICommandHandler {
         return address;
     }
 
-    public void handle(DeleteAddress c) {
-        Transaction trx = c.getTransaction();
-
-        try {
-            Address address = (Address) new AddressQueryHandler().getById((String) c.get("id"));
-            if (address != null) {
-                if (!address.hasDeletePermission(Authentication.getRew3UserId(), Authentication.getRew3GroupId())) {
-                    APILogger.add(APILogType.ERROR, "Permission denied");
-                    throw new CommandException("Permission denied");
-                }
-                address.setStatus(EntityStatus.DELETED);
-                HibernateUtils.save(address,trx);
-            }
-            if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
-            }
-            c.setObject(address);
-        } catch (Exception ex) {
-            if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
-            }
-        } finally {
-            if (c.isCommittable()) {
-                HibernateUtils.closeSession();
-            }
-        }
-
-    }
 }

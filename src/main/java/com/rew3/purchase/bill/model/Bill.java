@@ -16,7 +16,7 @@ import java.util.Set;
 public class Bill extends AbstractEntity {
 
     @Column(name = DB.Field.Bill.BILL_NUMBER)
-    private String invoiceNumber;
+    private String billNumber;
 
     @Column(name = DB.Field.Bill.PO_SO_NUMBER)
     private String poSoNumber;
@@ -35,14 +35,14 @@ public class Bill extends AbstractEntity {
     @Column(name = DB.Field.Bill.NOTES)
     private String note;
 
-    @Column(name = DB.Field.Invoice.SUB_TOTAL)
+    @Column(name = DB.Field.Bill.SUB_TOTAL)
     private Double subTotal;
 
-    @Column(name = DB.Field.Invoice.TAX_TOTAL)
+    @Column(name = DB.Field.Bill.TAX_TOTAL)
     private Double taxTotal;
 
 
-    @Column(name = DB.Field.Invoice.TOTAL)
+    @Column(name = DB.Field.Bill.TOTAL)
     private Double total;
 
 
@@ -54,19 +54,11 @@ public class Bill extends AbstractEntity {
 
 
     public String getBillNumber() {
-        return invoiceNumber;
+        return billNumber;
     }
 
-    public void setBillNumber(String invoiceNumber) {
-        this.invoiceNumber = invoiceNumber;
-    }
-
-    public String getInvoiceNumber() {
-        return invoiceNumber;
-    }
-
-    public void setInvoiceNumber(String invoiceNumber) {
-        this.invoiceNumber = invoiceNumber;
+    public void setBillNumber(String billNumber) {
+        this.billNumber = billNumber;
     }
 
     public String getPoSoNumber() {

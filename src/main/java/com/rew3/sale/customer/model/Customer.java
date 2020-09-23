@@ -63,10 +63,27 @@ public class Customer extends AbstractEntity {
     private String shipToContact;
 
     @Embedded
-    private Address shippingAddress;
+    @AttributeOverrides({
+            @AttributeOverride(name = "street", column = @Column(name = "billing_street")),
+            @AttributeOverride(name = "town", column = @Column(name = "billing_town")),
+            @AttributeOverride(name = "province", column = @Column(name = "billing_province")),
+            @AttributeOverride(name = "postalCode", column = @Column(name = "billing_postal_code")),
+            @AttributeOverride(name = "country", column = @Column(name = "billing_country")),
+
+    })
+    private Address billingAddress;
 
     @Embedded
-    private Address billingAddress;
+    @AttributeOverrides({
+            @AttributeOverride(name = "street", column = @Column(name = "shipping_street")),
+            @AttributeOverride(name = "town", column = @Column(name = "shipping_town")),
+            @AttributeOverride(name = "province", column = @Column(name = "shipping_province")),
+            @AttributeOverride(name = "postalCode", column = @Column(name = "shipping_postal_code")),
+            @AttributeOverride(name = "country", column = @Column(name = "shipping_country")),
+
+    })
+    private Address shippingAddress;
+
 
     public String getFirstName() {
         return firstName;
@@ -188,6 +205,14 @@ public class Customer extends AbstractEntity {
         this.shippingAddress = shippingAddress;
     }
 
+    public String getDeliveryInstructions() {
+        return deliveryInstructions;
+    }
+
+    public void setDeliveryInstructions(String deliveryInstructions) {
+        this.deliveryInstructions = deliveryInstructions;
+    }
+
     public Address getBillingAddress() {
         return billingAddress;
     }
@@ -196,5 +221,11 @@ public class Customer extends AbstractEntity {
         this.billingAddress = billingAddress;
     }
 
+    public String getShipToContact() {
+        return shipToContact;
+    }
 
+    public void setShipToContact(String shipToContact) {
+        this.shipToContact = shipToContact;
+    }
 }

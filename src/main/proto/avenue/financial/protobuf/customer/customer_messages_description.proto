@@ -1,0 +1,114 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "avenue/financial/protobuf/core/core_messages_description.proto";
+
+
+
+option java_multiple_files = true;
+option java_package = "com.avenue.financial.services.grpc.proto.customer";
+option java_outer_classname = "CustomerMessagesDescriptionProto";
+
+package avenue.financial.protobuf.customer;
+
+/*message AbstractEntityProto{
+  google.protobuf.StringValue _id = 1;
+  google.protobuf.StringValue status = 1;
+  google.protobuf.StringValue owner_id = 1;
+  google.protobuf.StringValue ownerFirstName = 1;
+  google.protobuf.StringValue ownerLastName = 1;
+  google.protobuf.StringValue createdById = 1;
+  google.protobuf.StringValue createdByFirstName = 1;
+  google.protobuf.StringValue createdByLastName = 1;
+  google.protobuf.StringValue modifiedById = 1;
+  google.protobuf.StringValue modifiedByFirstName = 1;
+  google.protobuf.StringValue deletedById = 1;
+  google.protobuf.StringValue deletedByFirstName = 1;
+  google.protobuf.StringValue deletedByLastName = 1;
+  google.protobuf.StringValue member = 1;
+  google.protobuf.StringValue created_at = 1;
+  google.protobuf.StringValue lastModifiedAt = 1;
+  google.protobuf.StringValue deletedAt = 1;
+  google.protobuf.StringValue entity = 1;
+  google.protobuf.StringValue module = 1;
+  google.protobuf.StringValue master = 1;
+  google.protobuf.StringValue metaOwnerId = 1;
+  google.protobuf.StringValue metaOwnerFirstName = 1;
+  google.protobuf.StringValue metaOwnerLastName = 1;
+
+}*/
+message CustomerProto{
+  google.protobuf.StringValue _id = 1;
+  //ACL acl = 1;
+  avenue.financial.protobuf.core.MetaProto meta = 2;
+  avenue.financial.protobuf.core.MiniUserProto owner = 3;
+  EntityStatusWrapper.EntityStatus status = 4;
+  avenue.financial.protobuf.core.VisibilityTypeProto visibility = 5;
+  CustomerInfoProto customer_info = 6;
+
+}
+
+message CustomerInfoProto{
+  google.protobuf.StringValue first_name = 1;
+  google.protobuf.StringValue middle_name = 2;
+  google.protobuf.StringValue last_name = 3;
+  google.protobuf.StringValue email = 4;
+  google.protobuf.StringValue company = 5;
+  google.protobuf.StringValue phone1 = 6;
+  google.protobuf.StringValue phone2 = 7;
+  google.protobuf.StringValue mobile = 8;
+  google.protobuf.StringValue currency = 9;
+  google.protobuf.StringValue fax = 10;
+  google.protobuf.StringValue website = 11;
+  google.protobuf.StringValue toll_free = 12;
+  google.protobuf.StringValue internal_notes = 13;
+  google.protobuf.StringValue account_number = 14;
+  google.protobuf.StringValue delivery_instructions = 15;
+  google.protobuf.StringValue ship_to_contact = 16;
+  avenue.financial.protobuf.core.AddressProto billing_address = 17;
+  avenue.financial.protobuf.core.AddressProto shipping_address = 18;
+
+}
+
+
+
+
+message PaymentTermProto{
+  google.protobuf.StringValue _id = 1;
+  avenue.financial.protobuf.core.MetaProto meta = 2;
+  avenue.financial.protobuf.core.MiniUserProto owner = 3;
+  EntityStatusWrapper.EntityStatus status = 4;
+  google.protobuf.StringValue name = 5;
+  google.protobuf.Int32Value value = 6;
+}
+
+message DetachCustomerProto{
+  string customer_id = 1;
+  string type = 2;
+  string entity_id = 3;
+  string entity = 4;
+  string module = 5;
+}
+
+message AttachCustomerProto{
+  string customer_id = 1;
+  string type = 2;
+  string entity_id = 3;
+  string entity = 4;
+  string module = 5;
+}
+
+message EntityStatusWrapper {
+  enum EntityStatus{
+    IN_ACTIVE = 0;
+    ACTIVE = 1;
+    DELETED = 2;
+
+  }
+
+
+
+}
+
+
+

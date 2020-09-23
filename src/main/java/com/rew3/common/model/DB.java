@@ -22,10 +22,10 @@ public class DB {
         public static final String TRANSACTION_CONTACT = "transaction_contact";
 
         public static final String ACCOUNTING_CLASS = "accounting_class";
-        public static final String ACCOUNT = "accounting_code";
+        public static final String ACCOUNT = "account";
 
         public static final String ACCOUNTGROUP = "accountgroup";
-        public static final String ACCOUNTING_PERIOD = "accounting_period";
+        public static final String ACCOUNT_PERIOD = "accountperiod";
         public static final String ACCOUNTING_PERIOD_REQUEST = "accounting_period_request";
         public static final String PRODUCT = "product";
         public static final String PRODUCT_CATEGORY_LINK = "product_category_link";
@@ -319,7 +319,7 @@ public class DB {
         public static class Account {
             public static final String TITLE = "title";
             public static final String DESCRIPTION = "description";
-            public static final String ACCOUNT_GROUP_ID = "account_group_id";
+            public static final String ACCOUNT_GROUP_ID = "accountgroup_id";
             public static final String CODE = "code";
             public static final String ACCOUNT_HEAD = "account_head";
 
@@ -418,7 +418,7 @@ public class DB {
             public static final String INVOICE_NUMBER = "invoice_number";
             public static final String PO_SO_NUMBER = "po_so_number";
             public static final String INVOICE_DATE = "invoice_date";
-            public static final String DUE_DATE = "invoice_date";
+            public static final String DUE_DATE = "due_date";
             public static final String CUSTOMER_ID = "customer_id";
             public static final String PAYMENT_TERM_ID = "payment_term_id";
             public static final String MEMOS = "memos";
@@ -464,8 +464,8 @@ public class DB {
             public static final String UOM = "uom";
             public static final String PRICE = "price";
             public static final String PRODUCT_ID = "product_id";
-            public static final String TAX1 = "tax1";
-            public static final String TAX2 = "tax2";
+            public static final String TAX1 = "tax1_id";
+            public static final String TAX2 = "tax2_id";
 
         }
 
@@ -521,16 +521,6 @@ public class DB {
             public static final String TOLL_FREE = "toll_free";
             public static final String INTERNAL_NOTES = "internal_notes";
             public static final String ACCOUNT_NUMBER = "account_number";
-            public static final String BILLING_STREET = "shipping_address_id";
-            public static final String BILLING_TOWN = "billing_town";
-            public static final String BILLING_CITY = "billing_city";
-            public static final String BILLING_POSTAL_CODE = "billing_postal_code";
-            public static final String BILLING_COUNTRY = "billing_country";
-            public static final String SHIPPING_STREET = "shipping_street";
-            public static final String SHIPPING_TOWN = "shipping_town";
-            public static final String SHIPPING_CITY = "shipping_city";
-            public static final String SHIPPING_POSTAL_CODE = "shipping_postal_code";
-            public static final String SHIPPING_COUNTRY = "shipping_country";
             public static final String DELIVERY_INSTRUCTIONS = "delivery_instructions";
             public static final String SHIP_TO_CONTACT = "ship_to_contact";
 
@@ -572,7 +562,6 @@ public class DB {
         public static class PaymentOption {
             public static final String TITLE = "name";
             public static final String DESCRIPTION = "description";
-            public static final String CONTACT_TYPE = "contact_type";
         }
 
         public static class PaymentTerm {
@@ -839,8 +828,8 @@ public class DB {
             public static final String PRODUCT_ID = "product_id";
             public static final String ESTIMATE_ID = "estimate_id";
 
-            public static final String TAX1 = "tax1";
-            public static final String TAX2 = "tax2";
+            public static final String TAX1 = "tax1_id";
+            public static final String TAX2 = "tax2_id";
 
         }
 
@@ -863,7 +852,7 @@ public class DB {
             public static final String UOM = "uom";
             public static final String PRICE = "price";
             public static final String PRODUCT_ID = "product_id";
-            public static final String TAX1 = "tax1";
+            public static final String TAX1 = "tax1_id";
             public static final String TAX2 = "tax2";
 
         }
@@ -897,6 +886,8 @@ public class DB {
         public static class Journal {
             public static final String ACCOUNT_ID = "account_id";
             public static final String TRANSACTION_ID = "transaction_id";
+            public static final String ACCOUNTPERIOD_ID = "accountperiod_id";
+
             public static final String SIDE = "side";
             public static final String AMOUNT = "amount";
             public static final String DATE = "date";

@@ -6,8 +6,7 @@ import com.rew3.common.model.DB;
 import javax.persistence.*;
 
 @Embeddable
-@Table(name= DB.Table.ADDRESS)
-public class Address extends AbstractEntity {
+public class Address  {
 
     @Column(name = "street")
     private String street;

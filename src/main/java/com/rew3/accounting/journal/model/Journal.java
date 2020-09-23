@@ -29,7 +29,7 @@ public class Journal extends AbstractEntity {
     @Column(name = DB.Field.Journal.AMOUNT)
     private Double amount;
 
-    @JoinColumn(name = "accounting_period_id")
+    @JoinColumn(name = DB.Field.Journal.ACCOUNTPERIOD_ID)
     @ManyToOne
     private AccountPeriod accountPeriod;
 

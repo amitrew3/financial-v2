@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 
 
 @Entity
-@Table(name = DB.Table.PAYMENT_OPTION)
+@Table(name = DB.Table.INVOICEPAYMENT)
 public class InvoicePayment extends AbstractEntity {
 
     @JoinColumn(name = DB.Field.InvoicePayment.INVOICE_ID)

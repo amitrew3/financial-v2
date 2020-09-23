@@ -375,7 +375,7 @@ public class InvoiceQueryHandler implements IQueryHandler {
         }
 
 
-        List<Object> invoices = HibernateUtilV2.select("SELECT distinct t FROM Invoice t left join t.items tc left join t.reference tr " + builder.getValue(),
+        List<Object> invoices = HibernateUtilV2.select("SELECT distinct t FROM Invoice t left join t.items tc " + builder.getValue(),
                 sqlParams, q.getQuery(), limit, offset, Invoice.class);
 
         return invoices;

@@ -40,10 +40,10 @@ public class ProtoConverter {
         Optional.ofNullable(x.getVisibility()).ifPresent(y -> builder.setVisibility(VisibilityTypeProto.valueOf(x.getVisibility())));
         Optional.ofNullable(x).ifPresent(y -> builder.setInvoiceInfo(convertToInvoiceInfoProto(y)));
 
-        Optional.ofNullable(x).ifPresent(y -> builder.addAllItems(convertToInvoiceItems(y.getItems())));
+       // Optional.ofNullable(x).ifPresent(y -> builder.addAllItems(convertToInvoiceItems(y.getItems())));
 
         //Optional.ofNullable(x.getUserId()).ifPresent(y -> builder.setUserId(StringValue.of(y)));
-        Optional.ofNullable(x.getPaymentTerm()).ifPresent(y -> builder.setPaymentTerm(convertToPaymentTermProto(y)));
+       // Optional.ofNullable(x.getPaymentTerm()).ifPresent(y -> builder.setPaymentTerm(convertToPaymentTermProto(y)));
 
         Optional.ofNullable(x.getInvoiceDate()).ifPresent(y -> builder.setInvoiceDate(StringValue.of(y.toString())));
         Optional.ofNullable(x.getDueDate()).ifPresent(y -> builder.setDueDate(StringValue.of(y)));

@@ -1,9 +1,10 @@
 package com.rew3.sale.invoice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rew3.common.shared.model.AbstractEntity;
 import com.rew3.common.model.DB;
 import com.rew3.common.model.Flags;
+import com.rew3.common.shared.model.AbstractEntity;
+import com.rew3.common.shared.model.Address;
 import com.rew3.paymentterm.model.PaymentTerm;
 import com.rew3.sale.customer.model.Customer;
 
@@ -67,17 +68,16 @@ public class Invoice extends AbstractEntity {
     private Double total;
 
     //Status of writeoff for invoice
-    @Column(name = DB.Field.Invoice.BILLING_STREET)
-    private String billingStreet;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "street", column = @Column(name = "billing_street")),
+            @AttributeOverride(name = "town", column = @Column(name = "billing_town")),
+            @AttributeOverride(name = "province", column = @Column(name = "billing_province")),
+            @AttributeOverride(name = "postalCode", column = @Column(name = "billing_postal_code")),
+            @AttributeOverride(name = "country", column = @Column(name = "billing_country")),
+    })
+    Address address;
 
-    @Column(name = DB.Field.Invoice.BILLING_TOWN)
-    private String billingTown;
-
-    @Column(name = DB.Field.Invoice.BILLING_CITY)
-    private Double billingCity;
-
-    @Column(name = DB.Field.Invoice.BILLING_COUNTRY)
-    private String billingCountry;
 
     @Column(name = DB.Field.Invoice.IS_DRAFT)
     private boolean isRecurring;
@@ -85,8 +85,9 @@ public class Invoice extends AbstractEntity {
 
     @Valid
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true) 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
     public Set<InvoiceItem> items;
+
 
     public String getInvoiceNumber() {
         return invoiceNumber;
@@ -130,6 +131,7 @@ public class Invoice extends AbstractEntity {
         this.items = items;
 
     }
+
     public PaymentTerm getPaymentTerm() {
         return paymentTerm;
     }
@@ -214,36 +216,12 @@ public class Invoice extends AbstractEntity {
         this.total = total;
     }
 
-    public String getBillingStreet() {
-        return billingStreet;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setBillingStreet(String billingStreet) {
-        this.billingStreet = billingStreet;
-    }
-
-    public String getBillingTown() {
-        return billingTown;
-    }
-
-    public void setBillingTown(String billingTown) {
-        this.billingTown = billingTown;
-    }
-
-    public Double getBillingCity() {
-        return billingCity;
-    }
-
-    public void setBillingCity(Double billingCity) {
-        this.billingCity = billingCity;
-    }
-
-    public String getBillingCountry() {
-        return billingCountry;
-    }
-
-    public void setBillingCountry(String billingCountry) {
-        this.billingCountry = billingCountry;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public boolean isRecurring() {
@@ -253,4 +231,5 @@ public class Invoice extends AbstractEntity {
     public void setRecurring(boolean recurring) {
         isRecurring = recurring;
     }
+
 }

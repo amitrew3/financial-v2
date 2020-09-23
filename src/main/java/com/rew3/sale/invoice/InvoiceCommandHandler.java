@@ -104,7 +104,7 @@ public class InvoiceCommandHandler implements ICommandHandler {
         if (c.hasPaymentTermId()) {
             PaymentTerm term = null;
             term = (PaymentTerm) new PaymentTermQueryHandler().getById(c.getPaymentTermId().getValue());
-            invoice.setPaymentTerm(term);
+           // invoice.setPaymentTerm(term);
         }
         InvoiceInfoProto invoiceInfo = null;
         if (c.hasInvoiceInfo()) {/*
@@ -141,7 +141,7 @@ public class InvoiceCommandHandler implements ICommandHandler {
 
             if (c.hasPaymentTermId()) {
                 PaymentTerm term = (PaymentTerm) new PaymentTermQueryHandler().getById(c.getPaymentTermId().getValue());
-                invoice.setPaymentTerm(term);
+              //  invoice.setPaymentTerm(term);
             }
 
 
@@ -170,28 +170,28 @@ public class InvoiceCommandHandler implements ICommandHandler {
         }*/
 
             if (c.getItemsList().size() != 0) {
-                if (!isNew) {
-                    if (invoice.getItems() != null) {
-                        invoice.getItems().clear();
-                    }
-                }
+//                if (!isNew) {
+//                    if (invoice.getItems() != null) {
+//                        invoice.getItems().clear();
+//                    }
+//                }
 
 
                 List<InvoiceItemProto> protos = c.getItemsList();
 
 
                 final Invoice finalInvoice = invoice;
-                Set<InvoiceItem> items = protos.stream().map(x -> {
-                    InvoiceItem item = ProtoConverter.convertToInvoiceItem(x);
-                    item.setInvoice(finalInvoice);
-                    return item;
-                }).collect(Collectors.toSet());
-
-                if (invoice.getItems() != null) {
-                    invoice.getItems().addAll(items);
-                } else {
-                    invoice.setItems(items);
-                }
+//                Set<InvoiceItem> items = protos.stream().map(x -> {
+//                    InvoiceItem item = ProtoConverter.convertToInvoiceItem(x);
+//                    item.setInvoice(finalInvoice);
+//                    return item;
+//                }).collect(Collectors.toSet());
+//
+//                if (invoice.getItems() != null) {
+//                    invoice.getItems().addAll(items);
+//                } else {
+//                    invoice.setItems(items);
+//                }
             }
 
             double line_totals = 0;
@@ -272,7 +272,7 @@ public class InvoiceCommandHandler implements ICommandHandler {
         if (c.hasPaymentTermId()) {
             PaymentTerm term = null;
             term = (PaymentTerm) new PaymentTermQueryHandler().getById(c.getPaymentTermId().getValue());
-            invoice.setPaymentTerm(term);
+            //invoice.setPaymentTerm(term);
         }
         InvoiceInfoProto invoiceInfo = null;
        /* if (c.hasInvoiceInfo()) {
@@ -309,7 +309,7 @@ public class InvoiceCommandHandler implements ICommandHandler {
 
         if (c.hasPaymentTermId()) {
             PaymentTerm term = (PaymentTerm) new PaymentTermQueryHandler().getById(c.getPaymentTermId().getValue());
-            invoice.setPaymentTerm(term);
+            //invoice.setPaymentTerm(term);
         }
 
 
@@ -337,30 +337,30 @@ public class InvoiceCommandHandler implements ICommandHandler {
             invoice.setData(c.get("data").toString());
         }*/
 
-        if (c.getItemsList().size() != 0) {
-            if (!isNew) {
-                if (invoice.getItems() != null) {
-                    invoice.getItems().clear();
-                }
-            }
-
-
-            List<InvoiceItemProto> protos = c.getItemsList();
-
-
-            final Invoice finalInvoice = invoice;
-            Set<InvoiceItem> items = protos.stream().map(x -> {
-                InvoiceItem item = ProtoConverter.convertToInvoiceItem(x);
-                item.setInvoice(finalInvoice);
-                return item;
-            }).collect(Collectors.toSet());
-
-            if (invoice.getItems() != null) {
-                invoice.getItems().addAll(items);
-            } else {
-                invoice.setItems(items);
-            }
-        }
+//        if (c.getItemsList().size() != 0) {
+//            if (!isNew) {
+//                if (invoice.getItems() != null) {
+//                    invoice.getItems().clear();
+//                }
+//            }
+//
+//
+//            List<InvoiceItemProto> protos = c.getItemsList();
+//
+//
+//            final Invoice finalInvoice = invoice;
+//            Set<InvoiceItem> items = protos.stream().map(x -> {
+//                InvoiceItem item = ProtoConverter.convertToInvoiceItem(x);
+//                item.setInvoice(finalInvoice);
+//                return item;
+//            }).collect(Collectors.toSet());
+//
+//            if (invoice.getItems() != null) {
+//                invoice.getItems().addAll(items);
+//            } else {
+//                invoice.setItems(items);
+//            }
+//        }
 
         double line_totals = 0;
 

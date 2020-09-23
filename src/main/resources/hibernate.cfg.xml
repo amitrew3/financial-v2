@@ -14,7 +14,7 @@
 
 
         <property name="show_sql">true</property>
-        <property name="hibernate.hbm2ddl.auto">none</property>
+        <property name="hibernate.hbm2ddl.auto">create</property>
         <property name="hibernate.cache.use_second_level_cache">false</property>
         <property name="hibernate.cache.use_query_cache">false</property>
         <property name="hibernate.c3p0.max_statements">0</property>
@@ -23,20 +23,22 @@
 
         <!--Accounting-->
 
-        <mapping class="com.rew3.accounting.account.model.Account"/>
-        <mapping class="com.rew3.accounting.accountperiod.model.AccountPeriod"/>
-        <mapping class="com.rew3.accounting.transaction.model.Journal"/>
+         <mapping class="com.rew3.accounting.account.model.Account"/>
         <mapping class="com.rew3.accounting.account.model.AccountGroup"/>
+        <mapping class="com.rew3.accounting.accountperiod.model.AccountPeriod"/>
+         <mapping class="com.rew3.accounting.journal.model.Journal"/>
+        <mapping class="com.rew3.accounting.transaction.model.Transaction"/>
+        <mapping class="com.rew3.accounting.transaction.model.TransactionJournal"/>
 
 
         <!--Purchase and Sales-->
-        <mapping class="com.rew3.catalog.product.model.Product"/>
-        <mapping class="com.rew3.sale.customer.model.Customer"/>
         <mapping class="com.rew3.purchase.vendor.model.Vendor"/>
+        <mapping class="com.rew3.sale.customer.model.Customer"/>
+        <mapping class="com.rew3.catalog.product.model.Product"/>
         <mapping class="com.rew3.purchase.expense.model.Expense"/>
         <mapping class="com.rew3.sale.invoice.model.Invoice"/>
         <mapping class="com.rew3.sale.invoice.model.InvoiceItem"/>
-        <mapping class="com.rew3.sale.estimate.model.Estimate"/>
+      <mapping class="com.rew3.sale.estimate.model.Estimate"/>
         <mapping class="com.rew3.sale.estimate.model.EstimateItem"/>
         <mapping class="com.rew3.purchase.bill.model.Bill"/>
         <mapping class="com.rew3.purchase.bill.model.BillItem"/>
@@ -44,10 +46,11 @@
         <mapping class="com.rew3.payment.billpayment.model.BillPayment"/>
         <mapping class="com.rew3.paymentoption.model.PaymentOption"/>
         <mapping class="com.rew3.paymentterm.model.PaymentTerm"/>
-        <mapping class="com.rew3.paymentoption.model.PaymentOption"/>
-        <mapping class="com.rew3.sale.recurringinvoice.model.RecurringInvoice"/>
-        <mapping class="com.rew3.sale.recurringinvoice.model.RecurringSchedule"/>
+        <mapping class="com.rew3.salestax.model.SalesTax"/>
 
+
+        <!--<mapping class="com.rew3.sale.recurringinvoice.model.RecurringInvoice"/>
+        <mapping class="com.rew3.sale.recurringinvoice.model.RecurringSchedule"/>-->
 
 
         <!--
@@ -86,8 +89,6 @@
          <mapping class="com.rew3.brokerage.commissionplan.model.FlatFee"/>
          <mapping class="com.rew3.brokerage.commissionplan.model.SlidingScale"/>
  -->
-
-
 
 
     </session-factory>

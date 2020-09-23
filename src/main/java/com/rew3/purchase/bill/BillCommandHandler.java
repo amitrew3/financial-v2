@@ -110,7 +110,7 @@ public class BillCommandHandler implements ICommandHandler {
             if (invoiceInfo.hasDescription()) {
             }
             if (invoiceInfo.hasInvoiceNumber()) {
-                bill.setInvoiceNumber(invoiceInfo.getInvoiceNumber().getValue());
+                bill.setBillNumber(invoiceInfo.getInvoiceNumber().getValue());
             }
             if (invoiceInfo.hasNote()) {
                 bill.setNote(invoiceInfo.getNote().getValue());

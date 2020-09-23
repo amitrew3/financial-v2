@@ -14,24 +14,17 @@ public class AccountGroup extends AbstractEntity {
 
 
     @Column(name = DB.Field.AccountGroup.TITLE)
-    private String accountingCodeType;
+    private String title;
 
     @Column(name = DB.Field.AccountGroup.DESCRIPTION)
     private String description;
 
     @Column(name = DB.Field.AccountGroup.ACCOUNT_HEAD)
-    private String accountingHead;
+    private String accountHead;
 
     @Column(name = DB.Field.AccountGroup.CODE)
     private Integer code;
 
-    public String getAccountingCodeType() {
-        return accountingCodeType;
-    }
-
-    public void setAccountingCodeType(String accountingCodeType) {
-        this.accountingCodeType = accountingCodeType;
-    }
 
     public String getDescription() {
         return description;
@@ -41,12 +34,12 @@ public class AccountGroup extends AbstractEntity {
         this.description = description;
     }
 
-    public String getAccountingHead() {
-        return accountingHead;
+    public String getAccountHead() {
+        return accountHead;
     }
 
-    public void setAccountingHead(Flags.AccountingHead accountingHead) {
-        this.accountingHead = accountingHead.toString();
+    public void setAccountHead(Flags.AccountingHead accountHead) {
+        this.accountHead = accountHead.toString();
     }
 
     public Integer getCode() {
@@ -55,5 +48,17 @@ public class AccountGroup extends AbstractEntity {
 
     public void setCode(Integer code) {
         this.code = code;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAccountHead(String accountHead) {
+        this.accountHead = accountHead;
     }
 }

@@ -4,12 +4,11 @@ package com.rew3.purchase.bill.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rew3.catalog.product.model.Product;
 import com.rew3.common.model.DB;
-import com.rew3.common.model.Flags;
 import com.rew3.sale.invoice.model.Invoice;
+import com.rew3.salestax.model.SalesTax;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -31,7 +30,7 @@ public class BillItem {
     @JsonIgnore
     @JoinColumn(name = DB.Field.BillItem.BILL_ID)
     @ManyToOne
-    private Invoice invoice;
+    private Bill bill;
 
     @JsonIgnore
     @JoinColumn(name = DB.Field.BillItem.PRODUCT_ID)
@@ -50,11 +49,13 @@ public class BillItem {
     @Column(name = DB.Field.BillItem.PRICE)
     private Double price;
 
-    @Column(name = DB.Field.BillItem.TAX1)
-    private Double tax1;
+    @OneToOne
+    @JoinColumn(name = DB.Field.InvoiceItem.TAX1)
+    private SalesTax tax1;
 
-    @Column(name = DB.Field.BillItem.TAX2)
-    private Double tax2;
+    @OneToOne
+    @JoinColumn(name = DB.Field.InvoiceItem.TAX2)
+    private SalesTax tax2;
 
     public String getId() {
         return id;
@@ -64,12 +65,12 @@ public class BillItem {
         this.id = id;
     }
 
-    public Invoice getInvoice() {
-        return invoice;
+    public Bill getBill() {
+        return bill;
     }
 
-    public void setInvoice(Invoice invoice) {
-        this.invoice = invoice;
+    public void setBill(Bill bill) {
+        this.bill = bill;
     }
 
     public Product getProduct() {
@@ -104,19 +105,19 @@ public class BillItem {
         this.price = price;
     }
 
-    public Double getTax1() {
+    public SalesTax getTax1() {
         return tax1;
     }
 
-    public void setTax1(Double tax1) {
+    public void setTax1(SalesTax tax1) {
         this.tax1 = tax1;
     }
 
-    public Double getTax2() {
+    public SalesTax getTax2() {
         return tax2;
     }
 
-    public void setTax2(Double tax2) {
+    public void setTax2(SalesTax tax2) {
         this.tax2 = tax2;
     }
 }
