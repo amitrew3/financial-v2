@@ -7,10 +7,9 @@ import org.hibernate.Transaction;
 import java.util.HashMap;
 
 public class DeleteSalesTax extends Command implements ICommand {
-	public DeleteSalesTax(HashMap<String, Object> data) {
-		super(data);
-	}
-	public DeleteSalesTax(HashMap<String, Object> data, Transaction trx) {
-		super(data,trx);
+String id;
+
+	public DeleteSalesTax(String id) {
+		this.id = id;
 	}
 }

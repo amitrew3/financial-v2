@@ -294,7 +294,7 @@ public class ProtoConverter {
         return list;
     }
 
-    private static SalesTaxProto convertToSalesTaxProto(SalesTax x) {
+    public static SalesTaxProto convertToSalesTaxProto(SalesTax x) {
         SalesTaxProto.Builder builder = SalesTaxProto.newBuilder();
         Optional.ofNullable(x.get_id()).ifPresent(y -> builder.setId(StringValue.of(y)));
         Optional.ofNullable(x.getMeta()).ifPresent(y -> builder.setMeta(convertToMetaProto(y)));

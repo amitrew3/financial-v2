@@ -140,15 +140,15 @@ public class PaymentTermCommandHandler implements ICommandHandler {
 
     public void handle(DeletePaymentTerm c) throws NotFoundException, CommandException, JsonProcessingException {
 
-        PaymentTerm plan = (PaymentTerm) new PaymentTermQueryHandler().getById(c.get("id").toString());
-        if (plan != null) {
-            if (!plan.hasDeletePermission(Authentication.getRew3UserId(), Authentication.getRew3GroupId())) {
+        PaymentTerm term = (PaymentTerm) new PaymentTermQueryHandler().getById(c.get("id").toString());
+        if (term != null) {
+            if (!term.hasDeletePermission(Authentication.getRew3UserId(), Authentication.getRew3GroupId())) {
                 APILogger.add(APILogType.ERROR, "Permission denied");
                 throw new CommandException("Permission denied");
             }
-            HibernateUtils.saveAsDeleted(plan);
+            HibernateUtils.saveAsDeleted(term);
 
-            c.setObject(plan);
+            c.setObject(term);
         }
 
     }
