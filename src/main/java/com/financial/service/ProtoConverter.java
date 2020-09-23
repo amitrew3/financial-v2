@@ -1,6 +1,8 @@
 package com.financial.service;
 
 import com.avenue.base.grpc.proto.core.*;
+import com.avenue.financial.services.grpc.proto.customer.CustomerInfoProto;
+import com.avenue.financial.services.grpc.proto.customer.CustomerProto;
 import com.avenue.financial.services.grpc.proto.invoice.InvoiceInfoProto;
 import com.avenue.financial.services.grpc.proto.invoice.InvoiceItemProto;
 import com.avenue.financial.services.grpc.proto.invoice.InvoiceProto;
@@ -11,6 +13,8 @@ import com.avenue.financial.services.grpc.proto.product.ProductProto;
 import com.avenue.financial.services.grpc.proto.product.ProductSideProto;
 import com.avenue.financial.services.grpc.proto.salestax.SalesTaxInfoProto;
 import com.avenue.financial.services.grpc.proto.salestax.SalesTaxProto;
+import com.avenue.financial.services.grpc.proto.vendor.VendorInfoProto;
+import com.avenue.financial.services.grpc.proto.vendor.VendorProto;
 import com.google.protobuf.*;
 import com.rew3.catalog.product.model.Product;
 import com.rew3.common.shared.model.Address;
@@ -19,6 +23,8 @@ import com.rew3.common.shared.model.MiniUser;
 import com.rew3.common.utils.Parser;
 import com.rew3.paymentterm.model.PaymentTerm;
 import com.rew3.purchase.bill.model.BillItem;
+import com.rew3.purchase.vendor.model.Vendor;
+import com.rew3.sale.customer.model.Customer;
 import com.rew3.sale.estimate.model.EstimateItem;
 import com.rew3.sale.invoice.model.Invoice;
 import com.rew3.sale.invoice.model.InvoiceItem;
@@ -315,5 +321,96 @@ public class ProtoConverter {
         Optional.ofNullable(x.isShowTaxNumber()).ifPresent(y -> builder.setShowTaxNumber(BoolValue.of(y)));
         return builder.build();
     }
+
+    public static List<CustomerProto> convertToCustomerProtos(List<Object> all) {
+        List<CustomerProto> list = all.stream().map(x -> (Customer) x).map(x -> {
+            return convertToCustomerProto(x);
+        }).collect(Collectors.toList());
+        return list;
+    }
+
+    public static CustomerProto convertToCustomerProto(Customer x) {
+        CustomerProto.Builder builder = CustomerProto.newBuilder();
+        Optional.ofNullable(x.get_id()).ifPresent(y -> builder.setId(StringValue.of(y)));
+        Optional.ofNullable(x.getMeta()).ifPresent(y -> builder.setMeta(convertToMetaProto(y)));
+        Optional.ofNullable(x.getOwner()).ifPresent(y -> builder.setOwner(miniUserProto(y)));
+        Optional.ofNullable(x.getVisibility()).ifPresent(y -> builder.setVisibility(VisibilityTypeProto.valueOf(x.getVisibility())));
+        Optional.ofNullable(x).ifPresent(y -> builder.setCustomerInfo(convertToCustomerInfoProto(y)));
+        return builder.build();
+    }
+
+    private static CustomerInfoProto convertToCustomerInfoProto(Customer x) {
+
+        CustomerInfoProto.Builder builder = CustomerInfoProto.newBuilder();
+        Optional.ofNullable(x.getFirstName()).ifPresent(y -> builder.setFirstName(StringValue.of(y)));
+        Optional.ofNullable(x.getMiddleName()).ifPresent(y -> builder.setMiddleName(StringValue.of(y)));
+        Optional.ofNullable(x.getLastName()).ifPresent(y -> builder.setLastName(StringValue.of(y)));
+        Optional.ofNullable(x.getEmail()).ifPresent(y -> builder.setEmail(StringValue.of(y)));
+        Optional.ofNullable(x.getCompany()).ifPresent(y -> builder.setCompany(StringValue.of(y)));
+        Optional.ofNullable(x.getPhone1()).ifPresent(y -> builder.setPhone1(StringValue.of(y)));
+        Optional.ofNullable(x.getPhone2()).ifPresent(y -> builder.setPhone2(StringValue.of(y)));
+        Optional.ofNullable(x.getMobile()).ifPresent(y -> builder.setMobile(StringValue.of(y)));
+        Optional.ofNullable(x.getCurrency()).ifPresent(y -> builder.setCurrency(StringValue.of(y)));
+        Optional.ofNullable(x.getFax()).ifPresent(y -> builder.setFax(StringValue.of(y)));
+        Optional.ofNullable(x.getWebsite()).ifPresent(y -> builder.setWebsite(StringValue.of(y)));
+        Optional.ofNullable(x.getTollFree()).ifPresent(y -> builder.setTollFree(StringValue.of(y)));
+        Optional.ofNullable(x.getInternalNotes()).ifPresent(y -> builder.setInternalNotes(StringValue.of(y)));
+        Optional.ofNullable(x.getAccountNumber()).ifPresent(y -> builder.setAccountNumber(StringValue.of(y)));
+        Optional.ofNullable(x.getDeliveryInstructions()).ifPresent(y -> builder.setDeliveryInstructions(StringValue.of(y)));
+        Optional.ofNullable(x.getBillingAddress()).ifPresent(y -> builder.setBillingAddress(convertToAddressProto(y)));
+
+
+        return builder.build();
+    }
+
+    private static AddressProto convertToAddressProto(Address x) {
+        AddressProto.Builder builder = AddressProto.newBuilder();
+        Optional.ofNullable(x.getStreet()).ifPresent(y -> builder.setStreet(StringValue.of(y)));
+        Optional.ofNullable(x.getTown()).ifPresent(y -> builder.setTown(StringValue.of(y)));
+        Optional.ofNullable(x.getPostalCode()).ifPresent(y -> builder.setPostalCode(StringValue.of(y)));
+        Optional.ofNullable(x.getProvince()).ifPresent(y -> builder.setProvince(StringValue.of(y)));
+        Optional.ofNullable(x.getCountry()).ifPresent(y -> builder.setCountry(StringValue.of(y)));
+        return builder.build();
+    }
+    public static List<VendorProto> convertToVendorProtos(List<Object> all) {
+        List<VendorProto> list = all.stream().map(x -> (Vendor) x).map(x -> {
+            return convertToVendorProto(x);
+        }).collect(Collectors.toList());
+        return list;
+    }
+
+    public static VendorProto convertToVendorProto(Vendor x) {
+        VendorProto.Builder builder = VendorProto.newBuilder();
+        Optional.ofNullable(x.get_id()).ifPresent(y -> builder.setId(StringValue.of(y)));
+        Optional.ofNullable(x.getMeta()).ifPresent(y -> builder.setMeta(convertToMetaProto(y)));
+        Optional.ofNullable(x.getOwner()).ifPresent(y -> builder.setOwner(miniUserProto(y)));
+        Optional.ofNullable(x.getVisibility()).ifPresent(y -> builder.setVisibility(VisibilityTypeProto.valueOf(x.getVisibility())));
+        Optional.ofNullable(x).ifPresent(y -> builder.setVendorInfo(convertToVendorInfoProto(y)));
+        return builder.build();
+    }
+
+    private static VendorInfoProto convertToVendorInfoProto(Vendor x) {
+
+        VendorInfoProto.Builder builder = VendorInfoProto.newBuilder();
+        Optional.ofNullable(x.getFirstName()).ifPresent(y -> builder.setFirstName(StringValue.of(y)));
+        Optional.ofNullable(x.getMiddleName()).ifPresent(y -> builder.setMiddleName(StringValue.of(y)));
+        Optional.ofNullable(x.getLastName()).ifPresent(y -> builder.setLastName(StringValue.of(y)));
+        Optional.ofNullable(x.getEmail()).ifPresent(y -> builder.setEmail(StringValue.of(y)));
+        Optional.ofNullable(x.getCompany()).ifPresent(y -> builder.setCompany(StringValue.of(y)));
+        Optional.ofNullable(x.getPhone1()).ifPresent(y -> builder.setPhone1(StringValue.of(y)));
+        Optional.ofNullable(x.getPhone2()).ifPresent(y -> builder.setPhone2(StringValue.of(y)));
+        Optional.ofNullable(x.getMobile()).ifPresent(y -> builder.setMobile(StringValue.of(y)));
+        Optional.ofNullable(x.getCurrency()).ifPresent(y -> builder.setCurrency(StringValue.of(y)));
+        Optional.ofNullable(x.getFax()).ifPresent(y -> builder.setFax(StringValue.of(y)));
+        Optional.ofNullable(x.getWebsite()).ifPresent(y -> builder.setWebsite(StringValue.of(y)));
+        Optional.ofNullable(x.getTollFree()).ifPresent(y -> builder.setTollFree(StringValue.of(y)));
+        Optional.ofNullable(x.getInternalNotes()).ifPresent(y -> builder.setInternalNotes(StringValue.of(y)));
+        Optional.ofNullable(x.getAccountNumber()).ifPresent(y -> builder.setAccountNumber(StringValue.of(y)));
+        Optional.ofNullable(x.getBillingAddress()).ifPresent(y -> builder.setBillingAddress(convertToAddressProto(y)));
+
+        return builder.build();
+    }
+
+
 
 }

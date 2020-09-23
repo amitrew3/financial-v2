@@ -21,13 +21,13 @@ public class PaymentTermQueryHandler implements IQueryHandler {
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
-        PaymentTerm acp = (PaymentTerm) HibernateUtilV2.get(PaymentTerm.class, id);
-        if (acp == null) {
+        PaymentTerm term = (PaymentTerm) HibernateUtilV2.get(PaymentTerm.class, id);
+        if (term == null) {
             throw new NotFoundException("Payment Term  id(" + id + ") not found.");
         }
-        if (acp.getStatus().equals(Flags.EntityStatus.DELETED.toString()))
+        if (term.getStatus().equals(Flags.EntityStatus.DELETED.toString()))
             throw new NotFoundException("Payment Term  id(" + id + ") not found.");
-        return acp;
+        return term;
 
     }
 
@@ -81,7 +81,7 @@ public class PaymentTermQueryHandler implements IQueryHandler {
         }
 
 
-        List<Object> terms = HibernateUtilV2.select("SELECT distinct t FROM SalesTax t " + builder.getValue(), sqlParams, q.getQuery(), limit, offset,
+        List<Object> terms = HibernateUtilV2.select("SELECT distinct t FROM PaymentTerm t " + builder.getValue(), sqlParams, q.getQuery(), limit, offset,
                 SalesTax.class);
 
         return terms;
