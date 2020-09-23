@@ -12,6 +12,7 @@ import com.rew3.accounting.account.model.Account;
 import com.rew3.accounting.account.model.AccountGroup;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Rew3StringBuiler {
 
@@ -353,6 +354,22 @@ public class Rew3StringBuiler {
         return mappings;
     }
 
+    public static Map<String, Object> getSalesTaxMapping() {
+        HashMap<String, Object> mappings = new HashMap<>();
+        mappings.putAll(getMetaMapping());
+
+
+        mappings.put("title", new TypeAndValue("STRING", "t.title"));
+        mappings.put("abbreviation", new TypeAndValue("STRING", "t.abbreviation"));
+        mappings.put("description", new TypeAndValue("STRING", "t.description"));
+        mappings.put("tax_number", new TypeAndValue("STRING", "t.tax_number"));
+
+        mappings.put("show_tax_number", new TypeAndValue("STRING", "t.show_tax_number"));
+        mappings.put("rate", new TypeAndValue("STRING", "t.rate"));
+
+        return mappings;
+    }
+
     public StringBuilder getValue() {
         return value;
     }
@@ -532,6 +549,8 @@ public class Rew3StringBuiler {
 
         mappings.put("name", new TypeAndValue("STRING", "t.name"));
         mappings.put("value", new TypeAndValue("STRING", "t.value"));
+        mappings.put("description", new TypeAndValue("STRING", "t.value"));
+
 
 
         return mappings;

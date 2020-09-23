@@ -361,9 +361,8 @@ public class DB {
 
         public static class Product {
             public static final String TITLE = "title";
-            public static final String price = "price";
+            public static final String PRICE = "price";
             public static final String DESCRIPTION = "description";
-            public static final String STATUS = "status";
             public static final String SIDE = "side";
             public static final String TAX1 = "tax1";
             public static final String TAX2 = "tax2";

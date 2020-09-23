@@ -1,0 +1,118 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+
+import "avenue/financial/protobuf/core/core_messages_description.proto";
+import "avenue/financial/protobuf/salestax/salestax_messages_description.proto";
+
+
+
+//Platform
+
+option java_multiple_files = true;
+option java_package = "com.avenue.financial.services.grpc.proto.salestax";
+option java_outer_classname = "SalesTaxServiceDescriptionProto";
+
+package avenue.rms.protobuf.salestax;
+
+service SalesTaxServiceProto {
+
+  rpc list (ListSalesTaxRequestProto) returns (ListSalesTaxResponseProto) {
+  }
+
+  rpc get (GetSalesTaxRequestProto) returns (GetSalesTaxResponseProto) {
+  }
+
+
+  rpc add (AddSalesTaxRequestProto) returns (AddSalesTaxResponseProto) {
+  }
+
+  rpc update (UpdateSalesTaxRequestProto) returns (UpdateSalesTaxResponseProto) {
+  }
+
+  rpc delete (DeleteSalesTaxRequestProto) returns (DeleteSalesTaxResponseProto) {
+  }
+
+}
+
+message CountSalesTaxRequestProto {
+  avenue.financial.protobuf.core.RequestParamProto param = 1;
+  google.protobuf.StringValue search = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+
+
+message ListSalesTaxResponseProto {
+  repeated avenue.financial.protobuf.salestax.SalesTaxProto data = 1;
+}
+
+message GetSalesTaxResponseProto {
+  avenue.financial.protobuf.salestax.SalesTaxProto data = 1;
+}
+
+message GetSalesTaxRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.core.RequestParamProto param = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+message ListSalesTaxRequestProto {
+  avenue.financial.protobuf.core.RequestParamProto param = 1;
+  google.protobuf.StringValue search = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+
+
+
+message AddSalesTaxRequestProto {
+  avenue.financial.protobuf.salestax.AddSalesTaxProto data = 1;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
+}
+
+message UpdateSalesTaxRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.salestax.UpdateSalesTaxProto data = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+message DeleteSalesTaxRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
+}
+
+
+message AddSalesTaxResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.salestax.SalesTaxProto data = 5;
+}
+
+message UpdateSalesTaxResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.salestax.SalesTaxProto data = 5;
+}
+
+message DeleteSalesTaxResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.salestax.SalesTaxProto data = 5;
+}
+
+
+
+
+
+
+
+

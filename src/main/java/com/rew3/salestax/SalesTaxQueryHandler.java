@@ -47,11 +47,13 @@ public class SalesTaxQueryHandler implements IQueryHandler {
         }
         if (q.has("limit")) {
             limit = Parser.convertObjectToInteger(q.get("limit"));
+            q.getQuery().remove("limit");
         }
         if (q.has("offset")) {
             offset = Parser.convertObjectToInteger(q.get("offset"));
-        }
+            q.getQuery().remove(offset);
 
+        }
 
         if (q.has("status")) {
             builder.append("AND");
@@ -77,7 +79,7 @@ public class SalesTaxQueryHandler implements IQueryHandler {
         }
 
 
-        List<Object> terms = HibernateUtils.select("SELECT distinct t FROM PaymentTerm t " + builder.getValue(), sqlParams, q.getQuery(), limit, offset,
+        List<Object> terms = HibernateUtils.select("SELECT distinct t FROM SalesTax t " + builder.getValue(), sqlParams, q.getQuery(), limit, offset,
                 SalesTax.class);
 
         return terms;
@@ -96,7 +98,7 @@ public class SalesTaxQueryHandler implements IQueryHandler {
 
         RequestFilter.doFilter(q, sqlParams, builder, SalesTax.class);
 
-        Long count = HibernateUtils.count("SELECT  count(distinct t) FROM PaymentTerm t " + builder.getValue(), sqlParams, q.getQuery(), SalesTax.class);
+        Long count = HibernateUtils.count("SELECT  count(distinct t) FROM SalesTax t " + builder.getValue(), sqlParams, q.getQuery(), SalesTax.class);
 
 
         return count;

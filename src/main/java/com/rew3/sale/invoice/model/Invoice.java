@@ -80,7 +80,7 @@ public class Invoice extends AbstractEntity {
 
 
     @Column(name = DB.Field.Invoice.IS_DRAFT)
-    private boolean isRecurring;
+    private boolean isDraft;
 
 
     @Valid
@@ -224,12 +224,12 @@ public class Invoice extends AbstractEntity {
         this.address = address;
     }
 
-    public boolean isRecurring() {
-        return isRecurring;
+    public boolean isDraft() {
+        return isDraft;
     }
 
-    public void setRecurring(boolean recurring) {
-        isRecurring = recurring;
+    public void setDraft(boolean draft) {
+        isDraft = draft;
     }
 
 }

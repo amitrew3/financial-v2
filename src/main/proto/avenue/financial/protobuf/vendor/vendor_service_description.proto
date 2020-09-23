@@ -1,0 +1,173 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+
+import "avenue/financial/protobuf/core/core_messages_description.proto";
+import "avenue/financial/protobuf/vendor/vendor_messages_description.proto";
+
+
+option java_multiple_files = true;
+option java_package = "com.avenue.financial.services.grpc.proto.vendor";
+option java_outer_classname = "VendorServiceDescriptionProto";
+
+package avenue.rms.protobuf.vendor;
+
+service VendorServiceProto {
+
+  rpc list (ListVendorRequestProto) returns (ListVendorResponseProto) {
+  }
+
+  rpc get (GetVendorRequestProto) returns (GetVendorResponseProto) {
+  }
+
+  rpc add (AddVendorRequestProto) returns (AddVendorResponseProto) {
+  }
+
+  rpc update (UpdateVendorRequestProto) returns (UpdateVendorResponseProto) {
+  }
+
+  rpc delete (DeleteVendorRequestProto) returns (DeleteVendorResponseProto) {
+  }
+
+
+}
+
+message CountVendorRequestProto {
+  avenue.financial.protobuf.core.RequestParamProto param = 1;
+  google.protobuf.StringValue search = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+message BulkDeleteVendorRequestProto {
+  repeated string id = 1;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
+}
+
+message BulkDeleteVendorResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  repeated avenue.financial.protobuf.vendor.VendorProto data = 5;
+}
+
+message CountVendorResponseProto {
+  int32 limit = 1;
+  int32 page_number = 2;
+  int32 pages_count = 3;
+  int32 total_count = 4;
+}
+
+message ListVendorResponseProto {
+  repeated avenue.financial.protobuf.vendor.VendorProto data = 1;
+}
+
+message GetVendorResponseProto {
+  avenue.financial.protobuf.vendor.VendorProto data = 1;
+}
+
+message GetVendorRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.core.RequestParamProto param = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+message ListVendorRequestProto {
+  avenue.financial.protobuf.core.RequestParamProto param = 1;
+  google.protobuf.StringValue search = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+
+
+message ListVendorsAttachedToEntityRequestProto {
+  avenue.financial.protobuf.core.RequestParamProto param = 1;
+  google.protobuf.StringValue type = 2;
+  google.protobuf.StringValue entity_id = 3;
+  google.protobuf.StringValue entity = 4;
+  google.protobuf.StringValue module = 5;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 6;
+}
+
+message AddVendorRequestProto {
+  avenue.financial.protobuf.vendor.AddVendorProto data = 1;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
+}
+
+message UpdateVendorRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.vendor.UpdateVendorProto data = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+message DeleteVendorRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
+}
+
+
+message AddVendorResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.vendor.VendorProto data = 5;
+}
+
+message UpdateVendorResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.vendor.VendorProto data = 5;
+}
+
+message DeleteVendorResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.vendor.VendorProto data = 5;
+}
+
+message AttachVendorResponseProto{
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.vendor.VendorProto data = 5;
+}
+
+message DetachVendorResponseProto{
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.vendor.VendorProto data = 5;
+}
+
+
+message ListVendorActivityRequest {
+  avenue.financial.protobuf.core.RequestParamProto param = 1;
+  avenue.financial.protobuf.core.ModuleProto module = 2;
+  avenue.financial.protobuf.core.EntityProto entity = 3;
+  string entity_id = 4;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 5;
+}
+
+
+message CountVendorActivityResponseProto {
+  int32 limit = 1;
+  int32 page_number = 2;
+  int32 pages_count = 3;
+  int32 total_count = 4;
+}
+
+
+
+
+
+
+

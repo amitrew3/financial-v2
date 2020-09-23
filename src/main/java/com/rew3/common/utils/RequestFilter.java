@@ -10,6 +10,7 @@ import com.rew3.common.cqrs.Query;
 import com.rew3.common.database.HibernateUtils;
 import com.rew3.accounting.account.model.Account;
 import com.rew3.accounting.account.model.AccountGroup;
+import com.rew3.salestax.model.SalesTax;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -38,6 +39,8 @@ public class RequestFilter {
             map = Rew3StringBuiler.getRecurringInvoiceMapping();
         } else if (t.equals(Expense.class)) {
             map = Rew3StringBuiler.getExpenseMapping();
+        } else if (t.equals(SalesTax.class)) {
+            map = Rew3StringBuiler.getSalesTaxMapping();
         }
 
 

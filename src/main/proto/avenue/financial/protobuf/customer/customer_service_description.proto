@@ -15,7 +15,7 @@ option java_multiple_files = true;
 option java_package = "com.avenue.financial.services.grpc.proto.customer";
 option java_outer_classname = "CustomerServiceDescriptionProto";
 
-package avenue.rms.protobuf.listing;
+package avenue.rms.protobuf.customer;
 
 service CustomerServiceProto {
 
@@ -25,8 +25,6 @@ service CustomerServiceProto {
   rpc get (GetCustomerRequestProto) returns (GetCustomerResponseProto) {
   }
 
-  rpc customersAttachedToEntity (ListCustomersAttachedToEntityRequestProto) returns (ListCustomerResponseProto) {
-  }
 
   rpc add (AddCustomerRequestProto) returns (AddCustomerResponseProto) {
   }
@@ -35,9 +33,6 @@ service CustomerServiceProto {
   }
 
   rpc delete (DeleteCustomerRequestProto) returns (DeleteCustomerResponseProto) {
-  }
-
-  rpc cloneCustomer (CloneCustomerRequestProto) returns (CloneCustomerResponseProto) {
   }
 
 }
@@ -88,35 +83,17 @@ message ListCustomerRequestProto {
   avenue.financial.protobuf.core.RequestContextProto request_context = 3;
 }
 
-message DetachCustomerRequestProto{
-  avenue.financial.protobuf.customer.DetachCustomerProto detachCustomer = 1;
-  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
-}
 
 
-message AttachCustomerRequestProto{
-  avenue.financial.protobuf.customer.AttachCustomerProto attachCustomer = 1;
-  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
-}
-
-
-message ListCustomersAttachedToEntityRequestProto {
-  avenue.financial.protobuf.core.RequestParamProto param = 1;
-  google.protobuf.StringValue type = 2;
-  google.protobuf.StringValue entity_id = 3;
-  google.protobuf.StringValue entity = 4;
-  google.protobuf.StringValue module = 5;
-  avenue.financial.protobuf.core.RequestContextProto request_context = 6;
-}
 
 message AddCustomerRequestProto {
-  AddCustomerProto data = 1;
+  avenue.financial.protobuf.customer.AddCustomerProto data = 1;
   avenue.financial.protobuf.core.RequestContextProto request_context = 2;
 }
 
 message UpdateCustomerRequestProto {
   string id = 1;
-  UpdateCustomerProto data = 2;
+  avenue.financial.protobuf.customer.UpdateCustomerProto data = 2;
   avenue.financial.protobuf.core.RequestContextProto request_context = 3;
 }
 
@@ -151,114 +128,9 @@ message DeleteCustomerResponseProto {
 }
 
 
-message CloneCustomerRequestProto {
-  string id = 1;
-  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
-}
-
-message CloneCustomerResponseProto {
-  string id = 1;
-  string action = 2;
-  string message = 3;
-  avenue.financial.protobuf.core.StatusTypeProto status = 4;
-  avenue.financial.protobuf.customer.CustomerProto data = 5;
-}
-
-message BulkAddCustomerResponseProto {
-  string id = 1;
-  string action = 2;
-  string message = 3;
-  avenue.financial.protobuf.core.StatusTypeProto status = 4;
-  repeated avenue.financial.protobuf.customer.CustomerProto data = 5;
-}
-
-message BulkUpdateCustomerRequestProto {
-  repeated UpdateCustomerProto data = 1;
-  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
-}
-
-message BulkUpdateCustomerResponseProto {
-  string id = 1;
-  string action = 2;
-  string message = 3;
-  avenue.financial.protobuf.core.StatusTypeProto status = 4;
-  repeated avenue.financial.protobuf.customer.CustomerProto data = 5;
-}
-
-message AttachCustomerResponseProto{
-  string id = 1;
-  string action = 2;
-  string message = 3;
-  avenue.financial.protobuf.core.StatusTypeProto status = 4;
-  avenue.financial.protobuf.customer.CustomerProto data = 5;
-}
-
-message DetachCustomerResponseProto{
-  string id = 1;
-  string action = 2;
-  string message = 3;
-  avenue.financial.protobuf.core.StatusTypeProto status = 4;
-  avenue.financial.protobuf.customer.CustomerProto data = 5;
-}
-
-message UnsetCustomerReferenceRequestProto {
-  string id = 1;
-  avenue.financial.protobuf.core.ReferenceProto reference = 2;
-  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
-}
-
-message SetCustomerReferenceRequestProto {
-  string id = 1;
-  avenue.financial.protobuf.core.ReferenceProto reference = 2;
-  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
-}
-
-message ListCustomerActivityRequest {
-  avenue.financial.protobuf.core.RequestParamProto param = 1;
-  avenue.financial.protobuf.core.ModuleProto module = 2;
-  avenue.financial.protobuf.core.EntityProto entity = 3;
-  string entity_id = 4;
-  avenue.financial.protobuf.core.RequestContextProto request_context = 5;
-}
-
-
-message CountCustomerActivityResponseProto {
-  int32 limit = 1;
-  int32 page_number = 2;
-  int32 pages_count = 3;
-  int32 total_count = 4;
-}
 
 
 
-message AddCustomerProto{
-
-  google.protobuf.StringValue user_id = 1;
-  google.protobuf.StringValue payment_term_id = 2;
-  google.protobuf.StringValue customer_date = 3;
-  google.protobuf.StringValue due_date = 4;
-  avenue.financial.protobuf.customer.CustomerType type = 5;
-  avenue.financial.protobuf.customer.CustomerInfoProto customer_info = 6;
-  repeated avenue.financial.protobuf.customer.CustomerItemProto items = 7;
-  avenue.financial.protobuf.customer.MiniUserProto owner = 8;
-  avenue.financial.protobuf.customer.EntityStatusWrapper.EntityStatus status = 9;
-  avenue.financial.protobuf.core.VisibilityTypeProto visibility = 10;
-
-}
-
-message UpdateCustomerProto{
-  google.protobuf.StringValue _id = 1;
-  google.protobuf.StringValue user_id = 2;
-  google.protobuf.StringValue payment_term_id = 3;
-  google.protobuf.StringValue customer_date = 4;
-  google.protobuf.StringValue due_date = 5;
-  avenue.financial.protobuf.customer.CustomerType type = 6;
-  avenue.financial.protobuf.customer.CustomerInfoProto customer_info = 7;
-  repeated avenue.financial.protobuf.customer.CustomerItemProto items = 8;
-  avenue.financial.protobuf.customer.MiniUserProto owner = 9;
-  avenue.financial.protobuf.customer.EntityStatusWrapper.EntityStatus status = 10;
-  avenue.financial.protobuf.core.VisibilityTypeProto visibility = 11;
-}
 
 
 

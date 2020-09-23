@@ -7,11 +7,12 @@ import com.rew3.common.cqrs.ICommand;
 import org.hibernate.Transaction;
 
 public class DeleteProduct extends Command implements ICommand {
-	public DeleteProduct(HashMap<String, Object> data) {
-		super(data);
-	}
-	public DeleteProduct(HashMap<String, Object> data,Transaction trx) {
-		super(data,trx);
+	String id;
+
+
+	public DeleteProduct(String id) {
+		this.id=id;
+
 
 	}
 }

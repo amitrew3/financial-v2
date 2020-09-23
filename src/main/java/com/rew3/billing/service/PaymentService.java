@@ -1,7 +1,5 @@
 package com.rew3.billing.service;
 
-import com.rew3.paymentterm.command.CreateTerm;
-import com.rew3.paymentterm.model.PaymentTerm;
 import com.rew3.purchase.expense.command.CreateExpense;
 import com.rew3.purchase.expense.model.Expense;
 import com.rew3.purchase.expense.model.ExpenseDTO;
@@ -33,16 +31,6 @@ public class PaymentService {
 
     }
 
-    public Invoice updateCustomerInvoice(HashMap<String, Object> requestData) throws Exception {
-
-
-        UpdateInvoice command = new UpdateInvoice(requestData);
-        CommandRegister.getInstance().process(command);
-        Invoice invoice = (Invoice) command.getObject();
-
-        return invoice;
-
-    }
 
     public InvoiceDTO getInvoiceById(String id) throws NotFoundException, CommandException {
         Invoice invoice = (Invoice) new InvoiceQueryHandler().getById(id);
@@ -69,16 +57,6 @@ public class PaymentService {
         return Converters.convertToExpenseDTO(expense);
     }
 
-    public PaymentTerm createUpdatePaymentTerm(HashMap<String, Object> requestData) throws Exception {
-
-
-        CreateTerm command = new CreateTerm(requestData);
-        CommandRegister.getInstance().process(command);
-        PaymentTerm paymentTerm = (PaymentTerm) command.getObject();
-
-        return paymentTerm;
-
-    }
 
 
     public List<Object> getPaymentTerms(HashMap<String, Object> requestData) {

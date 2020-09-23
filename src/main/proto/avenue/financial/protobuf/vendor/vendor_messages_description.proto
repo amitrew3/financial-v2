@@ -5,22 +5,22 @@ import "avenue/financial/protobuf/core/core_messages_description.proto";
 
 
 option java_multiple_files = true;
-option java_package = "com.avenue.financial.services.grpc.proto.customer";
-option java_outer_classname = "CustomerMessagesDescriptionProto";
+option java_package = "com.avenue.financial.services.grpc.proto.vendor";
+option java_outer_classname = "VendorMessagesDescriptionProto";
 
-package avenue.financial.protobuf.customer;
+package avenue.financial.protobuf.vendor;
 
-message CustomerProto{
+message VendorProto{
   google.protobuf.StringValue _id = 1;
   avenue.financial.protobuf.core.MetaProto meta = 2;
   avenue.financial.protobuf.core.MiniUserProto owner = 3;
   avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 4;
   avenue.financial.protobuf.core.VisibilityTypeProto visibility = 5;
-  CustomerInfoProto customer_info = 6;
+  VendorInfoProto vendor_info = 6;
 
 }
 
-message CustomerInfoProto{
+message VendorInfoProto{
   google.protobuf.StringValue first_name = 1;
   google.protobuf.StringValue middle_name = 2;
   google.protobuf.StringValue last_name = 3;
@@ -41,22 +41,21 @@ message CustomerInfoProto{
   avenue.financial.protobuf.core.AddressProto shipping_address = 18;
 
 }
-message AddCustomerProto{
+message AddVendorProto{
 
   avenue.financial.protobuf.core.MiniUserProto owner = 1;
   avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 2;
   avenue.financial.protobuf.core.VisibilityTypeProto visibility = 3;
-  CustomerInfoProto customer_info = 4;
+  VendorInfoProto vendor_info = 4;
 }
 
-message UpdateCustomerProto{
+message UpdateVendorProto{
   google.protobuf.StringValue _id = 1;
   avenue.financial.protobuf.core.MiniUserProto owner = 2;
   avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 3;
   avenue.financial.protobuf.core.VisibilityTypeProto visibility = 4;
-  CustomerInfoProto customer_info = 5;
+  VendorInfoProto vendor_info = 5;
 }
-
 
 
 

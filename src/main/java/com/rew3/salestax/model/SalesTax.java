@@ -17,7 +17,7 @@ public class SalesTax extends AbstractEntity {
     private String title;
 
     @Column(name = DB.Field.SalesTax.ABBREVIATION)
-    private String value;
+    private String abbreviation;
     @Column(name = DB.Field.SalesTax.DESCRIPTION)
     private String description;
     @Column(name = DB.Field.SalesTax.TAX_NUMBER)
@@ -35,13 +35,6 @@ public class SalesTax extends AbstractEntity {
         this.title = title;
     }
 
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
 
     public String getDescription() {
         return description;
@@ -73,5 +66,13 @@ public class SalesTax extends AbstractEntity {
 
     public void setRate(Double rate) {
         this.rate = rate;
+    }
+
+    public String getAbbreviation() {
+        return abbreviation;
+    }
+
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
     }
 }

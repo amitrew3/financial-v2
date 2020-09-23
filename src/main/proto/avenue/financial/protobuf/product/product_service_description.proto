@@ -5,79 +5,79 @@ import "google/protobuf/empty.proto";
 
 
 import "avenue/financial/protobuf/core/core_messages_description.proto";
-import "avenue/financial/protobuf/invoice/invoice_messages_description.proto";
+import "avenue/financial/protobuf/product/product_messages_description.proto";
 
 
 
 //Platform
 
 option java_multiple_files = true;
-option java_package = "com.avenue.financial.services.grpc.proto.invoice";
-option java_outer_classname = "InvoiceServiceDescriptionProto";
+option java_package = "com.avenue.financial.services.grpc.proto.product";
+option java_outer_classname = "ProductServiceDescriptionProto";
 
-package avenue.rms.protobuf.invoice;
+package avenue.rms.protobuf.product;
 
-service InvoiceServiceProto {
+service ProductServiceProto {
 
-  rpc list (ListInvoiceRequestProto) returns (ListInvoiceResponseProto) {
+  rpc list (ListProductRequestProto) returns (ListProductResponseProto) {
   }
 
-  rpc get (GetInvoiceRequestProto) returns (GetInvoiceResponseProto) {
+  rpc get (GetProductRequestProto) returns (GetProductResponseProto) {
   }
 
 
-  rpc add (AddInvoiceRequestProto) returns (AddInvoiceResponseProto) {
+  rpc add (AddProductRequestProto) returns (AddProductResponseProto) {
   }
 
-  rpc update (UpdateInvoiceRequestProto) returns (UpdateInvoiceResponseProto) {
+  rpc update (UpdateProductRequestProto) returns (UpdateProductResponseProto) {
   }
 
-  rpc delete (DeleteInvoiceRequestProto) returns (DeleteInvoiceResponseProto) {
+  rpc delete (DeleteProductRequestProto) returns (DeleteProductResponseProto) {
   }
 
 }
 
-message CountInvoiceRequestProto {
+message CountProductRequestProto {
   avenue.financial.protobuf.core.RequestParamProto param = 1;
   google.protobuf.StringValue search = 2;
   avenue.financial.protobuf.core.RequestContextProto request_context = 3;
 }
 
-message BulkDeleteInvoiceRequestProto {
+message BulkDeleteProductRequestProto {
   repeated string id = 1;
   avenue.financial.protobuf.core.RequestContextProto request_context = 2;
 }
 
-message BulkDeleteInvoiceResponseProto {
+message BulkDeleteProductResponseProto {
   string id = 1;
   string action = 2;
   string message = 3;
   avenue.financial.protobuf.core.StatusTypeProto status = 4;
-  repeated avenue.financial.protobuf.invoice.InvoiceProto data = 5;
+  repeated avenue.financial.protobuf.product.ProductProto data = 5;
 }
 
-message CountInvoiceResponseProto {
+message CountProductResponseProto {
   int32 limit = 1;
   int32 page_number = 2;
   int32 pages_count = 3;
   int32 total_count = 4;
 }
 
-message ListInvoiceResponseProto {
-  repeated avenue.financial.protobuf.invoice.InvoiceProto data = 1;
+message ListProductResponseProto {
+  repeated avenue.financial.protobuf.product.ProductProto data = 1;
 }
 
-message GetInvoiceResponseProto {
-  avenue.financial.protobuf.invoice.InvoiceProto data = 1;
+message GetProductResponseProto {
+  avenue.financial.protobuf.product.ProductProto data = 1;
 }
 
-message GetInvoiceRequestProto {
+message GetProductRequestProto {
   string id = 1;
   avenue.financial.protobuf.core.RequestParamProto param = 2;
   avenue.financial.protobuf.core.RequestContextProto request_context = 3;
 }
 
-message ListInvoiceRequestProto {
+message ListProductRequestProto {
   avenue.financial.protobuf.core.RequestParamProto param = 1;
   google.protobuf.StringValue search = 2;
   avenue.financial.protobuf.core.RequestContextProto request_context = 3;
@@ -86,45 +86,45 @@ message ListInvoiceRequestProto {
 
 
 
-message AddInvoiceRequestProto {
-  avenue.financial.protobuf.invoice.AddInvoiceProto data = 1;
+message AddProductRequestProto {
+  avenue.financial.protobuf.product.AddProductProto data = 1;
   avenue.financial.protobuf.core.RequestContextProto request_context = 2;
 }
 
-message UpdateInvoiceRequestProto {
+message UpdateProductRequestProto {
   string id = 1;
-  avenue.financial.protobuf.invoice.UpdateInvoiceProto data = 2;
+  avenue.financial.protobuf.product.UpdateProductProto data = 2;
   avenue.financial.protobuf.core.RequestContextProto request_context = 3;
 }
 
-message DeleteInvoiceRequestProto {
+message DeleteProductRequestProto {
   string id = 1;
   avenue.financial.protobuf.core.RequestContextProto request_context = 2;
 }
 
 
-message AddInvoiceResponseProto {
+message AddProductResponseProto {
   string id = 1;
   string action = 2;
   string message = 3;
   avenue.financial.protobuf.core.StatusTypeProto status = 4;
-  avenue.financial.protobuf.invoice.InvoiceProto data = 5;
+  avenue.financial.protobuf.product.ProductProto data = 5;
 }
 
-message UpdateInvoiceResponseProto {
+message UpdateProductResponseProto {
   string id = 1;
   string action = 2;
   string message = 3;
   avenue.financial.protobuf.core.StatusTypeProto status = 4;
-  avenue.financial.protobuf.invoice.InvoiceProto data = 5;
+  avenue.financial.protobuf.product.ProductProto data = 5;
 }
 
-message DeleteInvoiceResponseProto {
+message DeleteProductResponseProto {
   string id = 1;
   string action = 2;
   string message = 3;
   avenue.financial.protobuf.core.StatusTypeProto status = 4;
-  avenue.financial.protobuf.invoice.InvoiceProto data = 5;
+  avenue.financial.protobuf.product.ProductProto data = 5;
 }
 
 

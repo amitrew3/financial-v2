@@ -17,7 +17,7 @@ public class PaymentTerm extends AbstractEntity {
     private String title;
 
     @Column(name = DB.Field.PaymentTerm.VALUE)
-    private String value;
+    private Integer value;
     @Column(name = DB.Field.PaymentTerm.DESCRIPTION)
     private String description;
 
@@ -32,11 +32,11 @@ public class PaymentTerm extends AbstractEntity {
     }
 
 
-    public String getValue() {
+    public Integer getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Integer value) {
         this.value = value;
     }
 

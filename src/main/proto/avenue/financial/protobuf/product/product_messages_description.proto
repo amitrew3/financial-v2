@@ -5,42 +5,56 @@ import "avenue/financial/protobuf/core/core_messages_description.proto";
 
 
 option java_multiple_files = true;
-option java_package = "com.avenue.financial.services.grpc.proto.paymentterm";
-option java_outer_classname = "PaymentTermMessagesDescriptionProto";
+option java_package = "com.avenue.financial.services.grpc.proto.product";
+option java_outer_classname = "ProductMessagesDescriptionProto";
 
-package avenue.financial.protobuf.paymentterm;
+package avenue.financial.protobuf.product;
 
-message PaymentTermProto{
+message ProductProto{
   google.protobuf.StringValue _id = 1;
   avenue.financial.protobuf.core.MetaProto meta = 2;
   avenue.financial.protobuf.core.MiniUserProto owner = 3;
   avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 4;
   avenue.financial.protobuf.core.VisibilityTypeProto visibility = 5;
-  PaymentTermInfoProto paymentterm_info = 6;
+  ProductInfoProto product_info = 6;
 
 }
 
-message PaymentTermInfoProto{
+message ProductInfoProto{
   google.protobuf.StringValue title = 1;
-  google.protobuf.Int32Value value = 2;
+  google.protobuf.DoubleValue price = 2;
   google.protobuf.StringValue description = 3;
+  ProductSideProto side = 4;
+  google.protobuf.DoubleValue tax1_id = 5;
+  google.protobuf.BoolValue tax2_id = 6;
 }
-message AddPaymentTermProto{
+
+
+message AddProductProto{
 
   avenue.financial.protobuf.core.MiniUserProto owner = 1;
   avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 2;
   avenue.financial.protobuf.core.VisibilityTypeProto visibility = 3;
-  PaymentTermInfoProto paymentterm_info = 4;
+  ProductInfoProto product_info = 4;
+
+
 }
 
-message UpdatePaymentTermProto{
+message UpdateProductProto{
   google.protobuf.StringValue _id = 1;
   avenue.financial.protobuf.core.MiniUserProto owner = 2;
   avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 3;
   avenue.financial.protobuf.core.VisibilityTypeProto visibility = 4;
-  PaymentTermInfoProto paymentterm_info = 5;
+  ProductInfoProto product_info = 5;
 }
 
+
+enum ProductSideProto{
+  PURCHASE = 0;
+  SALE = 1;
+  BOTH = 2;
+
+}
 
 
 

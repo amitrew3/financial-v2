@@ -372,19 +372,21 @@ enum VisibilityTypeProto{
 
 }
 
-message ReferenceProto {
-  google.protobuf.Struct data = 1;
-  ModuleProto module = 2;
-  EntityProto entity = 3;
-  google.protobuf.StringValue entity_id = 4;
-  google.protobuf.StringValue title = 5;
+
+message EntityStatusWrapper {
+  enum EntityStatus{
+    IN_ACTIVE = 0;
+    ACTIVE = 1;
+    DELETED = 2;
+
+  }
 }
 message AddressProto{
   google.protobuf.StringValue street = 1;
-  google.protobuf.StringValue town = 1;
-  google.protobuf.StringValue province = 1;
-  google.protobuf.StringValue postal_code = 1;
-  google.protobuf.StringValue country = 1;
+  google.protobuf.StringValue town = 2;
+  google.protobuf.StringValue province = 3;
+  google.protobuf.StringValue postal_code = 4;
+  google.protobuf.StringValue country = 5;
 }
 message MetaProto{
   google.protobuf.Int64Value _version = 1;

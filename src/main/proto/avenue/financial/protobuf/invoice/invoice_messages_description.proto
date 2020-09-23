@@ -4,229 +4,76 @@ import "google/protobuf/wrappers.proto";
 import "avenue/financial/protobuf/core/core_messages_description.proto";
 
 
-
 option java_multiple_files = true;
 option java_package = "com.avenue.financial.services.grpc.proto.invoice";
 option java_outer_classname = "InvoiceMessagesDescriptionProto";
 
 package avenue.financial.protobuf.invoice;
 
-/*message AbstractEntityProto{
-  google.protobuf.StringValue _id = 1;
-  google.protobuf.StringValue status = 1;
-  google.protobuf.StringValue owner_id = 1;
-  google.protobuf.StringValue ownerFirstName = 1;
-  google.protobuf.StringValue ownerLastName = 1;
-  google.protobuf.StringValue createdById = 1;
-  google.protobuf.StringValue createdByFirstName = 1;
-  google.protobuf.StringValue createdByLastName = 1;
-  google.protobuf.StringValue modifiedById = 1;
-  google.protobuf.StringValue modifiedByFirstName = 1;
-  google.protobuf.StringValue deletedById = 1;
-  google.protobuf.StringValue deletedByFirstName = 1;
-  google.protobuf.StringValue deletedByLastName = 1;
-  google.protobuf.StringValue member = 1;
-  google.protobuf.StringValue created_at = 1;
-  google.protobuf.StringValue lastModifiedAt = 1;
-  google.protobuf.StringValue deletedAt = 1;
-  google.protobuf.StringValue entity = 1;
-  google.protobuf.StringValue module = 1;
-  google.protobuf.StringValue master = 1;
-  google.protobuf.StringValue metaOwnerId = 1;
-  google.protobuf.StringValue metaOwnerFirstName = 1;
-  google.protobuf.StringValue metaOwnerLastName = 1;
-
-}*/
 message InvoiceProto{
   google.protobuf.StringValue _id = 1;
-  //ACL acl = 1;
-  MetaProto meta = 2;
-  MiniUserProto owner = 3;
-  EntityStatusWrapper.EntityStatus status = 4;
+  avenue.financial.protobuf.core.MetaProto meta = 2;
+  avenue.financial.protobuf.core.MiniUserProto owner = 3;
+  avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 4;
   avenue.financial.protobuf.core.VisibilityTypeProto visibility = 5;
   InvoiceInfoProto invoice_info = 6;
-  repeated InvoiceItemProto items = 7;
-  google.protobuf.StringValue user_id = 8;
-  PaymentTermProto payment_term = 9;
-  google.protobuf.StringValue invoice_date = 10;
-  google.protobuf.StringValue due_date = 11;
-  google.protobuf.StringValue data = 12;
-  InvoiceType type = 13;
-  google.protobuf.BoolValue is_recurring = 14;
-  RecurringInvoiceProto recurring_invoice = 15;
-  google.protobuf.DoubleValue total_amount = 16;
-  google.protobuf.DoubleValue due_amount = 17;
 
 }
-message MiniUserProto{
-  google.protobuf.StringValue _id = 1;
-  google.protobuf.StringValue first_name = 2;
-  google.protobuf.StringValue last_name = 3;
-  google.protobuf.StringValue type = 4;
-}
+
 message InvoiceInfoProto{
   google.protobuf.StringValue invoice_number = 1;
-  InvoiceStatus invoice_status = 2;
-  InvoicePaymentStatus payment_status = 3;
-  InvoiceDueStatus due_status = 4;
-  InvoiceRefundStatus refund_status = 5;
-  InvoiceWriteOffStatus write_of_status = 6;
-  CalculationType tax_type = 7;
-  google.protobuf.DoubleValue tax = 8;
-  CalculationType discount_type = 9;
-  google.protobuf.DoubleValue discount = 10;
-  google.protobuf.StringValue note = 11;
-  google.protobuf.StringValue description = 12;
+  google.protobuf.StringValue po_so_number = 2;
+  google.protobuf.StringValue invoice_date = 3;
+  google.protobuf.StringValue due_date = 4;
+  google.protobuf.StringValue customer_id = 5;
+  google.protobuf.StringValue payment_term_id = 6;
+  google.protobuf.StringValue memos = 7;
+  PaymentStatusProto payment_status = 8;
+  google.protobuf.StringValue send_date_time = 9;
+  google.protobuf.StringValue internal_notes = 10;
+  google.protobuf.StringValue footer_notes = 11;
+  google.protobuf.DoubleValue sub_total = 12;
+  google.protobuf.DoubleValue tax_total = 13;
+  google.protobuf.DoubleValue total = 14;
+  google.protobuf.BoolValue is_draft = 15;
+  avenue.financial.protobuf.core.AddressProto billing_address = 17;
+}
+message AddInvoiceProto{
+
+  avenue.financial.protobuf.core.MiniUserProto owner = 1;
+  avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 2;
+  avenue.financial.protobuf.core.VisibilityTypeProto visibility = 3;
+  InvoiceInfoProto invoice_info = 4;
+  repeated InvoiceItemProto items = 5;
+
 
 }
-message InvoiceItemProto{
-  google.protobuf.StringValue id = 1;
-  google.protobuf.StringValue title = 2;
-  google.protobuf.StringValue description = 3;
-  google.protobuf.Int32Value quantity = 4;
-  google.protobuf.DoubleValue price = 5;
-  CalculationType tax_type = 6;
-  google.protobuf.DoubleValue tax = 7;
-  CalculationType discount_type = 8;
-  google.protobuf.DoubleValue discount = 9;
 
-}
-
-message RecurringInvoiceProto{
-  google.protobuf.StringValue recurring_period_type = 1;
-  google.protobuf.StringValue start_date = 2;
-  google.protobuf.StringValue end_date = 3;
-}
-
-message MetaProto{
-  google.protobuf.Int64Value _version = 1;
-  google.protobuf.StringValue _created = 2;
-  MiniUserProto _created_by = 3;
-  google.protobuf.StringValue _last_modified = 4;
-  MiniUserProto _modified_by = 5;
-  MiniUserProto _deleted_by = 6;
-  google.protobuf.StringValue _deleted = 7;
-  MiniUserProto _owner = 8;
-  google.protobuf.StringValue _member = 9;
-  google.protobuf.StringValue _master = 10;
-  google.protobuf.StringValue _entity = 11;
-  google.protobuf.StringValue _module = 12;
-}
-
-message PaymentTermProto{
+message UpdateInvoiceProto{
   google.protobuf.StringValue _id = 1;
-  MetaProto meta = 2;
-  MiniUserProto owner = 3;
-  EntityStatusWrapper.EntityStatus status = 4;
-  google.protobuf.StringValue name = 5;
-  google.protobuf.Int32Value value = 6;
+  avenue.financial.protobuf.core.MiniUserProto owner = 2;
+  avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 3;
+  avenue.financial.protobuf.core.VisibilityTypeProto visibility = 4;
+  InvoiceInfoProto invoice_info = 5;
 }
 
-message DetachInvoiceProto{
-  string invoice_id = 1;
-  string type = 2;
-  string entity_id = 3;
-  string entity = 4;
-  string module = 5;
-}
-
-message AttachInvoiceProto{
-  string invoice_id = 1;
-  string type = 2;
-  string entity_id = 3;
-  string entity = 4;
-  string module = 5;
-}
-message MiniInvoiceProto{
-  google.protobuf.StringValue _id = 1 ;
-  google.protobuf.StringValue title = 2;
-}
-
-enum InvoiceStatus {
-  INVOICE_STATUS_TYPE_UNKNOWN = 0;
-  IN_ACTIVE = 1;
-  ACTIVE = 2;
-  PENDING = 3;
-}
-enum InvoicePaymentStatus {
-  INVOICE_PAYMENT_STATUS_TYPE_UNKNOWN = 0;
-  UNPAID = 1;
-  PARTIAL_PAID = 2;
-  PAID = 3;
-}
-enum InvoiceDueStatus {
-  INVOICE_DUE_STATUS_TYPE_UNKNOWN = 0;
-  UNDUE = 1;
-  DUE = 2;
-  OVERDUE = 3;
-}
-enum InvoiceRefundStatus {
-  INVOICE_REFUND_STATUS_TYPE_UNKNOWN = 0;
-  REFUND_REQUESTED = 1;
-  REFUND_APPROVED = 2;
-  REFUND_REJECTED = 3;
-  NO_REQUEST = 4;
+message InvoiceItemProto{
+  google.protobuf.StringValue invoice_id = 1;
+  google.protobuf.StringValue product_id = 2;
+  google.protobuf.Int32Value quantity = 3;
+  google.protobuf.Int32Value uom = 4;
+  google.protobuf.DoubleValue price = 5;
+  google.protobuf.DoubleValue tax1_id = 6;
+  google.protobuf.DoubleValue tax2_id = 7;
 
 }
-enum InvoiceWriteOffStatus {
-  INVOICE_WRITEOFF_STATUS_TYPE_UNKNOWN = 0;
-  WRITTEN_OFF = 1;
-  TAKEN_INTO_ACCOUNT = 2;
-}
-enum InvoicePaymentTerm {
-  INVOICE_PAYMENT_TERM_TYPE_UNKNOWN = 0;
-  RECEIPT = 1;
-  DUE_DAYS = 2;
-}
-enum InvoiceType {
-  INVOICE_TYPE_UNKNOWN = 0;
-  CUSTOMER_INVOICE = 1;
-  VENDOR_BILL = 2;
-}
-enum InvoiceRefundType {
-  INVOICE_REFUND_TYPE_UNKNOWN = 0;
-  PARTIAL = 1;
-  FULL = 2;
-}
-
-enum CalculationType {
-  INVOICE_TAX_TYPE_UNKNOWN = 0;
-  AMOUNT = 1;
-  PERCENTAGE = 2;
-}
-enum TimePeriod {
-  ONE_TIME = 0;
-  DAILY = 1;
-  WEEKLY = 2;
-  MONTHLY = 3;
-  QUARTERLY = 4;
-  HALF_YEARLY = 5;
-  YEARLY = 6;
-}
-message EntityStatusWrapper {
-  enum EntityStatus{
-    IN_ACTIVE = 0;
-    ACTIVE = 1;
-    DELETED = 2;
-
-  }
-  enum InvoiceType {
-    INVOICE_TYPE_UNKNOWN = 0;
-    CUSTOMER_INVOICE = 1;
-    VENDOR_BILL = 2;
-  }
-
-  enum RecurringPeriodType {
-    RECURRING_PERIOD_TYPE_UNKNOWN = 0;
-    DAILY = 1;
-    MONTHLY = 2;
-    QUARTERLY = 3;
-    HALF_YEARLY = 4;
-    YEARLY = 5;
-  }
-
+enum PaymentStatusProto{
+  UNPAID = 0;
+  PARTIAL_PAID = 1;
+  PAID = 2;
 
 }
+
 
 
 

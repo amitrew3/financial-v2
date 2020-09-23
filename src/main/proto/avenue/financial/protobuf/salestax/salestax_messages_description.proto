@@ -5,42 +5,56 @@ import "avenue/financial/protobuf/core/core_messages_description.proto";
 
 
 option java_multiple_files = true;
-option java_package = "com.avenue.financial.services.grpc.proto.paymentterm";
-option java_outer_classname = "PaymentTermMessagesDescriptionProto";
+option java_package = "com.avenue.financial.services.grpc.proto.salestax";
+option java_outer_classname = "SalesTaxMessagesDescriptionProto";
 
-package avenue.financial.protobuf.paymentterm;
+package avenue.financial.protobuf.salestax;
 
-message PaymentTermProto{
+message SalesTaxProto{
   google.protobuf.StringValue _id = 1;
   avenue.financial.protobuf.core.MetaProto meta = 2;
   avenue.financial.protobuf.core.MiniUserProto owner = 3;
   avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 4;
   avenue.financial.protobuf.core.VisibilityTypeProto visibility = 5;
-  PaymentTermInfoProto paymentterm_info = 6;
+  SalesTaxInfoProto salestax_info = 6;
 
 }
 
-message PaymentTermInfoProto{
+message SalesTaxInfoProto{
   google.protobuf.StringValue title = 1;
-  google.protobuf.Int32Value value = 2;
+  google.protobuf.StringValue abbreviation = 2;
   google.protobuf.StringValue description = 3;
+  google.protobuf.DoubleValue rate = 4;
+  google.protobuf.StringValue tax_number = 5;
+  google.protobuf.BoolValue show_tax_number = 6;
 }
-message AddPaymentTermProto{
+
+
+message AddSalesTaxProto{
 
   avenue.financial.protobuf.core.MiniUserProto owner = 1;
   avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 2;
   avenue.financial.protobuf.core.VisibilityTypeProto visibility = 3;
-  PaymentTermInfoProto paymentterm_info = 4;
+  SalesTaxInfoProto salestax_info = 4;
+
+
 }
 
-message UpdatePaymentTermProto{
+message UpdateSalesTaxProto{
   google.protobuf.StringValue _id = 1;
   avenue.financial.protobuf.core.MiniUserProto owner = 2;
   avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 3;
   avenue.financial.protobuf.core.VisibilityTypeProto visibility = 4;
-  PaymentTermInfoProto paymentterm_info = 5;
+  SalesTaxInfoProto salestax_info = 5;
 }
 
+
+enum SalesTaxSideProto{
+  PURCHASE = 0;
+  SALE = 1;
+  BOTH = 2;
+
+}
 
 
 

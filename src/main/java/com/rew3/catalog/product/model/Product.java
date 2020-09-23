@@ -14,6 +14,9 @@ public class Product extends AbstractEntity {
     @Column(name = DB.Field.Product.TITLE)
     private String title;
 
+    @Column(name = DB.Field.Product.PRICE)
+    private Double price;
+
     @Column(name = DB.Field.Product.DESCRIPTION)
     private String description;
 
@@ -28,11 +31,11 @@ public class Product extends AbstractEntity {
     @Column(name = DB.Field.Product.SIDE)
     private String side;
     @OneToOne
-    @JoinColumn(name = DB.Field.InvoiceItem.TAX1)
+    @JoinColumn(name = DB.Field.Product.TAX1)
     private SalesTax tax1;
 
     @OneToOne
-    @JoinColumn(name = DB.Field.InvoiceItem.TAX2)
+    @JoinColumn(name = DB.Field.Product.TAX2)
     private SalesTax tax2;
 
     public String getSide() {
@@ -66,5 +69,13 @@ public class Product extends AbstractEntity {
 
     public void setTax2(SalesTax tax2) {
         this.tax2 = tax2;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }

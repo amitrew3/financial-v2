@@ -12,6 +12,7 @@ import com.rew3.common.utils.Parser;
 import com.rew3.common.utils.RequestFilter;
 import com.rew3.common.utils.Rew3StringBuiler;
 import com.rew3.paymentterm.model.PaymentTerm;
+import com.rew3.salestax.model.SalesTax;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,9 +48,12 @@ public class PaymentTermQueryHandler implements IQueryHandler {
         }
         if (q.has("limit")) {
             limit = Parser.convertObjectToInteger(q.get("limit"));
+            q.getQuery().remove("limit");
         }
         if (q.has("offset")) {
             offset = Parser.convertObjectToInteger(q.get("offset"));
+            q.getQuery().remove(offset);
+
         }
 
 
@@ -77,8 +81,8 @@ public class PaymentTermQueryHandler implements IQueryHandler {
         }
 
 
-        List<Object> terms = HibernateUtils.select("SELECT distinct t FROM PaymentTerm t " + builder.getValue(), sqlParams, q.getQuery(), limit, offset,
-                PaymentTerm.class);
+        List<Object> terms = HibernateUtilV2.select("SELECT distinct t FROM SalesTax t " + builder.getValue(), sqlParams, q.getQuery(), limit, offset,
+                SalesTax.class);
 
         return terms;
     }
