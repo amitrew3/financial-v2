@@ -1,7 +1,7 @@
 package com.rew3.sale.estimate;
 
-import com.avenue.financial.services.grpc.proto.invoice.AddInvoiceProto;
-import com.avenue.financial.services.grpc.proto.invoice.UpdateInvoiceProto;
+import com.avenue.financial.services.grpc.proto.estimate.AddEstimateProto;
+import com.avenue.financial.services.grpc.proto.estimate.UpdateEstimateProto;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
@@ -20,9 +20,6 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import javax.validation.groups.Default;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 public class EstimateCommandHandler implements ICommandHandler {
@@ -44,26 +41,10 @@ public class EstimateCommandHandler implements ICommandHandler {
     public void handle(ICommand c) throws Exception {
         if (c instanceof CreateEstimate) {
             handle((CreateEstimate) c);
-        } else if (c instanceof AcceptBill) {
-            handle((AcceptBill) c);
-        } else if (c instanceof UpdateEstimate) {
-            handle((UpdateEstimate) c);
         } else if (c instanceof UpdateEstimate) {
             handle((UpdateEstimate) c);
         } else if (c instanceof DeleteEstimate) {
             handle((DeleteEstimate) c);
-        } else if (c instanceof CreateBulkEstimate) {
-            handle((CreateBulkEstimate) c);
-        } else if (c instanceof DeleteEstimate) {
-            handle((DeleteEstimate) c);
-        } else if (c instanceof UpdateBulkEstimate) {
-            handle((UpdateBulkEstimate) c);
-        } else if (c instanceof DeleteEstimate) {
-            handle((DeleteEstimate) c);
-        } else if (c instanceof UpdateBulkEstimate) {
-            handle((UpdateBulkEstimate) c);
-        } else if (c instanceof DeleteBulkEstimate) {
-            handle((DeleteBulkEstimate) c);
         }
     }
 
@@ -71,7 +52,7 @@ public class EstimateCommandHandler implements ICommandHandler {
     public void handle(UpdateEstimate c) throws Exception {
         // Transaction trx = c.getTransaction();
         try {
-            Estimate estimate = this._handleUpdateInvoice(c.updateInvoiceProto);
+            Estimate estimate = this._handleUpdateEstimate(c.updateEstimateProto);
             if (estimate != null) {
 //                if (c.isCommittable()) {
 //                    HibernateUtils.commitTransaction(trx);
@@ -95,13 +76,13 @@ public class EstimateCommandHandler implements ICommandHandler {
 
             String vendorId = (String) c.get("vendorId");
 
-            // Invoice invoice = this._handleSaveInvoice(c);
+            // Estimate invoice = this._handleSaveEstimate(c);
 
             if (c.isCommittable()) {
                 HibernateUtils.commitTransaction(trx);
             }
 
-            APILogger.add(APILogType.SUCCESS, "Invoice(s) has been created successfully.");
+            APILogger.add(APILogType.SUCCESS, "Estimate(s) has been created successfully.");
             // c.setObject(invoice);
 
         } catch (Exception ex) {
@@ -111,7 +92,7 @@ public class EstimateCommandHandler implements ICommandHandler {
         }
     }
 
-    private Estimate _handleUpdateInvoice(UpdateInvoiceProto c) throws Exception {
+    private Estimate _handleUpdateEstimate(UpdateEstimateProto c) throws Exception {
         Estimate estimate = null;
         if (c.hasId()) {
             estimate = (Estimate) new EstimateQueryHandler().getById(c.getId().getValue());
@@ -122,24 +103,24 @@ public class EstimateCommandHandler implements ICommandHandler {
             term = (PaymentTerm) new PaymentTermQueryHandler().getById(c.getPaymentTermId().getValue());
             estimate.setPaymentTerm(term);
         }
-        InvoiceInfoProto invoiceInfo = null;
-        if (c.hasInvoiceInfo()) {
-            invoiceInfo = c.getInvoiceInfo();
+        EstimateInfoProto invoiceInfo = null;
+        if (c.hasEstimateInfo()) {
+            invoiceInfo = c.getEstimateInfo();
             if (invoiceInfo.hasDescription()) {
                 estimate.setDescription(invoiceInfo.getDescription().getValue());
             }
-            if (invoiceInfo.hasInvoiceNumber()) {
-                estimate.setInvoiceNumber(invoiceInfo.getInvoiceNumber().getValue());
+            if (invoiceInfo.hasEstimateNumber()) {
+                estimate.setEstimateNumber(invoiceInfo.getEstimateNumber().getValue());
             }
             if (invoiceInfo.hasNote()) {
                 estimate.setNote(invoiceInfo.getNote().getValue());
             }
-            estimate.setInvoiceStatus(InvoiceStatus.valueOf(invoiceInfo.getInvoiceStatus().name()));
-            estimate.setDueStatus(InvoiceDueStatus.valueOf(invoiceInfo.getDueStatus().name()));
-            estimate.setPaymentStatus(InvoicePaymentStatus.valueOf(invoiceInfo.getPaymentStatus().name()));
-            estimate.setWriteOffStatus(InvoiceWriteOffStatus.valueOf(invoiceInfo.getWriteOfStatus().name()));
+            estimate.setEstimateStatus(EstimateStatus.valueOf(invoiceInfo.getEstimateStatus().name()));
+            estimate.setDueStatus(EstimateDueStatus.valueOf(invoiceInfo.getDueStatus().name()));
+            estimate.setPaymentStatus(EstimatePaymentStatus.valueOf(invoiceInfo.getPaymentStatus().name()));
+            estimate.setWriteOffStatus(EstimateWriteOffStatus.valueOf(invoiceInfo.getWriteOfStatus().name()));
 
-            estimate.setRefundStatus(InvoiceRefundStatus.valueOf(invoiceInfo.getRefundStatus().name()));
+            estimate.setRefundStatus(EstimateRefundStatus.valueOf(invoiceInfo.getRefundStatus().name()));
 
             if (invoiceInfo.hasDiscount()) {
                 estimate.setDiscount(invoiceInfo.getDiscount().getValue());
@@ -153,7 +134,7 @@ public class EstimateCommandHandler implements ICommandHandler {
         }
 
 
-        estimate.setType(InvoiceType.valueOf(c.getType().name()));
+        estimate.setType(EstimateType.valueOf(c.getType().name()));
 
         if (c.hasPaymentTermId()) {
             PaymentTerm term = (PaymentTerm) new PaymentTermQueryHandler().getById(c.getPaymentTermId().getValue());
@@ -161,8 +142,8 @@ public class EstimateCommandHandler implements ICommandHandler {
         }
 
 
-        if (c.hasInvoiceDate()) {
-            estimate.setInvoiceDate(Rew3Date.convertToUTC((String) c.getInvoiceDate().getValue()));
+        if (c.hasEstimateDate()) {
+            estimate.setEstimateDate(Rew3Date.convertToUTC((String) c.getEstimateDate().getValue()));
         }
         if (c.hasDueDate()) {
             estimate.setDueDate(Rew3Date.convertToUTC((String) c.getDueDate().getValue()));
@@ -176,11 +157,11 @@ public class EstimateCommandHandler implements ICommandHandler {
             invoice.setRecurring(isRecurring);
         }
 
-        if (c.has("recurringInvoiceId") && c.has("isRecurring")) {
-            RecurringInvoice recurringInvoice = (RecurringInvoice) new RecurringInvoiceQueryHandler().getById(c.get("recurringInvoiceId").toString());
+        if (c.has("recurringEstimateId") && c.has("isRecurring")) {
+            RecurringEstimate recurringEstimate = (RecurringEstimate) new RecurringEstimateQueryHandler().getById(c.get("recurringEstimateId").toString());
 
 
-            invoice.setRecurringInvoice(recurringInvoice);
+            invoice.setRecurringEstimate(recurringEstimate);
         if (c.has("data")) {
             invoice.setData(c.get("data").toString());
         }*//*
@@ -193,7 +174,7 @@ public class EstimateCommandHandler implements ICommandHandler {
             }
 
 
-            List<InvoiceItemProto> protos = c.getItemsList();
+            List<EstimateItemProto> protos = c.getItemsList();
 
 
             final Estimate finalEstimate = estimate;
@@ -265,19 +246,19 @@ public class EstimateCommandHandler implements ICommandHandler {
         System.out.println("hrere");
 
 
-        estimate = (Estimate) HibernateUtilV2.save(estimate, isNew);
+        estimate = (Estimate) HibernateUtilV2.save(estimate);
 
         // If tax rate type is defined then tax rate should be defined
         // too and vice versa.
 
-        //invoice = (Invoice) HibernateUtils.save(invoice, c, isNew);
+        //invoice = (Estimate) HibernateUtils.save(invoice, c, isNew);
 
 
         return estimate;
     }
 
 
-    private Estimate _handleSaveInvoice(AddInvoiceProto c) throws Exception {
+    private Estimate _handleSaveEstimate(AddEstimateProto c) throws Exception {
 
 
       Estimate estimate = new Estimate();
@@ -288,24 +269,24 @@ public class EstimateCommandHandler implements ICommandHandler {
             term = (PaymentTerm) new PaymentTermQueryHandler().getById(c.getPaymentTermId().getValue());
             estimate.setPaymentTerm(term);
         }
-        InvoiceInfoProto invoiceInfo = null;
-        if (c.hasInvoiceInfo()) {
-            invoiceInfo = c.getInvoiceInfo();
+        EstimateInfoProto invoiceInfo = null;
+        if (c.hasEstimateInfo()) {
+            invoiceInfo = c.getEstimateInfo();
             if (invoiceInfo.hasDescription()) {
                 estimate.setDescription(invoiceInfo.getDescription().getValue());
             }
-            if (invoiceInfo.hasInvoiceNumber()) {
-                estimate.setInvoiceNumber(invoiceInfo.getInvoiceNumber().getValue());
+            if (invoiceInfo.hasEstimateNumber()) {
+                estimate.setEstimateNumber(invoiceInfo.getEstimateNumber().getValue());
             }
             if (invoiceInfo.hasNote()) {
                 estimate.setNote(invoiceInfo.getNote().getValue());
             }
-            estimate.setInvoiceStatus(InvoiceStatus.valueOf(invoiceInfo.getInvoiceStatus().name()));
-            estimate.setDueStatus(InvoiceDueStatus.valueOf(invoiceInfo.getDueStatus().name()));
-            estimate.setPaymentStatus(InvoicePaymentStatus.valueOf(invoiceInfo.getPaymentStatus().name()));
-            estimate.setWriteOffStatus(InvoiceWriteOffStatus.valueOf(invoiceInfo.getWriteOfStatus().name()));
+            estimate.setEstimateStatus(EstimateStatus.valueOf(invoiceInfo.getEstimateStatus().name()));
+            estimate.setDueStatus(EstimateDueStatus.valueOf(invoiceInfo.getDueStatus().name()));
+            estimate.setPaymentStatus(EstimatePaymentStatus.valueOf(invoiceInfo.getPaymentStatus().name()));
+            estimate.setWriteOffStatus(EstimateWriteOffStatus.valueOf(invoiceInfo.getWriteOfStatus().name()));
 
-            estimate.setRefundStatus(InvoiceRefundStatus.valueOf(invoiceInfo.getRefundStatus().name()));
+            estimate.setRefundStatus(EstimateRefundStatus.valueOf(invoiceInfo.getRefundStatus().name()));
 
             if (invoiceInfo.hasDiscount()) {
                 estimate.setDiscount(invoiceInfo.getDiscount().getValue());
@@ -319,7 +300,7 @@ public class EstimateCommandHandler implements ICommandHandler {
         }
 
 
-        estimate.setType(InvoiceType.valueOf(c.getType().name()));
+        estimate.setType(EstimateType.valueOf(c.getType().name()));
 
         if (c.hasPaymentTermId()) {
             PaymentTerm term = (PaymentTerm) new PaymentTermQueryHandler().getById(c.getPaymentTermId().getValue());
@@ -327,8 +308,8 @@ public class EstimateCommandHandler implements ICommandHandler {
         }
 
 
-        if (c.hasInvoiceDate()) {
-            estimate.setInvoiceDate(Rew3Date.convertToUTC((String) c.getInvoiceDate().getValue()));
+        if (c.hasEstimateDate()) {
+            estimate.setEstimateDate(Rew3Date.convertToUTC((String) c.getEstimateDate().getValue()));
         }
         if (c.hasDueDate()) {
             estimate.setDueDate(Rew3Date.convertToUTC((String) c.getDueDate().getValue()));
@@ -342,11 +323,11 @@ public class EstimateCommandHandler implements ICommandHandler {
             invoice.setRecurring(isRecurring);
         }
 
-        if (c.has("recurringInvoiceId") && c.has("isRecurring")) {
-            RecurringInvoice recurringInvoice = (RecurringInvoice) new RecurringInvoiceQueryHandler().getById(c.get("recurringInvoiceId").toString());
+        if (c.has("recurringEstimateId") && c.has("isRecurring")) {
+            RecurringEstimate recurringEstimate = (RecurringEstimate) new RecurringEstimateQueryHandler().getById(c.get("recurringEstimateId").toString());
 
 
-            invoice.setRecurringInvoice(recurringInvoice);
+            invoice.setRecurringEstimate(recurringEstimate);
         if (c.has("data")) {
             invoice.setData(c.get("data").toString());
         }*//*
@@ -359,7 +340,7 @@ public class EstimateCommandHandler implements ICommandHandler {
             }
 
 
-            List<InvoiceItemProto> protos = c.getItemsList();
+            List<EstimateItemProto> protos = c.getItemsList();
 
 
             final Estimate finalEstimate = estimate;
@@ -436,30 +417,12 @@ public class EstimateCommandHandler implements ICommandHandler {
         // If tax rate type is defined then tax rate should be defined
         // too and vice versa.
 
-        //invoice = (Invoice) HibernateUtils.save(invoice, c, isNew);*/
+        //invoice = (Estimate) HibernateUtils.save(invoice, c, isNew);*/
 
 
         return estimate;
     }
 
 
-    public void handle(DeleteBulkEstimate c) throws Exception {
-        List<Object> ids = (List<Object>) c.get("ids");
-
-        List<Object> invoices = new ArrayList<Object>();
-
-        for (Object obj : ids) {
-            HashMap<String, Object> map = new HashMap<>();
-            String id = (String) obj;
-            map.put("id", id);
-
-            ICommand command = new DeleteEstimate(map);
-            CommandRegister.getInstance().process(command);
-            Estimate nu = (Estimate) command.getObject();
-            invoices.add(nu);
-        }
-
-        c.setObject(invoices);
-    }
 
 }

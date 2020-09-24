@@ -5,15 +5,13 @@ import com.avenue.financial.services.grpc.proto.paymentterm.AddPaymentTermProto;
 import com.avenue.financial.services.grpc.proto.paymentterm.PaymentTermInfoProto;
 import com.avenue.financial.services.grpc.proto.paymentterm.UpdatePaymentTermProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.rew3.common.application.Authentication;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.database.HibernateUtils;
-import com.rew3.common.utils.APILogType;
-import com.rew3.common.utils.APILogger;
 import com.rew3.paymentterm.command.CreatePaymentTerm;
 import com.rew3.paymentterm.command.DeletePaymentTerm;
 import com.rew3.paymentterm.command.UpdatePaymentTerm;
@@ -61,7 +59,7 @@ public class PaymentTermCommandHandler implements ICommandHandler {
         PaymentTerm term = new PaymentTerm();
 
         if (c.hasPaymenttermInfo()) {
-            PaymentTermInfoProto info= c.getPaymenttermInfo();
+            PaymentTermInfoProto info = c.getPaymenttermInfo();
 
             if (info.hasTitle()) {
                 term.setTitle(info.getTitle().getValue());
@@ -86,7 +84,7 @@ public class PaymentTermCommandHandler implements ICommandHandler {
             }
         }
 
-        term = (PaymentTerm) HibernateUtils.save(term);
+        term = (PaymentTerm) HibernateUtilV2.save(term);
 
         return term;
 
@@ -100,8 +98,7 @@ public class PaymentTermCommandHandler implements ICommandHandler {
         if (c.hasId()) {
 
             term = (PaymentTerm) new PaymentTermQueryHandler().getById(c.getId().getValue());
-        }
-        else {
+        } else {
             throw new NotFoundException("Id not found");
         }
         if (c.hasOwner()) {
@@ -117,7 +114,7 @@ public class PaymentTermCommandHandler implements ICommandHandler {
             }
         }
         if (c.hasPaymenttermInfo()) {
-            PaymentTermInfoProto info= c.getPaymenttermInfo();
+            PaymentTermInfoProto info = c.getPaymenttermInfo();
 
             if (info.hasTitle()) {
                 term.setTitle(info.getTitle().getValue());
@@ -130,7 +127,7 @@ public class PaymentTermCommandHandler implements ICommandHandler {
             }
         }
 
-        term = (PaymentTerm) HibernateUtils.save(term);
+        term = (PaymentTerm) HibernateUtilV2.update(term);
 
         return term;
 
@@ -140,17 +137,13 @@ public class PaymentTermCommandHandler implements ICommandHandler {
 
     public void handle(DeletePaymentTerm c) throws NotFoundException, CommandException, JsonProcessingException {
 
-        PaymentTerm term = (PaymentTerm) new PaymentTermQueryHandler().getById(c.get("id").toString());
+        PaymentTerm term = (PaymentTerm) new PaymentTermQueryHandler().getById(c.id);
         if (term != null) {
-            if (!term.hasDeletePermission(Authentication.getRew3UserId(), Authentication.getRew3GroupId())) {
-                APILogger.add(APILogType.ERROR, "Permission denied");
-                throw new CommandException("Permission denied");
-            }
             HibernateUtils.saveAsDeleted(term);
 
-            c.setObject(term);
         }
 
+        c.setObject(term);
     }
 
 

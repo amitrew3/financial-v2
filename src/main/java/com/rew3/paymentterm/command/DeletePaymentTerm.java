@@ -7,7 +7,7 @@ import org.hibernate.Transaction;
 import java.util.HashMap;
 
 public class DeletePaymentTerm extends Command implements ICommand {
-	String id;
+	public String id;
 
 	public DeletePaymentTerm(String id) {
 		this.id = id;

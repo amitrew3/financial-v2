@@ -201,9 +201,9 @@ public class HibernateUtilV2 {
         return query(hql, params, null);
     }
 
-    public static synchronized Object save(Object obj) throws JsonProcessingException {
-        return save(obj, null);
-    }
+//    public static synchronized Object save(Object obj) throws JsonProcessingException {
+//        return save(obj, null);
+//    }
 
     public static synchronized Object save(Object obj, Transaction aTrx) throws JsonProcessingException {
 
@@ -305,7 +305,7 @@ public class HibernateUtilV2 {
         return obj;
     }
 
-    public static synchronized Object save(Object obj, boolean isNew) throws JsonProcessingException {
+    public static synchronized Object save(Object obj) throws JsonProcessingException {
 
         Session session = HibernateUtilV2.openSession();
         Transaction tx = null;
@@ -315,17 +315,41 @@ public class HibernateUtilV2 {
             AbstractEntity entity = (AbstractEntity) obj;
             entity.setDefaultAcl();
             AuthenticatedUser user = Authentication.getAuthenticatedUser();
-            if (isNew) {
-                entity.setCreatedAt(Rew3Date.convertToUTC(Instant.now().toString()));
-                entity.setCreatedById(user.getId());
-                entity.setCreatedByFirstName(user.getFirstName());
-                entity.setCreatedByLastName(user.getLastName());
-            } else {
-                entity.setLastModifiedAt(Rew3Date.convertToUTC(Instant.now().toString()));
-                entity.setModifiedById(user.getId());
-                entity.setModifiedByFirstName(user.getFirstName());
-                entity.setModifiedByLastName(user.getLastName());
-            }
+            entity.setCreatedAt(Rew3Date.convertToUTC(Instant.now().toString()));
+            entity.setCreatedById(user.getId());
+            entity.setCreatedByFirstName(user.getFirstName());
+            entity.setCreatedByLastName(user.getLastName());
+            entity.setVersion();
+            entity.setMember(Authentication.getMemberId());
+            entity.setStatus(Flags.EntityStatus.ACTIVE);
+            obj = session.merge(obj);
+            session.flush();
+            trx.commit();
+            session.close();
+            return obj;
+        } catch (RuntimeException e) {
+            System.out.println(e);
+            tx.rollback();
+            throw e; // or display error message
+        } finally {
+            session.close();
+        }
+    }
+
+    public static synchronized Object update(Object obj) throws JsonProcessingException {
+
+        Session session = HibernateUtilV2.openSession();
+        Transaction tx = null;
+        try {
+            // session = HibernateUtilV2.openSession();
+            Transaction trx = session.beginTransaction();
+            AbstractEntity entity = (AbstractEntity) obj;
+            entity.setDefaultAcl();
+            AuthenticatedUser user = Authentication.getAuthenticatedUser();
+            entity.setLastModifiedAt(Rew3Date.convertToUTC(Instant.now().toString()));
+            entity.setModifiedById(user.getId());
+            entity.setModifiedByFirstName(user.getFirstName());
+            entity.setModifiedByLastName(user.getLastName());
             entity.setVersion();
             entity.setMember(Authentication.getMemberId());
             entity.setStatus(Flags.EntityStatus.ACTIVE);
@@ -521,8 +545,7 @@ public class HibernateUtilV2 {
     }
 
 
-    private static String filter(String
-                                         hql, HashMap<String, Object> requestParams, HashMap<String, Object> sqlParams) throws ParseException {
+    private static String filter(String hql, HashMap<String, Object> requestParams, HashMap<String, Object> sqlParams) throws ParseException {
 
         HashMap<String, Object> keymap = Rew3StringBuiler.getMetaMapping();
 
@@ -937,7 +960,7 @@ public class HibernateUtilV2 {
     }
 
     public static <T> List<T> select(String hql, HashMap<String, Object> params, HashMap<String, Object> requestParams,
-                              int limit, int offset, T t) {
+                                     int limit, int offset, T t) {
         Session session = null;
         List<T> results = null;
         Transaction tx = null;

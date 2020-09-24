@@ -5,79 +5,79 @@ import "google/protobuf/empty.proto";
 
 
 import "avenue/financial/protobuf/core/core_messages_description.proto";
-import "avenue/financial/protobuf/bill/bill_messages_description.proto";
+import "avenue/financial/protobuf/estimate/estimate_messages_description.proto";
 
 
 
 //Platform
 
 option java_multiple_files = true;
-option java_package = "com.avenue.financial.services.grpc.proto.bill";
-option java_outer_classname = "BillServiceDescriptionProto";
+option java_package = "com.avenue.financial.services.grpc.proto.estimate";
+option java_outer_classname = "EstimateServiceDescriptionProto";
 
-package avenue.rms.protobuf.bill;
+package avenue.rms.protobuf.estimate;
 
-service BillServiceProto {
+service EstimateServiceProto {
 
-  rpc list (ListBillRequestProto) returns (ListBillResponseProto) {
+  rpc list (ListEstimateRequestProto) returns (ListEstimateResponseProto) {
   }
 
-  rpc get (GetBillRequestProto) returns (GetBillResponseProto) {
+  rpc get (GetEstimateRequestProto) returns (GetEstimateResponseProto) {
   }
 
 
-  rpc add (AddBillRequestProto) returns (AddBillResponseProto) {
+  rpc add (AddEstimateRequestProto) returns (AddEstimateResponseProto) {
   }
 
-  rpc update (UpdateBillRequestProto) returns (UpdateBillResponseProto) {
+  rpc update (UpdateEstimateRequestProto) returns (UpdateEstimateResponseProto) {
   }
 
-  rpc delete (DeleteBillRequestProto) returns (DeleteBillResponseProto) {
+  rpc delete (DeleteEstimateRequestProto) returns (DeleteEstimateResponseProto) {
   }
 
 }
 
-message CountBillRequestProto {
+message CountEstimateRequestProto {
   avenue.financial.protobuf.core.RequestParamProto param = 1;
   google.protobuf.StringValue search = 2;
   avenue.financial.protobuf.core.RequestContextProto request_context = 3;
 }
 
-message BulkDeleteBillRequestProto {
+message BulkDeleteEstimateRequestProto {
   repeated string id = 1;
   avenue.financial.protobuf.core.RequestContextProto request_context = 2;
 }
 
-message BulkDeleteBillResponseProto {
+message BulkDeleteEstimateResponseProto {
   string id = 1;
   string action = 2;
   string message = 3;
   avenue.financial.protobuf.core.StatusTypeProto status = 4;
-  repeated avenue.financial.protobuf.bill.BillProto data = 5;
+  repeated avenue.financial.protobuf.estimate.EstimateProto data = 5;
 }
 
-message CountBillResponseProto {
+message CountEstimateResponseProto {
   int32 limit = 1;
   int32 page_number = 2;
   int32 pages_count = 3;
   int32 total_count = 4;
 }
 
-message ListBillResponseProto {
-  repeated avenue.financial.protobuf.bill.BillProto data = 1;
+message ListEstimateResponseProto {
+  repeated avenue.financial.protobuf.estimate.EstimateProto data = 1;
 }
 
-message GetBillResponseProto {
-  avenue.financial.protobuf.bill.BillProto data = 1;
+message GetEstimateResponseProto {
+  avenue.financial.protobuf.estimate.EstimateProto data = 1;
 }
 
-message GetBillRequestProto {
+message GetEstimateRequestProto {
   string id = 1;
   avenue.financial.protobuf.core.RequestParamProto param = 2;
   avenue.financial.protobuf.core.RequestContextProto request_context = 3;
 }
 
-message ListBillRequestProto {
+message ListEstimateRequestProto {
   avenue.financial.protobuf.core.RequestParamProto param = 1;
   google.protobuf.StringValue search = 2;
   avenue.financial.protobuf.core.RequestContextProto request_context = 3;
@@ -86,45 +86,45 @@ message ListBillRequestProto {
 
 
 
-message AddBillRequestProto {
-  avenue.financial.protobuf.bill.AddBillProto data = 1;
+message AddEstimateRequestProto {
+  avenue.financial.protobuf.estimate.AddEstimateProto data = 1;
   avenue.financial.protobuf.core.RequestContextProto request_context = 2;
 }
 
-message UpdateBillRequestProto {
+message UpdateEstimateRequestProto {
   string id = 1;
-  avenue.financial.protobuf.bill.UpdateBillProto data = 2;
+  avenue.financial.protobuf.estimate.UpdateEstimateProto data = 2;
   avenue.financial.protobuf.core.RequestContextProto request_context = 3;
 }
 
-message DeleteBillRequestProto {
+message DeleteEstimateRequestProto {
   string id = 1;
   avenue.financial.protobuf.core.RequestContextProto request_context = 2;
 }
 
 
-message AddBillResponseProto {
+message AddEstimateResponseProto {
   string id = 1;
   string action = 2;
   string message = 3;
   avenue.financial.protobuf.core.StatusTypeProto status = 4;
-  avenue.financial.protobuf.bill.BillProto data = 5;
+  avenue.financial.protobuf.estimate.EstimateProto data = 5;
 }
 
-message UpdateBillResponseProto {
+message UpdateEstimateResponseProto {
   string id = 1;
   string action = 2;
   string message = 3;
   avenue.financial.protobuf.core.StatusTypeProto status = 4;
-  avenue.financial.protobuf.bill.BillProto data = 5;
+  avenue.financial.protobuf.estimate.EstimateProto data = 5;
 }
 
-message DeleteBillResponseProto {
+message DeleteEstimateResponseProto {
   string id = 1;
   string action = 2;
   string message = 3;
   avenue.financial.protobuf.core.StatusTypeProto status = 4;
-  avenue.financial.protobuf.bill.BillProto data = 5;
+  avenue.financial.protobuf.estimate.EstimateProto data = 5;
 }
 
 

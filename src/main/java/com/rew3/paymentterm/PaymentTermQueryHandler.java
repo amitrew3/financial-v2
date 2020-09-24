@@ -5,14 +5,12 @@ import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
 import com.rew3.common.database.HibernateUtilV2;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.PaginationParams;
 import com.rew3.common.utils.Parser;
 import com.rew3.common.utils.RequestFilter;
 import com.rew3.common.utils.Rew3StringBuiler;
 import com.rew3.paymentterm.model.PaymentTerm;
-import com.rew3.salestax.model.SalesTax;
 
 import java.util.HashMap;
 import java.util.List;
@@ -82,7 +80,7 @@ public class PaymentTermQueryHandler implements IQueryHandler {
 
 
         List<Object> terms = HibernateUtilV2.select("SELECT distinct t FROM PaymentTerm t " + builder.getValue(), sqlParams, q.getQuery(), limit, offset,
-                SalesTax.class);
+                PaymentTerm.class);
 
         return terms;
     }
@@ -100,7 +98,7 @@ public class PaymentTermQueryHandler implements IQueryHandler {
 
         RequestFilter.doFilter(q, sqlParams, builder,PaymentTerm.class);
 
-        Long count = HibernateUtils.count("SELECT  count(distinct t) FROM PaymentTerm t " + builder.getValue(), sqlParams, q.getQuery(), PaymentTerm.class);
+        Long count = HibernateUtilV2.count("SELECT  count(distinct t) FROM PaymentTerm t " + builder.getValue(), sqlParams, q.getQuery(), PaymentTerm.class);
 
 
         return count;

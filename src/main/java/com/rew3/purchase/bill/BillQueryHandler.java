@@ -26,10 +26,10 @@ public class BillQueryHandler implements IQueryHandler {
     public Object getById(String id) throws CommandException, NotFoundException {
         Bill bill = (Bill) HibernateUtilV2.get(Bill.class, id);
         if (bill == null) {
-            throw new NotFoundException("Invoice id(" + id + ") not found.");
+            throw new NotFoundException("BIll id(" + id + ") not found.");
         }
         if (Flags.EntityStatus.valueOf(bill.getStatus()) == Flags.EntityStatus.DELETED)
-            throw new NotFoundException("Invoice id(" + id + ") not found.");
+            throw new NotFoundException("Bill id(" + id + ") not found.");
 
         return bill;
 
@@ -103,7 +103,7 @@ public class BillQueryHandler implements IQueryHandler {
 
         RequestFilter.doFilter(q, sqlParams, builder, Bill.class);
 
-        Long count = HibernateUtilV2.count("SELECT count(distinct t) FROM Invoice t left join t.items tc " + builder.getValue(),
+        Long count = HibernateUtilV2.count("SELECT count(distinct t) FROM Bill t left join t.items tc " + builder.getValue(),
                 sqlParams, q.getQuery(), Bill.class);
 
 
