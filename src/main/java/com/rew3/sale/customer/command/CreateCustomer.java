@@ -10,7 +10,7 @@ import org.hibernate.Transaction;
 import java.util.HashMap;
 
 public class CreateCustomer extends Command implements ICommand {
-	AddCustomerProto addCustomerProto;
+	public AddCustomerProto addCustomerProto;
 
 	public CreateCustomer(AddCustomerProto addCustomerProto) {
 		this.addCustomerProto = addCustomerProto;

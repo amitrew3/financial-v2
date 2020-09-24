@@ -417,7 +417,7 @@ public class ProtoConverter {
         return builder.build();
     }
 
-    private static AddressProto convertToAddressProto(Address x) {
+    public static AddressProto convertToAddressProto(Address x) {
         AddressProto.Builder builder = AddressProto.newBuilder();
         Optional.ofNullable(x.getStreet()).ifPresent(y -> builder.setStreet(StringValue.of(y)));
         Optional.ofNullable(x.getTown()).ifPresent(y -> builder.setTown(StringValue.of(y)));

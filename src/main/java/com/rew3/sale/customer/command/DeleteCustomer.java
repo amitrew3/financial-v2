@@ -4,7 +4,7 @@ import com.rew3.common.cqrs.Command;
 import com.rew3.common.cqrs.ICommand;
 
 public class DeleteCustomer extends Command implements ICommand {
-    String id;
+    public String id;
 
     public DeleteCustomer(String id) {
         this.id = id;

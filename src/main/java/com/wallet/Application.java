@@ -13,7 +13,6 @@ import com.rew3.common.shared.AclCommandHandler;
 import com.rew3.common.shared.AddressCommandHandler;
 import com.rew3.paymentoption.PaymentOptionCommandHandler;
 import com.rew3.paymentterm.PaymentTermCommandHandler;
-import com.rew3.sale.customer.CustomerCommandHandler;
 import com.rew3.sale.invoice.InvoiceCommandHandler;
 import com.rew3.sale.invoice.RecurringInvoiceCommandHandler;
 import com.rew3.user.UserCommandHandler;

@@ -7,7 +7,7 @@ import org.hibernate.Transaction;
 import java.util.HashMap;
 
 public class DeleteVendor extends Command implements ICommand {
-	String id;
+	public String id;
 
 	public DeleteVendor(String id) {
 		this.id = id;

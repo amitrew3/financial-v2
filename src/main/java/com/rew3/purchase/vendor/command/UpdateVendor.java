@@ -9,7 +9,7 @@ import org.hibernate.Transaction;
 import java.util.HashMap;
 
 public class UpdateVendor extends Command implements ICommand {
-	UpdateVendorProto updateVendorProto;
+	public UpdateVendorProto updateVendorProto;
 
 	public UpdateVendor(UpdateVendorProto updateVendorProto) {
 		this.updateVendorProto = updateVendorProto;

@@ -9,9 +9,23 @@ import org.hibernate.Transaction;
 import java.util.HashMap;
 
 public class UpdateCustomer extends Command implements ICommand {
-	UpdateCustomerProto updateCustomerProto;
+	public String id;
 
-	public UpdateCustomer(UpdateCustomerProto updateCustomerProto) {
+	public UpdateCustomerProto updateCustomerProto;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public UpdateCustomerProto getUpdateCustomerProto() {
+		return updateCustomerProto;
+	}
+
+	public void setUpdateCustomerProto(UpdateCustomerProto updateCustomerProto) {
 		this.updateCustomerProto = updateCustomerProto;
 	}
 }
