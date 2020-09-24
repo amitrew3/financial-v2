@@ -1,8 +1,14 @@
 package com.financial.service;
 
 import com.avenue.base.grpc.proto.core.*;
+import com.avenue.financial.services.grpc.proto.bill.BillInfoProto;
+import com.avenue.financial.services.grpc.proto.bill.BillProto;
 import com.avenue.financial.services.grpc.proto.customer.CustomerInfoProto;
 import com.avenue.financial.services.grpc.proto.customer.CustomerProto;
+import com.avenue.financial.services.grpc.proto.estimate.EstimateInfoProto;
+import com.avenue.financial.services.grpc.proto.estimate.EstimateProto;
+import com.avenue.financial.services.grpc.proto.expense.ExpenseInfoProto;
+import com.avenue.financial.services.grpc.proto.expense.ExpenseProto;
 import com.avenue.financial.services.grpc.proto.invoice.InvoiceInfoProto;
 import com.avenue.financial.services.grpc.proto.invoice.InvoiceItemProto;
 import com.avenue.financial.services.grpc.proto.invoice.InvoiceProto;
@@ -25,9 +31,12 @@ import com.rew3.common.shared.model.Meta;
 import com.rew3.common.shared.model.MiniUser;
 import com.rew3.common.utils.Parser;
 import com.rew3.paymentterm.model.PaymentTerm;
+import com.rew3.purchase.bill.model.Bill;
 import com.rew3.purchase.bill.model.BillItem;
+import com.rew3.purchase.expense.model.Expense;
 import com.rew3.purchase.vendor.model.Vendor;
 import com.rew3.sale.customer.model.Customer;
+import com.rew3.sale.estimate.model.Estimate;
 import com.rew3.sale.estimate.model.EstimateItem;
 import com.rew3.sale.invoice.model.Invoice;
 import com.rew3.sale.invoice.model.InvoiceItem;
@@ -251,9 +260,9 @@ public class ProtoConverter {
             item.setPrice(y.getValue());
         });
         Optional.ofNullable(x.getProductId()).ifPresent(y -> {
-            ProductQueryHandler productQueryHandler= new ProductQueryHandler();
+            ProductQueryHandler productQueryHandler = new ProductQueryHandler();
             try {
-                Product product= (Product) productQueryHandler.getById(y.getValue());
+                Product product = (Product) productQueryHandler.getById(y.getValue());
                 item.setProduct(product);
             } catch (CommandException e) {
                 e.printStackTrace();
@@ -262,9 +271,9 @@ public class ProtoConverter {
             }
         });
         Optional.ofNullable(x.getTax1Id()).ifPresent(y -> {
-            SalesTaxQueryHandler taxQueryHandler= new SalesTaxQueryHandler();
+            SalesTaxQueryHandler taxQueryHandler = new SalesTaxQueryHandler();
             try {
-                SalesTax tax1= (SalesTax) taxQueryHandler.getById(y.getValue());
+                SalesTax tax1 = (SalesTax) taxQueryHandler.getById(y.getValue());
                 item.setTax1(tax1);
 
 
@@ -275,9 +284,9 @@ public class ProtoConverter {
             }
         });
         Optional.ofNullable(x.getTax2Id()).ifPresent(y -> {
-            SalesTaxQueryHandler taxQueryHandler= new SalesTaxQueryHandler();
+            SalesTaxQueryHandler taxQueryHandler = new SalesTaxQueryHandler();
             try {
-                SalesTax tax2= (SalesTax) taxQueryHandler.getById(y.getValue());
+                SalesTax tax2 = (SalesTax) taxQueryHandler.getById(y.getValue());
                 item.setTax2(tax2);
 
 
@@ -417,6 +426,7 @@ public class ProtoConverter {
         Optional.ofNullable(x.getCountry()).ifPresent(y -> builder.setCountry(StringValue.of(y)));
         return builder.build();
     }
+
     public static List<VendorProto> convertToVendorProtos(List<Object> all) {
         List<VendorProto> list = all.stream().map(x -> (Vendor) x).map(x -> {
             return convertToVendorProto(x);
@@ -457,5 +467,132 @@ public class ProtoConverter {
     }
 
 
+    public static BillProto convertToBillProto(Bill x) {
+        BillProto.Builder builder = BillProto.newBuilder();
+        Optional.ofNullable(x.get_id()).ifPresent(y -> builder.setId(StringValue.of(y)));
+//        Optional.ofNullable(x.getInvoiceDate()).ifPresent(y -> proto.setInvoiceDate(StringValue.of(y.toString())));
+
+        Optional.ofNullable(x.getMeta()).ifPresent(y -> builder.setMeta(convertToMetaProto(y)));
+
+        Optional.ofNullable(x.getOwner()).ifPresent(y -> builder.setOwner(miniUserProto(y)));
+        Optional.ofNullable(x.getVisibility()).ifPresent(y -> builder.setVisibility(VisibilityTypeProto.valueOf(x.getVisibility())));
+        Optional.ofNullable(x).ifPresent(y -> builder.setBillInfo(convertToBillInfoProto(y)));
+
+        return builder.build();
+    }
+
+    private static BillInfoProto convertToBillInfoProto(Bill x) {
+        BillInfoProto.Builder builder = BillInfoProto.newBuilder();
+        Optional.ofNullable(x.getBillNumber()).ifPresent(y -> builder.setBillNumber(StringValue.of(y)));
+        // Optional.ofNullable(x.getInvoiceStatus()).ifPresent(y -> builder.setInvoiceStatus(InvoiceStatus.valueOf(x.getInvoiceStatus())));
+        // Optional.ofNullable(x.getPaymentStatus()).ifPresent(y -> builder.setPaymentStatus(Flags.InvoicePaymentStatus.valueOf(x.getPaymentStatus())));
+
+//        Optional.ofNullable(x.getDueStatus()).ifPresent(y -> builder.setDueStatus(InvoiceDueStatus.valueOf(x.getDueStatus())));
+//        Optional.ofNullable(x.getRefundStatus()).ifPresent(y -> builder.setRefundStatus(InvoiceRefundStatus.valueOf(x.getRefundStatus())));
+//        Optional.ofNullable(x.getWriteOffStatus()).ifPresent(y -> builder.setWriteOfStatus(InvoiceWriteOffStatus.valueOf(x.getWriteOffStatus())));
+//
+//        Optional.ofNullable(x.getTaxType()).ifPresent(y -> builder.setTaxType(CalculationType.valueOf(x.getTaxType())));
+//        Optional.ofNullable(x.getDiscountType()).ifPresent(y -> builder.setDiscountType(CalculationType.valueOf(x.getDiscountType())));
+//
+//        Optional.ofNullable(x.getDiscount()).ifPresent(y -> builder.setDiscount(DoubleValue.of(x.getDiscount())));
+//        Optional.ofNullable(x.getTax()).ifPresent(y -> builder.setTax(DoubleValue.of(x.getTax())));
+//        Optional.ofNullable(x.getNote()).ifPresent(y -> builder.setNote(StringValue.of(y)));
+//        Optional.ofNullable(x.getDescription()).ifPresent(y -> builder.setDescription(StringValue.of(y)));
+
+        return builder.build();
+    }
+
+    public static List<BillProto> convertToBillProtos(List<Object> all) {
+        List<BillProto> list = all.stream().map(x -> (Bill) x).map(x -> {
+            return convertToBillProto(x);
+        }).collect(Collectors.toList());
+        return list;
+    }
+
+
+    public static EstimateProto convertToEstimateProto(Estimate x) {
+        EstimateProto.Builder builder = EstimateProto.newBuilder();
+        Optional.ofNullable(x.get_id()).ifPresent(y -> builder.setId(StringValue.of(y)));
+//        Optional.ofNullable(x.getInvoiceDate()).ifPresent(y -> proto.setInvoiceDate(StringValue.of(y.toString())));
+
+        Optional.ofNullable(x.getMeta()).ifPresent(y -> builder.setMeta(convertToMetaProto(y)));
+
+        Optional.ofNullable(x.getOwner()).ifPresent(y -> builder.setOwner(miniUserProto(y)));
+        Optional.ofNullable(x.getVisibility()).ifPresent(y -> builder.setVisibility(VisibilityTypeProto.valueOf(x.getVisibility())));
+        Optional.ofNullable(x).ifPresent(y -> builder.setEstimateInfo(convertToEstimateInfoProto(y)));
+
+        return builder.build();
+    }
+
+    private static EstimateInfoProto convertToEstimateInfoProto(Estimate x) {
+        EstimateInfoProto.Builder builder = EstimateInfoProto.newBuilder();
+        Optional.ofNullable(x.getEstimateNumber()).ifPresent(y -> builder.setEstimateNumber(StringValue.of(y)));
+        // Optional.ofNullable(x.getInvoiceStatus()).ifPresent(y -> builder.setInvoiceStatus(InvoiceStatus.valueOf(x.getInvoiceStatus())));
+        // Optional.ofNullable(x.getPaymentStatus()).ifPresent(y -> builder.setPaymentStatus(Flags.InvoicePaymentStatus.valueOf(x.getPaymentStatus())));
+
+//        Optional.ofNullable(x.getDueStatus()).ifPresent(y -> builder.setDueStatus(InvoiceDueStatus.valueOf(x.getDueStatus())));
+//        Optional.ofNullable(x.getRefundStatus()).ifPresent(y -> builder.setRefundStatus(InvoiceRefundStatus.valueOf(x.getRefundStatus())));
+//        Optional.ofNullable(x.getWriteOffStatus()).ifPresent(y -> builder.setWriteOfStatus(InvoiceWriteOffStatus.valueOf(x.getWriteOffStatus())));
+//
+//        Optional.ofNullable(x.getTaxType()).ifPresent(y -> builder.setTaxType(CalculationType.valueOf(x.getTaxType())));
+//        Optional.ofNullable(x.getDiscountType()).ifPresent(y -> builder.setDiscountType(CalculationType.valueOf(x.getDiscountType())));
+//
+//        Optional.ofNullable(x.getDiscount()).ifPresent(y -> builder.setDiscount(DoubleValue.of(x.getDiscount())));
+//        Optional.ofNullable(x.getTax()).ifPresent(y -> builder.setTax(DoubleValue.of(x.getTax())));
+//        Optional.ofNullable(x.getNote()).ifPresent(y -> builder.setNote(StringValue.of(y)));
+//        Optional.ofNullable(x.getDescription()).ifPresent(y -> builder.setDescription(StringValue.of(y)));
+
+        return builder.build();
+    }
+
+    public static List<EstimateProto> convertToEstimateProtos(List<Object> all) {
+        List<EstimateProto> list = all.stream().map(x -> (Estimate) x).map(x -> {
+            return convertToEstimateProto(x);
+        }).collect(Collectors.toList());
+        return list;
+    }
+
+
+    public static ExpenseProto convertToExpenseProto(Expense x) {
+        ExpenseProto.Builder builder = ExpenseProto.newBuilder();
+        Optional.ofNullable(x.get_id()).ifPresent(y -> builder.setId(StringValue.of(y)));
+//        Optional.ofNullable(x.getInvoiceDate()).ifPresent(y -> proto.setInvoiceDate(StringValue.of(y.toString())));
+
+        Optional.ofNullable(x.getMeta()).ifPresent(y -> builder.setMeta(convertToMetaProto(y)));
+
+        Optional.ofNullable(x.getOwner()).ifPresent(y -> builder.setOwner(miniUserProto(y)));
+        Optional.ofNullable(x.getVisibility()).ifPresent(y -> builder.setVisibility(VisibilityTypeProto.valueOf(x.getVisibility())));
+        Optional.ofNullable(x).ifPresent(y -> builder.setExpenseInfo(convertToExpenseInfoProto(y)));
+
+        return builder.build();
+    }
+
+    private static ExpenseInfoProto convertToExpenseInfoProto(Expense x) {
+        ExpenseInfoProto.Builder builder = ExpenseInfoProto.newBuilder();
+        //Optional.ofNullable(x.getExpenseNumber()).ifPresent(y -> builder.setExpenseNumber(StringValue.of(y)));
+        // Optional.ofNullable(x.getInvoiceStatus()).ifPresent(y -> builder.setInvoiceStatus(InvoiceStatus.valueOf(x.getInvoiceStatus())));
+        // Optional.ofNullable(x.getPaymentStatus()).ifPresent(y -> builder.setPaymentStatus(Flags.InvoicePaymentStatus.valueOf(x.getPaymentStatus())));
+
+//        Optional.ofNullable(x.getDueStatus()).ifPresent(y -> builder.setDueStatus(InvoiceDueStatus.valueOf(x.getDueStatus())));
+//        Optional.ofNullable(x.getRefundStatus()).ifPresent(y -> builder.setRefundStatus(InvoiceRefundStatus.valueOf(x.getRefundStatus())));
+//        Optional.ofNullable(x.getWriteOffStatus()).ifPresent(y -> builder.setWriteOfStatus(InvoiceWriteOffStatus.valueOf(x.getWriteOffStatus())));
+//
+//        Optional.ofNullable(x.getTaxType()).ifPresent(y -> builder.setTaxType(CalculationType.valueOf(x.getTaxType())));
+//        Optional.ofNullable(x.getDiscountType()).ifPresent(y -> builder.setDiscountType(CalculationType.valueOf(x.getDiscountType())));
+//
+//        Optional.ofNullable(x.getDiscount()).ifPresent(y -> builder.setDiscount(DoubleValue.of(x.getDiscount())));
+//        Optional.ofNullable(x.getTax()).ifPresent(y -> builder.setTax(DoubleValue.of(x.getTax())));
+//        Optional.ofNullable(x.getNote()).ifPresent(y -> builder.setNote(StringValue.of(y)));
+//        Optional.ofNullable(x.getDescription()).ifPresent(y -> builder.setDescription(StringValue.of(y)));
+
+        return builder.build();
+    }
+
+    public static List<ExpenseProto> convertToExpenseProtos(List<Object> all) {
+        List<ExpenseProto> list = all.stream().map(x -> (Expense) x).map(x -> {
+            return convertToExpenseProto(x);
+        }).collect(Collectors.toList());
+        return list;
+    }
 
 }

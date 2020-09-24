@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "avenue/financial/protobuf/core/core_messages_description.proto";
+
+
+option java_multiple_files = true;
+option java_package = "com.avenue.financial.services.grpc.proto.expense";
+option java_outer_classname = "ExpenseMessagesDescriptionProto";
+
+package avenue.financial.protobuf.expense;
+
+message ExpenseProto{
+  google.protobuf.StringValue _id = 1;
+  avenue.financial.protobuf.core.MetaProto meta = 2;
+  avenue.financial.protobuf.core.MiniUserProto owner = 3;
+  avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 4;
+  avenue.financial.protobuf.core.VisibilityTypeProto visibility = 5;
+  ExpenseInfoProto expense_info = 6;
+
+}
+
+message ExpenseInfoProto{
+  google.protobuf.StringValue title = 1;
+  google.protobuf.StringValue merchant = 2;
+  google.protobuf.StringValue date = 3;
+  google.protobuf.StringValue notes = 4;
+  google.protobuf.StringValue total = 5;
+  google.protobuf.DoubleValue currency = 6;
+  google.protobuf.DoubleValue description = 7;
+}
+message AddExpenseProto{
+
+  avenue.financial.protobuf.core.MiniUserProto owner = 1;
+  avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 2;
+  avenue.financial.protobuf.core.VisibilityTypeProto visibility = 3;
+  ExpenseInfoProto expense_info = 4;
+
+
+}
+
+message UpdateExpenseProto{
+  google.protobuf.StringValue _id = 1;
+  avenue.financial.protobuf.core.MiniUserProto owner = 2;
+  avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 3;
+  avenue.financial.protobuf.core.VisibilityTypeProto visibility = 4;
+  ExpenseInfoProto expense_info = 5;
+}
+
+
+
+
+
+
+

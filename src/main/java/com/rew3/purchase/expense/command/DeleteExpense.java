@@ -7,12 +7,9 @@ import org.hibernate.Transaction;
 import java.util.HashMap;
 
 public class DeleteExpense extends Command implements ICommand {
-	public DeleteExpense(HashMap<String, Object> data) {
-		super(data);
-	}
+	String id;
 
-	public DeleteExpense(HashMap<String, Object> data, Transaction trx) {
-		super(data,trx);
+	public DeleteExpense(String id) {
+		this.id = id;
 	}
-
 }

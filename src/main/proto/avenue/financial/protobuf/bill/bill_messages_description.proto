@@ -27,9 +27,9 @@ message BillInfoProto{
   google.protobuf.StringValue due_date = 4;
   google.protobuf.StringValue vendor_id = 5;
   google.protobuf.StringValue notes = 6;
-  google.protobuf.StringValue sub_total = 7;
-  PaymentStatusProto tax_total = 8;
-  google.protobuf.StringValue total = 9;
+  google.protobuf.DoubleValue sub_total = 7;
+  google.protobuf.DoubleValue tax_total = 8;
+  google.protobuf.DoubleValue total = 9;
 }
 message AddBillProto{
 

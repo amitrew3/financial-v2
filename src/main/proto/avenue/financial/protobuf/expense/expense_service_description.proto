@@ -1,0 +1,136 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+
+import "avenue/financial/protobuf/core/core_messages_description.proto";
+import "avenue/financial/protobuf/expense/expense_messages_description.proto";
+
+
+
+//Platform
+
+option java_multiple_files = true;
+option java_package = "com.avenue.financial.services.grpc.proto.expense";
+option java_outer_classname = "ExpenseServiceDescriptionProto";
+
+package avenue.rms.protobuf.expense;
+
+service ExpenseServiceProto {
+
+  rpc list (ListExpenseRequestProto) returns (ListExpenseResponseProto) {
+  }
+
+  rpc get (GetExpenseRequestProto) returns (GetExpenseResponseProto) {
+  }
+
+
+  rpc add (AddExpenseRequestProto) returns (AddExpenseResponseProto) {
+  }
+
+  rpc update (UpdateExpenseRequestProto) returns (UpdateExpenseResponseProto) {
+  }
+
+  rpc delete (DeleteExpenseRequestProto) returns (DeleteExpenseResponseProto) {
+  }
+
+}
+
+message CountExpenseRequestProto {
+  avenue.financial.protobuf.core.RequestParamProto param = 1;
+  google.protobuf.StringValue search = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+message BulkDeleteExpenseRequestProto {
+  repeated string id = 1;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
+}
+
+message BulkDeleteExpenseResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  repeated avenue.financial.protobuf.expense.ExpenseProto data = 5;
+}
+
+message CountExpenseResponseProto {
+  int32 limit = 1;
+  int32 page_number = 2;
+  int32 pages_count = 3;
+  int32 total_count = 4;
+}
+
+message ListExpenseResponseProto {
+  repeated avenue.financial.protobuf.expense.ExpenseProto data = 1;
+}
+
+message GetExpenseResponseProto {
+  avenue.financial.protobuf.expense.ExpenseProto data = 1;
+}
+
+message GetExpenseRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.core.RequestParamProto param = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+message ListExpenseRequestProto {
+  avenue.financial.protobuf.core.RequestParamProto param = 1;
+  google.protobuf.StringValue search = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+
+
+
+message AddExpenseRequestProto {
+  avenue.financial.protobuf.expense.AddExpenseProto data = 1;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
+}
+
+message UpdateExpenseRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.expense.UpdateExpenseProto data = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+message DeleteExpenseRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
+}
+
+
+message AddExpenseResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.expense.ExpenseProto data = 5;
+}
+
+message UpdateExpenseResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.expense.ExpenseProto data = 5;
+}
+
+message DeleteExpenseResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.expense.ExpenseProto data = 5;
+}
+
+
+
+
+
+
+
+

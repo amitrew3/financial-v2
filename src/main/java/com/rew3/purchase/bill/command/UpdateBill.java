@@ -1,29 +1,16 @@
 package com.rew3.purchase.bill.command;
 
-import com.avenue.financial.services.grpc.proto.invoice.UpdateInvoiceProto;
-import com.rew3.common.application.CommandException;
+import com.avenue.financial.services.grpc.proto.bill.UpdateBillProto;
 import com.rew3.common.cqrs.Command;
 import com.rew3.common.cqrs.ICommand;
 
-import java.util.HashMap;
-
 public class UpdateBill extends Command implements ICommand {
-    public UpdateInvoiceProto updateInvoiceProto;
+    public UpdateBillProto updateBillProto;
     public String id;
 
-    public UpdateBill(HashMap<String, Object> data) throws CommandException {
-        super(data);
-        this.validationSchema = "billing/invoice/update_internal";
-        boolean valid = this.validate();
-        if (!valid) {
-            throw new CommandException("invalid");
-        }
-    }
 
-
-
-    public UpdateBill(UpdateInvoiceProto data) {
+    public UpdateBill(UpdateBillProto data) {
         this.id=id;
-        this.updateInvoiceProto=data;
+        this.updateBillProto=data;
     }
 }
