@@ -9,7 +9,7 @@ import com.rew3.common.cqrs.ICommand;
 import org.hibernate.Transaction;
 
 public class UpdateProduct extends Command implements ICommand {
-	UpdateProductProto updateProductProto;
+	public UpdateProductProto updateProductProto;
 
 	public UpdateProduct(UpdateProductProto updateProductProto) {
 		this.updateProductProto = updateProductProto;

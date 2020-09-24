@@ -10,7 +10,6 @@ import com.rew3.brokerage.commissionplan.CommissionPlanCommandHandler;
 import com.rew3.brokerage.deduction.DeductionCommandHandler;
 import com.rew3.brokerage.gcp.GcpCommandHandler;
 import com.rew3.brokerage.transaction.TransactionCommandHandler;
-import com.rew3.catalog.product.ProductCommandHandler;
 import com.rew3.common.shared.AclCommandHandler;
 import com.rew3.common.shared.AddressCommandHandler;
 import com.rew3.paymentoption.PaymentOptionCommandHandler;

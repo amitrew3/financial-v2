@@ -1,20 +1,24 @@
 package com.rew3.catalog.product;
 
-import com.rew3.catalog.product.command.*;
+import com.avenue.base.grpc.proto.core.MiniUserProto;
+import com.avenue.financial.services.grpc.proto.product.AddProductProto;
+import com.avenue.financial.services.grpc.proto.product.ProductInfoProto;
+import com.avenue.financial.services.grpc.proto.product.UpdateProductProto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.rew3.catalog.product.command.CreateProduct;
+import com.rew3.catalog.product.command.DeleteProduct;
+import com.rew3.catalog.product.command.UpdateProduct;
 import com.rew3.catalog.product.model.Product;
-import com.rew3.common.application.Authentication;
 import com.rew3.common.application.CommandException;
-import com.rew3.common.cqrs.*;
+import com.rew3.common.application.NotFoundException;
+import com.rew3.common.cqrs.CommandRegister;
+import com.rew3.common.cqrs.ICommand;
+import com.rew3.common.cqrs.ICommandHandler;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.model.Flags;
-import com.rew3.common.model.Flags.EntityStatus;
-import com.rew3.common.utils.APILogType;
-import com.rew3.common.utils.APILogger;
-import com.rew3.common.utils.DateTime;
-import org.hibernate.Transaction;
-
-import java.util.HashMap;
-import java.util.List;
+import com.rew3.salestax.SalesTaxQueryHandler;
+import com.rew3.salestax.model.SalesTax;
 
 public class ProductCommandHandler implements ICommandHandler {
 
@@ -23,12 +27,7 @@ public class ProductCommandHandler implements ICommandHandler {
         CommandRegister.getInstance().registerHandler(UpdateProduct.class, ProductCommandHandler.class);
         CommandRegister.getInstance().registerHandler(DeleteProduct.class, ProductCommandHandler.class);
 
-
-        CommandRegister.getInstance().registerHandler(CreateBulkProduct.class, ProductCommandHandler.class);
-        CommandRegister.getInstance().registerHandler(UpdateBulkProduct.class, ProductCommandHandler.class);
-        CommandRegister.getInstance().registerHandler(DeleteBulkProduct.class, ProductCommandHandler.class);
     }
-
 
     public void handle(ICommand c) throws Exception {
         if (c instanceof CreateProduct) {
@@ -37,130 +36,138 @@ public class ProductCommandHandler implements ICommandHandler {
             handle((UpdateProduct) c);
         } else if (c instanceof DeleteProduct) {
             handle((DeleteProduct) c);
-        } else if (c instanceof CreateBulkProduct) {
-            handle((CreateBulkProduct) c);
-        } else if (c instanceof UpdateBulkProduct) {
-            handle((UpdateBulkProduct) c);
-        } else if (c instanceof DeleteBulkProduct) {
-            handle((DeleteBulkProduct) c);
         }
     }
 
     public void handle(CreateProduct c) throws Exception {
-        Transaction trx = c.getTransaction();
-        try {
-            Product product = this._handleSaveProduct(c);
-            if (product != null) {
-                if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
-                    c.setObject(product);
-                }
-            }
-        } catch (Exception ex) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
-            throw ex;
-
-        } finally {
-            HibernateUtils.closeSession();
-        }
+        Product product = this._handleSaveProduct(c.addProductProto);
+        c.setObject(product);
 
 
     }
 
-    private Product _handleSaveProduct(ICommand c) throws Exception {
-        Transaction trx = c.getTransaction();
-        boolean isNew = true;
-        Product p = null;
 
-        if (c.has("id") && c instanceof UpdateProduct) {
-            p = (Product) (new ProductQueryHandler()).getById((String) c.get("id"));
-            isNew = false;
+    public void handle(UpdateProduct c) throws Exception {
+        Product product = this._handleUpdateProduct(c.updateProductProto);
+        c.setObject(product);
+
+
+    }
+
+
+    private Product _handleSaveProduct(AddProductProto c) throws Exception {
+
+        Product product = new Product();
+
+        if (c.hasProductInfo()) {
+            ProductInfoProto info = c.getProductInfo();
+
+            if (info.hasTitle()) {
+                product.setTitle(info.getTitle().getValue());
+            }
+            if (info.hasDescription()) {
+                product.setDescription(info.getDescription().getValue());
+            }
+            if (info.hasPrice()) {
+                product.setPrice(info.getPrice().getValue());
+            }
+            if (info.hasTax1Id()) {
+                SalesTaxQueryHandler queryHandler = new SalesTaxQueryHandler();
+                SalesTax tax = (SalesTax) queryHandler.getById(info.getTax1Id().getValue());
+                product.setTax1(tax);
+            }
+            if (info.hasTax2Id()) {
+                SalesTaxQueryHandler queryHandler = new SalesTaxQueryHandler();
+                SalesTax tax = (SalesTax) queryHandler.getById(info.getTax1Id().getValue());
+                product.setTax1(tax);
+            }
+            product.setSide(Flags.ProductSide.valueOf(info.getSide().name()));
+
+        }
+        if (c.hasOwner()) {
+            MiniUserProto miniUserProto = c.getOwner();
+            if (miniUserProto.hasId()) {
+                product.setOwnerId(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasFirstName()) {
+                product.setOwnerFirstName(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasLastName()) {
+                product.setOwnerLastName(miniUserProto.getId().getValue());
+            }
+
+        }
+
+        product = (Product) HibernateUtilV2.save(product);
+
+        return product;
+
+
+    }
+
+    private Product _handleUpdateProduct(UpdateProductProto c) throws Exception {
+
+        Product product = null;
+
+        if (c.hasId()) {
+
+            product = (Product) new ProductQueryHandler().getById(c.getId().getValue());
         } else {
-            p = new Product();
+            throw new NotFoundException("Id not found");
         }
-        if (c.has("title")) {
-            p.setTitle((String) c.get("title"));
+        if (c.hasProductInfo()) {
+            ProductInfoProto info = c.getProductInfo();
+
+            if (info.hasTitle()) {
+                product.setTitle(info.getTitle().getValue());
+            }
+            if (info.hasDescription()) {
+                product.setDescription(info.getDescription().getValue());
+            }
+            if (info.hasPrice()) {
+                product.setPrice(info.getPrice().getValue());
+            }
+            if (info.hasTax1Id()) {
+                SalesTaxQueryHandler queryHandler = new SalesTaxQueryHandler();
+                SalesTax tax = (SalesTax) queryHandler.getById(info.getTax1Id().getValue());
+                product.setTax1(tax);
+            }
+            if (info.hasTax2Id()) {
+                SalesTaxQueryHandler queryHandler = new SalesTaxQueryHandler();
+                SalesTax tax = (SalesTax) queryHandler.getById(info.getTax1Id().getValue());
+                product.setTax1(tax);
+            }
+            product.setSide(Flags.ProductSide.valueOf(info.getSide().name()));
+
         }
+        if (c.hasOwner()) {
+            MiniUserProto miniUserProto = c.getOwner();
+            if (miniUserProto.hasId()) {
+                product.setOwnerId(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasFirstName()) {
+                product.setOwnerFirstName(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasLastName()) {
+                product.setOwnerLastName(miniUserProto.getId().getValue());
+            }
 
-        if (c.has("status")) {
-            p.setStatus(EntityStatus.valueOf((String) c.get("status")));
-        } else {
-            p.setStatus(EntityStatus.ACTIVE);
         }
-        String ownerId = Authentication.getUserId().toString();
+        product = (Product) HibernateUtilV2.update(product);
 
+        return product;
 
-        p.setCreatedAt(DateTime.getCurrentTimestamp());
-        p.setDefaultAcl();
-        p = (Product) HibernateUtils.save(p, trx);
-
-        return p;
     }
 
+    public void handle(DeleteProduct c) throws NotFoundException, CommandException, JsonProcessingException {
 
-    public void handle(UpdateProduct c) {
 
-        Transaction trx = c.getTransaction();
+        Product product = (Product) new ProductQueryHandler().getById(c.id);
+        if (product != null) {
+            HibernateUtils.saveAsDeleted(product);
 
-        try {
-            Product p = this._handleSaveProduct(c);
-            if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
-            }
-            c.setObject(p);
-        } catch (Exception ex) {
-            if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
-            }
-        } finally {
-            if (c.isCommittable()) {
-                HibernateUtils.closeSession();
-            }
         }
-    }
-
-
-    private boolean isDuplicateTitle(String title) {
-        HashMap<String, Object> queryParamsTitle = new HashMap<String, Object>();
-        queryParamsTitle.put("title", title);
-        queryParamsTitle.put("ownerId", Authentication.getUserId());
-        Query q = new Query(queryParamsTitle);
-        IQueryHandler qHandle = new ProductQueryHandler();
-        List<Object> pList = qHandle.get(q);
-        return (pList.size() > 0);
-    }
-
-
-    public void handle(DeleteProduct c) throws Exception {
-        Transaction trx = c.getTransaction();
-
-        try {
-            Product pro = (Product) new ProductQueryHandler().getById((String) c.get("id"));
-            if (pro != null) {
-                if (!pro.hasDeletePermission(Authentication.getRew3UserId(), Authentication.getRew3GroupId())) {
-                    APILogger.add(APILogType.ERROR, "Permission denied");
-                    throw new CommandException("Permission denied");
-                }
-                pro.setStatus(Flags.EntityStatus.DELETED);
-                HibernateUtils.save(pro, trx);
-            }
-            CommandRegister.getInstance().process(new RemoveCategoryFromProduct(pro.get_id(), trx));
-            CommandRegister.getInstance().process(new RemoveFeatureFromProduct(pro.get_id(), trx));
-            CommandRegister.getInstance().process(new RemoveRatePlanFromProduct(pro.get_id(), trx));
-
-
-            if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
-            }
-            c.setObject(pro);
-        } catch (Exception ex) {
-            HibernateUtils.rollbackTransaction(trx);
-            throw ex;
-        } finally {
-            if (c.isCommittable()) {
-                HibernateUtils.closeSession();
-            }
-        }
+        c.setObject(product);
     }
 
 

@@ -25,8 +25,8 @@ message ProductInfoProto{
   google.protobuf.DoubleValue price = 2;
   google.protobuf.StringValue description = 3;
   ProductSideProto side = 4;
-  google.protobuf.DoubleValue tax1_id = 5;
-  google.protobuf.BoolValue tax2_id = 6;
+  google.protobuf.StringValue tax1_id = 5;
+  google.protobuf.StringValue tax2_id = 6;
 }
 
 

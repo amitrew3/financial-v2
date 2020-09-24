@@ -7,7 +7,7 @@ import com.rew3.common.cqrs.ICommand;
 import org.hibernate.Transaction;
 
 public class DeleteProduct extends Command implements ICommand {
-	String id;
+	public String id;
 
 
 	public DeleteProduct(String id) {

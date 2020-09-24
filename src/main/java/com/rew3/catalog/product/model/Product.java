@@ -1,6 +1,7 @@
 package com.rew3.catalog.product.model;
 
 import com.rew3.common.model.DB;
+import com.rew3.common.model.Flags;
 import com.rew3.common.shared.model.AbstractEntity;
 import com.rew3.salestax.model.SalesTax;
 
@@ -42,8 +43,8 @@ public class Product extends AbstractEntity {
         return side;
     }
 
-    public void setSide(String side) {
-        this.side = side;
+    public void setSide(Flags.ProductSide side) {
+        this.side = side.toString();
     }
 
 

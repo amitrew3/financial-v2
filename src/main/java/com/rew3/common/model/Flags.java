@@ -119,6 +119,11 @@ public abstract class Flags {
 
 
     }
+    public enum ProductSide {
+        PURCHASE, SALE, BOTH
+
+
+    }
 
     public enum InvoiceRefundStatus {
         REFUND_REQUESTED, REFUND_APPROVED, REFUND_REJECTED, NO_REQUEST
