@@ -1,16 +1,17 @@
 package com.rew3.salestax;
 
+import com.avenue.base.grpc.proto.core.MiniUserProto;
+import com.avenue.financial.services.grpc.proto.salestax.AddSalesTaxProto;
+import com.avenue.financial.services.grpc.proto.salestax.SalesTaxInfoProto;
+import com.avenue.financial.services.grpc.proto.salestax.UpdateSalesTaxProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.rew3.common.application.Authentication;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.database.HibernateUtils;
-import com.rew3.common.model.Flags.EntityStatus;
-import com.rew3.common.utils.APILogType;
-import com.rew3.common.utils.APILogger;
 import com.rew3.salestax.command.CreateSalesTax;
 import com.rew3.salestax.command.DeleteSalesTax;
 import com.rew3.salestax.command.UpdateSalesTax;
@@ -36,80 +37,142 @@ public class SalesTaxCommandHandler implements ICommandHandler {
     }
 
     public void handle(CreateSalesTax c) throws Exception {
-        SalesTax commissionPlan = this._handleSaveSalesTax(c);
-        c.setObject(commissionPlan);
+        SalesTax tax = this._handleSaveSalesTax(c.addSalesTaxProto);
+        c.setObject(tax);
 
 
     }
 
 
     public void handle(UpdateSalesTax c) throws Exception {
-        SalesTax commissionPlan = this._handleSaveSalesTax(c);
-        c.setObject(commissionPlan);
+        SalesTax tax = this._handleUpdateSalesTax(c.updateSalesTaxProto);
+        c.setObject(tax);
 
 
     }
 
 
+    private SalesTax _handleSaveSalesTax(AddSalesTaxProto c) throws Exception {
 
+        SalesTax tax = new SalesTax();
 
-    private SalesTax _handleSaveSalesTax(ICommand c) throws Exception {
+        if (c.hasSalestaxInfo()) {
+            SalesTaxInfoProto info = c.getSalestaxInfo();
 
-        boolean isNew = true;
-
-        SalesTax term = new SalesTax();
-
-        if (c.has("id")) {
-
-            term = (SalesTax) new SalesTaxQueryHandler().getById(c.get("id").toString());
-            isNew = false;
+            if (info.hasTitle()) {
+                tax.setTitle(info.getTitle().getValue());
+            }
+            if (info.hasAbbreviation()) {
+                tax.setAbbreviation(info.getAbbreviation().getValue());
+            }
+            if (info.hasDescription()) {
+                tax.setDescription(info.getDescription().getValue());
+            }
+            if (info.hasTaxNumber()) {
+                tax.setTaxNumber(info.getTaxNumber().getValue());
+            }
+            if (info.hasRate()) {
+                tax.setRate(info.getRate().getValue());
+            }
+            if (info.hasShowTaxNumber()) {
+                tax.setShowTaxNumber(info.getShowTaxNumber().getValue());
+            }
+        }
+        if (c.hasOwner()) {
+            MiniUserProto miniUserProto = c.getOwner();
+            if (miniUserProto.hasId()) {
+                tax.setOwnerId(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasFirstName()) {
+                tax.setOwnerFirstName(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasLastName()) {
+                tax.setOwnerLastName(miniUserProto.getId().getValue());
+            }
         }
 
-       /* if (c.has("fixedDays")) {
-            term.setFixedDays((Integer) c.get("fixedDays"));
-        }
+        tax = (SalesTax) HibernateUtilV2.save(tax);
 
-        if (c.has("dayOfMonth")) {
-            term.setDayOfMonth((Integer) c.get("dayOfMonth"));
-        }
-
-        if (c.has("type")) {
-            String type = (String) c.get("type");
-            term.setDueRuleType(Flags.DueRuleType.valueOf(type.toUpperCase()));
-        }
-        if (c.has("daysOfDueDate")) {
-            term.setDaysOfDueDate((Integer) c.get("daysOfDueDate"));
-        }*/
-
-        if (c.has("status")) {
-            term.setStatus(EntityStatus.valueOf(c.get("status").toString().toUpperCase()));
-        } else if (isNew) {
-            term.setStatus(EntityStatus.ACTIVE);
-        }
-
-
-        term = (SalesTax) HibernateUtils.save(term, c, isNew);
-
-        return term;
+        return tax;
 
 
     }
+
+    private SalesTax _handleUpdateSalesTax(UpdateSalesTaxProto c) throws Exception {
+
+        SalesTax tax = null;
+
+        if (c.hasId()) {
+
+            tax = (SalesTax) new SalesTaxQueryHandler().getById(c.getId().getValue());
+        } else {
+            throw new NotFoundException("Id not found");
+        }
+        if (c.hasOwner()) {
+            MiniUserProto miniUserProto = c.getOwner();
+            if (miniUserProto.hasId()) {
+                tax.setOwnerId(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasFirstName()) {
+                tax.setOwnerFirstName(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasLastName()) {
+                tax.setOwnerLastName(miniUserProto.getId().getValue());
+            }
+        }
+        if (c.hasSalestaxInfo()) {
+            SalesTaxInfoProto info = c.getSalestaxInfo();
+
+            if (info.hasTitle()) {
+                tax.setTitle(info.getTitle().getValue());
+            }
+            if (info.hasAbbreviation()) {
+                tax.setAbbreviation(info.getAbbreviation().getValue());
+            }
+            if (info.hasDescription()) {
+                tax.setDescription(info.getDescription().getValue());
+            }
+            if (info.hasTaxNumber()) {
+                tax.setTaxNumber(info.getTaxNumber().getValue());
+            }
+            if (info.hasRate()) {
+                tax.setRate(info.getRate().getValue());
+            }
+            if (info.hasShowTaxNumber()) {
+                tax.setShowTaxNumber(info.getShowTaxNumber().getValue());
+            }
+        }
+        if (c.hasOwner()) {
+            MiniUserProto miniUserProto = c.getOwner();
+            if (miniUserProto.hasId()) {
+                tax.setOwnerId(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasFirstName()) {
+                tax.setOwnerFirstName(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasLastName()) {
+                tax.setOwnerLastName(miniUserProto.getId().getValue());
+            }
+        }
+
+        tax = (SalesTax) HibernateUtilV2.update(tax);
+
+        return tax;
+
+
+    }
+
 
     public void handle(DeleteSalesTax c) throws NotFoundException, CommandException, JsonProcessingException {
 
-        SalesTax plan = (SalesTax) new SalesTaxQueryHandler().getById(c.get("id").toString());
-        if (plan != null) {
-            if (!plan.hasDeletePermission(Authentication.getRew3UserId(), Authentication.getRew3GroupId())) {
-                APILogger.add(APILogType.ERROR, "Permission denied");
-                throw new CommandException("Permission denied");
-            }
-            HibernateUtils.saveAsDeleted(plan);
 
-            c.setObject(plan);
+        SalesTax tax = (SalesTax) new SalesTaxQueryHandler().getById(c.id);
+        if (tax != null) {
+            HibernateUtils.saveAsDeleted(tax);
+
         }
-
+        c.setObject(tax);
     }
-
 
 
 }

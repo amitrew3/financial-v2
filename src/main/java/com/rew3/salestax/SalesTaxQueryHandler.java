@@ -22,10 +22,10 @@ public class SalesTaxQueryHandler implements IQueryHandler {
     public Object getById(String id) throws CommandException, NotFoundException {
         SalesTax acp = (SalesTax) HibernateUtilV2.get(SalesTax.class, id);
         if (acp == null) {
-            throw new NotFoundException("Payment Term  id(" + id + ") not found.");
+            throw new NotFoundException("Sales Tax  id(" + id + ") not found.");
         }
         if (acp.getStatus().equals(Flags.EntityStatus.DELETED.toString()))
-            throw new NotFoundException("Payment Term  id(" + id + ") not found.");
+            throw new NotFoundException("Sales Tax  id(" + id + ") not found.");
         return acp;
 
     }

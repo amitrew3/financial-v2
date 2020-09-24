@@ -8,7 +8,7 @@ import com.rew3.common.cqrs.ICommand;
 import java.util.HashMap;
 
 public class CreateSalesTax extends Command implements ICommand {
-   AddSalesTaxProto addSalesTaxProto;
+   public AddSalesTaxProto addSalesTaxProto;
 
     public CreateSalesTax(AddSalesTaxProto addSalesTaxProto) {
         this.addSalesTaxProto = addSalesTaxProto;
