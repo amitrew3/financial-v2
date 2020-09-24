@@ -157,9 +157,7 @@ public class InvoiceCommandHandler implements ICommandHandler {
             return item;
         }).collect(Collectors.toSet());
 
-        if (invoice.getItems() != null) {
-            invoice.getItems().addAll(items);
-        } else {
+        if (invoice.getItems().size() != 0) {
             invoice.setItems(items);
         }
 

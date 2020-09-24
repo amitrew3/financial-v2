@@ -42,7 +42,7 @@ public class InvoiceItem {
 
     @NotNull
     @Column(name = DB.Field.InvoiceItem.UOM)
-    private Integer uom;
+    private String uom;
 
     @NotNull
     @Column(name = DB.Field.InvoiceItem.PRICE)
@@ -88,11 +88,11 @@ public class InvoiceItem {
         this.quantity = quantity;
     }
 
-    public Integer getUom() {
+    public String getUom() {
         return uom;
     }
 
-    public void setUom(Integer uom) {
+    public void setUom(String uom) {
         this.uom = uom;
     }
 

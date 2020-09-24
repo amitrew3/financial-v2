@@ -16,7 +16,10 @@ import com.avenue.financial.services.grpc.proto.salestax.SalesTaxProto;
 import com.avenue.financial.services.grpc.proto.vendor.VendorInfoProto;
 import com.avenue.financial.services.grpc.proto.vendor.VendorProto;
 import com.google.protobuf.*;
+import com.rew3.catalog.product.ProductQueryHandler;
 import com.rew3.catalog.product.model.Product;
+import com.rew3.common.application.CommandException;
+import com.rew3.common.application.NotFoundException;
 import com.rew3.common.shared.model.Address;
 import com.rew3.common.shared.model.Meta;
 import com.rew3.common.shared.model.MiniUser;
@@ -28,6 +31,7 @@ import com.rew3.sale.customer.model.Customer;
 import com.rew3.sale.estimate.model.EstimateItem;
 import com.rew3.sale.invoice.model.Invoice;
 import com.rew3.sale.invoice.model.InvoiceItem;
+import com.rew3.salestax.SalesTaxQueryHandler;
 import com.rew3.salestax.model.SalesTax;
 
 import java.util.HashMap;
@@ -240,9 +244,50 @@ public class ProtoConverter {
         Optional.ofNullable(x.getQuantity()).ifPresent(y -> {
             item.setQuantity(y.getValue());
         });
+        Optional.ofNullable(x.getUom()).ifPresent(y -> {
+            item.setUom(y.getValue());
+        });
         Optional.ofNullable(x.getPrice()).ifPresent(y -> {
             item.setPrice(y.getValue());
         });
+        Optional.ofNullable(x.getProductId()).ifPresent(y -> {
+            ProductQueryHandler productQueryHandler= new ProductQueryHandler();
+            try {
+                Product product= (Product) productQueryHandler.getById(y.getValue());
+                item.setProduct(product);
+            } catch (CommandException e) {
+                e.printStackTrace();
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+        Optional.ofNullable(x.getTax1Id()).ifPresent(y -> {
+            SalesTaxQueryHandler taxQueryHandler= new SalesTaxQueryHandler();
+            try {
+                SalesTax tax1= (SalesTax) taxQueryHandler.getById(y.getValue());
+                item.setTax1(tax1);
+
+
+            } catch (CommandException e) {
+                e.printStackTrace();
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+        Optional.ofNullable(x.getTax2Id()).ifPresent(y -> {
+            SalesTaxQueryHandler taxQueryHandler= new SalesTaxQueryHandler();
+            try {
+                SalesTax tax2= (SalesTax) taxQueryHandler.getById(y.getValue());
+                item.setTax2(tax2);
+
+
+            } catch (CommandException e) {
+                e.printStackTrace();
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+
 
         return item;
     }

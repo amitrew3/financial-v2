@@ -1,8 +1,6 @@
 package com.rew3.purchase.vendor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.rew3.purchase.vendor.command.*;
-import com.rew3.purchase.vendor.model.Vendor;
 import com.rew3.common.application.Authentication;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
@@ -15,12 +13,11 @@ import com.rew3.common.shared.AddressQueryHandler;
 import com.rew3.common.utils.APILogType;
 import com.rew3.common.utils.APILogger;
 import com.rew3.common.utils.DateTime;
+import com.rew3.purchase.vendor.command.*;
+import com.rew3.purchase.vendor.model.Vendor;
 import org.hibernate.Transaction;
 
 import javax.servlet.ServletException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 
 public class VendorCommandHandler implements ICommandHandler {
@@ -284,95 +281,5 @@ public class VendorCommandHandler implements ICommandHandler {
         } finally {
             HibernateUtils.closeSession();
         }
-    }
-
-    public void handle(CreateBulkVendor c) {
-        Transaction trx = c.getTransaction();
-        List<HashMap<String, Object>> normalusers = (List<HashMap<String, Object>>) c.getBulkData();
-
-        List<Object> normalUsers = new ArrayList<Object>();
-
-        try {
-
-            for (HashMap<String, Object> data : normalusers) {
-                ICommand command = new CreateVendor(data, trx);
-                CommandRegister.getInstance().process(command);
-                Vendor nu = (Vendor) command.getObject();
-                normalUsers.add(nu);
-            }
-            c.setObject(normalUsers);
-
-            if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
-            }
-
-        } catch (Exception ex) {
-            if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
-            }
-        } finally {
-            if (c.isCommittable()) {
-                HibernateUtils.closeSession();
-            }
-        }
-
-
-    }
-
-    public void handle(UpdateBulkVendor c) {
-        Transaction trx = c.getTransaction();
-        List<HashMap<String, Object>> txns = (List<HashMap<String, Object>>) c.getBulkData();
-        try {
-
-            for (HashMap<String, Object> data : txns) {
-                CommandRegister.getInstance().process(new UpdateVendor(data, trx));
-            }
-
-            if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
-                c.setObject("Bulk product category updated");
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-
-           /* if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
-            }*/
-        } finally {
-            if (c.isCommittable()) {
-                HibernateUtils.closeSession();
-            }
-        }
-    }
-
-    public void handle(DeleteBulkVendor c) {
-        Transaction trx = c.getTransaction();
-        List<Object> ids = (List<Object>) c.get("id");
-        try {
-
-            for (Object o : ids) {
-                HashMap<String, Object> map = new HashMap<>();
-                String id = (String) o;
-                map.put("id", id);
-                CommandRegister.getInstance().process(new DeleteVendor(map, trx));
-            }
-
-            if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
-            }
-            c.setObject("Normal users deleted");
-
-        } catch (Exception ex) {
-            if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
-            }
-        } finally {
-            if (c.isCommittable()) {
-                HibernateUtils.closeSession();
-            }
-        }
-
-
     }
 }

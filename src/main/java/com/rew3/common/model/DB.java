@@ -807,9 +807,9 @@ public class DB {
 
 
         public static class Estimate {
-            public static final String ESTIMATE_NUMBER = "ESTIMATE_NUMBER";
+            public static final String ESTIMATE_NUMBER = "estimate_number";
             public static final String PO_SO_NUMBER = "po_so_number";
-            public static final String ESTIMATE_DATE = "invoice_date";
+            public static final String ESTIMATE_DATE = "estimate_date";
             public static final String CUSTOMER_ID = "customer_id";
             public static final String PAYMENT_TERM_ID = "payment_term_id";
             public static final String NOTES = "notes";
@@ -823,10 +823,8 @@ public class DB {
             public static final String QUANTITY = "quantity";
             public static final String UOM = "uom";
             public static final String PRICE = "price";
-            public static final String AMOUNT = "amount";
             public static final String PRODUCT_ID = "product_id";
             public static final String ESTIMATE_ID = "estimate_id";
-
             public static final String TAX1 = "tax1_id";
             public static final String TAX2 = "tax2_id";
 
@@ -852,7 +850,7 @@ public class DB {
             public static final String PRICE = "price";
             public static final String PRODUCT_ID = "product_id";
             public static final String TAX1 = "tax1_id";
-            public static final String TAX2 = "tax2";
+            public static final String TAX2 = "tax2_id";
 
         }
         public static class InvoicePayment {

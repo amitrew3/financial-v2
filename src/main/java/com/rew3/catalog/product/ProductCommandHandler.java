@@ -13,7 +13,6 @@ import com.rew3.common.utils.APILogger;
 import com.rew3.common.utils.DateTime;
 import org.hibernate.Transaction;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -131,106 +130,6 @@ public class ProductCommandHandler implements ICommandHandler {
         return (pList.size() > 0);
     }
 
-    private boolean isProductUsed(String productId) {
-        Query q = new Query();
-        q.set("productId", productId);
-        Integer count = (new ProductQueryHandler()).getSalesCountById(q);
-        return (count != null && count > 0);
-    }
-
-    public void handle(CreateBulkProduct c) {
-        Transaction trx = c.getTransaction();
-        List<HashMap<String, Object>> productsList = (List<HashMap<String, Object>>) c.getBulkData();
-
-        List<Object> products = new ArrayList<Object>();
-
-        try {
-
-            for (HashMap<String, Object> data : productsList) {
-                ICommand command = new CreateProduct(data, trx);
-                CommandRegister.getInstance().process(command);
-                Product nu = (Product) command.getObject();
-                products.add(nu);
-            }
-            c.setObject(products);
-
-            if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
-            }
-
-        } catch (Exception ex) {
-            if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
-            }
-        } finally {
-            if (c.isCommittable()) {
-                HibernateUtils.closeSession();
-            }
-        }
-
-    }
-
-    public void handle(UpdateBulkProduct c) {
-        Transaction trx = c.getTransaction();
-        List<Product> products = new ArrayList<>();
-        List<HashMap<String, Object>> txns = (List<HashMap<String, Object>>) c.getBulkData();
-        try {
-
-            for (HashMap<String, Object> data : txns) {
-                ICommand command = new UpdateProduct(data, trx);
-                CommandRegister.getInstance().process(command);
-                Product pro = (Product) command.getObject();
-                products.add(pro);
-            }
-
-            if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
-                c.setObject(products);
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-
-           /* if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
-            }*/
-        } finally {
-            if (c.isCommittable()) {
-                HibernateUtils.closeSession();
-            }
-        }
-    }
-
-    public void handle(DeleteBulkProduct c) {
-        Transaction trx = c.getTransaction();
-        List<Product> products = new ArrayList<>();
-        List<Object> ids = (List<Object>) c.get("id");
-        try {
-            for (Object o : ids) {
-                HashMap<String, Object> map = new HashMap<>();
-                String id = String.valueOf(o);
-                map.put("id", id);
-                ICommand command = new DeleteProduct(map, trx);
-                CommandRegister.getInstance().process(command);
-                Product p = (Product) command.getObject();
-                products.add(p);
-            }
-
-            if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
-            }
-            c.setObject(products);
-
-        } catch (Exception ex) {
-            if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
-            }
-        } finally {
-            if (c.isCommittable()) {
-                HibernateUtils.closeSession();
-            }
-        }
-    }
 
     public void handle(DeleteProduct c) throws Exception {
         Transaction trx = c.getTransaction();

@@ -50,11 +50,11 @@ public class BillItem {
     private Double price;
 
     @OneToOne
-    @JoinColumn(name = DB.Field.InvoiceItem.TAX1)
+    @JoinColumn(name = DB.Field.BillItem.TAX1)
     private SalesTax tax1;
 
     @OneToOne
-    @JoinColumn(name = DB.Field.InvoiceItem.TAX2)
+    @JoinColumn(name = DB.Field.BillItem.TAX2)
     private SalesTax tax2;
 
     public String getId() {

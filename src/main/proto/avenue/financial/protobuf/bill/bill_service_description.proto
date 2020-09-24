@@ -1,0 +1,136 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+
+import "avenue/financial/protobuf/core/core_messages_description.proto";
+import "avenue/financial/protobuf/bill/bill_messages_description.proto";
+
+
+
+//Platform
+
+option java_multiple_files = true;
+option java_package = "com.avenue.financial.services.grpc.proto.bill";
+option java_outer_classname = "BillServiceDescriptionProto";
+
+package avenue.rms.protobuf.bill;
+
+service BillServiceProto {
+
+  rpc list (ListBillRequestProto) returns (ListBillResponseProto) {
+  }
+
+  rpc get (GetBillRequestProto) returns (GetBillResponseProto) {
+  }
+
+
+  rpc add (AddBillRequestProto) returns (AddBillResponseProto) {
+  }
+
+  rpc update (UpdateBillRequestProto) returns (UpdateBillResponseProto) {
+  }
+
+  rpc delete (DeleteBillRequestProto) returns (DeleteBillResponseProto) {
+  }
+
+}
+
+message CountBillRequestProto {
+  avenue.financial.protobuf.core.RequestParamProto param = 1;
+  google.protobuf.StringValue search = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+message BulkDeleteBillRequestProto {
+  repeated string id = 1;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
+}
+
+message BulkDeleteBillResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  repeated avenue.financial.protobuf.bill.BillProto data = 5;
+}
+
+message CountBillResponseProto {
+  int32 limit = 1;
+  int32 page_number = 2;
+  int32 pages_count = 3;
+  int32 total_count = 4;
+}
+
+message ListBillResponseProto {
+  repeated avenue.financial.protobuf.bill.BillProto data = 1;
+}
+
+message GetBillResponseProto {
+  avenue.financial.protobuf.bill.BillProto data = 1;
+}
+
+message GetBillRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.core.RequestParamProto param = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+message ListBillRequestProto {
+  avenue.financial.protobuf.core.RequestParamProto param = 1;
+  google.protobuf.StringValue search = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+
+
+
+message AddBillRequestProto {
+  avenue.financial.protobuf.bill.AddBillProto data = 1;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
+}
+
+message UpdateBillRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.bill.UpdateBillProto data = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+message DeleteBillRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
+}
+
+
+message AddBillResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.bill.BillProto data = 5;
+}
+
+message UpdateBillResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.bill.BillProto data = 5;
+}
+
+message DeleteBillResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.bill.BillProto data = 5;
+}
+
+
+
+
+
+
+
+
