@@ -8,7 +8,7 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.Flags.AccountingPeriodStatus;
 import com.rew3.common.model.PaginationParams;
@@ -20,7 +20,7 @@ public class AccountPeriodQueryHandler implements IQueryHandler {
 
 	@Override
 	public Object getById(String id) throws CommandException, NotFoundException {
-		AccountPeriod ap = (AccountPeriod) HibernateUtils.get(AccountPeriod.class, id);
+		AccountPeriod ap = (AccountPeriod) HibernateUtilV2.get(AccountPeriod.class, id);
 		if (ap == null) {
 			throw new NotFoundException("Accounting period id (" + id + ") not found.");
 		}
@@ -49,7 +49,7 @@ public class AccountPeriodQueryHandler implements IQueryHandler {
 		}
 		offset = (limit * (page - 1));
 
-		List<Object> aPeriods = HibernateUtils.select("FROM AccountingPeriod " + whereSQL, sqlParams, q.getQuery(), limit, offset);
+		List<Object> aPeriods = HibernateUtilV2.select("FROM AccountingPeriod " + whereSQL, sqlParams, q.getQuery(), limit, offset);
 		return aPeriods;
 	}
 
@@ -57,7 +57,7 @@ public class AccountPeriodQueryHandler implements IQueryHandler {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("date", ts);
 		params.put("ownerId", ownerId);
-		List<AccountPeriod> accPeriods = HibernateUtils.select(
+		List<AccountPeriod> accPeriods = HibernateUtilV2.select(
 				"FROM AccountingPeriod  a WHERE :date BETWEEN a.startDate AND endDate AND a.ownerId = :ownerId", params);
 
 		AccountPeriod accp = null;
@@ -77,7 +77,7 @@ public class AccountPeriodQueryHandler implements IQueryHandler {
 		sqlParams.put("currentDate", ts);
 		sqlParams.put("status", AccountingPeriodStatus.OPEN);
 
-		List<AccountPeriod> accPeriods = HibernateUtils.select("FROM AccountingPeriod " + whereSQL, sqlParams);
+		List<AccountPeriod> accPeriods = HibernateUtilV2.select("FROM AccountingPeriod " + whereSQL, sqlParams);
 
 		return accPeriods;
 	}
@@ -86,7 +86,7 @@ public class AccountPeriodQueryHandler implements IQueryHandler {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("ts",ts);
 		params.put("ownerId", ownerId);
-		List<AccountPeriod> accPeriods = HibernateUtils.select(
+		List<AccountPeriod> accPeriods = HibernateUtilV2.select(
 				"FROM AccountingPeriod ap  WHERE  date(ap.endDate) = :ts and ap.ownerId=:ownerId", params);
 
 
@@ -100,7 +100,7 @@ public class AccountPeriodQueryHandler implements IQueryHandler {
 	}
 
 	public Long count() throws CommandException {
-		Long count = (Long) HibernateUtils.createQuery("select count(*) from AccountingPeriod", null);
+		Long count = (Long) HibernateUtilV2.createQuery("select count(*) from AccountingPeriod", null);
 		return count;
 	}
 

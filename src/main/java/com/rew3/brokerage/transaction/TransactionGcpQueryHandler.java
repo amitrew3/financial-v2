@@ -5,7 +5,7 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.DB;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.PaginationParams;
@@ -19,7 +19,7 @@ public class TransactionGcpQueryHandler implements IQueryHandler {
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
-        RmsTransaction acp = (RmsTransaction) HibernateUtils.get(RmsTransaction.class, id);
+        RmsTransaction acp = (RmsTransaction) HibernateUtilV2.get(RmsTransaction.class, id);
         if (acp == null) {
             throw new NotFoundException("Transaction id(" + id + ") not found.");
         }
@@ -95,12 +95,12 @@ public class TransactionGcpQueryHandler implements IQueryHandler {
         int offset = 0;
         offset = (limit * (page - 1));
 
-        List<Object> associates = HibernateUtils.select("FROM TransactionGcp" + builder.getValue(), sqlParams, q.getQuery(), limit, offset);
+        List<Object> associates = HibernateUtilV2.select("FROM TransactionGcp" + builder.getValue(), sqlParams, q.getQuery(), limit, offset);
         return associates;
     }
 
     public Long count() throws CommandException {
-        Long count = (Long) HibernateUtils.createQuery("select count(*) from Transaction", null);
+        Long count = (Long) HibernateUtilV2.createQuery("select count(*) from Transaction", null);
         return count;
     }
 

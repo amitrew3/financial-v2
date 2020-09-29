@@ -2,6 +2,7 @@ package com.rew3.brokerage.transaction;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.shared.model.MiniUser;
 import com.rew3.brokerage.associate.AssociateQueryHandler;
 import com.rew3.brokerage.associate.model.Associate;
@@ -17,7 +18,6 @@ import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.model.Flags;
 import com.rew3.common.utils.*;
 import org.hibernate.Transaction;
@@ -134,44 +134,44 @@ public class TransactionCommandHandler implements ICommandHandler {
             RmsTransaction transaction = this._handleSaveTransaction(c);
             if (transaction != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(transaction);
 
                 }
             }
         } catch (Exception ex) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
             throw ex;
 
 
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
 
     }
 
     public void handle(CloseTransaction c) throws Exception {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
 
         Transaction trx = c.getTransaction();
         try {
             RmsTransaction transaction = this._handleSaveTransaction(c);
             if (transaction != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(transaction);
 
                 }
             }
         } catch (Exception e) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
 
             throw e;
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
     }
@@ -333,7 +333,7 @@ public class TransactionCommandHandler implements ICommandHandler {
         }
 
 
-        transaction = (RmsTransaction) HibernateUtils.save(transaction, c, isNew);
+        transaction = (RmsTransaction) HibernateUtilV2.save(transaction, c, isNew);
 
 
         return transaction;
@@ -430,7 +430,7 @@ public class TransactionCommandHandler implements ICommandHandler {
         }
 
 
-        transaction = (RmsTransaction) HibernateUtils.save(transaction, c, isNew);
+        transaction = (RmsTransaction) HibernateUtilV2.save(transaction, c, isNew);
 
         List<MiniUser> _sellerIdsFromStore = null;
         List<MiniUser> _buyerIdsFromStore = null;
@@ -588,7 +588,7 @@ public class TransactionCommandHandler implements ICommandHandler {
                 throw new CommandException("Permission denied");
             }
 
-            transaction = (RmsTransaction) HibernateUtils.saveAsDeleted(transaction);
+            transaction = (RmsTransaction) HibernateUtilV2.saveAsDeleted(transaction);
             c.setObject(transaction);
         }
 
@@ -596,146 +596,146 @@ public class TransactionCommandHandler implements ICommandHandler {
 
 
     public void handle(AddAssociateToTransaction c) throws CommandException, NotFoundException, ServletException, JsonProcessingException, ParseException {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
 
         Transaction trx = c.getTransaction();
         try {
             TransactionAssociate ta = this._handleSaveTransactionAssociate(c);
             if (ta != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(ta);
 
                 }
             }
         } catch (Exception e) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
 
             throw e;
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
     }
 
     public void handle(UpdateAssociateInTransaction c) throws CommandException, NotFoundException, ServletException, JsonProcessingException, ParseException {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
 
         Transaction trx = c.getTransaction();
         try {
             TransactionAssociate ta = this._handleSaveTransactionAssociate(c);
             if (ta != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(ta);
 
                 }
             }
         } catch (Exception e) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
 
             throw e;
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
     }
 
     public void handle(ApplyGcpToTransaction c) throws CommandException, NotFoundException, ServletException, JsonProcessingException, ParseException {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
 
         Transaction trx = c.getTransaction();
         try {
             TransactionGcp transactionGcp = this._handleSaveTransactionGcp(c);
             if (transactionGcp != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(transactionGcp);
 
                 }
             }
         } catch (Exception e) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
 
             throw e;
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
     }
 
     public void handle(UpdateGcpInTransaction c) throws CommandException, NotFoundException, ServletException, JsonProcessingException, ParseException {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
 
         Transaction trx = c.getTransaction();
         try {
             TransactionGcp transaction = this._handleSaveTransactionGcp(c);
             if (transaction != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(transaction);
 
                 }
             }
         } catch (Exception e) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
 
             throw e;
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
     }
 
 
     public void handle(ApplyDeductionToTransaction c) throws CommandException, NotFoundException, ServletException, JsonProcessingException, ParseException {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
 
         Transaction trx = c.getTransaction();
         try {
             TransactionDeduction transactionDeduction = this._handleSaveTransactionDeduction(c);
             if (transactionDeduction != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(transactionDeduction);
 
                 }
             }
         } catch (Exception e) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
 
             throw e;
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
     }
 
     public void handle(UpdateDeductionInTransaction c) throws CommandException, NotFoundException, ServletException, JsonProcessingException, ParseException {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
 
         Transaction trx = c.getTransaction();
         try {
             TransactionDeduction transactionDeduction = this._handleSaveTransactionDeduction(c);
             if (transactionDeduction != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(transactionDeduction);
 
                 }
             }
         } catch (Exception e) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
 
             throw e;
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
     }
@@ -747,44 +747,44 @@ public class TransactionCommandHandler implements ICommandHandler {
             RmsTransaction transaction = this._handleSaveTransaction(c);
             if (transaction != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(transaction);
 
                 }
             }
         } catch (Exception ex) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
             throw ex;
 
 
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
 
     }
 
     public void handle(RemoveDeductionFromTransaction c) throws Exception {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
 
         Transaction trx = c.getTransaction();
         try {
             RmsTransaction transaction = this._handleSaveTransaction(c);
             if (transaction != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(transaction);
 
                 }
             }
         } catch (Exception e) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
 
             throw e;
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
     }
@@ -795,19 +795,19 @@ public class TransactionCommandHandler implements ICommandHandler {
             RmsTransaction transaction = this._handleSaveTransaction(c);
             if (transaction != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(transaction);
 
                 }
             }
         } catch (Exception ex) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
             throw ex;
 
 
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
 
@@ -857,7 +857,7 @@ public class TransactionCommandHandler implements ICommandHandler {
             ta.setStatus(Flags.EntityStatus.ACTIVE);
         }
 
-        ta = (TransactionAssociate) HibernateUtils.save(ta, c.getTransaction());
+        ta = (TransactionAssociate) HibernateUtilV2.save(ta, c.getTransaction());
         return ta;
 
     }
@@ -900,7 +900,7 @@ public class TransactionCommandHandler implements ICommandHandler {
             transactionGcp.setStatus(Flags.EntityStatus.ACTIVE);
         }
 
-        transactionGcp = (TransactionGcp) HibernateUtils.save(transactionGcp, c.getTransaction());
+        transactionGcp = (TransactionGcp) HibernateUtilV2.save(transactionGcp, c.getTransaction());
         return transactionGcp;
 
     }
@@ -942,7 +942,7 @@ public class TransactionCommandHandler implements ICommandHandler {
             transactionDeduction.setStatus(Flags.EntityStatus.ACTIVE);
         }
 
-        transactionDeduction = (TransactionDeduction) HibernateUtils.save(transactionDeduction, c.getTransaction());
+        transactionDeduction = (TransactionDeduction) HibernateUtilV2.save(transactionDeduction, c.getTransaction());
         return transactionDeduction;
 
     }
@@ -1000,7 +1000,7 @@ public class TransactionCommandHandler implements ICommandHandler {
             transactionContact.setContactLastName((String) c.get("contactLastName"));
         }
 
-        transactionContact = (TransactionContact) HibernateUtils.defaultSave(transactionContact);
+        transactionContact = (TransactionContact) HibernateUtilV2.defaultSave(transactionContact);
         return transactionContact;
 
     }
@@ -1024,12 +1024,12 @@ public class TransactionCommandHandler implements ICommandHandler {
                 sqlParams.put("contactType", c.get("contactType").toString());
             }
 
-            HibernateUtils.query(sql, sqlParams, trx);
+            HibernateUtilV2.query(sql, sqlParams, trx);
 
             c.setObject(true);
         } catch (Exception ex) {
             APILogger.add(APILogType.ERROR, "Error removing contacts  from transaction.", ex);
-            HibernateUtils.rollbackTransaction(trx);
+            HibernateUtilV2.rollbackTransaction(trx);
         }*/
 
 
@@ -1058,7 +1058,7 @@ public class TransactionCommandHandler implements ICommandHandler {
         }
 
 
-        HibernateUtils.query("DELETE FROM TransactionContact " + builder.getValue(), sqlParams);
+        HibernateUtilV2.query("DELETE FROM TransactionContact " + builder.getValue(), sqlParams);
 
 
     }
@@ -1126,18 +1126,18 @@ public class TransactionCommandHandler implements ICommandHandler {
             TransactionStatusStage stage = this._handleSaveTransactionStage(transactionId, transactionStatus, trx);
             if (stage != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(trx);
+                    HibernateUtilV2.commitTransaction(trx);
                 }
                 c.setObject(stage);
             }
         } catch (Exception ex) {
-            HibernateUtils.rollbackTransaction(trx);
+            HibernateUtilV2.rollbackTransaction(trx);
             throw ex;
 
 
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
     }
 
@@ -1156,9 +1156,9 @@ public class TransactionCommandHandler implements ICommandHandler {
             String transactionJson = mapper.writeValueAsString(transaction);
             stage.setTransaction(transactionJson);
 
-            stage = (TransactionStatusStage) HibernateUtils.defaultSave(stage, trx);
+            stage = (TransactionStatusStage) HibernateUtilV2.defaultSave(stage, trx);
             transaction.setTransactionStatus(transactionStatus);
-            HibernateUtils.save(transaction, trx);
+            HibernateUtilV2.save(transaction, trx);
 
         }
 

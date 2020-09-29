@@ -11,7 +11,7 @@ import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags;
 import com.rew3.common.utils.APILogType;
 import com.rew3.common.utils.APILogger;
@@ -212,7 +212,7 @@ public class AcpCommandHandler implements ICommandHandler {
         }
 
 
-        srcp = (SingleRateAcp) HibernateUtils.defaultSave(srcp);
+        srcp = (SingleRateAcp) HibernateUtilV2.defaultSave(srcp);
         return srcp;
 
     }
@@ -229,19 +229,19 @@ public class AcpCommandHandler implements ICommandHandler {
             TieredAcp singleRateAcp = this._handleSaveTieredAcp(c);
             if (singleRateAcp != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(singleRateAcp);
 
                 }
             }
         } catch (Exception ex) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
             throw ex;
 
 
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
 
@@ -249,25 +249,25 @@ public class AcpCommandHandler implements ICommandHandler {
 
 
     public void handle(UpdateTieredAcp c) throws CommandException, NotFoundException, ServletException, JsonProcessingException, ParseException {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
 
         Transaction trx = c.getTransaction();
         try {
             TieredAcp singleRateAcp = this._handleSaveTieredAcp(c);
             if (singleRateAcp != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(singleRateAcp);
 
                 }
             }
         } catch (Exception e) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
 
             throw e;
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
     }
@@ -329,7 +329,7 @@ public class AcpCommandHandler implements ICommandHandler {
         }
 
 
-        tieredAcp = (TieredAcp) HibernateUtils.defaultSave(tieredAcp);
+        tieredAcp = (TieredAcp) HibernateUtilV2.defaultSave(tieredAcp);
         return tieredAcp;
 
     }
@@ -346,25 +346,25 @@ public class AcpCommandHandler implements ICommandHandler {
 
 
     public void handle(UpdateAcp c) throws CommandException, NotFoundException, ServletException, JsonProcessingException {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
 
         Transaction trx = c.getTransaction();
         try {
             SingleRateAcp singleRateAcp = this._handleSaveSingleRateAcp(c);
             if (singleRateAcp != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(singleRateAcp);
 
                 }
             }
         } catch (Exception e) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
 
             throw e;
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
     }
@@ -407,7 +407,7 @@ public class AcpCommandHandler implements ICommandHandler {
             acp.setStatus(status);
         }
 
-        acp = (Acp) HibernateUtils.save(acp, c, isNew);
+        acp = (Acp) HibernateUtilV2.save(acp, c, isNew);
 
         return acp;
 
@@ -422,7 +422,7 @@ public class AcpCommandHandler implements ICommandHandler {
 
             }
         } catch (Exception ex) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
             throw ex;
 
 
@@ -432,25 +432,25 @@ public class AcpCommandHandler implements ICommandHandler {
 
 
     public void handle(UpdateTieredStage c) throws CommandException, NotFoundException, ServletException, JsonProcessingException {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
 
         Transaction trx = c.getTransaction();
         try {
             TieredStage tieredStage = this._handleSaveTieredStage(c);
             if (tieredStage != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(tieredStage);
 
                 }
             }
         } catch (Exception e) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
 
             throw e;
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
     }
@@ -500,7 +500,7 @@ public class AcpCommandHandler implements ICommandHandler {
 
             tieredStage.setSide(sideOption);
         }
-        tieredStage = (TieredStage) HibernateUtils.defaultSave(tieredStage, c.getTransaction());
+        tieredStage = (TieredStage) HibernateUtilV2.defaultSave(tieredStage, c.getTransaction());
 
         return tieredStage;
 
@@ -513,7 +513,7 @@ public class AcpCommandHandler implements ICommandHandler {
             handler.delete(new Query(c.getData()), c.getTransaction());
         } catch (Exception ex) {
             APILogger.add(APILogType.ERROR, "Error removing single rate ACP .", ex);
-            HibernateUtils.rollbackTransaction(trx);
+            HibernateUtilV2.rollbackTransaction(trx);
         }
     }
 
@@ -524,7 +524,7 @@ public class AcpCommandHandler implements ICommandHandler {
             String sqlQuery_tieredStage = "DELETE FROM TieredStage WHERE tiered_acp_id = :tieredAcpId";
             sqlParams1.put("tieredAcpId", c.get("tieredAcpId"));
 
-            HibernateUtils.query(sqlQuery_tieredStage, sqlParams1);
+            HibernateUtilV2.query(sqlQuery_tieredStage, sqlParams1);
         }
 
 
@@ -533,7 +533,7 @@ public class AcpCommandHandler implements ICommandHandler {
             HashMap<String, Object> sqlParams2 = new HashMap<>();
             String sqlQuery_tieredAcp = "DELETE FROM TieredAcp WHERE acp_id = :acpId";
             sqlParams2.put("acpId", c.get("acpId"));
-            HibernateUtils.query(sqlQuery_tieredAcp, sqlParams2);
+            HibernateUtilV2.query(sqlQuery_tieredAcp, sqlParams2);
         }
 
         c.setObject(true);
@@ -544,7 +544,7 @@ public class AcpCommandHandler implements ICommandHandler {
         String sql = "DELETE FROM TieredStage WHERE tiered_acp_id = :tieredAcpId";
         sqlParams.put("tieredAcpId", c.get("tieredAcpId").toString());
 
-        HibernateUtils.query(sql, sqlParams);
+        HibernateUtilV2.query(sql, sqlParams);
 
         c.setObject(true);
     }
@@ -557,7 +557,7 @@ public class AcpCommandHandler implements ICommandHandler {
                 APILogger.add(APILogType.ERROR, "Permission denied");
                 throw new CommandException("Permission denied");
             }
-            HibernateUtils.saveAsDeleted(acp);
+            HibernateUtilV2.saveAsDeleted(acp);
 
             c.setObject(acp);
         }

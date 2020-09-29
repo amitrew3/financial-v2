@@ -4,7 +4,7 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.PaginationParams;
 import com.rew3.common.utils.Parser;
 import com.rew3.payment.billpayment.model.BillPayment;
@@ -17,7 +17,7 @@ public class BillPaymentQueryHandler implements IQueryHandler {
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
 
-        BillPayment po = (BillPayment) HibernateUtils.get(BillPayment.class, id);
+        BillPayment po = (BillPayment) HibernateUtilV2.get(BillPayment.class, id);
         if(po==null){
             throw new NotFoundException("PaymentTerm (" +id + ") not found.");
         }
@@ -63,12 +63,12 @@ public class BillPaymentQueryHandler implements IQueryHandler {
         }
         offset = (limit * (page - 1));
 
-        List<Object> terms = HibernateUtils.select("FROM PaymentOption " + whereSQL, sqlParams, q.getQuery(), limit, offset);
+        List<Object> terms = HibernateUtilV2.select("FROM PaymentOption " + whereSQL, sqlParams, q.getQuery(), limit, offset);
         return terms;
     }
 
     public Long count() throws CommandException {
-        Long count = (Long) HibernateUtils.createQuery("select count(*) from PaymentOption", null);
+        Long count = (Long) HibernateUtilV2.createQuery("select count(*) from PaymentOption", null);
         return count;
     }
 

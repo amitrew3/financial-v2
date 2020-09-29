@@ -6,7 +6,6 @@ import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.database.HibernateUtilV2;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.utils.APILogType;
 import com.rew3.common.utils.APILogger;
 import com.rew3.purchase.bill.command.AcceptBill;
@@ -55,7 +54,7 @@ public class EstimateCommandHandler implements ICommandHandler {
             Estimate estimate = this._handleUpdateEstimate(c.updateEstimateProto);
             if (estimate != null) {
 //                if (c.isCommittable()) {
-//                    HibernateUtils.commitTransaction(trx);
+//                    HibernateUtilV2.commitTransaction(trx);
 //                }
                 c.setObject(estimate);
             }
@@ -68,7 +67,7 @@ public class EstimateCommandHandler implements ICommandHandler {
     }
 
     public void handle(CreateEstimate c) {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
         Transaction trx = c.getTransaction();
 
         try {
@@ -79,16 +78,16 @@ public class EstimateCommandHandler implements ICommandHandler {
             // Estimate invoice = this._handleSaveEstimate(c);
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
 
             APILogger.add(APILogType.SUCCESS, "Estimate(s) has been created successfully.");
             // c.setObject(invoice);
 
         } catch (Exception ex) {
-            HibernateUtils.rollbackTransaction(trx);
+            HibernateUtilV2.rollbackTransaction(trx);
         } finally {
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
     }
 
@@ -251,7 +250,7 @@ public class EstimateCommandHandler implements ICommandHandler {
         // If tax rate type is defined then tax rate should be defined
         // too and vice versa.
 
-        //invoice = (Estimate) HibernateUtils.save(invoice, c, isNew);
+        //invoice = (Estimate) HibernateUtilV2.save(invoice, c, isNew);
 
 
         return estimate;
@@ -417,7 +416,7 @@ public class EstimateCommandHandler implements ICommandHandler {
         // If tax rate type is defined then tax rate should be defined
         // too and vice versa.
 
-        //invoice = (Estimate) HibernateUtils.save(invoice, c, isNew);*/
+        //invoice = (Estimate) HibernateUtilV2.save(invoice, c, isNew);*/
 
 
         return estimate;

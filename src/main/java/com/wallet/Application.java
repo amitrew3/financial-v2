@@ -8,12 +8,22 @@ import com.rew3.brokerage.associate.AssociateCommandHandler;
 import com.rew3.brokerage.deduction.DeductionCommandHandler;
 import com.rew3.brokerage.gcp.GcpCommandHandler;
 import com.rew3.brokerage.transaction.TransactionCommandHandler;
+import com.rew3.catalog.product.ProductCommandHandler;
 import com.rew3.common.shared.AclCommandHandler;
 import com.rew3.common.shared.AddressCommandHandler;
+import com.rew3.payment.billpayment.BillPaymentCommandHandler;
+import com.rew3.payment.invoicepayment.InvoicePaymentCommandHandler;
 import com.rew3.paymentoption.PaymentOptionCommandHandler;
 import com.rew3.paymentterm.PaymentTermCommandHandler;
+import com.rew3.purchase.bill.BillCommandHandler;
+import com.rew3.purchase.expense.ExpenseCommandHandler;
+import com.rew3.purchase.vendor.VendorCommandHandler;
+import com.rew3.sale.customer.CustomerCommandHandler;
+import com.rew3.sale.estimate.EstimateCommandHandler;
 import com.rew3.sale.invoice.InvoiceCommandHandler;
 import com.rew3.sale.invoice.RecurringInvoiceCommandHandler;
+import com.rew3.salestax.SalesTaxCommandHandler;
+import com.rew3.salestax.model.SalesTax;
 import com.rew3.user.UserCommandHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,19 +33,23 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
         InvoiceCommandHandler.registerCommands();
-        UserCommandHandler.registerCommands();
-
-
         ProductCommandHandler.registerCommands();
-        AclCommandHandler.registerCommands();
+        //AclCommandHandler.registerCommands();
 
         AccountCodeCommandHandler.registerCommands();
         JournalCommandHandler.registerCommands();
         AccountPeriodCommandHandler.registerCommands();
         PaymentTermCommandHandler.registerCommands();
         CustomerCommandHandler.registerCommands();
+        VendorCommandHandler.registerCommands();
         AddressCommandHandler.registerCommands();
         PaymentOptionCommandHandler.registerCommands();
+        SalesTaxCommandHandler.registerCommands();
+        ExpenseCommandHandler.registerCommands();
+        BillPaymentCommandHandler.registerCommands();
+        InvoicePaymentCommandHandler.registerCommands();
+        EstimateCommandHandler.registerCommands();
+        BillCommandHandler.registerCommands();
         //AttachmentCommandHandler.registerCommands();
 
 

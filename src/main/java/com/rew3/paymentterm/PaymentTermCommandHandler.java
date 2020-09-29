@@ -11,7 +11,6 @@ import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.database.HibernateUtilV2;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.paymentterm.command.CreatePaymentTerm;
 import com.rew3.paymentterm.command.DeletePaymentTerm;
 import com.rew3.paymentterm.command.UpdatePaymentTerm;
@@ -139,7 +138,7 @@ public class PaymentTermCommandHandler implements ICommandHandler {
 
         PaymentTerm term = (PaymentTerm) new PaymentTermQueryHandler().getById(c.id);
         if (term != null) {
-            HibernateUtils.saveAsDeleted(term);
+            HibernateUtilV2.saveAsDeleted(term);
 
         }
 

@@ -7,7 +7,7 @@ import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.Flags.EntityStatus;
 import com.rew3.common.utils.APILogType;
@@ -48,19 +48,19 @@ public class GcpCommandHandler implements ICommandHandler {
             Gcp gcp = this._handleGcp(c);
             if (gcp != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(gcp);
 
                 }
             }
         } catch (Exception ex) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
             throw ex;
 
 
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
 
@@ -68,25 +68,25 @@ public class GcpCommandHandler implements ICommandHandler {
 
 
     public void handle(UpdateGcp c) throws CommandException, NotFoundException, ServletException, JsonProcessingException {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
 
         Transaction trx = c.getTransaction();
         try {
             Gcp gcp = this._handleGcp(c);
             if (gcp != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(gcp);
 
                 }
             }
         } catch (Exception e) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
 
             throw e;
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
     }
@@ -151,7 +151,7 @@ public class GcpCommandHandler implements ICommandHandler {
         }
 
 
-        gcp = (Gcp) HibernateUtils.save(gcp, c.getTransaction());
+        gcp = (Gcp) HibernateUtilV2.save(gcp, c.getTransaction());
         return gcp;
 
     }
@@ -168,18 +168,18 @@ public class GcpCommandHandler implements ICommandHandler {
                 }
                 user.setStatus(EntityStatus.DELETED);
                 user.setLastModifiedAt(DateTime.getCurrentTimestamp());
-                HibernateUtils.save(user, trx);
+                HibernateUtilV2.save(user, trx);
             }
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
+                HibernateUtilV2.commitTransaction(c.getTransaction());
             }
             c.setObject(user);
         } catch (Exception ex) {
-            HibernateUtils.rollbackTransaction(trx);
+            HibernateUtilV2.rollbackTransaction(trx);
             throw ex;
 
         } finally {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
         }
     }
 

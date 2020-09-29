@@ -12,7 +12,6 @@ import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.database.HibernateUtilV2;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.sale.customer.command.CreateCustomer;
 import com.rew3.sale.customer.command.DeleteCustomer;
 import com.rew3.sale.customer.command.UpdateCustomer;
@@ -234,7 +233,7 @@ public class CustomerCommandHandler implements ICommandHandler {
 
         Customer customer = (Customer) new CustomerQueryHandler().getById(c.id);
         if (customer != null) {
-            HibernateUtils.saveAsDeleted(customer);
+            HibernateUtilV2.saveAsDeleted(customer);
 
         }
         c.setObject(customer);

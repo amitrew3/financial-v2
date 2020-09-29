@@ -12,7 +12,7 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags.AccountingCodeSegment;
 import com.rew3.common.model.Flags.EntityStatus;
 import com.rew3.common.model.Flags.EntityType;
@@ -43,7 +43,7 @@ public class TransactionCommandHandler implements ICommandHandler {
 
 
     public void handle(CreateTransaction c) throws Exception {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
         org.hibernate.Transaction trx = c.getTransaction();
 
         try {
@@ -76,26 +76,26 @@ public class TransactionCommandHandler implements ICommandHandler {
 
             Transaction aj = new Transaction();
 
-            HibernateUtils.save(aj, trx);
+            HibernateUtilV2.save(aj, trx);
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
 
             c.setObject(aj);
 
         } catch (Exception ex) {
-            HibernateUtils.rollbackTransaction(trx);
+            HibernateUtilV2.rollbackTransaction(trx);
             throw ex;
 
         } finally {
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
     }
 
 
     public void handle(DeleteTransaction c) throws Exception {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
         org.hibernate.Transaction trx = c.getTransaction();
 
         try {
@@ -109,23 +109,23 @@ public class TransactionCommandHandler implements ICommandHandler {
                     throw new CommandException("Permission denied");
                 }
                 transaction.setStatus(EntityStatus.DELETED);
-                transaction = (Transaction) HibernateUtils.save(transaction, trx);
+                transaction = (Transaction) HibernateUtilV2.save(transaction, trx);
 
             }
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
 
             c.setObject(transaction);
         } catch (Exception ex) {
-            HibernateUtils.rollbackTransaction(trx);
+            HibernateUtilV2.rollbackTransaction(trx);
             throw ex;
 
 
         } finally {
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }

@@ -44,14 +44,6 @@ public class PaymentService {
         return Converters.convertToDTOs(lists);
     }
 
-    public Expense createUpdateExpense(HashMap<String, Object> requestData, String method) throws Exception {
-        Expense expense = null;
-        CreateExpense command = new CreateExpense(requestData, method);
-        CommandRegister.getInstance().process(command);
-        expense = (Expense) command.getObject();
-        return expense;
-    }
-
     public ExpenseDTO getExpenseById(String id) throws NotFoundException, CommandException {
         Expense expense = (Expense) new InvoiceQueryHandler().getById(id);
         return Converters.convertToExpenseDTO(expense);

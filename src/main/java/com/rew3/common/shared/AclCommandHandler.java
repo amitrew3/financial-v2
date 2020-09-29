@@ -1,13 +1,13 @@
 package com.rew3.common.shared;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.shared.command.UpdateAcl;
 import com.rew3.common.shared.model.AbstractEntity;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.interceptor.ACL;
 import com.rew3.common.interceptor.Permission;
 import com.rew3.common.model.Flags;
@@ -42,16 +42,16 @@ public class AclCommandHandler implements ICommandHandler {
 
             Object object = this._handleAcl(c);
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
+                HibernateUtilV2.commitTransaction(c.getTransaction());
             }
             c.setObject(object);
         } catch (Exception ex) {
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }
@@ -63,7 +63,7 @@ public class AclCommandHandler implements ICommandHandler {
         if (c.has("entityId") && c.has("entityClassType") && c instanceof UpdateAcl) {
             EntityClassType classType = (EntityClassType) Flags.convertInputToEnum(c.get("entityClassType"), "EntityClassType");
             Class clazz = Class.forName(classType.getString());
-            obj = (AbstractEntity) HibernateUtils.get(clazz, (String) c.get("entityId"));
+            obj = (AbstractEntity) HibernateUtilV2.get(clazz, (String) c.get("entityId"));
             ObjectBuilder aclBuilder = new ObjectBuilder(obj, clazz);
             ACL acl = new ACL();
             acl.setGr((Boolean) c.get("gr"));
@@ -97,7 +97,7 @@ public class AclCommandHandler implements ICommandHandler {
             obj.setAcl(mapper.writeValueAsString(acl));
 
 
-            obj = (AbstractEntity) HibernateUtils.save(obj, c.getTransaction());
+            obj = (AbstractEntity) HibernateUtilV2.save(obj, c.getTransaction());
         }
         return obj;
     }

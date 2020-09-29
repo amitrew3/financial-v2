@@ -5,7 +5,7 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.PaginationParams;
 import com.rew3.common.utils.Parser;
@@ -18,7 +18,7 @@ public class TieredAcpQueryHandler implements IQueryHandler {
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
-        TieredAcp rd = (TieredAcp) HibernateUtils.get(TieredAcp.class, id);
+        TieredAcp rd = (TieredAcp) HibernateUtilV2.get(TieredAcp.class, id);
         if (rd == null) {
             throw new NotFoundException("Tiered Associate Commission Plan  id(" + id + ") not found.");
         }
@@ -164,13 +164,13 @@ public class TieredAcpQueryHandler implements IQueryHandler {
         int offset = 0;
         offset = (limit * (page - 1));
 
-        List<Object> customers = HibernateUtils.select("FROM TieredAcp " + whereSQL, sqlParams, q.getQuery(), limit, offset);
+        List<Object> customers = HibernateUtilV2.select("FROM TieredAcp " + whereSQL, sqlParams, q.getQuery(), limit, offset);
         return customers;
     }
 
     public Long count() throws CommandException {
 
-        Long count = (Long) HibernateUtils.createQuery("SELECT COUNT(*) FROM TieredAcp", null);
+        Long count = (Long) HibernateUtilV2.createQuery("SELECT COUNT(*) FROM TieredAcp", null);
         return count;
     }
 
@@ -179,7 +179,7 @@ public class TieredAcpQueryHandler implements IQueryHandler {
         Map<String, Object> map = new HashMap<>();
         map.put("tieredAcpId",tieredAcpId);
 
-        TieredAcp tieredAcp = (TieredAcp) HibernateUtils
+        TieredAcp tieredAcp = (TieredAcp) HibernateUtilV2
                 .createQuery("From TieredAcp tacp where tacp.acp.id=:tieredAcpId", map);
 
         return tieredAcp;

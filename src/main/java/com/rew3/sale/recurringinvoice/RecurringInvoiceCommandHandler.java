@@ -7,7 +7,7 @@ import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags.EntityStatus;
 import com.rew3.common.utils.APILogType;
 import com.rew3.common.utils.APILogger;
@@ -83,7 +83,7 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
         }
 
 
-        recurringInvoice = (RecurringInvoice) HibernateUtils.save(recurringInvoice, c, isNew);
+        recurringInvoice = (RecurringInvoice) HibernateUtilV2.save(recurringInvoice, c, isNew);
 
         return recurringInvoice;
 
@@ -98,7 +98,7 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
                 APILogger.add(APILogType.ERROR, "Permission denied");
                 throw new CommandException("Permission denied");
             }
-            HibernateUtils.saveAsDeleted(plan);
+            HibernateUtilV2.saveAsDeleted(plan);
 
             c.setObject(plan);
         }

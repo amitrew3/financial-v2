@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.rew3.accounting.journal.command.*;
+import com.rew3.common.database.HibernateUtilV2;
 import org.hibernate.Transaction;
 
 import com.rew3.common.application.Authentication;
@@ -12,7 +13,6 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.model.Flags.AccountingCodeSegment;
 import com.rew3.common.model.Flags.EntityStatus;
 import com.rew3.common.model.Flags.EntityType;
@@ -45,7 +45,7 @@ public class JournalCommandHandler implements ICommandHandler {
 
 
     public void handle(CreateJournal c) throws Exception {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
         Transaction trx = c.getTransaction();
 
         try {
@@ -79,20 +79,20 @@ public class JournalCommandHandler implements ICommandHandler {
             Journal aj = new Journal();
             aj.setAccount(ac);
 
-            HibernateUtils.save(aj, trx);
+            HibernateUtilV2.save(aj, trx);
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
 
             c.setObject(aj);
 
         } catch (Exception ex) {
-            HibernateUtils.rollbackTransaction(trx);
+            HibernateUtilV2.rollbackTransaction(trx);
             throw ex;
 
         } finally {
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
     }
 
@@ -102,7 +102,7 @@ public class JournalCommandHandler implements ICommandHandler {
     /*
 
     public void handle(CreateWriteoffAccountingJournal c) {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
         Transaction trx = c.getTransaction();
 
         try {
@@ -152,26 +152,26 @@ public class JournalCommandHandler implements ICommandHandler {
             }
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
             c.setObject(true);
 
         } catch (Exception ex) {
 
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
 
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }
 
     //Handle Refund Accounting journal entries
     public void handle(CreateRefundAccountingJournal c) {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
         Transaction trx = c.getTransaction();
 
         try {
@@ -221,19 +221,19 @@ public class JournalCommandHandler implements ICommandHandler {
             }
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
             c.setObject(true);
 
         } catch (Exception ex) {
 
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
 
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }
@@ -243,7 +243,7 @@ public class JournalCommandHandler implements ICommandHandler {
         Integer code = null;
         String query = "SELECT MAX(entryNumber) FROM AccountingJournal";
 
-        List maxResult = HibernateUtils.select(query);
+        List maxResult = HibernateUtilV2.select(query);
 
         if (maxResult.size() > 0) {
             code = (Integer) maxResult.get(0);
@@ -311,19 +311,19 @@ public class JournalCommandHandler implements ICommandHandler {
             }
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
             c.setObject(true);
 
         } catch (Exception ex) {
 
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
 
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }
@@ -395,19 +395,19 @@ public class JournalCommandHandler implements ICommandHandler {
             }
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
             c.setObject(true);
 
         } catch (Exception ex) {
 
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
 
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }
@@ -481,19 +481,19 @@ public class JournalCommandHandler implements ICommandHandler {
             }
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
             c.setObject(true);
 
         } catch (Exception ex) {
 
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
 
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }
@@ -595,19 +595,19 @@ public class JournalCommandHandler implements ICommandHandler {
 
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
             c.setObject(true);
 
         } catch (Exception ex) {
 
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
 
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }
@@ -691,19 +691,19 @@ public class JournalCommandHandler implements ICommandHandler {
             }
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
             c.setObject(true);
 
         } catch (Exception ex) {
 
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
 
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }
@@ -760,19 +760,19 @@ public class JournalCommandHandler implements ICommandHandler {
             }
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
             c.setObject(true);
 
         } catch (Exception ex) {
 
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
 
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }
@@ -845,19 +845,19 @@ public class JournalCommandHandler implements ICommandHandler {
             }
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
             c.setObject(true);
 
         } catch (Exception ex) {
 
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
 
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
 
@@ -917,19 +917,19 @@ public class JournalCommandHandler implements ICommandHandler {
             }
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
             c.setObject(true);
 
         } catch (Exception ex) {
 
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
 
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
 
@@ -987,19 +987,19 @@ public class JournalCommandHandler implements ICommandHandler {
             }
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
             c.setObject(true);
 
         } catch (Exception ex) {
 
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
 
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
 
@@ -1055,19 +1055,19 @@ public class JournalCommandHandler implements ICommandHandler {
             }
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
             c.setObject(true);
 
         } catch (Exception ex) {
 
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
 
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
 
@@ -1170,19 +1170,19 @@ public class JournalCommandHandler implements ICommandHandler {
             }
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
             c.setObject(true);
 
         } catch (Exception ex) {
 
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
 
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
 
@@ -1238,19 +1238,19 @@ public class JournalCommandHandler implements ICommandHandler {
             }
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
             c.setObject(true);
 
         } catch (Exception ex) {
 
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
 
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
 
@@ -1308,19 +1308,19 @@ public class JournalCommandHandler implements ICommandHandler {
             }
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
             c.setObject(true);
 
         } catch (Exception ex) {
 
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
 
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }
@@ -1375,26 +1375,26 @@ public class JournalCommandHandler implements ICommandHandler {
             }
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
             c.setObject(true);
 
         } catch (Exception ex) {
 
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
 
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }*/
 
 
     public void handle(DeleteJournal c) throws Exception {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
         Transaction trx = c.getTransaction();
 
         try {
@@ -1408,23 +1408,23 @@ public class JournalCommandHandler implements ICommandHandler {
                     throw new CommandException("Permission denied");
                 }
                 journal.setStatus(EntityStatus.DELETED);
-                journal = (Journal) HibernateUtils.save(journal, trx);
+                journal = (Journal) HibernateUtilV2.save(journal, trx);
 
             }
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
 
             c.setObject(journal);
         } catch (Exception ex) {
-            HibernateUtils.rollbackTransaction(trx);
+            HibernateUtilV2.rollbackTransaction(trx);
             throw ex;
 
 
         } finally {
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }

@@ -1,11 +1,11 @@
 package com.rew3.purchase.expense;
 
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.purchase.expense.model.Expense;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.PaginationParams;
 import com.rew3.common.utils.*;
@@ -19,7 +19,7 @@ public class ExpenseQueryHandler implements IQueryHandler {
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
-        Expense expense = (Expense) HibernateUtils.get(Expense.class, id);
+        Expense expense = (Expense) HibernateUtilV2.get(Expense.class, id);
         if (expense == null) {
             throw new NotFoundException("Transaction id(" + id + ") not found.");
         }
@@ -76,7 +76,7 @@ public class ExpenseQueryHandler implements IQueryHandler {
         }
 
 
-        List<Object> expenses = HibernateUtils.select("SELECT distinct t FROM Expense t left join t.items " + builder.getValue(), sqlParams, q.getQuery(),
+        List<Object> expenses = HibernateUtilV2.select("SELECT distinct t FROM Expense t left join t.items " + builder.getValue(), sqlParams, q.getQuery(),
                 limit, offset, Expense.class);
 
         return expenses;
@@ -97,7 +97,7 @@ public class ExpenseQueryHandler implements IQueryHandler {
 
                     if (tv.getType() == "STRING" && !requestMap.getValue().toString().contains("[") && !requestMap.getValue().toString().contains("]")) {
                         builder.append("AND");
-                        builder.append(field + " = " + HibernateUtils.s(value));
+                        builder.append(field + " = " + HibernateUtilV2.s(value));
 
                     } else if (tv.getType() == "EXPENSE_DATE" && !requestMap.getValue().toString().contains("[")
                             && !requestMap.getValue().toString().contains("]")) {
@@ -132,7 +132,7 @@ public class ExpenseQueryHandler implements IQueryHandler {
 
         RequestFilter.doFilter(q, sqlParams, builder, Expense.class);
 
-        Long count = HibernateUtils.count("SELECT  count(distinct t) FROM Expense t left join t.items left join t.reference tr " + builder.getValue(),
+        Long count = HibernateUtilV2.count("SELECT  count(distinct t) FROM Expense t left join t.items left join t.reference tr " + builder.getValue(),
                 sqlParams, q.getQuery(), Expense.class);
 
 

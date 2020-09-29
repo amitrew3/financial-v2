@@ -1,11 +1,7 @@
 package com.rew3.common.cqrs;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.rew3.common.application.CommandException;
-import com.rew3.common.application.NotFoundException;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 
-import javax.servlet.ServletException;
 import java.util.HashMap;
 
 public class CommandRegister {
@@ -34,8 +30,8 @@ public class CommandRegister {
 
 		if (!command.isValid()) {
 			if (command.isCommittable()) {
-				HibernateUtils.rollbackTransaction(command.getTransaction());
-				HibernateUtils.closeSession();
+				HibernateUtilV2.rollbackTransaction(command.getTransaction());
+				HibernateUtilV2.closeSession();
 			}
 			return;
 		}

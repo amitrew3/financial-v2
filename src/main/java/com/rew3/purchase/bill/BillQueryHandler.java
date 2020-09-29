@@ -6,19 +6,14 @@ import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
 import com.rew3.common.database.HibernateUtilV2;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.model.Flags;
-import com.rew3.common.model.Flags.InvoiceType;
 import com.rew3.common.model.PaginationParams;
-import com.rew3.common.utils.DateTime;
 import com.rew3.common.utils.Parser;
 import com.rew3.common.utils.RequestFilter;
 import com.rew3.common.utils.Rew3StringBuiler;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class BillQueryHandler implements IQueryHandler {
 

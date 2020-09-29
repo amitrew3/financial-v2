@@ -2,6 +2,7 @@ package com.rew3.brokerage.commissionplan;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.shared.model.MiniUser;
 import com.rew3.brokerage.commissionplan.command.*;
 import com.rew3.brokerage.commissionplan.model.*;
@@ -12,7 +13,6 @@ import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.Flags.EntityStatus;
 import com.rew3.common.utils.*;
@@ -267,7 +267,7 @@ public class CommissionPlanCommandHandler implements ICommandHandler {
         }
 
 
-        plan = (CommissionPlan) HibernateUtils.save(plan, c, isNew);
+        plan = (CommissionPlan) HibernateUtilV2.save(plan, c, isNew);
 
 
         return plan;
@@ -397,7 +397,7 @@ public class CommissionPlanCommandHandler implements ICommandHandler {
                 APILogger.add(APILogType.ERROR, "Permission denied");
                 throw new CommandException("Permission denied");
             }
-            HibernateUtils.saveAsDeleted(plan);
+            HibernateUtilV2.saveAsDeleted(plan);
 
             c.setObject(plan);
         }
@@ -449,7 +449,7 @@ public class CommissionPlanCommandHandler implements ICommandHandler {
                 preCommission.setContactLastName(contact.get("lastName").toString());
             }
         }
-        preCommission = (PreCommission) HibernateUtils.defaultSave(preCommission);
+        preCommission = (PreCommission) HibernateUtilV2.defaultSave(preCommission);
 
         return preCommission;
 
@@ -493,7 +493,7 @@ public class CommissionPlanCommandHandler implements ICommandHandler {
 
             commissionLevel.setClosingFeeCalculationOption(option);
         }
-        commissionLevel = (CommissionLevel) HibernateUtils.defaultSave(commissionLevel);
+        commissionLevel = (CommissionLevel) HibernateUtilV2.defaultSave(commissionLevel);
 
         return commissionLevel;
 
@@ -529,7 +529,7 @@ public class CommissionPlanCommandHandler implements ICommandHandler {
 
             flatFee.setClosingFeeCalculationOption(option);
         }
-        flatFee = (FlatFee) HibernateUtils.defaultSave(flatFee);
+        flatFee = (FlatFee) HibernateUtilV2.defaultSave(flatFee);
 
         return flatFee;
 
@@ -560,7 +560,7 @@ public class CommissionPlanCommandHandler implements ICommandHandler {
         }
 
 
-        slidingScale = (SlidingScale) HibernateUtils.defaultSave(slidingScale);
+        slidingScale = (SlidingScale) HibernateUtilV2.defaultSave(slidingScale);
 
         return slidingScale;
 
@@ -574,7 +574,7 @@ public class CommissionPlanCommandHandler implements ICommandHandler {
             sqlParams.put("commissionPlanId", c.get("commissionPlanId"));
 
         }
-        HibernateUtils.query(sql, sqlParams);
+        HibernateUtilV2.query(sql, sqlParams);
 
         c.setObject(true);
     }
@@ -586,7 +586,7 @@ public class CommissionPlanCommandHandler implements ICommandHandler {
             sqlParams.put("commissionPlanId", c.get("commissionPlanId"));
 
         }
-        HibernateUtils.query(sql, sqlParams);
+        HibernateUtilV2.query(sql, sqlParams);
 
         c.setObject(true);
     }
@@ -599,7 +599,7 @@ public class CommissionPlanCommandHandler implements ICommandHandler {
             sqlParams.put("agentId", c.get("agentId").toString());
 
         }
-        HibernateUtils.query(sql, sqlParams);
+        HibernateUtilV2.query(sql, sqlParams);
 
         c.setObject(true);
     }
@@ -689,7 +689,7 @@ public class CommissionPlanCommandHandler implements ICommandHandler {
             commissionPlanAgent.setLastName(contact.getLastName());
         }
 
-        commissionPlanAgent = (CommissionPlanAgent) HibernateUtils.defaultSave(commissionPlanAgent);
+        commissionPlanAgent = (CommissionPlanAgent) HibernateUtilV2.defaultSave(commissionPlanAgent);
 
         return commissionPlanAgent;
 
@@ -702,7 +702,7 @@ public class CommissionPlanCommandHandler implements ICommandHandler {
             sqlParams.put("commissionPlanId", c.get("commissionPlanId"));
 
         }
-        HibernateUtils.query(sql, sqlParams);
+        HibernateUtilV2.query(sql, sqlParams);
 
         c.setObject(true);
     }
@@ -714,7 +714,7 @@ public class CommissionPlanCommandHandler implements ICommandHandler {
             sqlParams.put("commissionPlanId", c.get("commissionPlanId"));
 
         }
-        HibernateUtils.query(sql, sqlParams);
+        HibernateUtilV2.query(sql, sqlParams);
 
         c.setObject(true);
     }

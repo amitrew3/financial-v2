@@ -5,7 +5,7 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.PaginationParams;
 import com.rew3.common.utils.*;
@@ -20,7 +20,7 @@ public class AcpQueryHandler implements IQueryHandler {
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
-        Acp acp = (Acp) HibernateUtils.get(Acp.class, id);
+        Acp acp = (Acp) HibernateUtilV2.get(Acp.class, id);
         if (acp == null) {
             throw new NotFoundException("Associate Commission plan id(" + id + ") not found.");
         }
@@ -77,7 +77,7 @@ public class AcpQueryHandler implements IQueryHandler {
         }
 
 
-        List<Object> transactions = HibernateUtils.select("SELECT distinct t FROM Acp t left join t.singleRateAcps tc left join t.tieredAcp tr left " +
+        List<Object> transactions = HibernateUtilV2.select("SELECT distinct t FROM Acp t left join t.singleRateAcps tc left join t.tieredAcp tr left " +
                 "join tr.tieredStages ts " + builder.getValue(), sqlParams, q.getQuery(), limit, offset, new Acp());
 
         return transactions;
@@ -98,7 +98,7 @@ public class AcpQueryHandler implements IQueryHandler {
 
                     if (tv.getType() == "STRING" && !requestMap.getValue().toString().contains("[") && !requestMap.getValue().toString().contains("]")) {
                         builder.append("AND");
-                        builder.append(field + " = " + HibernateUtils.s(value));
+                        builder.append(field + " = " + HibernateUtilV2.s(value));
 
                     } else if (tv.getType() == "DATE" && !requestMap.getValue().toString().contains("[") && !requestMap.getValue().toString().contains("]")) {
                         Matcher matcher = PatternMatcher.specificDateMatch(requestMap.getValue().toString());
@@ -132,7 +132,7 @@ public class AcpQueryHandler implements IQueryHandler {
 
         doFilter(q, sqlParams, builder);
 
-        Object object = HibernateUtils.count("SELECT  count(distinct t) FROM Acp t left join t.singleRateAcps tc left join t.tieredAcp tr left join " +
+        Object object = HibernateUtilV2.count("SELECT  count(distinct t) FROM Acp t left join t.singleRateAcps tc left join t.tieredAcp tr left join " +
                 "tr.tieredStages ts " + builder.getValue(), sqlParams, q.getQuery(), 0, 0, new Acp());
 
         Long count = Parser.convertObjectToLong(object);
@@ -159,7 +159,7 @@ public class AcpQueryHandler implements IQueryHandler {
         sqlParams.put("acpId", q.get("acpId"));
 
 
-        HibernateUtils.query("DELETE FROM Acp " + builder.getValue(), sqlParams, trx);
+        HibernateUtilV2.query("DELETE FROM Acp " + builder.getValue(), sqlParams, trx);
 
 
     }

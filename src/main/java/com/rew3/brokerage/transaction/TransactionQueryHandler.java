@@ -5,7 +5,7 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.PaginationParams;
 import com.rew3.common.utils.*;
@@ -16,7 +16,7 @@ public class TransactionQueryHandler implements IQueryHandler {
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
-        RmsTransaction acp = (RmsTransaction) HibernateUtils.get(RmsTransaction.class, id);
+        RmsTransaction acp = (RmsTransaction) HibernateUtilV2.get(RmsTransaction.class, id);
         if (acp == null) {
             throw new NotFoundException("Transaction id(" + id + ") not found.");
         }
@@ -73,7 +73,7 @@ public class TransactionQueryHandler implements IQueryHandler {
         }
 
 
-        List<Object> transactions = HibernateUtils.select("SELECT distinct t FROM RmsTransaction t left join t.contacts tc left join t.reference tr " +
+        List<Object> transactions = HibernateUtilV2.select("SELECT distinct t FROM RmsTransaction t left join t.contacts tc left join t.reference tr " +
                 builder.getValue(), sqlParams, q.getQuery(), limit, offset, RmsTransaction.class);
 
         return transactions;
@@ -92,7 +92,7 @@ public class TransactionQueryHandler implements IQueryHandler {
 
         RequestFilter.doFilter(q, sqlParams, builder, RmsTransaction.class);
 
-        Object object = HibernateUtils.count("SELECT  count(distinct t) FROM RmsTransaction t left join t.contacts tc left join t.reference tr " + builder
+        Object object = HibernateUtilV2.count("SELECT  count(distinct t) FROM RmsTransaction t left join t.contacts tc left join t.reference tr " + builder
                 .getValue(), sqlParams, q.getQuery(), 0, 0, RmsTransaction.class);
 
         Long count = Parser.convertObjectToLong(object);
@@ -104,7 +104,7 @@ public class TransactionQueryHandler implements IQueryHandler {
 
 
     public Double getTotalSellPrice() throws CommandException, NotFoundException {
-        List<Object> list = HibernateUtils.selectAll("SELECT  t FROM RmsTransaction t  where t.status='ACTIVE'");
+        List<Object> list = HibernateUtilV2.selectAll("SELECT  t FROM RmsTransaction t  where t.status='ACTIVE'");
 
         Double _sub_total = list.stream().map(i -> (RmsTransaction) i).mapToDouble(x -> x.getSellPrice()).sum();
         return _sub_total;

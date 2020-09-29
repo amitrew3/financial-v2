@@ -1,6 +1,7 @@
 package com.rew3.brokerage.associate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.shared.AddressQueryHandler;
 import com.rew3.common.shared.model.Address;
 import com.rew3.brokerage.associate.command.*;
@@ -11,7 +12,6 @@ import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.Flags.EntityStatus;
 import com.rew3.common.utils.APILogType;
@@ -48,19 +48,19 @@ public class AssociateCommandHandler implements ICommandHandler {
             Associate normaluser = this._handleSaveAssociate(c);
             if (normaluser != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(normaluser);
 
                 }
             }
         } catch (Exception ex) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
             throw ex;
 
 
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
 
@@ -68,25 +68,25 @@ public class AssociateCommandHandler implements ICommandHandler {
 
 
     public void handle(UpdateAssociate c) throws CommandException, NotFoundException, ServletException, JsonProcessingException {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
 
         Transaction trx = c.getTransaction();
         try {
             Associate associate = this._handleSaveAssociate(c);
             if (associate != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(associate);
 
                 }
             }
         } catch (Exception e) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
 
             throw e;
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
     }
@@ -147,7 +147,7 @@ public class AssociateCommandHandler implements ICommandHandler {
         }
 
 
-        associate = (Associate) HibernateUtils.save(associate, c.getTransaction());
+        associate = (Associate) HibernateUtilV2.save(associate, c.getTransaction());
         return associate;
 
     }

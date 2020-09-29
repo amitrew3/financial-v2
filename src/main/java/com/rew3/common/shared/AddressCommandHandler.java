@@ -1,18 +1,16 @@
 package com.rew3.common.shared;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.shared.command.CreateAddress;
 import com.rew3.common.shared.command.DeleteAddress;
 import com.rew3.common.shared.command.UpdateAddress;
 import com.rew3.common.shared.model.Address;
-import com.rew3.common.application.Authentication;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
-import com.rew3.common.database.HibernateUtils;
-import com.rew3.common.model.Flags.EntityStatus;
 import com.rew3.common.utils.APILogType;
 import com.rew3.common.utils.APILogger;
 import org.hibernate.Transaction;
@@ -42,16 +40,16 @@ public class AddressCommandHandler implements ICommandHandler {
         try {
             Address address = this._handleSaveAddress(c);
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
+                HibernateUtilV2.commitTransaction(c.getTransaction());
             }
             c.setObject(address);
         } catch (Exception ex) {
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }
@@ -61,16 +59,16 @@ public class AddressCommandHandler implements ICommandHandler {
         try {
             Address address = this._handleSaveAddress(c);
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
+                HibernateUtilV2.commitTransaction(c.getTransaction());
             }
             c.setObject(address);
         } catch (Exception ex) {
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }
@@ -116,7 +114,7 @@ public class AddressCommandHandler implements ICommandHandler {
 
 
 
-        address = (Address) HibernateUtils.save(address, c.getTransaction());
+        address = (Address) HibernateUtilV2.save(address, c.getTransaction());
 
         return address;
     }

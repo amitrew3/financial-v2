@@ -90,9 +90,9 @@ public class DB {
         public static final String TRANSACTION = "transaction";
         public static final String JOURNAL = "journal";
         public static final String TRANSACTION_JOURNAL = "transaction_journal";
-        public static final String INVOICEPAYMENT = "invoicepayment";
-        public static final String BILLPAYMENT = "billpayment";
-        public static final String SALESTAX = "salestax";
+        public static final String INVOICEPAYMENT = "invoice_payment";
+        public static final String BILLPAYMENT = "bill_payment";
+        public static final String SALESTAX = "sales_tax";
 
 
 

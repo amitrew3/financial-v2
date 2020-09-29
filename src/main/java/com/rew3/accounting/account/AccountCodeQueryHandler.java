@@ -4,7 +4,7 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.Flags.AccountingCodeSegment;
 import com.rew3.common.model.Flags.AccountingHead;
@@ -23,7 +23,7 @@ public class AccountCodeQueryHandler implements IQueryHandler {
 
 
     public Long count() throws CommandException {
-        Long count = (Long) HibernateUtils.createQuery("select count(*) from AccountingCode", null);
+        Long count = (Long) HibernateUtilV2.createQuery("select count(*) from AccountingCode", null);
         return count;
     }
 
@@ -45,7 +45,7 @@ public class AccountCodeQueryHandler implements IQueryHandler {
         sqlParams.put("segment", segment);
 
 
-        List<Object> codeList = HibernateUtils.select("FROM AccountingCode " + whereSQL, sqlParams);
+        List<Object> codeList = HibernateUtilV2.select("FROM AccountingCode " + whereSQL, sqlParams);
 
 
         AccountingCode acode = null;
@@ -85,7 +85,7 @@ public class AccountCodeQueryHandler implements IQueryHandler {
         sqlParams.put("entityType", entityType.getFlag());
         whereSQL += " AND entityType = :entityType ";
 
-        List<EntityCode> ecList = HibernateUtils.select("FROM EntityCode " + whereSQL, sqlParams);
+        List<EntityCode> ecList = HibernateUtilV2.select("FROM EntityCode " + whereSQL, sqlParams);
 
         EntityCode ec = null;
         if (ecList.size() > 0) {
@@ -101,7 +101,7 @@ public class AccountCodeQueryHandler implements IQueryHandler {
         HashMap<String, Object> sqlParams = new HashMap<>();
         sqlParams.put("accountingCodeId", accountingCodeId);
 
-        List<Map<String, Object>> queryResult = (List<Map<String, Object>>) HibernateUtils.selectSQL(sql, sqlParams);
+        List<Map<String, Object>> queryResult = (List<Map<String, Object>>) HibernateUtilV2.selectSQL(sql, sqlParams);
         Integer count = Parser.convertObjectToInteger(queryResult.get(0).get("count"));
         return count;
     }
@@ -114,7 +114,7 @@ public class AccountCodeQueryHandler implements IQueryHandler {
         String query = "SELECT MAX(substring() FROM AccountingCode WHERE ownerId = :ownerId AND userId=:userId AND head=:head";
 
         Integer subHead = 0;
-        List maxResult = HibernateUtils.select(query, sqlParams);
+        List maxResult = HibernateUtilV2.select(query, sqlParams);
         if (maxResult.size() == 1) {
             subHead = (Integer) maxResult.get(0);
 
@@ -164,7 +164,7 @@ public class AccountCodeQueryHandler implements IQueryHandler {
 
 
         //TODO
-        List<Object> aCodes = HibernateUtils.select("FROM AccountingCode " + whereSQL, sqlParams);
+        List<Object> aCodes = HibernateUtilV2.select("FROM AccountingCode " + whereSQL, sqlParams);
 
         return aCodes;
     }
@@ -187,7 +187,7 @@ public class AccountCodeQueryHandler implements IQueryHandler {
         sqlParams.put("segment", segment);
 
 
-        List<Object> codeList = HibernateUtils.select("FROM AccountingCode " + whereSQL, sqlParams);
+        List<Object> codeList = HibernateUtilV2.select("FROM AccountingCode " + whereSQL, sqlParams);
 
 
         Account acode = null;
@@ -208,14 +208,14 @@ public class AccountCodeQueryHandler implements IQueryHandler {
         HashMap<String, Object> sqlParams = new HashMap<>();
         sqlParams.put("subAccountingHeadId", subAccountingHeadId);
 
-        List<Object> aCodes = HibernateUtils.select("FROM AccountingCode ac where sub_accounting_head_id=:subAccountingHeadId", sqlParams);
+        List<Object> aCodes = HibernateUtilV2.select("FROM AccountingCode ac where sub_accounting_head_id=:subAccountingHeadId", sqlParams);
         return aCodes;
     }*/
 
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
-        Account acp = (Account) HibernateUtils.get(Account.class, id);
+        Account acp = (Account) HibernateUtilV2.get(Account.class, id);
         if (acp == null) {
             throw new NotFoundException("Accounting Code id(" + id + ") not found.");
         }
@@ -272,7 +272,7 @@ public class AccountCodeQueryHandler implements IQueryHandler {
         }
 
 
-        List<Object> accountingCodes = HibernateUtils.select("SELECT distinct t FROM AccountingCode t " + builder.getValue(), sqlParams, q.getQuery(), limit,
+        List<Object> accountingCodes = HibernateUtilV2.select("SELECT distinct t FROM AccountingCode t " + builder.getValue(), sqlParams, q.getQuery(), limit,
                 offset, Account.class);
 
         return accountingCodes;
@@ -293,7 +293,7 @@ public class AccountCodeQueryHandler implements IQueryHandler {
 
         RequestFilter.doFilter(q, sqlParams, builder, Account.class);
 
-        Long count = HibernateUtils.count("SELECT  count(distinct t) FROM AccountingCode t " + builder.getValue(), sqlParams, q.getQuery(),
+        Long count = HibernateUtilV2.count("SELECT  count(distinct t) FROM AccountingCode t " + builder.getValue(), sqlParams, q.getQuery(),
                 Account.class);
 
 

@@ -5,7 +5,6 @@ import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
 import com.rew3.common.database.HibernateUtilV2;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.PaginationParams;
 import com.rew3.common.utils.Parser;
@@ -56,7 +55,6 @@ public class CustomerQueryHandler implements IQueryHandler {
 
         }
 
-
         if (q.has("status")) {
             builder.append("AND");
             builder.append("t.status ");
@@ -100,7 +98,7 @@ public class CustomerQueryHandler implements IQueryHandler {
 
         RequestFilter.doFilter(q, sqlParams, builder, Customer.class);
 
-        Long count = HibernateUtils.count("SELECT  count(distinct t) FROM Customer t " + builder.getValue(), sqlParams, q.getQuery(), Customer.class);
+        Long count = HibernateUtilV2.count("SELECT  count(distinct t) FROM Customer t " + builder.getValue(), sqlParams, q.getQuery(), Customer.class);
 
 
         return count;

@@ -5,7 +5,7 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.DB;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.Flags.EntityStatus;
@@ -22,7 +22,7 @@ public class AssociateQueryHandler implements IQueryHandler {
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
-        Associate rd = (Associate) HibernateUtils.get(Associate.class, id);
+        Associate rd = (Associate) HibernateUtilV2.get(Associate.class, id);
         if (rd == null) {
             throw new NotFoundException("Associate id(" + id + ") not found.");
         }
@@ -127,13 +127,13 @@ public class AssociateQueryHandler implements IQueryHandler {
         int offset = 0;
         offset = (limit * (page - 1));
 
-        List<Object> associates = HibernateUtils.select("FROM Associate " + builder.getValue(), sqlParams, q.getQuery(), limit, offset);
+        List<Object> associates = HibernateUtilV2.select("FROM Associate " + builder.getValue(), sqlParams, q.getQuery(), limit, offset);
         return associates;
     }
 
     public Long count() throws CommandException {
 
-        Long count = (Long) HibernateUtils.createQuery("SELECT COUNT(*) FROM Associate", null);
+        Long count = (Long) HibernateUtilV2.createQuery("SELECT COUNT(*) FROM Associate", null);
         return count;
     }
 

@@ -1,11 +1,11 @@
 package com.rew3.sale.receipt;
 
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.sale.receipt.model.Receipt;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.PaginationParams;
 import com.rew3.common.utils.*;
@@ -19,7 +19,7 @@ public class ReceiptQueryHandler implements IQueryHandler {
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
-        Receipt rd = (Receipt) HibernateUtils.get(Receipt.class, id);
+        Receipt rd = (Receipt) HibernateUtilV2.get(Receipt.class, id);
         if (rd == null) {
             throw new NotFoundException("Normal User id(" + id + ") not found.");
         }
@@ -107,7 +107,7 @@ public class ReceiptQueryHandler implements IQueryHandler {
 
                     if (tv.getType() == "STRING" && !requestMap.getValue().toString().contains("[") && !requestMap.getValue().toString().contains("]")) {
                         builder.append("AND");
-                        builder.append(field + " = " + HibernateUtils.s(value));
+                        builder.append(field + " = " + HibernateUtilV2.s(value));
 
                     } else if (tv.getType() == "DATE") {
                         Matcher matcher = PatternMatcher.specificDateMatch(requestMap.getValue().toString());
@@ -134,14 +134,14 @@ public class ReceiptQueryHandler implements IQueryHandler {
         }
 
 
-        List<Object> transactions = HibernateUtils.select("SELECT t FROM NormalUser t " + builder.getValue(), sqlParams, q.getQuery(), limit, offset, new Receipt());
+        List<Object> transactions = HibernateUtilV2.select("SELECT t FROM NormalUser t " + builder.getValue(), sqlParams, q.getQuery(), limit, offset, new Receipt());
 
         return transactions;
     }
 
     public Long count() throws CommandException {
 
-        Long count = (Long) HibernateUtils.createQuery("SELECT COUNT(*) FROM NormalUser", null);
+        Long count = (Long) HibernateUtilV2.createQuery("SELECT COUNT(*) FROM NormalUser", null);
         return count;
     }
 

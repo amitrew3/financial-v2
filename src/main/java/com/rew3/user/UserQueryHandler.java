@@ -3,18 +3,18 @@ package com.rew3.user;
 import java.util.HashMap;
 import java.util.List;
 
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.user.model.User;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.utils.Parser;
 
 public class UserQueryHandler implements IQueryHandler {
 
 	@Override
 	public Object getById(String id) throws CommandException {
-		User rd = (User) HibernateUtils.get(User.class, id);
+		User rd = (User) HibernateUtilV2.get(User.class, id);
 		return rd;
 
 	}
@@ -94,12 +94,12 @@ public class UserQueryHandler implements IQueryHandler {
 
 		offset = (limit * (page - 1));
 
-		List<Object> users = HibernateUtils.select("FROM User " + whereSQL, sqlParams, limit, offset);
+		List<Object> users = HibernateUtilV2.select("FROM User " + whereSQL, sqlParams, limit, offset);
 		return users;
 	}
 
 	public Long count() throws CommandException {
-		Long count = (Long) HibernateUtils.createQuery("select count(*) from User", null);
+		Long count = (Long) HibernateUtilV2.createQuery("select count(*) from User", null);
 		return count;
 	}
 

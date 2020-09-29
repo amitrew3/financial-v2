@@ -11,7 +11,6 @@ import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.database.HibernateUtilV2;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.purchase.vendor.command.CreateVendor;
 import com.rew3.purchase.vendor.command.DeleteVendor;
 import com.rew3.purchase.vendor.command.UpdateVendor;
@@ -203,7 +202,7 @@ public class VendorCommandHandler implements ICommandHandler {
 
         Vendor vendor = (Vendor) new VendorQueryHandler().getById(c.id);
         if (vendor != null) {
-            HibernateUtils.saveAsDeleted(vendor);
+            HibernateUtilV2.saveAsDeleted(vendor);
 
         }
         c.setObject(vendor);

@@ -11,7 +11,7 @@ import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.Flags.EntityStatus;
 import com.rew3.common.utils.APILogType;
@@ -45,19 +45,19 @@ public class DeductionCommandHandler implements ICommandHandler {
             Deduction deduction = this._handleSaveDeduction(c);
             if (deduction != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(deduction);
 
                 }
             }
         } catch (Exception ex) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
             throw ex;
 
 
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
 
@@ -65,25 +65,25 @@ public class DeductionCommandHandler implements ICommandHandler {
 
 
     public void handle(UpdateDeduction c) throws CommandException, NotFoundException, ServletException, JsonProcessingException {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
 
         Transaction trx = c.getTransaction();
         try {
             Deduction deduction = this._handleSaveDeduction(c);
             if (deduction != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(deduction);
 
                 }
             }
         } catch (Exception e) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
 
             throw e;
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
     }
@@ -145,7 +145,7 @@ public class DeductionCommandHandler implements ICommandHandler {
         }
 
 
-        deduction = (Deduction) HibernateUtils.save(deduction, c.getTransaction());
+        deduction = (Deduction) HibernateUtilV2.save(deduction, c.getTransaction());
         return deduction;
 
     }

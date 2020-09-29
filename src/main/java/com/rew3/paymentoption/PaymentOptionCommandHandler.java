@@ -1,6 +1,7 @@
 package com.rew3.paymentoption;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.paymentoption.command.CreatePaymentOption;
 import com.rew3.paymentoption.command.DeletePaymentOption;
 import com.rew3.paymentoption.command.UpdatePaymentOption;
@@ -11,7 +12,6 @@ import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.model.Flags.EntityStatus;
 import com.rew3.common.utils.APILogType;
 import com.rew3.common.utils.APILogger;
@@ -37,43 +37,43 @@ public class PaymentOptionCommandHandler implements ICommandHandler {
     }
 
     public void handle(CreatePaymentOption c) {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
         Transaction trx = c.getTransaction();
 
         try {
             PaymentOption t = this._handleSavePaymentOption(c);
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
+                HibernateUtilV2.commitTransaction(c.getTransaction());
             }
             c.setObject(t);
         } catch (Exception ex) {
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }
 
     public void handle(UpdatePaymentOption c) {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
         Transaction trx = c.getTransaction();
 
         try {
             PaymentOption term = this._handleSavePaymentOption(c);
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
+                HibernateUtilV2.commitTransaction(c.getTransaction());
             }
             c.setObject(term);
         } catch (Exception ex) {
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }
@@ -114,7 +114,7 @@ public class PaymentOptionCommandHandler implements ICommandHandler {
             paymentOption.setStatus(EntityStatus.ACTIVE);
         }
 
-        paymentOption = (PaymentOption) HibernateUtils.save(paymentOption, c.getTransaction());
+        paymentOption = (PaymentOption) HibernateUtilV2.save(paymentOption, c.getTransaction());
 
         return paymentOption;
 
@@ -131,19 +131,19 @@ public class PaymentOptionCommandHandler implements ICommandHandler {
                     throw new CommandException("Permission denied");
                 }
                 terms.setStatus(EntityStatus.DELETED);
-                terms= (PaymentOption) HibernateUtils.save(terms,trx);
+                terms= (PaymentOption) HibernateUtilV2.save(terms,trx);
             }
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
+                HibernateUtilV2.commitTransaction(c.getTransaction());
             }
             c.setObject(terms);
         } catch (Exception ex) {
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
 

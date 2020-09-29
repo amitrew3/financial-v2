@@ -1,6 +1,7 @@
 package com.rew3.sale.receipt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.sale.receipt.command.*;
 import com.rew3.sale.receipt.model.Receipt;
 import com.rew3.common.application.Authentication;
@@ -9,7 +10,6 @@ import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.model.Flags.EntityStatus;
 import com.rew3.common.shared.AddressQueryHandler;
 import com.rew3.common.utils.APILogType;
@@ -57,19 +57,19 @@ public class ReceiptCommandHandler implements ICommandHandler {
             Receipt normaluser = this._handleSaveNormalUser(c);
             if (normaluser != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(normaluser);
 
                 }
             }
         } catch (Exception ex) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
             throw ex;
 
 
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
 
@@ -77,25 +77,25 @@ public class ReceiptCommandHandler implements ICommandHandler {
 
 
     public void handle(UpdateReceipt c) throws CommandException, NotFoundException, ServletException, JsonProcessingException {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
 
         Transaction trx = c.getTransaction();
         try {
             Receipt normaluser = this._handleSaveNormalUser(c);
             if (normaluser != null) {
                 if (c.isCommittable()) {
-                    HibernateUtils.commitTransaction(c.getTransaction());
+                    HibernateUtilV2.commitTransaction(c.getTransaction());
                     c.setObject(normaluser);
 
                 }
             }
         } catch (Exception e) {
-            HibernateUtils.rollbackTransaction(c.getTransaction());
+            HibernateUtilV2.rollbackTransaction(c.getTransaction());
 
             throw e;
         } finally {
 
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
     }
@@ -146,7 +146,7 @@ public class ReceiptCommandHandler implements ICommandHandler {
         }
 
 
-        receipt = (Receipt) HibernateUtils.save(receipt, c.getTransaction());
+        receipt = (Receipt) HibernateUtilV2.save(receipt, c.getTransaction());
         return receipt;
 
     }
@@ -163,18 +163,18 @@ public class ReceiptCommandHandler implements ICommandHandler {
                 }
                 user.setStatus(EntityStatus.DELETED);
                 user.setLastModifiedAt(DateTime.getCurrentTimestamp());
-                HibernateUtils.save(user, trx);
+                HibernateUtilV2.save(user, trx);
             }
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
+                HibernateUtilV2.commitTransaction(c.getTransaction());
             }
             c.setObject(user);
         } catch (Exception ex) {
-            HibernateUtils.rollbackTransaction(trx);
+            HibernateUtilV2.rollbackTransaction(trx);
             throw ex;
 
         } finally {
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
     }
 
@@ -189,7 +189,7 @@ public class ReceiptCommandHandler implements ICommandHandler {
             }
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
+                HibernateUtilV2.commitTransaction(c.getTransaction());
                 c.setObject("Bulk product category updated");
             }
 
@@ -197,11 +197,11 @@ public class ReceiptCommandHandler implements ICommandHandler {
             ex.printStackTrace();
 
            /* if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }*/
         } finally {
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }
@@ -219,17 +219,17 @@ public class ReceiptCommandHandler implements ICommandHandler {
             }
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
+                HibernateUtilV2.commitTransaction(c.getTransaction());
             }
             c.setObject("Normal users deleted");
 
         } catch (Exception ex) {
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
 

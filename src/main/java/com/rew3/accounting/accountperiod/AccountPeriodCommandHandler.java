@@ -8,7 +8,7 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags;
 import com.rew3.common.utils.APILogType;
 import com.rew3.common.utils.APILogger;
@@ -51,14 +51,14 @@ public class AccountPeriodCommandHandler implements ICommandHandler {
                 c.setObject(v);
             }
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
+                HibernateUtilV2.commitTransaction(c.getTransaction());
 
             }
         } catch (Exception ex) {
-            HibernateUtils.rollbackTransaction(trx);
+            HibernateUtilV2.rollbackTransaction(trx);
             throw ex;
         } finally {
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
 
     }
@@ -110,7 +110,7 @@ public class AccountPeriodCommandHandler implements ICommandHandler {
         ap.setEndDate(endDate);
         ap.setAccountingPeriodStatus(Flags.AccountingPeriodStatus.OPEN);
         ap.setStatus(Flags.EntityStatus.ACTIVE);
-        ap = (AccountPeriod) HibernateUtils.save(ap, c.getTransaction());
+        ap = (AccountPeriod) HibernateUtilV2.save(ap, c.getTransaction());
         return ap;
     }
 
@@ -125,67 +125,67 @@ public class AccountPeriodCommandHandler implements ICommandHandler {
         String id = (String) c.get("id");
         try {
 
-            period = (AccountPeriod) HibernateUtils.get(AccountPeriod.class, id);
+            period = (AccountPeriod) HibernateUtilV2.get(AccountPeriod.class, id);
             if (period != null) {
                 if (!period.hasDeletePermission(Authentication.getRew3UserId(), Authentication.getRew3GroupId())) {
                     APILogger.add(APILogType.ERROR, "Permission denied");
                     throw new CommandException("Permission denied");
                 }
                 period.setStatus(Flags.EntityStatus.DELETED);
-                period = (AccountPeriod) HibernateUtils.save(period, trx);
+                period = (AccountPeriod) HibernateUtilV2.save(period, trx);
 
             }
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
+                HibernateUtilV2.commitTransaction(c.getTransaction());
             }
             c.setObject(period);
 
         } catch (Exception ex) {
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }
 
     public void handle(CloseAccountingPeriod c) {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
         Transaction trx = c.getTransaction();
 
         try {
             String id = (String) c.get("id");
             AccountPeriod ap = (AccountPeriod) (new AccountPeriodQueryHandler()).getById(id);
             ap.setAccountingPeriodStatus(Flags.AccountingPeriodStatus.CLOSED);
-            HibernateUtils.save(ap, trx);
+            HibernateUtilV2.save(ap, trx);
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
             c.setObject(ap);
         } catch (Exception ex) {
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }
 
     public void handle(ReopenAccountingPeriod c) {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
         Transaction trx = c.getTransaction();
 
         try {
             String id = (String) c.get("id");
             AccountPeriod ap = (AccountPeriod) (new AccountPeriodQueryHandler()).getById(id);
             ap.setAccountingPeriodStatus(Flags.AccountingPeriodStatus.REOPENED);
-            HibernateUtils.save(ap, trx);
+            HibernateUtilV2.save(ap, trx);
             c.setObject(ap);
 
 
@@ -194,11 +194,11 @@ public class AccountPeriodCommandHandler implements ICommandHandler {
 
         } catch (Exception ex) {
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }

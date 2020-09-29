@@ -8,7 +8,7 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.Flags.EntityType;
 import com.rew3.common.model.PaginationParams;
@@ -19,7 +19,7 @@ public class AccountingJournalQueryHandler implements IQueryHandler {
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
-        Journal aj = (Journal) HibernateUtils.get(Journal.class, id);
+        Journal aj = (Journal) HibernateUtilV2.get(Journal.class, id);
 
         if (aj == null) {
             throw new NotFoundException("Accounting journal id (" + id + ") not found.");
@@ -62,12 +62,12 @@ public class AccountingJournalQueryHandler implements IQueryHandler {
         //whereSQL += " AND gr = true OR "+"r like '%" + Authentication.getRew3UserId() + "%'";
         offset = (limit * (page - 1));
 
-        List<Object> aJournals = HibernateUtils.select("FROM AccountingJournal " + whereSQL, sqlParams, q.getQuery(), limit, offset);
+        List<Object> aJournals = HibernateUtilV2.select("FROM AccountingJournal " + whereSQL, sqlParams, q.getQuery(), limit, offset);
         return aJournals;
     }
 
     public Long count() throws CommandException {
-        Long count = (Long) HibernateUtils.createQuery("select count(*) from AccountingJournal", null);
+        Long count = (Long) HibernateUtilV2.createQuery("select count(*) from AccountingJournal", null);
         return count;
     }
 
@@ -98,7 +98,7 @@ public class AccountingJournalQueryHandler implements IQueryHandler {
                 + EntityType.INVOICE.getFlag() + " LEFT JOIN invoice_item ii ON ii.id = aj.ref_id AND aj.ref_type = "
                 + EntityType.INVOICE_ITEM.getFlag() + " LEFT JOIN system_user su ON su.user_id = aj.owner_id ";
 
-        List<HashMap<String, Object>> ajList = HibernateUtils.selectSQL(query + whereSQL, sqlParams);
+        List<HashMap<String, Object>> ajList = HibernateUtilV2.selectSQL(query + whereSQL, sqlParams);
 
         // Process data for filling name of entity type and segment
         for (HashMap<String, Object> aj : ajList) {
@@ -122,7 +122,7 @@ public class AccountingJournalQueryHandler implements IQueryHandler {
         whereSQL += " where accounting_period_id = :accountingPeriodId ";
 
 
-        List<Object> aJournals = HibernateUtils.select("From AccountingJournal" + whereSQL, sqlParams);
+        List<Object> aJournals = HibernateUtilV2.select("From AccountingJournal" + whereSQL, sqlParams);
         return aJournals;
     }
     public List<Journal> getByAccountingCodeId(Long accountingCodeId) {
@@ -133,7 +133,7 @@ public class AccountingJournalQueryHandler implements IQueryHandler {
         whereSQL += " where accounting_code_id = :accountingCodeId ";
 
 
-        List<Journal> aJournals = HibernateUtils.select("From AccountingJournal" + whereSQL, sqlParams);
+        List<Journal> aJournals = HibernateUtilV2.select("From AccountingJournal" + whereSQL, sqlParams);
         return aJournals;
     }
 

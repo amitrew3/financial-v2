@@ -4,7 +4,7 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.PaginationParams;
 import com.rew3.common.utils.Parser;
@@ -19,7 +19,7 @@ public class RecurringInvoiceQueryHandler implements IQueryHandler {
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
-        RecurringInvoice invoice = (RecurringInvoice) HibernateUtils.get(RecurringInvoice.class, id);
+        RecurringInvoice invoice = (RecurringInvoice) HibernateUtilV2.get(RecurringInvoice.class, id);
         if (invoice == null) {
             throw new NotFoundException("Invoice id(" + id + ") not found.");
         }
@@ -76,7 +76,7 @@ public class RecurringInvoiceQueryHandler implements IQueryHandler {
         }
 
 
-        List<Object> transactions = HibernateUtils.select("SELECT distinct t FROM RecurringInvoice t " + builder.getValue(), sqlParams, q.getQuery(), limit,
+        List<Object> transactions = HibernateUtilV2.select("SELECT distinct t FROM RecurringInvoice t " + builder.getValue(), sqlParams, q.getQuery(), limit,
                 offset, RecurringInvoice.class);
 
         return transactions;
@@ -96,7 +96,7 @@ public class RecurringInvoiceQueryHandler implements IQueryHandler {
 
         RequestFilter.doFilter(q, sqlParams, builder, RecurringInvoice.class);
 
-        Long count = HibernateUtils.count("SELECT count(distinct t) FROM RecurringInvoice t " + builder.getValue(), sqlParams, q.getQuery(),
+        Long count = HibernateUtilV2.count("SELECT count(distinct t) FROM RecurringInvoice t " + builder.getValue(), sqlParams, q.getQuery(),
                 RecurringInvoice.class);
 
 

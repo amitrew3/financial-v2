@@ -15,7 +15,6 @@ import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.database.HibernateUtilV2;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.model.Flags;
 import com.rew3.salestax.SalesTaxQueryHandler;
 import com.rew3.salestax.model.SalesTax;
@@ -78,8 +77,8 @@ public class ProductCommandHandler implements ICommandHandler {
             }
             if (info.hasTax2Id()) {
                 SalesTaxQueryHandler queryHandler = new SalesTaxQueryHandler();
-                SalesTax tax = (SalesTax) queryHandler.getById(info.getTax1Id().getValue());
-                product.setTax1(tax);
+                SalesTax tax = (SalesTax) queryHandler.getById(info.getTax2Id().getValue());
+                product.setTax2(tax);
             }
             product.setSide(Flags.ProductSide.valueOf(info.getSide().name()));
 
@@ -134,7 +133,7 @@ public class ProductCommandHandler implements ICommandHandler {
             }
             if (info.hasTax2Id()) {
                 SalesTaxQueryHandler queryHandler = new SalesTaxQueryHandler();
-                SalesTax tax = (SalesTax) queryHandler.getById(info.getTax1Id().getValue());
+                SalesTax tax = (SalesTax) queryHandler.getById(info.getTax2Id().getValue());
                 product.setTax1(tax);
             }
             product.setSide(Flags.ProductSide.valueOf(info.getSide().name()));
@@ -164,7 +163,7 @@ public class ProductCommandHandler implements ICommandHandler {
 
         Product product = (Product) new ProductQueryHandler().getById(c.id);
         if (product != null) {
-            HibernateUtils.saveAsDeleted(product);
+            HibernateUtilV2.saveAsDeleted(product);
 
         }
         c.setObject(product);

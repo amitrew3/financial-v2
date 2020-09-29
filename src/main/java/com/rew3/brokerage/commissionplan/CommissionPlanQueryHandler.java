@@ -5,7 +5,7 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.PaginationParams;
 import com.rew3.common.utils.Parser;
@@ -19,7 +19,7 @@ public class CommissionPlanQueryHandler implements IQueryHandler {
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
-        CommissionPlan acp = (CommissionPlan) HibernateUtils.get(CommissionPlan.class, id);
+        CommissionPlan acp = (CommissionPlan) HibernateUtilV2.get(CommissionPlan.class, id);
         if (acp == null) {
             throw new NotFoundException("Commission PLan id(" + id + ") not found.");
         }
@@ -76,7 +76,7 @@ public class CommissionPlanQueryHandler implements IQueryHandler {
         }
 
 
-        List<Object> associatePlans = HibernateUtils.select("SELECT distinct t FROM CommissionPlan t left join t.preCommissions pc left join t" +
+        List<Object> associatePlans = HibernateUtilV2.select("SELECT distinct t FROM CommissionPlan t left join t.preCommissions pc left join t" +
                 ".commissionPlanAgents a left join t.levels l left join t.reference tr left join  t.flatFee f left join t.slidingScale s   " + builder.getValue(),
                 sqlParams, q.getQuery(), limit, offset, CommissionPlan.class);
 
@@ -96,7 +96,7 @@ public class CommissionPlanQueryHandler implements IQueryHandler {
 
         RequestFilter.doFilter(q, sqlParams, builder, CommissionPlan.class);
 
-        Long total = HibernateUtils.count("SELECT  count(distinct t) FROM CommissionPlan t left join t.preCommissions pc left join t.commissionPlanAgents a " +
+        Long total = HibernateUtilV2.count("SELECT  count(distinct t) FROM CommissionPlan t left join t.preCommissions pc left join t.commissionPlanAgents a " +
                         "left join t.levels l left join t.reference tr left join  t.flatFee f left join t.slidingScale s   " + builder.getValue(), sqlParams,
                 q.getQuery(), CommissionPlan.class);
         return total;

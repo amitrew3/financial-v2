@@ -14,7 +14,7 @@ import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.Flags.AccountingCodeSegment;
 import com.rew3.common.model.Flags.AccountingHead;
@@ -232,7 +232,7 @@ public class AccountCodeCommandHandler implements ICommandHandler {
             ac.setLastModifiedAt(DateTime.getCurrentTimestamp());
         }
 
-        ac = (Account) HibernateUtils.save(ac, c, isNew);
+        ac = (Account) HibernateUtilV2.save(ac, c, isNew);
         return ac;
     }
 
@@ -250,7 +250,7 @@ public class AccountCodeCommandHandler implements ICommandHandler {
                 throw new CommandException("Permission denied");
             }
             aCode.setStatus(EntityStatus.DELETED);
-            aCode = (Account) HibernateUtils.saveAsDeleted(aCode);
+            aCode = (Account) HibernateUtilV2.saveAsDeleted(aCode);
 
 
         }
@@ -260,7 +260,7 @@ public class AccountCodeCommandHandler implements ICommandHandler {
 
     public void handle(CreateProductAccount c) {
 
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
         Transaction trx = c.getTransaction();
 
         try {
@@ -291,14 +291,14 @@ public class AccountCodeCommandHandler implements ICommandHandler {
             //AccountingCode ac = this._handleSaveAccountingCode(c);
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
 
             c.setObject(acode);
         } catch (Exception ex) {
-            HibernateUtils.rollbackTransaction(trx);
+            HibernateUtilV2.rollbackTransaction(trx);
         } finally {
-            HibernateUtils.closeSession();
+            HibernateUtilV2.closeSession();
         }
     }
 
@@ -368,17 +368,17 @@ public class AccountCodeCommandHandler implements ICommandHandler {
             Account ac = this._handleSaveAccountingCode(c);
 
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(trx);
+                HibernateUtilV2.commitTransaction(trx);
             }
 
             c.setObject(ac);
         } catch (Exception ex) {
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }
@@ -466,7 +466,7 @@ public class AccountCodeCommandHandler implements ICommandHandler {
         }
 
 
-        accountGroup = (AccountGroup) HibernateUtils.save(accountGroup, c, isNew);
+        accountGroup = (AccountGroup) HibernateUtilV2.save(accountGroup, c, isNew);
 
 
         return accountGroup;
@@ -476,11 +476,11 @@ public class AccountCodeCommandHandler implements ICommandHandler {
 
         String id = c.get("id").toString();
 
-        AccountGroup accountGroup = (AccountGroup) HibernateUtils.get(AccountGroup.class, id);
+        AccountGroup accountGroup = (AccountGroup) HibernateUtilV2.get(AccountGroup.class, id);
 
         if (accountGroup != null) {
             accountGroup.setStatus(EntityStatus.DELETED);
-            accountGroup = (AccountGroup) HibernateUtils.saveAsDeleted(accountGroup);
+            accountGroup = (AccountGroup) HibernateUtilV2.saveAsDeleted(accountGroup);
         }
 
 

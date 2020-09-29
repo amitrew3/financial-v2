@@ -4,7 +4,7 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.DB;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.PaginationParams;
@@ -19,7 +19,7 @@ public class DeductionQueryHandler implements IQueryHandler {
 
 	@Override
 	public Object getById(String id) throws CommandException, NotFoundException {
-		Deduction rd = (Deduction) HibernateUtils.get(Deduction.class, id);
+		Deduction rd = (Deduction) HibernateUtilV2.get(Deduction.class, id);
 		if (rd == null) {
 			throw new NotFoundException("Deduction id(" + id + ") not found.");
 		}
@@ -124,12 +124,12 @@ public class DeductionQueryHandler implements IQueryHandler {
 		int offset = 0;
 		offset = (limit * (page - 1));
 
-		List<Object> associates = HibernateUtils.select("FROM Deduction " + builder.getValue(), sqlParams, q.getQuery(), limit, offset);
+		List<Object> associates = HibernateUtilV2.select("FROM Deduction " + builder.getValue(), sqlParams, q.getQuery(), limit, offset);
 		return associates;
 	}
 
 	public Long count() throws CommandException {
-		Long count = (Long) HibernateUtils.createQuery("select count(*) from Deduction", null);
+		Long count = (Long) HibernateUtilV2.createQuery("select count(*) from Deduction", null);
 		return count;
 	}
 

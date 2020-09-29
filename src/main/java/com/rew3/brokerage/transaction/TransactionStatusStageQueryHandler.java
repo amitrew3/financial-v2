@@ -6,7 +6,7 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.PaginationParams;
 import com.rew3.common.utils.*;
@@ -20,7 +20,7 @@ public class TransactionStatusStageQueryHandler implements IQueryHandler {
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
-        TransactionStatusStage acp = (TransactionStatusStage) HibernateUtils.get(TransactionStatusStage.class, id);
+        TransactionStatusStage acp = (TransactionStatusStage) HibernateUtilV2.get(TransactionStatusStage.class, id);
         if (acp == null) {
             throw new NotFoundException("Transaction id(" + id + ") not found.");
         }
@@ -75,7 +75,7 @@ public class TransactionStatusStageQueryHandler implements IQueryHandler {
         }
 
 
-        List<Object> transactions = HibernateUtils.select("SELECT distinct t FROM RmsTransaction t left join t.contacts tc " + builder.getValue(), sqlParams, q.getQuery(), limit, offset, new RmsTransaction());
+        List<Object> transactions = HibernateUtilV2.select("SELECT distinct t FROM RmsTransaction t left join t.contacts tc " + builder.getValue(), sqlParams, q.getQuery(), limit, offset, new RmsTransaction());
 
         return transactions;
     }
@@ -95,7 +95,7 @@ public class TransactionStatusStageQueryHandler implements IQueryHandler {
 
                     if (tv.getType() == "STRING" && !requestMap.getValue().toString().contains("[") && !requestMap.getValue().toString().contains("]")) {
                         builder.append("AND");
-                        builder.append(field + " = " + HibernateUtils.s(value));
+                        builder.append(field + " = " + HibernateUtilV2.s(value));
 
                     } else if (tv.getType() == "EXPENSE_DATE" && !requestMap.getValue().toString().contains("[") && !requestMap.getValue().toString().contains("]")) {
                         Matcher matcher = PatternMatcher.specificDateMatch(requestMap.getValue().toString());
@@ -133,7 +133,7 @@ public class TransactionStatusStageQueryHandler implements IQueryHandler {
 
         doFilter(q, sqlParams, builder);
 
-        Object object = HibernateUtils.count("SELECT  count(distinct t) FROM RmsTransaction t left join t.contacts tc " + builder.getValue(), sqlParams, q.getQuery(), 0, 0, new RmsTransaction());
+        Object object = HibernateUtilV2.count("SELECT  count(distinct t) FROM RmsTransaction t left join t.contacts tc " + builder.getValue(), sqlParams, q.getQuery(), 0, 0, new RmsTransaction());
 
         Long count = Parser.convertObjectToLong(object);
 
@@ -145,7 +145,7 @@ public class TransactionStatusStageQueryHandler implements IQueryHandler {
     public List<Object> getTransactionStatusStageByTransactionId(String transactionId) {
         HashMap<String, Object> sqlParams = new HashMap<String, Object>();
         sqlParams.put("transactionId", transactionId);
-        List<Object> brs = HibernateUtils.select("From TransactionStatusStage tss where tss.txn.id =:transactionId", sqlParams);
+        List<Object> brs = HibernateUtilV2.select("From TransactionStatusStage tss where tss.txn.id =:transactionId", sqlParams);
         return brs;
 
     }

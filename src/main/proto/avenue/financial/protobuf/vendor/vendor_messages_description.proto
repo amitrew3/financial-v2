@@ -35,10 +35,7 @@ message VendorInfoProto{
   google.protobuf.StringValue toll_free = 12;
   google.protobuf.StringValue internal_notes = 13;
   google.protobuf.StringValue account_number = 14;
-  google.protobuf.StringValue delivery_instructions = 15;
-  google.protobuf.StringValue ship_to_contact = 16;
   avenue.financial.protobuf.core.AddressProto billing_address = 17;
-  avenue.financial.protobuf.core.AddressProto shipping_address = 18;
 
 }
 message AddVendorProto{

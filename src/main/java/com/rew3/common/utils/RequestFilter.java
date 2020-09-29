@@ -1,5 +1,6 @@
 package com.rew3.common.utils;
 
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.paymentterm.model.PaymentTerm;
 import com.rew3.purchase.expense.model.Expense;
 import com.rew3.sale.invoice.model.Invoice;
@@ -7,7 +8,6 @@ import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
 import com.rew3.brokerage.commissionplan.model.CommissionPlan;
 import com.rew3.brokerage.transaction.model.RmsTransaction;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.accounting.account.model.Account;
 import com.rew3.accounting.account.model.AccountGroup;
 import com.rew3.salestax.model.SalesTax;
@@ -57,7 +57,7 @@ public class RequestFilter {
 
                     if (tv.getType() == "STRING" && !requestMap.getValue().toString().contains("[") && !requestMap.getValue().toString().contains("]")) {
                         builder.append("AND");
-                        builder.append(field + " = " + HibernateUtils.s(value));
+                        builder.append(field + " = " + HibernateUtilV2.s(value));
 
                     } else if (tv.getType() == "DATE" && !requestMap.getValue().toString().contains("[") && !requestMap.getValue().toString().contains("]")) {
                         Matcher matcher = PatternMatcher.specificDateMatch(requestMap.getValue().toString());
@@ -68,7 +68,7 @@ public class RequestFilter {
 
                             builder.append(field + " = :" + sqlKey);
                             Timestamp filterValue = Rew3Date.convertToUTC(requestMap.getValue().toString());
-                           // String vvv=HibernateUtils.s(filterValue.toString());
+                           // String vvv=HibernateUtilV2.s(filterValue.toString());
                             sqlParams.put(sqlKey, filterValue);
                         }
                     }

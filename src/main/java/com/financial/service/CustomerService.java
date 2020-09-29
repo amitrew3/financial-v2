@@ -98,7 +98,7 @@ public class CustomerService extends CustomerServiceProtoGrpc.CustomerServicePro
 
 
         UpdateCustomer command = null;
-        command = new UpdateCustomer(request.getData());
+        command = new UpdateCustomer(request.getId(),request.getData());
         try {
             CommandRegister.getInstance().process(command);
         } catch (Exception e) {

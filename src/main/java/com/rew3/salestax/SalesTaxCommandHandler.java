@@ -11,7 +11,6 @@ import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.database.HibernateUtilV2;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.salestax.command.CreateSalesTax;
 import com.rew3.salestax.command.DeleteSalesTax;
 import com.rew3.salestax.command.UpdateSalesTax;
@@ -168,7 +167,7 @@ public class SalesTaxCommandHandler implements ICommandHandler {
 
         SalesTax tax = (SalesTax) new SalesTaxQueryHandler().getById(c.id);
         if (tax != null) {
-            HibernateUtils.saveAsDeleted(tax);
+            HibernateUtilV2.saveAsDeleted(tax);
 
         }
         c.setObject(tax);

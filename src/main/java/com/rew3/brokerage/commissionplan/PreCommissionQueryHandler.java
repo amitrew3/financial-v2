@@ -5,7 +5,7 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.DB;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.PaginationParams;
@@ -19,7 +19,7 @@ public class PreCommissionQueryHandler implements IQueryHandler {
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
-        PreCommission commissionPlan = (PreCommission) HibernateUtils.get(PreCommission.class, id);
+        PreCommission commissionPlan = (PreCommission) HibernateUtilV2.get(PreCommission.class, id);
         if (commissionPlan == null) {
             throw new NotFoundException("Gross Commission Plan id(" + id + ") not found.");
         }
@@ -129,13 +129,13 @@ public class PreCommissionQueryHandler implements IQueryHandler {
         int offset = 0;
         offset = (limit * (page - 1));
 
-        List<Object> associates = HibernateUtils.select("FROM CommissionPlan " + builder.getValue(), sqlParams, q.getQuery(), limit, offset);
+        List<Object> associates = HibernateUtilV2.select("FROM CommissionPlan " + builder.getValue(), sqlParams, q.getQuery(), limit, offset);
         return associates;
     }
 
     public Long count() throws CommandException {
 
-        Long count = (Long) HibernateUtils.createQuery("SELECT COUNT(*) FROM CommissionPlan", null);
+        Long count = (Long) HibernateUtilV2.createQuery("SELECT COUNT(*) FROM CommissionPlan", null);
         return count;
     }
 

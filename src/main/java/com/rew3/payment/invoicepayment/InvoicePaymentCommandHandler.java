@@ -7,7 +7,7 @@ import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags.EntityStatus;
 import com.rew3.common.utils.APILogType;
 import com.rew3.common.utils.APILogger;
@@ -37,43 +37,43 @@ public class InvoicePaymentCommandHandler implements ICommandHandler {
     }
 
     public void handle(CreateInvoicePayment c) {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
         Transaction trx = c.getTransaction();
 
         try {
             InvoicePayment t = this._handleSaveInvoicePayment(c);
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
+                HibernateUtilV2.commitTransaction(c.getTransaction());
             }
             c.setObject(t);
         } catch (Exception ex) {
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }
 
     public void handle(UpdateInvoicePayment c) {
-        // HibernateUtils.openSession();
+        // HibernateUtilV2.openSession();
         Transaction trx = c.getTransaction();
 
         try {
             InvoicePayment term = this._handleSaveInvoicePayment(c);
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
+                HibernateUtilV2.commitTransaction(c.getTransaction());
             }
             c.setObject(term);
         } catch (Exception ex) {
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
     }
@@ -114,7 +114,7 @@ public class InvoicePaymentCommandHandler implements ICommandHandler {
             paymentOption.setStatus(EntityStatus.ACTIVE);
         }
 
-        paymentOption = (InvoicePayment) HibernateUtils.save(paymentOption, c.getTransaction());
+        paymentOption = (InvoicePayment) HibernateUtilV2.save(paymentOption, c.getTransaction());
 
         return paymentOption;
 
@@ -131,19 +131,19 @@ public class InvoicePaymentCommandHandler implements ICommandHandler {
                     throw new CommandException("Permission denied");
                 }
                 terms.setStatus(EntityStatus.DELETED);
-                terms= (InvoicePayment) HibernateUtils.save(terms,trx);
+                terms= (InvoicePayment) HibernateUtilV2.save(terms,trx);
             }
             if (c.isCommittable()) {
-                HibernateUtils.commitTransaction(c.getTransaction());
+                HibernateUtilV2.commitTransaction(c.getTransaction());
             }
             c.setObject(terms);
         } catch (Exception ex) {
             if (c.isCommittable()) {
-                HibernateUtils.rollbackTransaction(trx);
+                HibernateUtilV2.rollbackTransaction(trx);
             }
         } finally {
             if (c.isCommittable()) {
-                HibernateUtils.closeSession();
+                HibernateUtilV2.closeSession();
             }
         }
 

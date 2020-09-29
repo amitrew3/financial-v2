@@ -6,7 +6,7 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.DB;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.PaginationParams;
@@ -20,7 +20,7 @@ public class TieredStageQueryHandler implements IQueryHandler {
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
-        Acp acp = (Acp) HibernateUtils.get(Acp.class, id);
+        Acp acp = (Acp) HibernateUtilV2.get(Acp.class, id);
         if (acp == null) {
             throw new NotFoundException("Single rate ACP id(" + id + ") not found.");
         }
@@ -131,14 +131,14 @@ public class TieredStageQueryHandler implements IQueryHandler {
         int offset = 0;
         offset = (limit * (page - 1));
 
-        List<Object> acps = HibernateUtils.select("SELECT distinct t FROM TieredStage t " + builder.getValue(), sqlParams, q.getQuery(), limit, offset, new RmsTransaction());
+        List<Object> acps = HibernateUtilV2.select("SELECT distinct t FROM TieredStage t " + builder.getValue(), sqlParams, q.getQuery(), limit, offset, new RmsTransaction());
         return acps;
 
     }
 
     public Long count() throws CommandException {
 
-        Long count = (Long) HibernateUtils.createQuery("SELECT COUNT(*) FROM SingleRateAcp", null);
+        Long count = (Long) HibernateUtilV2.createQuery("SELECT COUNT(*) FROM SingleRateAcp", null);
         return count;
     }
 

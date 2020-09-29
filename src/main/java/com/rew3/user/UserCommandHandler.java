@@ -1,6 +1,7 @@
 package com.rew3.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.user.command.CreateUser;
 import com.rew3.user.command.UpdateUser;
 import com.rew3.user.model.User;
@@ -8,7 +9,6 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.model.Flags.EntityStatus;
 import com.rew3.common.utils.APILogType;
 import com.rew3.common.utils.APILogger;
@@ -30,43 +30,43 @@ public class UserCommandHandler implements ICommandHandler {
 	}
 
 	public void handle(CreateUser c) {
-		// HibernateUtils.openSession();
+		// HibernateUtilV2.openSession();
 		Transaction trx = c.getTransaction();
 
 		try {
 			User u = this._handleSaveUser(c);
 			if (c.isCommittable()) {
-				HibernateUtils.commitTransaction(c.getTransaction());
+				HibernateUtilV2.commitTransaction(c.getTransaction());
 			}
 			c.setObject(u);
 		} catch (Exception ex) {
 			if (c.isCommittable()) {
-				HibernateUtils.rollbackTransaction(trx);
+				HibernateUtilV2.rollbackTransaction(trx);
 			}
 		} finally {
 			if (c.isCommittable()) {
-				HibernateUtils.closeSession();
+				HibernateUtilV2.closeSession();
 			}
 		}
 	}
 
 	public void handle(UpdateUser c) {
-		// HibernateUtils.openSession();
+		// HibernateUtilV2.openSession();
 		Transaction trx = c.getTransaction();
 
 		try {
 			User ba = this._handleSaveUser(c);
 			if (c.isCommittable()) {
-				HibernateUtils.commitTransaction(c.getTransaction());
+				HibernateUtilV2.commitTransaction(c.getTransaction());
 			}
 			c.setObject(ba);
 		} catch (Exception ex) {
 			if (c.isCommittable()) {
-				HibernateUtils.rollbackTransaction(trx);
+				HibernateUtilV2.rollbackTransaction(trx);
 			}
 		} finally {
 			if (c.isCommittable()) {
-				HibernateUtils.closeSession();
+				HibernateUtilV2.closeSession();
 			}
 		}
 	}
@@ -140,7 +140,7 @@ public class UserCommandHandler implements ICommandHandler {
 
 
 
-		u = (User) HibernateUtils.save(u, c.getTransaction());
+		u = (User) HibernateUtilV2.save(u, c.getTransaction());
 
 		/*String entityTitle = u.getFirstName() + " " + u.getLastName();
 

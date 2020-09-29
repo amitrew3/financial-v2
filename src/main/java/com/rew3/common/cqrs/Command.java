@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.rew3.common.database.HibernateUtilV2;
 import org.hibernate.Transaction;
 
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 import com.rew3.common.application.CommandException;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.json.JSONValidatorEngine;
 import com.rew3.common.json.JSONValidatorLog;
 import com.rew3.common.json.JSONValidatorReport;
@@ -27,23 +27,23 @@ public class Command implements ICommand {
     private boolean isCommittable = false;
 
     public Command() {
-       // HibernateUtils.openSession();
-       // this.trx = HibernateUtils.beginTransaction();
+       // HibernateUtilV2.openSession();
+       // this.trx = HibernateUtilV2.beginTransaction();
         this.data = new HashMap<String, Object>();
         this.obj = null;
     }
 
     public Command(HashMap<String, Object> params) {
-       // HibernateUtils.openSession();
-       // this.trx = HibernateUtils.beginTransaction();
+       // HibernateUtilV2.openSession();
+       // this.trx = HibernateUtilV2.beginTransaction();
        // this.isCommittable = true;
         this.data = params;
         this.obj = null;
     }
 
     public Command(List<HashMap<String, Object>> params) {
-        HibernateUtils.openSession();
-//        this.trx = HibernateUtils.beginTransaction();
+        HibernateUtilV2.openSession();
+//        this.trx = HibernateUtilV2.beginTransaction();
 //        this.isCommittable = true;
         this.bulkData = params;
         this.obj = null;
@@ -55,8 +55,8 @@ public class Command implements ICommand {
             this.trx = trx;
             this.isCommittable = false;
         } else {
-            HibernateUtils.openSession();
-            this.trx = HibernateUtils.beginTransaction();
+            HibernateUtilV2.openSession();
+            this.trx = HibernateUtilV2.beginTransaction();
             this.isCommittable = true;
         }
         this.data = params;

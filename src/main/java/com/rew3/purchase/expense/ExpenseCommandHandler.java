@@ -9,7 +9,7 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.utils.APILogType;
 import com.rew3.common.utils.APILogger;
 import com.rew3.purchase.expense.command.*;
@@ -85,7 +85,7 @@ public class ExpenseCommandHandler implements ICommandHandler {
             expense.setDescription((String) c.get("description"));
         }
 
-        expense = (Expense) HibernateUtils.save(expense);
+        expense = (Expense) HibernateUtilV2.save(expense);
 
 
         return expense;
@@ -102,7 +102,7 @@ public class ExpenseCommandHandler implements ICommandHandler {
                 throw new CommandException("Permission denied");
             }
 
-            HibernateUtils.saveAsDeleted(expense);
+            HibernateUtilV2.saveAsDeleted(expense);
         }
     }
 

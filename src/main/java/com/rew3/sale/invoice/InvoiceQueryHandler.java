@@ -6,7 +6,6 @@ import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
 import com.rew3.common.database.HibernateUtilV2;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.Flags.InvoiceType;
 import com.rew3.common.model.PaginationParams;
@@ -65,7 +64,7 @@ public class InvoiceQueryHandler implements IQueryHandler {
 		// Invoice Number
 		if (q.has("invoiceNumber")) {
 			String value = (String) q.get("invoiceNumber");
-			whereSQL += " AND invoice_number = " + HibernateUtils.s(value);
+			whereSQL += " AND invoice_number = " + HibernateUtilV2.s(value);
 		}
 
 		// Customer Id
@@ -74,7 +73,7 @@ public class InvoiceQueryHandler implements IQueryHandler {
 			if (customerIdList.size() > 0) {
 				String whereCustomer = "";
 				for (String customerId : customerIdList) {
-					whereCustomer += "customer_id = " + HibernateUtils.s(customerId) + " OR ";
+					whereCustomer += "customer_id = " + HibernateUtilV2.s(customerId) + " OR ";
 				}
 				if (whereCustomer.length() > 3) {
 					whereCustomer = whereCustomer.substring(0, whereCustomer.length() - 3);
@@ -90,8 +89,8 @@ public class InvoiceQueryHandler implements IQueryHandler {
 				String whereUser = "";
 				for (String userId : userIdList) {
 					System.out.println(userId);
-					System.out.println(HibernateUtils.s(userId));
-					whereUser += "user_id = " + HibernateUtils.s(userId) + " OR ";
+					System.out.println(HibernateUtilV2.s(userId));
+					whereUser += "user_id = " + HibernateUtilV2.s(userId) + " OR ";
 				}
 				if (whereUser.length() > 3) {
 					whereUser = whereUser.substring(0, whereUser.length() - 3);
@@ -200,28 +199,28 @@ public class InvoiceQueryHandler implements IQueryHandler {
 		if (q.has("invoiceDateStart") ^ q.has("invoiceDateEnd")) {
 			APILogger.add(APILogType.WARNING, "Invoice date start or date end missing.");
 		} else if (q.has("invoiceDateStart")) {
-			whereSQL += " AND EXPENSE_DATE(invoiceDate) BETWEEN EXPENSE_DATE(" + HibernateUtils.s((String) q.get("invoiceDateStart"))
-					+ ") AND EXPENSE_DATE(" + HibernateUtils.s((String) q.get("invoiceDateEnd")) + ") ";
+			whereSQL += " AND EXPENSE_DATE(invoiceDate) BETWEEN EXPENSE_DATE(" + HibernateUtilV2.s((String) q.get("invoiceDateStart"))
+					+ ") AND EXPENSE_DATE(" + HibernateUtilV2.s((String) q.get("invoiceDateEnd")) + ") ";
 		}
 
 		if (q.has("dueDateStart") ^ q.has("dueDateEnd")) {
 			APILogger.add(APILogType.WARNING, "Due date start or date end missing.");
 		} else if (q.has("dueDateStart")) {
-			whereSQL += " AND EXPENSE_DATE(dueDate) BETWEEN EXPENSE_DATE(" + HibernateUtils.s((String) q.get("dueDateStart"))
-					+ ") AND EXPENSE_DATE(" + HibernateUtils.s((String) q.get("dueDateEnd")) + ") ";
+			whereSQL += " AND EXPENSE_DATE(dueDate) BETWEEN EXPENSE_DATE(" + HibernateUtilV2.s((String) q.get("dueDateStart"))
+					+ ") AND EXPENSE_DATE(" + HibernateUtilV2.s((String) q.get("dueDateEnd")) + ") ";
 		}
 
 		if (q.has("invoiceDateAfter")) {
-			whereSQL += " AND EXPENSE_DATE(invoiceDate) > EXPENSE_DATE(" + HibernateUtils.s((String) q.get("invoiceDateAfter")) + ") ";
+			whereSQL += " AND EXPENSE_DATE(invoiceDate) > EXPENSE_DATE(" + HibernateUtilV2.s((String) q.get("invoiceDateAfter")) + ") ";
 		}
 		if (q.has("invoiceDateBefore")) {
-			whereSQL += " AND EXPENSE_DATE(invoiceDate) < EXPENSE_DATE(" + HibernateUtils.s((String) q.get("invoiceDateBefore")) + ") ";
+			whereSQL += " AND EXPENSE_DATE(invoiceDate) < EXPENSE_DATE(" + HibernateUtilV2.s((String) q.get("invoiceDateBefore")) + ") ";
 		}
 		if (q.has("dueDateAfter")) {
-			whereSQL += " AND EXPENSE_DATE(dueDate) > EXPENSE_DATE(" + HibernateUtils.s((String) q.get("dueDateAfter")) + ") ";
+			whereSQL += " AND EXPENSE_DATE(dueDate) > EXPENSE_DATE(" + HibernateUtilV2.s((String) q.get("dueDateAfter")) + ") ";
 		}
 		if (q.has("dueDateBefore")) {
-			whereSQL += " AND EXPENSE_DATE(dueDate) < EXPENSE_DATE(" + HibernateUtils.s((String) q.get("dueDateBefore")) + ") ";
+			whereSQL += " AND EXPENSE_DATE(dueDate) < EXPENSE_DATE(" + HibernateUtilV2.s((String) q.get("dueDateBefore")) + ") ";
 		}
 
 		if (q.has("recurringPeriod")) {
@@ -229,30 +228,30 @@ public class InvoiceQueryHandler implements IQueryHandler {
 		}
 
 		if (q.has("transactionNumber")) {
-			whereSQL += " AND transaction_number = " + HibernateUtils.s((String) q.get("transactionNumber"));
+			whereSQL += " AND transaction_number = " + HibernateUtilV2.s((String) q.get("transactionNumber"));
 		}
 
 		if (q.has("saleId")) {
-			whereSQL += " AND sale_id = " + HibernateUtils.s((String) q.get("saleId"));
+			whereSQL += " AND sale_id = " + HibernateUtilV2.s((String) q.get("saleId"));
 		}
 
 		if (q.has("note")) {
-			whereSQL += " AND note LIKE " + HibernateUtils.s((String) q.get("note"));
+			whereSQL += " AND note LIKE " + HibernateUtilV2.s((String) q.get("note"));
 		}
 
 		offset = (limit * (page - 1));
 
-		List<Object> invoices = HibernateUtils.select("FROM Invoice " + whereSQL, sqlParams, q.getQuery(), limit, offset);
+		List<Object> invoices = HibernateUtilV2.select("FROM Invoice " + whereSQL, sqlParams, q.getQuery(), limit, offset);
 		return invoices;
 	}*/
 
     public Long count() throws CommandException {
-        Long count = (Long) HibernateUtils.createQuery("select count(*) from Invoice", null);
+        Long count = (Long) HibernateUtilV2.createQuery("select count(*) from Invoice", null);
         return count;
     }
 
 	/*public InvoiceAttachment getAttachmentById(String id) throws CommandException {
-		InvoiceAttachment ia = (InvoiceAttachment) HibernateUtils.get(InvoiceAttachment.class,
+		InvoiceAttachment ia = (InvoiceAttachment) HibernateUtilV2.get(InvoiceAttachment.class,
 				Parser.convertObjectToLong(id));
 		return ia;
 	}*/
@@ -260,7 +259,7 @@ public class InvoiceQueryHandler implements IQueryHandler {
     public List<Object> getAttachmentByInvoiceId(String invoiceId) {
         HashMap<String, Object> sqlParams = new HashMap<String, Object>();
         sqlParams.put("invoiceId", invoiceId);
-        List<Object> attachments = HibernateUtils.select("FROM InvoiceAttachment WHERE invoiceId=:invoiceId",
+        List<Object> attachments = HibernateUtilV2.select("FROM InvoiceAttachment WHERE invoiceId=:invoiceId",
                 sqlParams);
         return attachments;
     }
@@ -271,7 +270,7 @@ public class InvoiceQueryHandler implements IQueryHandler {
         HashMap<String, Object> sqlParams = new HashMap<>();
         sqlParams.put("productId", productId);
 
-        List<Map<String, Object>> queryResult = (List<Map<String, Object>>) HibernateUtils.selectSQL(sql, sqlParams);
+        List<Map<String, Object>> queryResult = (List<Map<String, Object>>) HibernateUtilV2.selectSQL(sql, sqlParams);
         Integer count = Parser.convertObjectToInteger(queryResult.get(0).get("count"));
         return count;
     }
@@ -281,7 +280,7 @@ public class InvoiceQueryHandler implements IQueryHandler {
         HashMap<String, Object> sqlParams = new HashMap<>();
         sqlParams.put("paidStatus", Flags.InvoicePaymentStatus.PAID);
         sqlParams.put("overdueStatus", Flags.InvoiceDueStatus.OVERDUE);
-        List<Invoice> invoices = HibernateUtils
+        List<Invoice> invoices = HibernateUtilV2
                 .select("FROM Invoice WHERE payment_status != :paidStatus AND due_status != :overdueStatus", sqlParams);
         return invoices;
     }
@@ -290,7 +289,7 @@ public class InvoiceQueryHandler implements IQueryHandler {
         HashMap<String, Object> sqlParams = new HashMap<>();
         sqlParams.put("type", InvoiceType.CUSTOMER_INVOICE);
         sqlParams.put("currentTime", DateTime.getCurrentTimestamp());
-        List<Invoice> invoices = HibernateUtils
+        List<Invoice> invoices = HibernateUtilV2
                 .select("FROM Invoice WHERE mode = :mode AND type = :type AND nextRecurDate < :currentTime", sqlParams);
         return invoices;
     }
@@ -300,7 +299,7 @@ public class InvoiceQueryHandler implements IQueryHandler {
         HashMap<String, Object> sqlParams = new HashMap<>();
         sqlParams.put("paidStatus", Flags.InvoicePaymentStatus.PAID);
         sqlParams.put("overdueStatus", Flags.InvoiceDueStatus.OVERDUE);
-        List<Invoice> invoices = HibernateUtils
+        List<Invoice> invoices = HibernateUtilV2
                 .select("FROM Invoice WHERE payment_status != :paidStatus AND due_status != :overdueStatus", sqlParams);
         return invoices;
     }
@@ -314,11 +313,11 @@ public class InvoiceQueryHandler implements IQueryHandler {
         sqlParams.put("currentDate", DateTime.getCurrentTimestamp());
 
         List<Invoice> invoices = new ArrayList<Invoice>();
-        List<Map<String, Object>> queryResult = (List<Map<String, Object>>) HibernateUtils.selectSQL(sql, sqlParams);
+        List<Map<String, Object>> queryResult = (List<Map<String, Object>>) HibernateUtilV2.selectSQL(sql, sqlParams);
 
         for (Map<String, Object> qRow : queryResult) {
             String invoiceId = (String) qRow.get("id");
-            Invoice inv = (Invoice) HibernateUtils.get(Invoice.class, invoiceId);
+            Invoice inv = (Invoice) HibernateUtilV2.get(Invoice.class, invoiceId);
             invoices.add(inv);
         }
 

@@ -5,7 +5,6 @@ import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
 import com.rew3.common.database.HibernateUtilV2;
-import com.rew3.common.database.HibernateUtils;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.PaginationParams;
 import com.rew3.common.utils.Parser;
@@ -79,10 +78,10 @@ public class SalesTaxQueryHandler implements IQueryHandler {
         }
 
 
-        List<Object> terms = HibernateUtils.select("SELECT distinct t FROM SalesTax t " + builder.getValue(), sqlParams, q.getQuery(), limit, offset,
+        List<Object> tax = HibernateUtilV2.select("SELECT distinct t FROM SalesTax t " + builder.getValue(), sqlParams, q.getQuery(), limit, offset,
                 SalesTax.class);
 
-        return terms;
+        return tax;
     }
 
     public Long count(Query q) {
@@ -98,7 +97,7 @@ public class SalesTaxQueryHandler implements IQueryHandler {
 
         RequestFilter.doFilter(q, sqlParams, builder, SalesTax.class);
 
-        Long count = HibernateUtils.count("SELECT  count(distinct t) FROM SalesTax t " + builder.getValue(), sqlParams, q.getQuery(), SalesTax.class);
+        Long count = HibernateUtilV2.count("SELECT  count(distinct t) FROM SalesTax t " + builder.getValue(), sqlParams, q.getQuery(), SalesTax.class);
 
 
         return count;

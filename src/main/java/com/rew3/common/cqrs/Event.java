@@ -1,19 +1,8 @@
 package com.rew3.common.cqrs;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 
 import org.hibernate.Transaction;
-
-import com.github.fge.jsonschema.core.exceptions.ProcessingException;
-import com.rew3.common.application.CommandException;
-import com.rew3.common.database.HibernateUtils;
-import com.rew3.common.json.JSONValidatorEngine;
-import com.rew3.common.json.JSONValidatorLog;
-import com.rew3.common.json.JSONValidatorReport;
-import com.rew3.common.utils.APILogType;
-import com.rew3.common.utils.APILogger;
 
 public class Event implements IEvent {
 	protected HashMap<String, Object> data;

@@ -93,15 +93,13 @@ public class InvoiceCommandHandler implements ICommandHandler {
         if (c.hasId()) {
             invoice = (Invoice) new InvoiceQueryHandler().getById(c.getId().getValue());
         }
-        boolean isNew = false;
+        //todo
         return invoice;
 
     }
 
 
     private Invoice _handleSaveInvoice(AddInvoiceProto c) throws Exception {
-
-
         Invoice invoice = new Invoice();
         InvoiceInfoProto invoiceInfo = null;
         if (c.hasInvoiceInfo()) {

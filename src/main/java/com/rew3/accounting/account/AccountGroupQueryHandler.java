@@ -4,7 +4,7 @@ import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
-import com.rew3.common.database.HibernateUtils;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.Flags.AccountingHead;
 import com.rew3.common.model.PaginationParams;
@@ -20,7 +20,7 @@ public class AccountGroupQueryHandler implements IQueryHandler {
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
-        AccountGroup accountGroup = (AccountGroup) HibernateUtils.get(AccountGroup.class, id);
+        AccountGroup accountGroup = (AccountGroup) HibernateUtilV2.get(AccountGroup.class, id);
         if (accountGroup == null) {
             throw new NotFoundException("Sub accounting head id (" + id + ") not found.");
         }
@@ -34,7 +34,7 @@ public class AccountGroupQueryHandler implements IQueryHandler {
 
 
     public Long count() throws CommandException {
-        Long count = (Long) HibernateUtils.createQuery("select count(*) from SubAccountingHead", null);
+        Long count = (Long) HibernateUtilV2.createQuery("select count(*) from SubAccountingHead", null);
         return count;
     }
 
@@ -68,7 +68,7 @@ public class AccountGroupQueryHandler implements IQueryHandler {
         }
 
 
-        List<Object> aCodes = HibernateUtils.select("FROM SubAccountingHead " + whereSQL, sqlParams);
+        List<Object> aCodes = HibernateUtilV2.select("FROM SubAccountingHead " + whereSQL, sqlParams);
 
         return aCodes;
     }
@@ -92,7 +92,7 @@ public class AccountGroupQueryHandler implements IQueryHandler {
         whereSQL += " where accounting_head = :accountingHead ";
 
 
-        List<Object> aJournals = HibernateUtils.select("From SubAccountingHead" + whereSQL, sqlParams);
+        List<Object> aJournals = HibernateUtilV2.select("From SubAccountingHead" + whereSQL, sqlParams);
         return aJournals;
     }
 
@@ -101,7 +101,7 @@ public class AccountGroupQueryHandler implements IQueryHandler {
         sqlParams.put("accountingCodeType", accountingCodeType.toLowerCase());
         String whereSQL = "";
         whereSQL += " where accountingCodeType = :accountingCodeType ";
-        return (AccountGroup) HibernateUtils.createQuery("From SubAccountingHead" + whereSQL, sqlParams);
+        return (AccountGroup) HibernateUtilV2.createQuery("From SubAccountingHead" + whereSQL, sqlParams);
 
     }
 
@@ -110,7 +110,7 @@ public class AccountGroupQueryHandler implements IQueryHandler {
         sqlParams.put("code", code);
         String whereSQL = "";
         whereSQL += " where code = :code ";
-        return (AccountGroup) HibernateUtils.createQuery("From SubAccountingHead" + whereSQL, sqlParams);
+        return (AccountGroup) HibernateUtilV2.createQuery("From SubAccountingHead" + whereSQL, sqlParams);
 
     }
 
@@ -161,7 +161,7 @@ public class AccountGroupQueryHandler implements IQueryHandler {
         }
 
 
-        List<Object> subHeads = HibernateUtils.select("SELECT distinct t FROM SubAccountingHead t " + builder.getValue(), sqlParams, q.getQuery(),
+        List<Object> subHeads = HibernateUtilV2.select("SELECT distinct t FROM SubAccountingHead t " + builder.getValue(), sqlParams, q.getQuery(),
                 limit, offset, AccountGroup.class);
 
         return subHeads;
@@ -180,7 +180,7 @@ public class AccountGroupQueryHandler implements IQueryHandler {
 
         RequestFilter.doFilter(q, sqlParams, builder, AccountGroup.class);
 
-        Long count = HibernateUtils.count("SELECT  count(distinct t) FROM SubAccountingHead t " + builder.getValue(), sqlParams, q.getQuery(),
+        Long count = HibernateUtilV2.count("SELECT  count(distinct t) FROM SubAccountingHead t " + builder.getValue(), sqlParams, q.getQuery(),
                 AccountGroup.class);
 
 

@@ -13,19 +13,8 @@ public class UpdateCustomer extends Command implements ICommand {
 
 	public UpdateCustomerProto updateCustomerProto;
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
+	public UpdateCustomer(String id, UpdateCustomerProto updateCustomerProto) {
 		this.id = id;
-	}
-
-	public UpdateCustomerProto getUpdateCustomerProto() {
-		return updateCustomerProto;
-	}
-
-	public void setUpdateCustomerProto(UpdateCustomerProto updateCustomerProto) {
 		this.updateCustomerProto = updateCustomerProto;
 	}
 }
