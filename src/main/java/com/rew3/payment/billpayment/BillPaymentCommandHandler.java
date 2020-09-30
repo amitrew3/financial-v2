@@ -1,20 +1,25 @@
 package com.rew3.payment.billpayment;
 
+import com.avenue.base.grpc.proto.core.MiniUserProto;
+import com.avenue.financial.services.grpc.proto.billpayment.AddBillPaymentInfoProto;
+import com.avenue.financial.services.grpc.proto.billpayment.AddBillPaymentProto;
+import com.avenue.financial.services.grpc.proto.billpayment.UpdateBillPaymentProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.rew3.common.application.Authentication;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.database.HibernateUtilV2;
-import com.rew3.common.model.Flags.EntityStatus;
-import com.rew3.common.utils.APILogType;
-import com.rew3.common.utils.APILogger;
+import com.rew3.common.utils.Rew3Date;
 import com.rew3.payment.billpayment.command.CreateBillPayment;
 import com.rew3.payment.billpayment.command.DeleteBillPayment;
 import com.rew3.payment.billpayment.command.UpdateBillPayment;
 import com.rew3.payment.billpayment.model.BillPayment;
+import com.rew3.purchase.bill.BillQueryHandler;
+import com.rew3.purchase.bill.model.Bill;
+import com.rew3.purchase.vendor.VendorQueryHandler;
+import com.rew3.purchase.vendor.model.Vendor;
 import org.hibernate.Transaction;
 
 public class BillPaymentCommandHandler implements ICommandHandler {
@@ -26,7 +31,7 @@ public class BillPaymentCommandHandler implements ICommandHandler {
 
     }
 
-    public void handle(ICommand c) {
+    public void handle(ICommand c) throws NotFoundException, CommandException {
         if (c instanceof CreateBillPayment) {
             handle((CreateBillPayment) c);
         } else if (c instanceof UpdateBillPayment) {
@@ -37,23 +42,12 @@ public class BillPaymentCommandHandler implements ICommandHandler {
     }
 
     public void handle(CreateBillPayment c) {
-        // HibernateUtilV2.openSession();
-        Transaction trx = c.getTransaction();
 
         try {
-            BillPayment t = this._handleSaveBillPayment(c);
-            if (c.isCommittable()) {
-                HibernateUtilV2.commitTransaction(c.getTransaction());
-            }
+            BillPayment t = this._handleSaveBillPayment(c.addBillPaymentProto);
             c.setObject(t);
         } catch (Exception ex) {
-            if (c.isCommittable()) {
-                HibernateUtilV2.rollbackTransaction(trx);
-            }
-        } finally {
-            if (c.isCommittable()) {
-                HibernateUtilV2.closeSession();
-            }
+            System.out.println(ex);
         }
     }
 
@@ -62,90 +56,115 @@ public class BillPaymentCommandHandler implements ICommandHandler {
         Transaction trx = c.getTransaction();
 
         try {
-            BillPayment term = this._handleSaveBillPayment(c);
-            if (c.isCommittable()) {
-                HibernateUtilV2.commitTransaction(c.getTransaction());
-            }
-            c.setObject(term);
+            BillPayment payment = this._handleUpdateBillPayment(c.updateBillPaymentProto);
+            c.setObject(payment);
         } catch (Exception ex) {
-            if (c.isCommittable()) {
-                HibernateUtilV2.rollbackTransaction(trx);
-            }
-        } finally {
-            if (c.isCommittable()) {
-                HibernateUtilV2.closeSession();
-            }
+            System.out.println(ex);
         }
     }
 
-    private BillPayment _handleSaveBillPayment(ICommand c) throws CommandException, JsonProcessingException, NotFoundException {
-
-        BillPayment billPayment = null;
-        boolean isNew = true;
-
-        if (c.has("id") && c instanceof UpdateBillPayment) {
-            billPayment = (BillPayment) (new BillPaymentQueryHandler()).getById((String) c.get("id"));
-            isNew = false;
-            /*if (paymentOption == null) {
-                APILogger.add(APILogType.ERROR, "BillPayment (" + c.get("id") + ") not found.");
-                throw new NotFoundException("BillPayment (" + c.get("id") + ") not found.");
-            }*/
-           /* if(!paymentOption.getW().contains(Authentication.getRew3UserId()) | !paymentOption.getOwnerId().toString().equals(Authentication.getRew3UserId())){
-                APILogger.add(APILogType.ERROR, "Access Denied");
-                throw new CommandException("Access Denied");
-            }*/
+    private BillPayment _handleUpdateBillPayment(UpdateBillPaymentProto c) throws NotFoundException, CommandException, JsonProcessingException {
+        BillPayment payment = null;
+        if (c.hasId()) {
+            payment = (BillPayment) new BillPaymentQueryHandler().getById(c.getId().getValue());
         }
 
-        if (billPayment == null) {
-            billPayment = new BillPayment();
+        AddBillPaymentInfoProto billInfo = null;
+
+
+        if (c.hasBillPaymentInfo()) {
+            billInfo = c.getBillPaymentInfo();
+            if (billInfo.hasAmount()) {
+                payment.setAmount(billInfo.getAmount().getValue());
+            }
+            if (billInfo.hasDate()) {
+                payment.setDate(Rew3Date.convertToUTC((String) billInfo.getDate().getValue()));
+            }
         }
 
-//        if (c.has("name")) {
-//            billPayment.setName((String) c.get("name"));
-//        }
-//
-//        if (c.has("description")) {
-//            billPayment.setDescription((String) c.get("description"));
-//        }
-
-        if (c.has("status")) {
-            billPayment.setStatus(EntityStatus.valueOf((String) c.get("status")));
-        } else if (isNew) {
-            billPayment.setStatus(EntityStatus.ACTIVE);
+        if (billInfo.hasNotes()) {
+            payment.setNotes(billInfo.getNotes().getValue());
         }
 
-        billPayment = (BillPayment) HibernateUtilV2.save(billPayment, c.getTransaction());
 
-        return billPayment;
+        if (billInfo.hasVendorId()) {
+            Vendor vendor = (Vendor) new VendorQueryHandler().getById(billInfo.getVendorId().getValue());
+            payment.setVendor(vendor);
+        }
+        if (billInfo.hasBillId()) {
+            Bill customer = (Bill) new BillQueryHandler().getById(billInfo.getBillId().getValue());
+            payment.setBill(customer);
+        }
+
+
+        if (c.hasOwner()) {
+            MiniUserProto miniUserProto = c.getOwner();
+            if (miniUserProto.hasId()) {
+                payment.setOwnerId(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasFirstName()) {
+                payment.setOwnerFirstName(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasLastName()) {
+                payment.setOwnerLastName(miniUserProto.getId().getValue());
+            }
+        }
+        payment = (BillPayment) HibernateUtilV2.update(payment);
+        return payment;
+    }
+
+    private BillPayment _handleSaveBillPayment(AddBillPaymentProto c) throws JsonProcessingException, NotFoundException, CommandException {
+
+        BillPayment payment = new BillPayment();
+        AddBillPaymentInfoProto billInfo = null;
+
+
+        if (c.hasBillPaymentInfo()) {
+            billInfo = c.getBillPaymentInfo();
+            if (billInfo.hasAmount()) {
+                payment.setAmount(billInfo.getAmount().getValue());
+            }
+            if (billInfo.hasDate()) {
+                payment.setDate(Rew3Date.convertToUTC((String) billInfo.getDate().getValue()));
+            }
+        }
+
+        if (billInfo.hasNotes()) {
+            payment.setNotes(billInfo.getNotes().getValue());
+        }
+
+
+        if (billInfo.hasVendorId()) {
+            Vendor vendor = (Vendor) new VendorQueryHandler().getById(billInfo.getVendorId().getValue());
+            payment.setVendor(vendor);
+        }
+        if (billInfo.hasBillId()) {
+            Bill customer = (Bill) new BillQueryHandler().getById(billInfo.getBillId().getValue());
+            payment.setBill(customer);
+        }
+
+
+        if (c.hasOwner()) {
+            MiniUserProto miniUserProto = c.getOwner();
+            if (miniUserProto.hasId()) {
+                payment.setOwnerId(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasFirstName()) {
+                payment.setOwnerFirstName(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasLastName()) {
+                payment.setOwnerLastName(miniUserProto.getId().getValue());
+            }
+        }
+        payment = (BillPayment) HibernateUtilV2.save(payment);
+        return payment;
 
     }
 
-    public void handle(DeleteBillPayment c) {
-        Transaction trx = c.getTransaction();
-
-        try {
-            BillPayment terms = (BillPayment) new BillPaymentQueryHandler().getById((String) c.get("id"));
-            if (terms != null) {
-                if (!terms.hasDeletePermission(Authentication.getRew3UserId(), Authentication.getRew3GroupId())) {
-                    APILogger.add(APILogType.ERROR, "Permission denied");
-                    throw new CommandException("Permission denied");
-                }
-                terms.setStatus(EntityStatus.DELETED);
-                terms= (BillPayment) HibernateUtilV2.save(terms,trx);
-            }
-            if (c.isCommittable()) {
-                HibernateUtilV2.commitTransaction(c.getTransaction());
-            }
-            c.setObject(terms);
-        } catch (Exception ex) {
-            if (c.isCommittable()) {
-                HibernateUtilV2.rollbackTransaction(trx);
-            }
-        } finally {
-            if (c.isCommittable()) {
-                HibernateUtilV2.closeSession();
-            }
-        }
+    public void handle(DeleteBillPayment c) throws NotFoundException, CommandException {
+        String id = c.id;
+        BillPayment bill = (BillPayment) new BillPaymentQueryHandler().getById(id);
+        c.setObject(bill);
 
     }
 

@@ -29,7 +29,7 @@ public class BillPayment extends AbstractEntity {
     private Timestamp date;
 
     @Column(name = DB.Field.BillPayment.NOTES)
-    private Timestamp notes;
+    private String notes;
 
     public Vendor getVendor() {
         return vendor;
@@ -47,11 +47,11 @@ public class BillPayment extends AbstractEntity {
         this.date = date;
     }
 
-    public Timestamp getNotes() {
+    public String getNotes() {
         return notes;
     }
 
-    public void setNotes(Timestamp notes) {
+    public void setNotes(String notes) {
         this.notes = notes;
     }
 

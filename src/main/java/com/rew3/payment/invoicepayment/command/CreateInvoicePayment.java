@@ -7,11 +7,7 @@ import com.rew3.common.cqrs.ICommand;
 public class CreateInvoicePayment extends Command implements ICommand {
 	public AddInvoicePaymentProto addInvoicePaymentProto;
 
-	public AddInvoicePaymentProto getAddInvoicePaymentProto() {
-		return addInvoicePaymentProto;
-	}
-
-	public void setAddInvoicePaymentProto(AddInvoicePaymentProto addInvoicePaymentProto) {
+	public CreateInvoicePayment(AddInvoicePaymentProto addInvoicePaymentProto) {
 		this.addInvoicePaymentProto = addInvoicePaymentProto;
 	}
 }

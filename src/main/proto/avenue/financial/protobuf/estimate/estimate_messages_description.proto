@@ -38,19 +38,12 @@ message EstimateInfoProto{
   google.protobuf.StringValue estimate_number = 1;
   google.protobuf.StringValue po_so_number = 2;
   google.protobuf.StringValue estimate_date = 3;
-  google.protobuf.StringValue due_date = 4;
   avenue.financial.protobuf.customer.CustomerProto customer=5;
   avenue.financial.protobuf.paymentterm.PaymentTermProto payment_term=6;
-  google.protobuf.StringValue memos = 7;
-  PaymentStatusProto payment_status = 8;
-  google.protobuf.StringValue send_date_time = 9;
-  google.protobuf.StringValue internal_notes = 10;
-  google.protobuf.StringValue footer_notes = 11;
+  google.protobuf.StringValue notes = 7;
   google.protobuf.DoubleValue sub_total = 12;
   google.protobuf.DoubleValue tax_total = 13;
   google.protobuf.DoubleValue total = 14;
-  google.protobuf.BoolValue is_draft = 15;
-  avenue.financial.protobuf.core.AddressProto billing_address = 17;
   repeated EstimateItemProto items = 18;
 
 }

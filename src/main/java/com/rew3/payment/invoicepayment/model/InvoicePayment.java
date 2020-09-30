@@ -3,8 +3,6 @@ package com.rew3.payment.invoicepayment.model;
 
 import com.rew3.common.model.DB;
 import com.rew3.common.shared.model.AbstractEntity;
-import com.rew3.purchase.bill.model.Bill;
-import com.rew3.purchase.vendor.model.Vendor;
 import com.rew3.sale.customer.model.Customer;
 import com.rew3.sale.invoice.model.Invoice;
 
@@ -25,13 +23,13 @@ public class InvoicePayment extends AbstractEntity {
     private Customer customer;
 
     @Column(name=DB.Field.InvoicePayment.AMOUNT)
-    private String description;
+    private Double amount;
 
     @Column(name = DB.Field.InvoicePayment.DATE)
     private Timestamp date;
 
     @Column(name = DB.Field.InvoicePayment.NOTES)
-    private Timestamp notes;
+    private String notes;
 
     public Invoice getInvoice() {
         return invoice;
@@ -49,12 +47,12 @@ public class InvoicePayment extends AbstractEntity {
         this.customer = customer;
     }
 
-    public String getDescription() {
-        return description;
+    public Double getAmount() {
+        return amount;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 
     public Timestamp getDate() {
@@ -65,11 +63,11 @@ public class InvoicePayment extends AbstractEntity {
         this.date = date;
     }
 
-    public Timestamp getNotes() {
+    public String getNotes() {
         return notes;
     }
 
-    public void setNotes(Timestamp notes) {
+    public void setNotes(String notes) {
         this.notes = notes;
     }
 }

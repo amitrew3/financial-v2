@@ -2,6 +2,9 @@ syntax = "proto3";
 
 import "google/protobuf/wrappers.proto";
 import "avenue/financial/protobuf/core/core_messages_description.proto";
+import "avenue/financial/protobuf/invoice/invoice_messages_description.proto";
+import "avenue/financial/protobuf/customer/customer_messages_description.proto";
+
 
 
 option java_multiple_files = true;
@@ -21,10 +24,18 @@ message InvoicePaymentProto{
 }
 
 message InvoicePaymentInfoProto{
+  avenue.financial.protobuf.invoice.InvoiceProto invoice = 1;
+  avenue.financial.protobuf.customer.CustomerProto customer = 2;
+  google.protobuf.StringValue date = 3;
+  google.protobuf.DoubleValue amount = 4;
+  google.protobuf.StringValue notes = 5;
+
+}
+message AddInvoicePaymentInfoProto{
   google.protobuf.StringValue invoice_id = 1;
   google.protobuf.StringValue customer_id = 2;
   google.protobuf.StringValue date = 3;
-  google.protobuf.StringValue amount = 4;
+  google.protobuf.DoubleValue amount = 4;
   google.protobuf.StringValue notes = 5;
 
 }
@@ -33,7 +44,7 @@ message AddInvoicePaymentProto{
   avenue.financial.protobuf.core.MiniUserProto owner = 1;
   avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 2;
   avenue.financial.protobuf.core.VisibilityTypeProto visibility = 3;
-  InvoicePaymentInfoProto invoice_payment_info = 4;
+  AddInvoicePaymentInfoProto invoice_payment_info = 4;
 
 
 }
@@ -43,7 +54,7 @@ message UpdateInvoicePaymentProto{
   avenue.financial.protobuf.core.MiniUserProto owner = 2;
   avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 3;
   avenue.financial.protobuf.core.VisibilityTypeProto visibility = 4;
-  InvoicePaymentInfoProto invoice_payment_info = 5;
+  AddInvoicePaymentInfoProto invoice_payment_info = 5;
 }
 
 

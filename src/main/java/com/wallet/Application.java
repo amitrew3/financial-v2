@@ -18,6 +18,7 @@ import com.rew3.purchase.bill.BillCommandHandler;
 import com.rew3.purchase.expense.ExpenseCommandHandler;
 import com.rew3.purchase.vendor.VendorCommandHandler;
 import com.rew3.sale.customer.CustomerCommandHandler;
+import com.rew3.sale.estimate.EstimateCommandHandler;
 import com.rew3.sale.invoice.InvoiceCommandHandler;
 import com.rew3.sale.invoice.RecurringInvoiceCommandHandler;
 import com.rew3.salestax.SalesTaxCommandHandler;

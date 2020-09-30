@@ -1,5 +1,7 @@
 package com.rew3.payment.invoicepayment;
 
+import com.avenue.base.grpc.proto.core.MiniUserProto;
+import com.avenue.financial.services.grpc.proto.invoicepayment.AddInvoicePaymentInfoProto;
 import com.avenue.financial.services.grpc.proto.invoicepayment.AddInvoicePaymentProto;
 import com.avenue.financial.services.grpc.proto.invoicepayment.UpdateInvoicePaymentProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -9,10 +11,16 @@ import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.database.HibernateUtilV2;
+import com.rew3.common.utils.Rew3Date;
 import com.rew3.payment.invoicepayment.command.CreateInvoicePayment;
 import com.rew3.payment.invoicepayment.command.DeleteInvoicePayment;
 import com.rew3.payment.invoicepayment.command.UpdateInvoicePayment;
 import com.rew3.payment.invoicepayment.model.InvoicePayment;
+import com.rew3.purchase.vendor.VendorQueryHandler;
+import com.rew3.sale.customer.CustomerQueryHandler;
+import com.rew3.sale.customer.model.Customer;
+import com.rew3.sale.invoice.InvoiceQueryHandler;
+import com.rew3.sale.invoice.model.Invoice;
 import org.hibernate.Transaction;
 
 public class InvoicePaymentCommandHandler implements ICommandHandler {
@@ -56,23 +64,103 @@ public class InvoicePaymentCommandHandler implements ICommandHandler {
         }
     }
 
-    private InvoicePayment _handleUpdateInvoicePayment(UpdateInvoicePaymentProto c) {
-        return new InvoicePayment();
-    }
+    private InvoicePayment _handleUpdateInvoicePayment(UpdateInvoicePaymentProto c) throws NotFoundException, CommandException, JsonProcessingException {
+        InvoicePayment payment = null;
+        if (c.hasId()) {
+            payment = (InvoicePayment) new InvoicePaymentQueryHandler().getById(c.getId().getValue());
+        }
 
-    private InvoicePayment _handleSaveInvoicePayment(AddInvoicePaymentProto c) throws  JsonProcessingException {
+        AddInvoicePaymentInfoProto invoicePaymentInfo = null;
 
-        InvoicePayment  invoicePayment = new InvoicePayment();
 
-        if (invoicePayment == null) {
-            invoicePayment = new InvoicePayment();
+        if (c.hasInvoicePaymentInfo()) {
+            invoicePaymentInfo = c.getInvoicePaymentInfo();
+            if (invoicePaymentInfo.hasAmount()) {
+                payment.setAmount(invoicePaymentInfo.getAmount().getValue());
+            }
+            if (invoicePaymentInfo.hasDate()) {
+                payment.setDate(Rew3Date.convertToUTC((String) invoicePaymentInfo.getDate().getValue()));
+            }
+        }
+
+        if (invoicePaymentInfo.hasNotes()) {
+            payment.setNotes(invoicePaymentInfo.getNotes().getValue());
         }
 
 
+        if (invoicePaymentInfo.hasCustomerId()) {
+            Customer vendor = (Customer) new VendorQueryHandler().getById(invoicePaymentInfo.getCustomerId().getValue());
+            payment.setCustomer(vendor);
+        }
+        if (invoicePaymentInfo.hasInvoiceId()) {
+            Invoice customer = (Invoice) new InvoiceQueryHandler().getById(invoicePaymentInfo.getInvoiceId().getValue());
+            payment.setInvoice(customer);
+        }
 
-        invoicePayment = (InvoicePayment) HibernateUtilV2.save(invoicePayment);
 
-        return invoicePayment;
+        if (c.hasOwner()) {
+            MiniUserProto miniUserProto = c.getOwner();
+            if (miniUserProto.hasId()) {
+                payment.setOwnerId(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasFirstName()) {
+                payment.setOwnerFirstName(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasLastName()) {
+                payment.setOwnerLastName(miniUserProto.getId().getValue());
+            }
+        }
+        payment = (InvoicePayment) HibernateUtilV2.update(payment);
+        return payment;
+    }
+
+    private InvoicePayment _handleSaveInvoicePayment(AddInvoicePaymentProto c) throws JsonProcessingException, NotFoundException, CommandException {
+
+        InvoicePayment payment = new InvoicePayment();
+        AddInvoicePaymentInfoProto invoiceInfo = null;
+
+
+
+
+        if (c.hasInvoicePaymentInfo()) {
+            invoiceInfo = c.getInvoicePaymentInfo();
+            if (invoiceInfo.hasAmount()) {
+                payment.setAmount(invoiceInfo.getAmount().getValue());
+            }
+            if (invoiceInfo.hasDate()) {
+                payment.setDate(Rew3Date.convertToUTC((String) invoiceInfo.getDate().getValue()));
+            }
+            }
+
+            if (invoiceInfo.hasNotes()) {
+                payment.setNotes(invoiceInfo.getNotes().getValue());
+            }
+
+
+            if (invoiceInfo.hasCustomerId()) {
+                Customer customer = (Customer) new CustomerQueryHandler().getById(invoiceInfo.getCustomerId().getValue());
+                payment.setCustomer(customer);
+            }
+        if (invoiceInfo.hasInvoiceId()) {
+            Invoice customer = (Invoice) new InvoiceQueryHandler().getById(invoiceInfo.getInvoiceId().getValue());
+            payment.setInvoice(customer);
+        }
+
+
+        if (c.hasOwner()) {
+            MiniUserProto miniUserProto = c.getOwner();
+            if (miniUserProto.hasId()) {
+                payment.setOwnerId(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasFirstName()) {
+                payment.setOwnerFirstName(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasLastName()) {
+                payment.setOwnerLastName(miniUserProto.getId().getValue());
+            }
+        }
+        payment = (InvoicePayment) HibernateUtilV2.save(payment);
+        return payment;
 
     }
 

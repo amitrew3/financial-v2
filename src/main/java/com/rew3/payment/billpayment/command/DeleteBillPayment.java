@@ -6,8 +6,9 @@ import com.rew3.common.cqrs.ICommand;
 import java.util.HashMap;
 
 public class DeleteBillPayment extends Command implements ICommand {
-	public DeleteBillPayment(HashMap<String, Object> data) {
-		super(data);
-		//this.validate();
+	public String id;
+
+	public DeleteBillPayment(String id) {
+		this.id = id;
 	}
 }

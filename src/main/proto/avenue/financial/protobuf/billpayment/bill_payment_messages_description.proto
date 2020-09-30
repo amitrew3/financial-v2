@@ -3,6 +3,9 @@ syntax = "proto3";
 import "google/protobuf/wrappers.proto";
 import "avenue/financial/protobuf/core/core_messages_description.proto";
 
+import "avenue/financial/protobuf/bill/bill_messages_description.proto";
+import "avenue/financial/protobuf/vendor/vendor_messages_description.proto";
+
 
 option java_multiple_files = true;
 option java_package = "com.avenue.financial.services.grpc.proto.billpayment";
@@ -21,10 +24,18 @@ message BillPaymentProto{
 }
 
 message BillPaymentInfoProto{
-  google.protobuf.StringValue bill_id = 1;
-  google.protobuf.StringValue customer_id = 2;
+  avenue.financial.protobuf.vendor.VendorProto vendor = 1;
+  avenue.financial.protobuf.bill.BillProto bill = 2;
   google.protobuf.StringValue date = 3;
-  google.protobuf.StringValue amount = 4;
+  google.protobuf.DoubleValue amount = 4;
+  google.protobuf.StringValue notes = 5;
+
+}
+message AddBillPaymentInfoProto{
+  google.protobuf.StringValue bill_id = 1;
+  google.protobuf.StringValue vendor_id = 2;
+  google.protobuf.StringValue date = 3;
+  google.protobuf.DoubleValue amount = 4;
   google.protobuf.StringValue notes = 5;
 
 }
@@ -33,7 +44,7 @@ message AddBillPaymentProto{
   avenue.financial.protobuf.core.MiniUserProto owner = 1;
   avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 2;
   avenue.financial.protobuf.core.VisibilityTypeProto visibility = 3;
-  BillPaymentInfoProto bill_payment_info = 4;
+  AddBillPaymentInfoProto bill_payment_info = 4;
 
 
 }
@@ -43,7 +54,7 @@ message UpdateBillPaymentProto{
   avenue.financial.protobuf.core.MiniUserProto owner = 2;
   avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 3;
   avenue.financial.protobuf.core.VisibilityTypeProto visibility = 4;
-  BillPaymentInfoProto bill_payment_info = 5;
+  AddBillPaymentInfoProto bill_payment_info = 5;
 }
 
 
