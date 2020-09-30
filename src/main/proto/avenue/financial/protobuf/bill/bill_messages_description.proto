@@ -2,6 +2,10 @@ syntax = "proto3";
 
 import "google/protobuf/wrappers.proto";
 import "avenue/financial/protobuf/core/core_messages_description.proto";
+import "avenue/financial/protobuf/vendor/vendor_messages_description.proto";
+import "avenue/financial/protobuf/product/product_messages_description.proto";
+import "avenue/financial/protobuf/salestax/salestax_messages_description.proto";
+
 
 
 option java_multiple_files = true;
@@ -25,6 +29,20 @@ message BillInfoProto{
   google.protobuf.StringValue po_so_number = 2;
   google.protobuf.StringValue bill_date = 3;
   google.protobuf.StringValue due_date = 4;
+  avenue.financial.protobuf.vendor.VendorProto vendor = 5;
+  google.protobuf.StringValue notes = 6;
+  google.protobuf.DoubleValue sub_total = 7;
+  google.protobuf.DoubleValue tax_total = 8;
+  google.protobuf.DoubleValue total = 9;
+  repeated BillItemProto items = 10;
+
+}
+
+message AddBillInfoProto{
+  google.protobuf.StringValue bill_number = 1;
+  google.protobuf.StringValue po_so_number = 2;
+  google.protobuf.StringValue bill_date = 3;
+  google.protobuf.StringValue due_date = 4;
   google.protobuf.StringValue vendor_id = 5;
   google.protobuf.StringValue notes = 6;
   google.protobuf.DoubleValue sub_total = 7;
@@ -36,8 +54,8 @@ message AddBillProto{
   avenue.financial.protobuf.core.MiniUserProto owner = 1;
   avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 2;
   avenue.financial.protobuf.core.VisibilityTypeProto visibility = 3;
-  BillInfoProto bill_info = 4;
-  repeated BillItemProto items = 5;
+  AddBillInfoProto bill_info = 4;
+  repeated AddBillItemProto items = 5;
 
 
 }
@@ -47,10 +65,22 @@ message UpdateBillProto{
   avenue.financial.protobuf.core.MiniUserProto owner = 2;
   avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 3;
   avenue.financial.protobuf.core.VisibilityTypeProto visibility = 4;
-  BillInfoProto bill_info = 5;
+  AddBillInfoProto bill_info = 5;
+  repeated AddBillItemProto items = 6;
+
 }
 
 message BillItemProto{
+  avenue.financial.protobuf.product.ProductProto product = 1;
+  google.protobuf.Int32Value quantity = 2;
+  google.protobuf.StringValue uom = 3;
+  google.protobuf.DoubleValue price = 4;
+  avenue.financial.protobuf.salestax.SalesTaxProto tax1 = 5;
+  avenue.financial.protobuf.salestax.SalesTaxProto tax2 = 6;
+
+}
+
+message AddBillItemProto{
   google.protobuf.StringValue bill_id = 1;
   google.protobuf.StringValue product_id = 2;
   google.protobuf.Int32Value quantity = 3;
@@ -66,6 +96,7 @@ enum PaymentStatusProto{
   PAID = 2;
 
 }
+
 
 
 

@@ -106,8 +106,8 @@ public class Invoice extends AbstractEntity {
         this.invoiceDate = invoiceDate;
     }
 
-    public String getDueDate() {
-        return dueDate.toString();
+    public Timestamp getDueDate() {
+        return dueDate;
     }
 
     public void setDueDate(Timestamp dueDate) {

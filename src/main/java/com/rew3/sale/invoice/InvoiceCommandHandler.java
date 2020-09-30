@@ -1,7 +1,10 @@
 package com.rew3.sale.invoice;
 
 import com.avenue.base.grpc.proto.core.MiniUserProto;
-import com.avenue.financial.services.grpc.proto.invoice.*;
+import com.avenue.financial.services.grpc.proto.invoice.AddInvoiceInfoProto;
+import com.avenue.financial.services.grpc.proto.invoice.AddInvoiceItemProto;
+import com.avenue.financial.services.grpc.proto.invoice.AddInvoiceProto;
+import com.avenue.financial.services.grpc.proto.invoice.UpdateInvoiceProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.financial.service.ProtoConverter;
 import com.rew3.common.application.CommandException;
@@ -25,7 +28,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class InvoiceCommandHandler implements ICommandHandler {
-    CustomerQueryHandler queryHandler = new CustomerQueryHandler();
 
     public static void registerCommands() {
         CommandRegister.getInstance().registerHandler(CreateInvoice.class, InvoiceCommandHandler.class);
@@ -99,7 +101,8 @@ public class InvoiceCommandHandler implements ICommandHandler {
         }).collect(Collectors.toSet());
 
         if (invoice.getItems().size() != 0) {
-            invoice.setItems(items);
+            invoice.getItems().clear();
+            invoice.getItems().addAll(items);
         }
         double subtotal = 0;
         double taxtotal = 0;
@@ -156,7 +159,8 @@ public class InvoiceCommandHandler implements ICommandHandler {
         }
 
         if (invoice.getItems().size() != 0) {
-            invoice.setItems(items);
+            invoice.getItems().clear();
+            invoice.getItems().addAll(items);
         }
         if (c.hasOwner()) {
             MiniUserProto miniUserProto = c.getOwner();
@@ -170,7 +174,7 @@ public class InvoiceCommandHandler implements ICommandHandler {
                 invoice.setOwnerLastName(miniUserProto.getId().getValue());
             }
         }
-        invoice = (Invoice) HibernateUtilV2.save(invoice);
+        invoice = (Invoice) HibernateUtilV2.update(invoice);
         return invoice;
 
     }
@@ -189,9 +193,7 @@ public class InvoiceCommandHandler implements ICommandHandler {
             return item;
         }).collect(Collectors.toSet());
 
-        if (invoice.getItems()!=null) {
-            invoice.setItems(items);
-        }
+        invoice.setItems(items);
         double subtotal = 0;
         double taxtotal = 0;
         double total = 0;

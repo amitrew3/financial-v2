@@ -2,7 +2,10 @@ syntax = "proto3";
 
 import "google/protobuf/wrappers.proto";
 import "avenue/financial/protobuf/core/core_messages_description.proto";
-
+import "avenue/financial/protobuf/customer/customer_messages_description.proto";
+import "avenue/financial/protobuf/paymentterm/paymentterm_messages_description.proto";
+import "avenue/financial/protobuf/product/product_messages_description.proto";
+import "avenue/financial/protobuf/salestax/salestax_messages_description.proto";
 
 option java_multiple_files = true;
 option java_package = "com.avenue.financial.services.grpc.proto.estimate";
@@ -20,7 +23,7 @@ message EstimateProto{
 
 }
 
-message EstimateInfoProto{
+message AddEstimateInfoProto{
   google.protobuf.StringValue estimate_number = 1;
   google.protobuf.StringValue po_so_number = 2;
   google.protobuf.StringValue estimate_date = 3;
@@ -31,13 +34,33 @@ message EstimateInfoProto{
   google.protobuf.DoubleValue tax_total = 8;
   google.protobuf.DoubleValue total = 9;
 }
+message EstimateInfoProto{
+  google.protobuf.StringValue estimate_number = 1;
+  google.protobuf.StringValue po_so_number = 2;
+  google.protobuf.StringValue estimate_date = 3;
+  google.protobuf.StringValue due_date = 4;
+  avenue.financial.protobuf.customer.CustomerProto customer=5;
+  avenue.financial.protobuf.paymentterm.PaymentTermProto payment_term=6;
+  google.protobuf.StringValue memos = 7;
+  PaymentStatusProto payment_status = 8;
+  google.protobuf.StringValue send_date_time = 9;
+  google.protobuf.StringValue internal_notes = 10;
+  google.protobuf.StringValue footer_notes = 11;
+  google.protobuf.DoubleValue sub_total = 12;
+  google.protobuf.DoubleValue tax_total = 13;
+  google.protobuf.DoubleValue total = 14;
+  google.protobuf.BoolValue is_draft = 15;
+  avenue.financial.protobuf.core.AddressProto billing_address = 17;
+  repeated EstimateItemProto items = 18;
+
+}
 message AddEstimateProto{
 
   avenue.financial.protobuf.core.MiniUserProto owner = 1;
   avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 2;
   avenue.financial.protobuf.core.VisibilityTypeProto visibility = 3;
-  EstimateInfoProto estimate_info = 4;
-  repeated EstimateItemProto items = 5;
+  AddEstimateInfoProto estimate_info = 4;
+  repeated AddEstimateItemProto items = 5;
 
 
 }
@@ -47,17 +70,28 @@ message UpdateEstimateProto{
   avenue.financial.protobuf.core.MiniUserProto owner = 2;
   avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 3;
   avenue.financial.protobuf.core.VisibilityTypeProto visibility = 4;
-  EstimateInfoProto estimate_info = 5;
+  AddEstimateInfoProto estimate_info = 5;
+  repeated AddEstimateItemProto items = 6;
+
+}
+
+message AddEstimateItemProto{
+  google.protobuf.StringValue product_id = 1;
+  google.protobuf.Int32Value quantity = 2;
+  google.protobuf.StringValue uom = 3;
+  google.protobuf.DoubleValue price = 4;
+  google.protobuf.StringValue tax1_id = 5;
+  google.protobuf.StringValue tax2_id = 6;
+
 }
 
 message EstimateItemProto{
-  google.protobuf.StringValue estimate_id = 1;
-  google.protobuf.StringValue product_id = 2;
-  google.protobuf.Int32Value quantity = 3;
-  google.protobuf.StringValue uom = 4;
-  google.protobuf.DoubleValue price = 5;
-  google.protobuf.StringValue tax1_id = 6;
-  google.protobuf.StringValue tax2_id = 7;
+  avenue.financial.protobuf.product.ProductProto product = 1;
+  google.protobuf.Int32Value quantity = 2;
+  google.protobuf.StringValue uom = 3;
+  google.protobuf.DoubleValue price = 4;
+  avenue.financial.protobuf.salestax.SalesTaxProto tax1 = 5;
+  avenue.financial.protobuf.salestax.SalesTaxProto tax2 = 6;
 
 }
 enum PaymentStatusProto{

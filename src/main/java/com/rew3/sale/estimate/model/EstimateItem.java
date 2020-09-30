@@ -46,7 +46,7 @@ public class EstimateItem {
 
     @NotNull
     @Column(name = DB.Field.EstimateItem.UOM)
-    private Integer uom;
+    private String uom;
 
     @NotNull
     @Column(name = DB.Field.EstimateItem.PRICE)
@@ -92,11 +92,11 @@ public class EstimateItem {
         this.quantity = quantity;
     }
 
-    public Integer getUom() {
+    public String getUom() {
         return uom;
     }
 
-    public void setUom(Integer uom) {
+    public void setUom(String uom) {
         this.uom = uom;
     }
 

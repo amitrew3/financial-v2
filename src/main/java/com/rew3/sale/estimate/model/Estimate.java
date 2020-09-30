@@ -22,7 +22,7 @@ public class Estimate extends AbstractEntity {
     private String poSoNumber;
 
     @Column(name = DB.Field.Estimate.ESTIMATE_DATE)
-    private Timestamp invoiceDate;
+    private Timestamp estimateDate;
 
     @JoinColumn(name = DB.Field.Estimate.CUSTOMER_ID)
     @OneToOne
@@ -66,12 +66,12 @@ public class Estimate extends AbstractEntity {
         this.poSoNumber = poSoNumber;
     }
 
-    public Timestamp getInvoiceDate() {
-        return invoiceDate;
+    public Timestamp getEstimateDate() {
+        return estimateDate;
     }
 
-    public void setInvoiceDate(Timestamp invoiceDate) {
-        this.invoiceDate = invoiceDate;
+    public void setEstimateDate(Timestamp estimateDate) {
+        this.estimateDate = estimateDate;
     }
 
     public Customer getCustomer() {
