@@ -148,20 +148,13 @@ public class ProtoConverter {
 
     private static InvoiceItemProto convertToInvoiceItemProto(InvoiceItem x) {
         InvoiceItemProto.Builder builder = InvoiceItemProto.newBuilder();
-
-        // Optional.ofNullable(x.getId()).ifPresent(y -> builder.setId(StringValue.of(y)));
-//        Optional.ofNullable(x.getTitle()).ifPresent(y -> builder.setTitle(StringValue.of(y)));
-//        Optional.ofNullable(x.getDescription()).ifPresent(y -> builder.setDescription(StringValue.of(y)));
+        Optional.ofNullable(x.getUom()).ifPresent(y -> builder.setUom(StringValue.of(y)));
         Optional.ofNullable(x.getQuantity()).ifPresent(y -> builder.setQuantity(Int32Value.of(y)));
         Optional.ofNullable(x.getPrice()).ifPresent(y -> builder.setPrice(DoubleValue.of(y)));
-        //Optional.ofNullable(x.getPrice()).ifPresent(y -> builder.set(DoubleValue.of(y)));
+        Optional.ofNullable(x.getProduct()).ifPresent(y -> builder.setProduct(convertToProductProto(y)));
+        Optional.ofNullable(x.getTax1()).ifPresent(y -> builder.setTax1(convertToSalesTaxProto(y)));
+        Optional.ofNullable(x.getTax1()).ifPresent(y -> builder.setTax2(convertToSalesTaxProto(y)));
 
-
-//        Optional.ofNullable(x.getTaxType()).ifPresent(y -> builder.setTaxType(CalculationType.valueOf(x.getTaxType())));
-//        Optional.ofNullable(x.getDiscountType()).ifPresent(y -> builder.setDiscountType(CalculationType.valueOf(x.getDiscountType())));
-//
-//        Optional.ofNullable(x.getDiscount()).ifPresent(y -> builder.setDiscount(DoubleValue.of(x.getDiscount())));
-//        Optional.ofNullable(x.getTax()).ifPresent(y -> builder.setTax(DoubleValue.of(x.getTax())));
         return builder.build();
     }
 
@@ -184,16 +177,11 @@ public class ProtoConverter {
         Optional.ofNullable(x.getTotal()).ifPresent(y -> builder.setTotal(DoubleValue.of(y)));
         Optional.ofNullable(x.isDraft()).ifPresent(y -> builder.setIsDraft(BoolValue.of(y)));
         Optional.ofNullable(x.getAddress()).ifPresent(y -> builder.setBillingAddress(convertToAddressProto(y)));
-        InvoiceItemProto hero= InvoiceItemProto.newBuilder().build();
-
-        builder.setItems(0,hero);
-
+        Optional.ofNullable(x.getItems()).ifPresent(y -> builder.addAllItems(convertToInvoiceItemsProtos(y)));
         return builder.build();
     }
 
-    private static Set<InvoiceItemProto> convertToInvoiceItemProtos(Set<InvoiceItem> y) {
-        return null;
-    }
+
 
 
     private static MetaProto convertToMetaProto(Meta meta) {
