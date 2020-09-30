@@ -1,15 +1,17 @@
 package com.rew3.payment.invoicepayment.command;
 
-import com.rew3.common.application.CommandException;
+import com.avenue.financial.services.grpc.proto.invoicepayment.AddInvoicePaymentProto;
 import com.rew3.common.cqrs.Command;
 import com.rew3.common.cqrs.ICommand;
 
-import java.util.HashMap;
-
 public class CreateInvoicePayment extends Command implements ICommand {
-	public CreateInvoicePayment(HashMap<String, Object> data) throws CommandException {
-		super(data);
-		this.validationSchema = "normaluser/paymentoption/create";
-		this.validate();
+	public AddInvoicePaymentProto addInvoicePaymentProto;
+
+	public AddInvoicePaymentProto getAddInvoicePaymentProto() {
+		return addInvoicePaymentProto;
+	}
+
+	public void setAddInvoicePaymentProto(AddInvoicePaymentProto addInvoicePaymentProto) {
+		this.addInvoicePaymentProto = addInvoicePaymentProto;
 	}
 }

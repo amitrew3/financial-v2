@@ -9,9 +9,7 @@ import com.avenue.financial.services.grpc.proto.estimate.EstimateInfoProto;
 import com.avenue.financial.services.grpc.proto.estimate.EstimateProto;
 import com.avenue.financial.services.grpc.proto.expense.ExpenseInfoProto;
 import com.avenue.financial.services.grpc.proto.expense.ExpenseProto;
-import com.avenue.financial.services.grpc.proto.invoice.InvoiceInfoProto;
-import com.avenue.financial.services.grpc.proto.invoice.InvoiceItemProto;
-import com.avenue.financial.services.grpc.proto.invoice.InvoiceProto;
+import com.avenue.financial.services.grpc.proto.invoice.*;
 import com.avenue.financial.services.grpc.proto.paymentterm.PaymentTermInfoProto;
 import com.avenue.financial.services.grpc.proto.paymentterm.PaymentTermProto;
 import com.avenue.financial.services.grpc.proto.product.ProductInfoProto;
@@ -43,10 +41,7 @@ import com.rew3.sale.invoice.model.InvoiceItem;
 import com.rew3.salestax.SalesTaxQueryHandler;
 import com.rew3.salestax.model.SalesTax;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ProtoConverter {
@@ -56,6 +51,7 @@ public class ProtoConverter {
         }).collect(Collectors.toList());
         return list;
     }
+
 
     public static InvoiceProto convertToInvoiceProto(Invoice x) {
         InvoiceProto.Builder builder = InvoiceProto.newBuilder();
@@ -143,7 +139,7 @@ public class ProtoConverter {
     }
 
 
-    private static Set<InvoiceItemProto> convertToInvoiceItems(Set<InvoiceItem> invoiceItems) {
+    private static Set<InvoiceItemProto> convertToInvoiceItemsProtos(Set<InvoiceItem> invoiceItems) {
         Set<InvoiceItemProto> items = invoiceItems.stream().map(x -> {
             return convertToInvoiceItemProto(x);
         }).collect(Collectors.toSet());
@@ -158,6 +154,9 @@ public class ProtoConverter {
 //        Optional.ofNullable(x.getDescription()).ifPresent(y -> builder.setDescription(StringValue.of(y)));
         Optional.ofNullable(x.getQuantity()).ifPresent(y -> builder.setQuantity(Int32Value.of(y)));
         Optional.ofNullable(x.getPrice()).ifPresent(y -> builder.setPrice(DoubleValue.of(y)));
+        //Optional.ofNullable(x.getPrice()).ifPresent(y -> builder.set(DoubleValue.of(y)));
+
+
 //        Optional.ofNullable(x.getTaxType()).ifPresent(y -> builder.setTaxType(CalculationType.valueOf(x.getTaxType())));
 //        Optional.ofNullable(x.getDiscountType()).ifPresent(y -> builder.setDiscountType(CalculationType.valueOf(x.getDiscountType())));
 //
@@ -170,23 +169,32 @@ public class ProtoConverter {
     private static InvoiceInfoProto convertToInvoiceInfoProto(Invoice x) {
         InvoiceInfoProto.Builder builder = InvoiceInfoProto.newBuilder();
         Optional.ofNullable(x.getInvoiceNumber()).ifPresent(y -> builder.setInvoiceNumber(StringValue.of(y)));
-        // Optional.ofNullable(x.getInvoiceStatus()).ifPresent(y -> builder.setInvoiceStatus(InvoiceStatus.valueOf(x.getInvoiceStatus())));
-        // Optional.ofNullable(x.getPaymentStatus()).ifPresent(y -> builder.setPaymentStatus(Flags.InvoicePaymentStatus.valueOf(x.getPaymentStatus())));
+        Optional.ofNullable(x.getPoSoNumber()).ifPresent(y -> builder.setPoSoNumber(StringValue.of(y)));
+        Optional.ofNullable(x.getInvoiceDate()).ifPresent(y -> builder.setInvoiceDate(StringValue.of(y.toString())));
+        Optional.ofNullable(x.getDueDate()).ifPresent(y -> builder.setDueDate(StringValue.of(y)));
+        Optional.ofNullable(x.getCustomer()).ifPresent(y -> builder.setCustomer(convertToCustomerProto(y)));
+        Optional.ofNullable(x.getPaymentTerm()).ifPresent(y -> builder.setPaymentTerm(convertToPaymentTermProto(y)));
+        Optional.ofNullable(x.getMemos()).ifPresent(y -> builder.setMemos(StringValue.of(y)));
+        Optional.ofNullable(x.getPaymentStatus()).ifPresent(y -> builder.setPaymentStatus(PaymentStatusProto.valueOf(y)));
+        Optional.ofNullable(x.getSendDateTime()).ifPresent(y -> builder.setSendDateTime(StringValue.of(y.toString())));
+        Optional.ofNullable(x.getInternalNotes()).ifPresent(y -> builder.setInternalNotes(StringValue.of(y)));
+        Optional.ofNullable(x.getFooterNotes()).ifPresent(y -> builder.setFooterNotes(StringValue.of(y)));
+        Optional.ofNullable(x.getSubTotal()).ifPresent(y -> builder.setSubTotal(DoubleValue.of(y)));
+        Optional.ofNullable(x.getTaxTotal()).ifPresent(y -> builder.setTaxTotal(DoubleValue.of(y)));
+        Optional.ofNullable(x.getTotal()).ifPresent(y -> builder.setTotal(DoubleValue.of(y)));
+        Optional.ofNullable(x.isDraft()).ifPresent(y -> builder.setIsDraft(BoolValue.of(y)));
+        Optional.ofNullable(x.getAddress()).ifPresent(y -> builder.setBillingAddress(convertToAddressProto(y)));
+        InvoiceItemProto hero= InvoiceItemProto.newBuilder().build();
 
-//        Optional.ofNullable(x.getDueStatus()).ifPresent(y -> builder.setDueStatus(InvoiceDueStatus.valueOf(x.getDueStatus())));
-//        Optional.ofNullable(x.getRefundStatus()).ifPresent(y -> builder.setRefundStatus(InvoiceRefundStatus.valueOf(x.getRefundStatus())));
-//        Optional.ofNullable(x.getWriteOffStatus()).ifPresent(y -> builder.setWriteOfStatus(InvoiceWriteOffStatus.valueOf(x.getWriteOffStatus())));
-//
-//        Optional.ofNullable(x.getTaxType()).ifPresent(y -> builder.setTaxType(CalculationType.valueOf(x.getTaxType())));
-//        Optional.ofNullable(x.getDiscountType()).ifPresent(y -> builder.setDiscountType(CalculationType.valueOf(x.getDiscountType())));
-//
-//        Optional.ofNullable(x.getDiscount()).ifPresent(y -> builder.setDiscount(DoubleValue.of(x.getDiscount())));
-//        Optional.ofNullable(x.getTax()).ifPresent(y -> builder.setTax(DoubleValue.of(x.getTax())));
-//        Optional.ofNullable(x.getNote()).ifPresent(y -> builder.setNote(StringValue.of(y)));
-//        Optional.ofNullable(x.getDescription()).ifPresent(y -> builder.setDescription(StringValue.of(y)));
+        builder.setItems(0,hero);
 
         return builder.build();
     }
+
+    private static Set<InvoiceItemProto> convertToInvoiceItemProtos(Set<InvoiceItem> y) {
+        return null;
+    }
+
 
     private static MetaProto convertToMetaProto(Meta meta) {
         MetaProto.Builder builder = MetaProto.newBuilder();
@@ -245,7 +253,8 @@ public class ProtoConverter {
         return map;
     }
 
-    public static InvoiceItem convertToInvoiceItem(InvoiceItemProto x) {
+
+    public static InvoiceItem convertToAddInvoiceItem(AddInvoiceItemProto x) {
         InvoiceItem item = new InvoiceItem();
 //        Optional.ofNullable(x.getInvoiceId()).ifPresent(y -> {
 //            item.setProduct(y.getValue());
@@ -300,6 +309,7 @@ public class ProtoConverter {
 
         return item;
     }
+
 
     public static Address convertToAddress(AddressProto x) {
         Address addres = new Address();

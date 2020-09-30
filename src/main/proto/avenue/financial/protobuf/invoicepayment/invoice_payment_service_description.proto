@@ -1,0 +1,124 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+
+import "avenue/financial/protobuf/core/core_messages_description.proto";
+import "avenue/financial/protobuf/invoicepayment/invoice_payment_messages_description.proto";
+
+
+
+//Platform
+
+option java_multiple_files = true;
+option java_package = "com.avenue.financial.services.grpc.proto.invoicepayment";
+option java_outer_classname = "InvoicePaymentServiceDescriptionProto";
+
+package avenue.rms.protobuf.invoicepayment;
+
+service InvoicePaymentServiceProto {
+
+  rpc list (ListInvoicePaymentRequestProto) returns (ListInvoicePaymentResponseProto) {
+  }
+
+  rpc get (GetInvoicePaymentRequestProto) returns (GetInvoicePaymentResponseProto) {
+  }
+
+
+  rpc add (AddInvoicePaymentRequestProto) returns (AddInvoicePaymentResponseProto) {
+  }
+
+  rpc update (UpdateInvoicePaymentRequestProto) returns (UpdateInvoicePaymentResponseProto) {
+  }
+
+  rpc delete (DeleteInvoicePaymentRequestProto) returns (DeleteInvoicePaymentResponseProto) {
+  }
+
+}
+
+message CountInvoicePaymentRequestProto {
+  avenue.financial.protobuf.core.RequestParamProto param = 1;
+  google.protobuf.StringValue search = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+
+message CountInvoicePaymentResponseProto {
+  int32 limit = 1;
+  int32 page_number = 2;
+  int32 pages_count = 3;
+  int32 total_count = 4;
+}
+
+message ListInvoicePaymentResponseProto {
+  repeated avenue.financial.protobuf.invoicepayment.InvoicePaymentProto data = 1;
+}
+
+message GetInvoicePaymentResponseProto {
+  avenue.financial.protobuf.invoicepayment.InvoicePaymentProto data = 1;
+}
+
+message GetInvoicePaymentRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.core.RequestParamProto param = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+message ListInvoicePaymentRequestProto {
+  avenue.financial.protobuf.core.RequestParamProto param = 1;
+  google.protobuf.StringValue search = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+
+
+
+message AddInvoicePaymentRequestProto {
+  avenue.financial.protobuf.invoicepayment.AddInvoicePaymentProto data = 1;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
+}
+
+message UpdateInvoicePaymentRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.invoicepayment.UpdateInvoicePaymentProto data = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+message DeleteInvoicePaymentRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
+}
+
+
+message AddInvoicePaymentResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.invoicepayment.InvoicePaymentProto data = 5;
+}
+
+message UpdateInvoicePaymentResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.invoicepayment.InvoicePaymentProto data = 5;
+}
+
+message DeleteInvoicePaymentResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.invoicepayment.InvoicePaymentProto data = 5;
+}
+
+
+
+
+
+
+
+

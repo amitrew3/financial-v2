@@ -1,16 +1,14 @@
 package com.rew3.payment.invoicepayment;
 
+import com.avenue.financial.services.grpc.proto.invoicepayment.AddInvoicePaymentProto;
+import com.avenue.financial.services.grpc.proto.invoicepayment.UpdateInvoicePaymentProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.rew3.common.application.Authentication;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.database.HibernateUtilV2;
-import com.rew3.common.model.Flags.EntityStatus;
-import com.rew3.common.utils.APILogType;
-import com.rew3.common.utils.APILogger;
 import com.rew3.payment.invoicepayment.command.CreateInvoicePayment;
 import com.rew3.payment.invoicepayment.command.DeleteInvoicePayment;
 import com.rew3.payment.invoicepayment.command.UpdateInvoicePayment;
@@ -26,7 +24,7 @@ public class InvoicePaymentCommandHandler implements ICommandHandler {
 
     }
 
-    public void handle(ICommand c) {
+    public void handle(ICommand c) throws NotFoundException, CommandException {
         if (c instanceof CreateInvoicePayment) {
             handle((CreateInvoicePayment) c);
         } else if (c instanceof UpdateInvoicePayment) {
@@ -37,23 +35,12 @@ public class InvoicePaymentCommandHandler implements ICommandHandler {
     }
 
     public void handle(CreateInvoicePayment c) {
-        // HibernateUtilV2.openSession();
-        Transaction trx = c.getTransaction();
 
         try {
-            InvoicePayment t = this._handleSaveInvoicePayment(c);
-            if (c.isCommittable()) {
-                HibernateUtilV2.commitTransaction(c.getTransaction());
-            }
+            InvoicePayment t = this._handleSaveInvoicePayment(c.addInvoicePaymentProto);
             c.setObject(t);
         } catch (Exception ex) {
-            if (c.isCommittable()) {
-                HibernateUtilV2.rollbackTransaction(trx);
-            }
-        } finally {
-            if (c.isCommittable()) {
-                HibernateUtilV2.closeSession();
-            }
+            System.out.println(ex);
         }
     }
 
@@ -62,90 +49,37 @@ public class InvoicePaymentCommandHandler implements ICommandHandler {
         Transaction trx = c.getTransaction();
 
         try {
-            InvoicePayment term = this._handleSaveInvoicePayment(c);
-            if (c.isCommittable()) {
-                HibernateUtilV2.commitTransaction(c.getTransaction());
-            }
-            c.setObject(term);
+            InvoicePayment payment = this._handleUpdateInvoicePayment(c.updateInvoicePaymentProto);
+            c.setObject(payment);
         } catch (Exception ex) {
-            if (c.isCommittable()) {
-                HibernateUtilV2.rollbackTransaction(trx);
-            }
-        } finally {
-            if (c.isCommittable()) {
-                HibernateUtilV2.closeSession();
-            }
+            System.out.println(ex);
         }
     }
 
-    private InvoicePayment _handleSaveInvoicePayment(ICommand c) throws CommandException, JsonProcessingException, NotFoundException {
+    private InvoicePayment _handleUpdateInvoicePayment(UpdateInvoicePaymentProto c) {
+        return new InvoicePayment();
+    }
 
-        InvoicePayment paymentOption = null;
-        boolean isNew = true;
+    private InvoicePayment _handleSaveInvoicePayment(AddInvoicePaymentProto c) throws  JsonProcessingException {
 
-        if (c.has("id") && c instanceof UpdateInvoicePayment) {
-            paymentOption = (InvoicePayment) (new InvoicePaymentQueryHandler()).getById((String) c.get("id"));
-            isNew = false;
-            /*if (paymentOption == null) {
-                APILogger.add(APILogType.ERROR, "InvoicePayment (" + c.get("id") + ") not found.");
-                throw new NotFoundException("InvoicePayment (" + c.get("id") + ") not found.");
-            }*/
-           /* if(!paymentOption.getW().contains(Authentication.getRew3UserId()) | !paymentOption.getOwnerId().toString().equals(Authentication.getRew3UserId())){
-                APILogger.add(APILogType.ERROR, "Access Denied");
-                throw new CommandException("Access Denied");
-            }*/
+        InvoicePayment  invoicePayment = new InvoicePayment();
+
+        if (invoicePayment == null) {
+            invoicePayment = new InvoicePayment();
         }
 
-        if (paymentOption == null) {
-            paymentOption = new InvoicePayment();
-        }
 
-        if (c.has("name")) {
-//            paymentOption.setName((String) c.get("name"));
-        }
 
-        if (c.has("description")) {
-            paymentOption.setDescription((String) c.get("description"));
-        }
+        invoicePayment = (InvoicePayment) HibernateUtilV2.save(invoicePayment);
 
-        if (c.has("status")) {
-            paymentOption.setStatus(EntityStatus.valueOf((String) c.get("status")));
-        } else if (isNew) {
-            paymentOption.setStatus(EntityStatus.ACTIVE);
-        }
-
-        paymentOption = (InvoicePayment) HibernateUtilV2.save(paymentOption, c.getTransaction());
-
-        return paymentOption;
+        return invoicePayment;
 
     }
 
-    public void handle(DeleteInvoicePayment c) {
-        Transaction trx = c.getTransaction();
-
-        try {
-            InvoicePayment terms = (InvoicePayment) new InvoicePaymentQueryHandler().getById((String) c.get("id"));
-            if (terms != null) {
-                if (!terms.hasDeletePermission(Authentication.getRew3UserId(), Authentication.getRew3GroupId())) {
-                    APILogger.add(APILogType.ERROR, "Permission denied");
-                    throw new CommandException("Permission denied");
-                }
-                terms.setStatus(EntityStatus.DELETED);
-                terms= (InvoicePayment) HibernateUtilV2.save(terms,trx);
-            }
-            if (c.isCommittable()) {
-                HibernateUtilV2.commitTransaction(c.getTransaction());
-            }
-            c.setObject(terms);
-        } catch (Exception ex) {
-            if (c.isCommittable()) {
-                HibernateUtilV2.rollbackTransaction(trx);
-            }
-        } finally {
-            if (c.isCommittable()) {
-                HibernateUtilV2.closeSession();
-            }
-        }
+    public void handle(DeleteInvoicePayment c) throws NotFoundException, CommandException {
+        String id = c.id;
+        InvoicePayment invoice = (InvoicePayment) new InvoicePaymentQueryHandler().getById(id);
+        c.setObject(invoice);
 
     }
 

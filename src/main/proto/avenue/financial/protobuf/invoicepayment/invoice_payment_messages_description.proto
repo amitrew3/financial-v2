@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "avenue/financial/protobuf/core/core_messages_description.proto";
+
+
+option java_multiple_files = true;
+option java_package = "com.avenue.financial.services.grpc.proto.invoicepayment";
+option java_outer_classname = "InvoicePaymentMessagesDescriptionProto";
+
+package avenue.financial.protobuf.invoicepayment;
+
+message InvoicePaymentProto{
+  google.protobuf.StringValue _id = 1;
+  avenue.financial.protobuf.core.MetaProto meta = 2;
+  avenue.financial.protobuf.core.MiniUserProto owner = 3;
+  avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 4;
+  avenue.financial.protobuf.core.VisibilityTypeProto visibility = 5;
+  InvoicePaymentInfoProto invoice_payment_info = 6;
+
+}
+
+message InvoicePaymentInfoProto{
+  google.protobuf.StringValue invoice_id = 1;
+  google.protobuf.StringValue customer_id = 2;
+  google.protobuf.StringValue date = 3;
+  google.protobuf.StringValue amount = 4;
+  google.protobuf.StringValue notes = 5;
+
+}
+message AddInvoicePaymentProto{
+
+  avenue.financial.protobuf.core.MiniUserProto owner = 1;
+  avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 2;
+  avenue.financial.protobuf.core.VisibilityTypeProto visibility = 3;
+  InvoicePaymentInfoProto invoice_payment_info = 4;
+
+
+}
+
+message UpdateInvoicePaymentProto{
+  google.protobuf.StringValue _id = 1;
+  avenue.financial.protobuf.core.MiniUserProto owner = 2;
+  avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 3;
+  avenue.financial.protobuf.core.VisibilityTypeProto visibility = 4;
+  InvoicePaymentInfoProto invoice_payment_info = 5;
+}
+
+
+
+
