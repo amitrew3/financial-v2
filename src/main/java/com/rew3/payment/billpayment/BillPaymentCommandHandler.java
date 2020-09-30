@@ -52,8 +52,6 @@ public class BillPaymentCommandHandler implements ICommandHandler {
     }
 
     public void handle(UpdateBillPayment c) {
-        // HibernateUtilV2.openSession();
-        Transaction trx = c.getTransaction();
 
         try {
             BillPayment payment = this._handleUpdateBillPayment(c.updateBillPaymentProto);
@@ -92,8 +90,8 @@ public class BillPaymentCommandHandler implements ICommandHandler {
             payment.setVendor(vendor);
         }
         if (billInfo.hasBillId()) {
-            Bill customer = (Bill) new BillQueryHandler().getById(billInfo.getBillId().getValue());
-            payment.setBill(customer);
+            Bill bill = (Bill) new BillQueryHandler().getById(billInfo.getBillId().getValue());
+            payment.setBill(bill);
         }
 
 

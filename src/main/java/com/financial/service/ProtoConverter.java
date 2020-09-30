@@ -682,7 +682,7 @@ public class ProtoConverter {
 
     private static ExpenseInfoProto convertToExpenseInfoProto(Expense x) {
         ExpenseInfoProto.Builder builder = ExpenseInfoProto.newBuilder();
-        //Optional.ofNullable(x.getExpenseNumber()).ifPresent(y -> builder.setExpenseNumber(StringValue.of(y)));
+        Optional.ofNullable(x.getExpenseNumber()).ifPresent(y -> builder.setExpenseNumber(StringValue.of(y)));
         // Optional.ofNullable(x.getInvoiceStatus()).ifPresent(y -> builder.setInvoiceStatus(InvoiceStatus.valueOf(x.getInvoiceStatus())));
         // Optional.ofNullable(x.getPaymentStatus()).ifPresent(y -> builder.setPaymentStatus(Flags.InvoicePaymentStatus.valueOf(x.getPaymentStatus())));
 
@@ -695,8 +695,17 @@ public class ProtoConverter {
 //
 //        Optional.ofNullable(x.getDiscount()).ifPresent(y -> builder.setDiscount(DoubleValue.of(x.getDiscount())));
 //        Optional.ofNullable(x.getTax()).ifPresent(y -> builder.setTax(DoubleValue.of(x.getTax())));
-//        Optional.ofNullable(x.getNote()).ifPresent(y -> builder.setNote(StringValue.of(y)));
-//        Optional.ofNullable(x.getDescription()).ifPresent(y -> builder.setDescription(StringValue.of(y)));
+        Optional.ofNullable(x.getTitle()).ifPresent(y -> builder.setTitle(StringValue.of(y)));
+        Optional.ofNullable(x.getDescription()).ifPresent(y -> builder.setDescription(StringValue.of(y)));
+
+        Optional.ofNullable(x.getCurrency()).ifPresent(y -> builder.setCurrency(StringValue.of(y)));
+        Optional.ofNullable(x.getMerchant()).ifPresent(y -> builder.setMerchant(StringValue.of(y)));
+        Optional.ofNullable(x.getNotes()).ifPresent(y -> builder.setNotes(StringValue.of(y)));
+
+        Optional.ofNullable(x.getTotal()).ifPresent(y -> builder.setTotal(DoubleValue.of(y)));
+
+        Optional.ofNullable(x.getDate()).ifPresent(y -> builder.setMerchant(StringValue.of(y.toString())));
+
 
         return builder.build();
     }

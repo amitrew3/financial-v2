@@ -1,24 +1,21 @@
 package com.rew3.purchase.expense;
 
-import com.rew3.brokerage.transaction.command.CreateTransaction;
-import com.rew3.brokerage.transaction.command.DeleteTransaction;
-import com.rew3.brokerage.transaction.command.UpdateTransaction;
-import com.rew3.brokerage.transaction.model.RmsTransaction;
-import com.rew3.common.application.Authentication;
+import com.avenue.base.grpc.proto.core.MiniUserProto;
+import com.avenue.financial.services.grpc.proto.expense.AddExpenseProto;
+import com.avenue.financial.services.grpc.proto.expense.ExpenseInfoProto;
+import com.avenue.financial.services.grpc.proto.expense.UpdateExpenseProto;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.rew3.common.application.CommandException;
+import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.database.HibernateUtilV2;
-import com.rew3.common.utils.APILogType;
-import com.rew3.common.utils.APILogger;
-import com.rew3.purchase.expense.command.*;
+import com.rew3.common.utils.Rew3Date;
+import com.rew3.purchase.expense.command.CreateExpense;
+import com.rew3.purchase.expense.command.DeleteExpense;
+import com.rew3.purchase.expense.command.UpdateExpense;
 import com.rew3.purchase.expense.model.Expense;
-import org.hibernate.Transaction;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class ExpenseCommandHandler implements ICommandHandler {
 
@@ -26,9 +23,6 @@ public class ExpenseCommandHandler implements ICommandHandler {
         CommandRegister.getInstance().registerHandler(CreateExpense.class, ExpenseCommandHandler.class);
         CommandRegister.getInstance().registerHandler(UpdateExpense.class, ExpenseCommandHandler.class);
         CommandRegister.getInstance().registerHandler(DeleteExpense.class, ExpenseCommandHandler.class);
-        CommandRegister.getInstance().registerHandler(CreateBulkExpense.class, ExpenseCommandHandler.class);
-        CommandRegister.getInstance().registerHandler(UpdateBulkExpense.class, ExpenseCommandHandler.class);
-        CommandRegister.getInstance().registerHandler(DeleteBulkExpense.class, ExpenseCommandHandler.class);
 
     }
 
@@ -39,126 +33,145 @@ public class ExpenseCommandHandler implements ICommandHandler {
             handle((UpdateExpense) c);
         } else if (c instanceof DeleteExpense) {
             handle((DeleteExpense) c);
-        } else if (c instanceof CreateBulkExpense) {
-            handle((CreateBulkExpense) c);
-        } else if (c instanceof UpdateBulkExpense) {
-            handle((UpdateBulkExpense) c);
-        } else if (c instanceof DeleteBulkExpense) {
-            handle((DeleteBulkExpense) c);
         }
-
-
     }
 
     public void handle(CreateExpense c) throws Exception {
-        Expense expense = this._handleSaveExpense(c);
+        Expense expense = this._handleSaveExpense(c.addExpenseProto);
         c.setObject(expense);
+
 
     }
 
 
     public void handle(UpdateExpense c) throws Exception {
-        Expense expense = this._handleSaveExpense(c);
+        Expense expense = this._handleUpdateExpense(c.updateExpenseProto);
         c.setObject(expense);
+
 
     }
 
 
-    private Expense _handleSaveExpense(ICommand c) throws
-            Exception {
+    private Expense _handleSaveExpense(AddExpenseProto c) throws Exception {
 
-        Expense expense = null;
-        boolean isNew = true;
-        Transaction trx = c.getTransaction();
+        Expense expense = new Expense();
 
-        if (c.has("expense")) {
-            expense = new Expense();
-        } else {
-            expense = (Expense) c.get("expense");
+        if (c.hasExpenseInfo()) {
+            ExpenseInfoProto info = c.getExpenseInfo();
+
+            if (info.hasTitle()) {
+                expense.setTitle(info.getTitle().getValue());
+            }
+            if (info.hasCurrency()) {
+                expense.setCurrency(info.getCurrency().getValue());
+            }
+            if (info.hasDate()) {
+                expense.setDate(Rew3Date.convertToUTC((String) info.getDate().getValue()));
+            }
+            if (info.hasMerchant()) {
+                expense.setMerchant(info.getMerchant().getValue());
+            }
+            if (info.hasDescription()) {
+                expense.setDescription(info.getDescription().getValue());
+            }
+            if (info.hasNotes()) {
+                expense.setNotes(info.getNotes().getValue());
+            }
+            if (info.hasDescription()) {
+                expense.setDescription(info.getDescription().getValue());
+            }
+            if (info.hasTotal()) {
+                expense.setTotal(info.getTotal().getValue());
+            }
+
+
         }
+        if (c.hasOwner()) {
+            MiniUserProto miniUserProto = c.getOwner();
+            if (miniUserProto.hasId()) {
+                expense.setOwnerId(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasFirstName()) {
+                expense.setOwnerFirstName(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasLastName()) {
+                expense.setOwnerLastName(miniUserProto.getId().getValue());
+            }
 
-        if (c.has("expenseNumber")) {
-            expense.setExpenseNumber(c.get("expenseNumber").toString());
-        }
-
-        if (c.has("description")) {
-            expense.setDescription((String) c.get("description"));
         }
 
         expense = (Expense) HibernateUtilV2.save(expense);
 
+        return expense;
+
+
+    }
+
+    private Expense _handleUpdateExpense(UpdateExpenseProto c) throws Exception {
+
+        Expense expense = null;
+
+        if (c.hasId()) {
+
+            expense = (Expense) new ExpenseQueryHandler().getById(c.getId().getValue());
+        } else {
+            throw new NotFoundException("Id not found");
+        }
+
+        if (c.hasExpenseInfo()) {
+            ExpenseInfoProto info = c.getExpenseInfo();
+
+            if (info.hasTitle()) {
+                expense.setTitle(info.getTitle().getValue());
+            }
+            if (info.hasCurrency()) {
+                expense.setCurrency(info.getCurrency().getValue());
+            }
+            if (info.hasDate()) {
+                expense.setDate(Rew3Date.convertToUTC((String) info.getDate().getValue()));
+            }
+            if (info.hasMerchant()) {
+                expense.setMerchant(info.getMerchant().getValue());
+            }
+            if (info.hasDescription()) {
+                expense.setDescription(info.getDescription().getValue());
+            }
+            if (info.hasNotes()) {
+                expense.setNotes(info.getNotes().getValue());
+            }
+            if (info.hasDescription()) {
+                expense.setDescription(info.getDescription().getValue());
+            }
+            if (info.hasTotal()) {
+                expense.setTotal(info.getTotal().getValue());
+            }
+
+
+        }
+        if (c.hasOwner()) {
+            MiniUserProto miniUserProto = c.getOwner();
+            if (miniUserProto.hasId()) {
+                expense.setOwnerId(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasFirstName()) {
+                expense.setOwnerFirstName(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasLastName()) {
+                expense.setOwnerLastName(miniUserProto.getId().getValue());
+            }
+        }
+        expense = (Expense) HibernateUtilV2.update(expense);
 
         return expense;
 
     }
 
-
-    public void handle(DeleteExpense c) throws Exception {
-
-        Expense expense = (Expense) new ExpenseQueryHandler().getById((String) c.get("id"));
+    public void handle(DeleteExpense c) throws NotFoundException, CommandException, JsonProcessingException {
+        Expense expense = (Expense) new ExpenseQueryHandler().getById(c.id);
         if (expense != null) {
-            if (!expense.hasDeletePermission(Authentication.getRew3UserId(), Authentication.getRew3GroupId())) {
-                APILogger.add(APILogType.ERROR, "Permission denied");
-                throw new CommandException("Permission denied");
-            }
-
             HibernateUtilV2.saveAsDeleted(expense);
         }
+        c.setObject(expense);
     }
-
-    public void handle(CreateBulkExpense c) throws Exception {
-        List<HashMap<String, Object>> inputs = (List<HashMap<String, Object>>) c.getBulkData();
-
-        List<Object> expenses = new ArrayList<Object>();
-
-
-        for (HashMap<String, Object> data : inputs) {
-            ICommand command = new CreateTransaction(data);
-            CommandRegister.getInstance().process(command);
-            Expense nu = (Expense) command.getObject();
-            expenses.add(nu);
-        }
-        c.setObject(expenses);
-
-
-    }
-
-    public void handle(UpdateBulkExpense c) throws Exception {
-        List<HashMap<String, Object>> inputs = (List<HashMap<String, Object>>) c.getBulkData();
-
-        List<Object> expenses = new ArrayList<Object>();
-
-
-        for (HashMap<String, Object> data : inputs) {
-            ICommand command = new UpdateTransaction(data);
-            CommandRegister.getInstance().process(command);
-            RmsTransaction nu = (RmsTransaction) command.getObject();
-            expenses.add(nu);
-        }
-        c.setObject(expenses);
-
-
-    }
-
-    public void handle(DeleteBulkExpense c) throws Exception {
-        Transaction trx = c.getTransaction();
-        List<Object> ids = (List<Object>) c.get("id");
-
-        List<Object> transcations = new ArrayList<Object>();
-
-        for (Object o : ids) {
-            HashMap<String, Object> map = new HashMap<>();
-            String id = (String) o;
-            map.put("id", id);
-
-            ICommand command = new DeleteTransaction(map, trx);
-            CommandRegister.getInstance().process(command);
-            RmsTransaction nu = (RmsTransaction) command.getObject();
-            transcations.add(nu);
-        }
-
-
-    }
-
 
 }

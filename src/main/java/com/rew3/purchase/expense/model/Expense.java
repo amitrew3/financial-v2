@@ -12,8 +12,11 @@ import java.util.Set;
 @Table(name = DB.Table.EXPENSE)
 public class Expense extends AbstractEntity {
 
-    @Column(name = DB.Field.Expense.TITLE)
+    @Column(name = DB.Field.Expense.EXPENSE_NUMBER)
     private String expenseNumber;
+
+    @Column(name = DB.Field.Expense.TITLE)
+    private String title;
 
     @Column(name = DB.Field.Expense.DATE)
     private Timestamp date;
@@ -31,7 +34,7 @@ public class Expense extends AbstractEntity {
     private String currency;
 
     @Column(name = DB.Field.Expense.TOTAL)
-    private String total;
+    private double total;
 
     public String getExpenseNumber() {
         return expenseNumber;
@@ -81,12 +84,20 @@ public class Expense extends AbstractEntity {
         this.currency = currency;
     }
 
-    public String getTotal() {
+    public double getTotal() {
         return total;
     }
 
-    public void setTotal(String total) {
+    public void setTotal(double total) {
         this.total = total;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
 

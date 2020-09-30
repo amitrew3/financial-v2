@@ -1,19 +1,19 @@
 package com.rew3.purchase.expense;
 
-import com.rew3.common.database.HibernateUtilV2;
-import com.rew3.purchase.expense.model.Expense;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
+import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags;
 import com.rew3.common.model.PaginationParams;
-import com.rew3.common.utils.*;
+import com.rew3.common.utils.Parser;
+import com.rew3.common.utils.RequestFilter;
+import com.rew3.common.utils.Rew3StringBuiler;
+import com.rew3.purchase.expense.model.Expense;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
 
 public class ExpenseQueryHandler implements IQueryHandler {
 
@@ -21,10 +21,10 @@ public class ExpenseQueryHandler implements IQueryHandler {
     public Object getById(String id) throws CommandException, NotFoundException {
         Expense expense = (Expense) HibernateUtilV2.get(Expense.class, id);
         if (expense == null) {
-            throw new NotFoundException("Transaction id(" + id + ") not found.");
+            throw new NotFoundException("Expense  id(" + id + ") not found.");
         }
         if (expense.getStatus().equals(Flags.EntityStatus.DELETED.toString()))
-            throw new NotFoundException("Transaction id(" + id + ") not found.");
+            throw new NotFoundException("Expense  id(" + id + ") not found.");
         return expense;
 
     }
@@ -46,9 +46,12 @@ public class ExpenseQueryHandler implements IQueryHandler {
         }
         if (q.has("limit")) {
             limit = Parser.convertObjectToInteger(q.get("limit"));
+            q.getQuery().remove("limit");
         }
         if (q.has("offset")) {
             offset = Parser.convertObjectToInteger(q.get("offset"));
+            q.getQuery().remove(offset);
+
         }
 
 
@@ -65,7 +68,7 @@ public class ExpenseQueryHandler implements IQueryHandler {
             sqlParams.put("status", Flags.EntityStatus.ACTIVE.toString());
         }
 
-
+        //all the filtering options....
         RequestFilter.doFilter(q, sqlParams, builder, Expense.class);
 
         if (q.has("page_number")) {
@@ -76,48 +79,11 @@ public class ExpenseQueryHandler implements IQueryHandler {
         }
 
 
-        List<Object> expenses = HibernateUtilV2.select("SELECT distinct t FROM Expense t left join t.items " + builder.getValue(), sqlParams, q.getQuery(),
-                limit, offset, Expense.class);
+        List<Object> expenses = HibernateUtilV2.select("SELECT distinct t FROM Expense t " + builder.getValue(), sqlParams, q.getQuery(), limit, offset,
+                Expense.class);
 
         return expenses;
     }
-
-    private void doFilter(Query q, HashMap<String, Object> sqlParams, Rew3StringBuiler builder) {
-        Map<String, Object> map = Rew3StringBuiler.getExpenseMapping();
-        for (Map.Entry<String, Object> fieldMap : map.entrySet()) {
-            for (Map.Entry<String, Object> requestMap : q.getQuery().entrySet()) {
-
-                String key = requestMap.getKey();
-
-                if (fieldMap.getKey().equals(key)) {
-
-                    TypeAndValue tv = (TypeAndValue) fieldMap.getValue();
-                    String value = requestMap.getValue().toString();
-                    String field = tv.getValue();
-
-                    if (tv.getType() == "STRING" && !requestMap.getValue().toString().contains("[") && !requestMap.getValue().toString().contains("]")) {
-                        builder.append("AND");
-                        builder.append(field + " = " + HibernateUtilV2.s(value));
-
-                    } else if (tv.getType() == "EXPENSE_DATE" && !requestMap.getValue().toString().contains("[")
-                            && !requestMap.getValue().toString().contains("]")) {
-                        Matcher matcher = PatternMatcher.specificDateMatch(requestMap.getValue().toString());
-
-                        if (!matcher.matches()) {
-                            builder.append("AND");
-                            String sqlKey = requestMap.getKey();
-                            builder.append(field + " = :" + sqlKey);
-                            sqlParams.put(sqlKey, Rew3Date.convertToUTC(requestMap.getValue().toString()));
-                        }
-                    }
-                    break;
-                }
-
-            }
-
-        }
-    }
-
 
     public Long count(Query q) {
         HashMap<String, Object> sqlParams = new HashMap<String, Object>();
@@ -130,10 +96,9 @@ public class ExpenseQueryHandler implements IQueryHandler {
 
         q.set("status", Flags.EntityStatus.ACTIVE.toString());
 
-        RequestFilter.doFilter(q, sqlParams, builder, Expense.class);
+        RequestFilter.doFilter(q, sqlParams, builder,Expense.class);
 
-        Long count = HibernateUtilV2.count("SELECT  count(distinct t) FROM Expense t left join t.items left join t.reference tr " + builder.getValue(),
-                sqlParams, q.getQuery(), Expense.class);
+        Long count = HibernateUtilV2.count("SELECT  count(distinct t) FROM Expense t " + builder.getValue(), sqlParams, q.getQuery(), Expense.class);
 
 
         return count;
@@ -143,4 +108,3 @@ public class ExpenseQueryHandler implements IQueryHandler {
 
 
 }
-

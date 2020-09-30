@@ -17,6 +17,7 @@ import com.rew3.payment.invoicepayment.command.DeleteInvoicePayment;
 import com.rew3.payment.invoicepayment.command.UpdateInvoicePayment;
 import com.rew3.payment.invoicepayment.model.InvoicePayment;
 import com.rew3.purchase.vendor.VendorQueryHandler;
+import com.rew3.purchase.vendor.model.Vendor;
 import com.rew3.sale.customer.CustomerQueryHandler;
 import com.rew3.sale.customer.model.Customer;
 import com.rew3.sale.invoice.InvoiceQueryHandler;
@@ -53,8 +54,6 @@ public class InvoicePaymentCommandHandler implements ICommandHandler {
     }
 
     public void handle(UpdateInvoicePayment c) {
-        // HibernateUtilV2.openSession();
-        Transaction trx = c.getTransaction();
 
         try {
             InvoicePayment payment = this._handleUpdateInvoicePayment(c.updateInvoicePaymentProto);
@@ -89,12 +88,12 @@ public class InvoicePaymentCommandHandler implements ICommandHandler {
 
 
         if (invoicePaymentInfo.hasCustomerId()) {
-            Customer vendor = (Customer) new VendorQueryHandler().getById(invoicePaymentInfo.getCustomerId().getValue());
-            payment.setCustomer(vendor);
+            Customer customer = (Customer) new CustomerQueryHandler().getById(invoicePaymentInfo.getCustomerId().getValue());
+            payment.setCustomer(customer);
         }
         if (invoicePaymentInfo.hasInvoiceId()) {
-            Invoice customer = (Invoice) new InvoiceQueryHandler().getById(invoicePaymentInfo.getInvoiceId().getValue());
-            payment.setInvoice(customer);
+            Invoice invoice = (Invoice) new InvoiceQueryHandler().getById(invoicePaymentInfo.getInvoiceId().getValue());
+            payment.setInvoice(invoice);
         }
 
 

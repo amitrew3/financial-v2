@@ -22,12 +22,14 @@ message ExpenseProto{
 
 message ExpenseInfoProto{
   google.protobuf.StringValue title = 1;
-  google.protobuf.StringValue merchant = 2;
-  google.protobuf.StringValue date = 3;
-  google.protobuf.StringValue notes = 4;
-  google.protobuf.StringValue total = 5;
-  google.protobuf.DoubleValue currency = 6;
-  google.protobuf.DoubleValue description = 7;
+  google.protobuf.StringValue expense_number = 2;
+  google.protobuf.StringValue merchant = 3;
+  google.protobuf.StringValue date = 4;
+  google.protobuf.DoubleValue total = 5;
+  google.protobuf.StringValue currency = 6;
+  google.protobuf.StringValue description = 7;
+  google.protobuf.StringValue notes = 8;
+
 }
 message AddExpenseProto{
 

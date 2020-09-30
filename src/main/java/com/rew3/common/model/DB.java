@@ -471,6 +471,8 @@ public class DB {
 
         public static class Expense {
             public static final String TITLE  = "title";
+            public static final String EXPENSE_NUMBER  = "expense_number";
+
             public static final String MERCHANT = "merchant";
             public static final String DATE = "date";
             public static final String NOTES = "notes";

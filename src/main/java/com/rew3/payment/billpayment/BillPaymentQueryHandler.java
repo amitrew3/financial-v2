@@ -5,9 +5,13 @@ import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.IQueryHandler;
 import com.rew3.common.cqrs.Query;
 import com.rew3.common.database.HibernateUtilV2;
+import com.rew3.common.model.Flags;
 import com.rew3.common.model.PaginationParams;
 import com.rew3.common.utils.Parser;
+import com.rew3.common.utils.RequestFilter;
+import com.rew3.common.utils.Rew3StringBuiler;
 import com.rew3.payment.billpayment.model.BillPayment;
+import com.rew3.sale.invoice.model.Invoice;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +23,7 @@ public class BillPaymentQueryHandler implements IQueryHandler {
 
         BillPayment po = (BillPayment) HibernateUtilV2.get(BillPayment.class, id);
         if(po==null){
-            throw new NotFoundException("PaymentTerm (" +id + ") not found.");
+            throw new NotFoundException("Payment  (" +id + ") not found.");
         }
         return po;
 
@@ -28,48 +32,76 @@ public class BillPaymentQueryHandler implements IQueryHandler {
     @Override
     public List<Object> get(Query q) {
         HashMap<String, Object> sqlParams = new HashMap<String, Object>();
-        HashMap<String, String> filterParams = new HashMap<String, String>();
-        String whereSQL = " WHERE 1=1 ";
 
         int page = PaginationParams.PAGE;
         int limit = PaginationParams.LIMIT;
-        int offset = 0;
-        if (q.has("page")) {
-            page = Parser.convertObjectToInteger(q.get("page"));
-        }
+        int offset = PaginationParams.OFFSET;
 
+        Rew3StringBuiler builder = new Rew3StringBuiler("WHERE 1=1");
+
+
+        if (q.has("page_number")) {
+            page = Parser.convertObjectToInteger(q.get("page_number"));
+        }
         if (q.has("limit")) {
             limit = Parser.convertObjectToInteger(q.get("limit"));
+            q.getQuery().remove("limit");
+        }
+        if (q.has("offset")) {
+            offset = Parser.convertObjectToInteger(q.get("offset"));
+            q.getQuery().remove(offset);
         }
 
-        if (q.has("ownerId")) {
-            whereSQL += " AND ownerId = :ownerId ";
-            sqlParams.put("ownerId", q.get("ownerId"));
+
+        if (q.has("status")) {
+            builder.append("AND");
+            builder.append("t.status ");
+            builder.append("= :status ");
+            Flags.EntityStatus entityStatus = Flags.EntityStatus.valueOf(q.get("status").toString());
+            sqlParams.put("status", entityStatus.toString());
+        } else {
+            builder.append("AND");
+            builder.append("t.status ");
+            builder.append("= :status ");
+            sqlParams.put("status", Flags.EntityStatus.ACTIVE.toString());
         }
 
-        if (q.has("id")) {
-            whereSQL += " AND id = :id ";
-            sqlParams.put("ownerId", q.get("ownerId"));
+
+        RequestFilter.doFilter(q, sqlParams, builder, Invoice.class);
+
+        if (q.has("page_number")) {
+            offset = (limit * (page - 1));
+        }
+        if (q.has("offset")) {
+            offset = Parser.convertObjectToInteger(q.get("offset"));
         }
 
-        if (q.has("name")) {
-            whereSQL += " AND lower(name) = :name ";
-            sqlParams.put("name", ((String) q.get("name")).toLowerCase());
-        }
 
-        if (q.has("description")) {
-            whereSQL += " AND lower(description) = :description ";
-            sqlParams.put("description", ((String) q.get("description")).toLowerCase());
-        }
-        offset = (limit * (page - 1));
+        List<Object> invoices = HibernateUtilV2.select("SELECT distinct t FROM BillPayment t " + builder.getValue(),
+                sqlParams, q.getQuery(), limit, offset, Invoice.class);
 
-        List<Object> terms = HibernateUtilV2.select("FROM PaymentOption " + whereSQL, sqlParams, q.getQuery(), limit, offset);
-        return terms;
+        return invoices;
     }
 
-    public Long count() throws CommandException {
-        Long count = (Long) HibernateUtilV2.createQuery("select count(*) from PaymentOption", null);
+    public Long count(Query q) {
+        HashMap<String, Object> sqlParams = new HashMap<String, Object>();
+        Rew3StringBuiler builder = new Rew3StringBuiler("WHERE 1=1");
+
+        //Extra params that results to false count
+        q.getQuery().remove("offset");
+        q.getQuery().remove("limit");
+        q.getQuery().remove("sort");
+
+        q.set("status", Flags.EntityStatus.ACTIVE.toString());
+
+        RequestFilter.doFilter(q, sqlParams, builder, Invoice.class);
+
+        Long count = HibernateUtilV2.count("SELECT count(distinct t) FROM BillPayment t " + builder.getValue(),
+                sqlParams, q.getQuery(), Invoice.class);
+
+
         return count;
-    }
 
+
+    }
 }

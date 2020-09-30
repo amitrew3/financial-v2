@@ -9,7 +9,7 @@ import org.hibernate.Transaction;
 import java.util.HashMap;
 
 public class CreateExpense extends Command implements ICommand {
-	AddExpenseProto addExpenseProto;
+	public AddExpenseProto addExpenseProto;
 
 	public CreateExpense(AddExpenseProto addExpenseProto) {
 		this.addExpenseProto = addExpenseProto;

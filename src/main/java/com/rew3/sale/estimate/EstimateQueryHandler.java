@@ -11,6 +11,7 @@ import com.rew3.common.utils.Parser;
 import com.rew3.common.utils.RequestFilter;
 import com.rew3.common.utils.Rew3StringBuiler;
 import com.rew3.sale.estimate.model.Estimate;
+import com.rew3.sale.invoice.model.Invoice;
 
 import java.util.HashMap;
 import java.util.List;
@@ -69,7 +70,7 @@ public class EstimateQueryHandler implements IQueryHandler {
         }
 
 
-        RequestFilter.doFilter(q, sqlParams, builder, Estimate.class);
+        RequestFilter.doFilter(q, sqlParams, builder, Invoice.class);
 
         if (q.has("page_number")) {
             offset = (limit * (page - 1));
@@ -79,8 +80,8 @@ public class EstimateQueryHandler implements IQueryHandler {
         }
 
 
-        List<Object> invoices = HibernateUtilV2.select("SELECT distinct t FROM Invoice t left join t.items tc left join t.reference tr " + builder.getValue(),
-                sqlParams, q.getQuery(), limit, offset, Estimate.class);
+        List<Object> invoices = HibernateUtilV2.select("SELECT distinct t FROM Estimate t " + builder.getValue(),
+                sqlParams, q.getQuery(), limit, offset, Invoice.class);
 
         return invoices;
     }
@@ -96,11 +97,14 @@ public class EstimateQueryHandler implements IQueryHandler {
 
         q.set("status", Flags.EntityStatus.ACTIVE.toString());
 
-        RequestFilter.doFilter(q, sqlParams, builder, Estimate.class);
+        RequestFilter.doFilter(q, sqlParams, builder, Invoice.class);
 
-        Long count = HibernateUtilV2.count("SELECT count(distinct t) FROM Invoice t left join t.items tc left join t.reference tr " + builder.getValue(),
-                sqlParams, q.getQuery(), Estimate.class);
+        Long count = HibernateUtilV2.count("SELECT count(distinct t) FROM Estimate t " + builder.getValue(),
+                sqlParams, q.getQuery(), Invoice.class);
+
+
         return count;
+
 
     }
 }

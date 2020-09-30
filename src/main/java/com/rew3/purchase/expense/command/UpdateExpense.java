@@ -9,8 +9,8 @@ import org.hibernate.Transaction;
 import java.util.HashMap;
 
 public class UpdateExpense extends Command implements ICommand {
-	String id;
-	UpdateExpenseProto updateExpenseProto;
+	public String id;
+	public UpdateExpenseProto updateExpenseProto;
 
 	public UpdateExpense(String id, UpdateExpenseProto updateExpenseProto) {
 		this.id = id;
