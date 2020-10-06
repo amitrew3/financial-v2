@@ -41,6 +41,8 @@ public class DB {
         public static final String ESTIMATE = "estimate";
 
         public static final String RECURRING_INVOICE = "recurring_invoice";
+        public static final String RECURRING_INVOICE_TEMPLATE = "recurring_invoice_template";
+
 
         public static final String RECURRING_SCHEDULE = "recurring_schedule";
 
@@ -93,9 +95,6 @@ public class DB {
         public static final String INVOICEPAYMENT = "invoice_payment";
         public static final String BILLPAYMENT = "bill_payment";
         public static final String SALESTAX = "sales_tax";
-
-
-
 
 
     }
@@ -435,24 +434,43 @@ public class DB {
             public static final String IS_DRAFT = "is_draft";
         }
 
-        public static class RecurringInvoice {
+        public static class RecurringInvoiceTemplate {
             public static final String TITLE = "title";
             public static final String START_DATE = "start_date";
             public static final String END_DATE = "end_date";
-            public static final String END_TYPE = "end_type";
-            public static final String AFTER_INDEX = "after_index";
+            public static final String RULE_TYPE = "rule_type";
+            public static final String AFTER_COUNT = "after_count";
             public static final String DESCRIPTION = "description";
+
+
         }
         public static class RecurringSchedule {
             public static final String TITLE = "title";
             public static final String SCHEDULE_TYPE = "schedule_type";
             public static final String DAY_INDEX = "day_index";
             public static final String MONTH_INDEX = "month_index";
-            public static final String WEEK_INDEX = "week_index";
             public static final String WEEK_DAY_INDEX = "week_day_index";
-            public static final String YEAR_INDEX = "year_index";
+            public static final String COUNT = "count";
             public static final String DESCRIPTION = "description";
 
+        }
+        public static class RecurringInvoice {
+            public static final String INVOICE_NUMBER = "invoice_number";
+            public static final String PO_SO_NUMBER = "po_so_number";
+            public static final String INVOICE_DATE = "invoice_date";
+            public static final String DUE_DATE = "due_date";
+            public static final String CUSTOMER_ID = "customer_id";
+            public static final String PAYMENT_TERM_ID = "payment_term_id";
+            public static final String MEMOS = "memos";
+            public static final String PAYMENT_STATUS = "payment_status";
+            public static final String SEND_DATE_TIME = "send_date_time";
+            public static final String INTERNAL_NOTES = "internal_notes";
+            public static final String FOOTER_NOTES = "footer_notes";
+            public static final String SUB_TOTAL = "sub_total";
+            public static final String TAX_TOTAL = "tax_total";
+            public static final String TOTAL = "total";
+
+            public static final String IS_SENT = "is_sent";
         }
 
 

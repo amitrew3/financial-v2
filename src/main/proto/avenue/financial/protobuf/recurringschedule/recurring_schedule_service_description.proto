@@ -1,0 +1,136 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+
+import "avenue/financial/protobuf/core/core_messages_description.proto";
+import "avenue/financial/protobuf/recurringschedule/recurring_schedule_messages_description.proto";
+
+
+
+//Platform
+
+option java_multiple_files = true;
+option java_package = "com.avenue.financial.services.grpc.proto.recurringschedule";
+option java_outer_classname = "RecurringScheduleServiceDescriptionProto";
+
+package avenue.rms.protobuf.recurringschedule;
+
+service RecurringScheduleServiceProto {
+
+  rpc list (ListRecurringScheduleRequestProto) returns (ListRecurringScheduleResponseProto) {
+  }
+
+  rpc get (GetRecurringScheduleRequestProto) returns (GetRecurringScheduleResponseProto) {
+  }
+
+
+  rpc add (AddRecurringScheduleRequestProto) returns (AddRecurringScheduleResponseProto) {
+  }
+
+  rpc update (UpdateRecurringScheduleRequestProto) returns (UpdateRecurringScheduleResponseProto) {
+  }
+
+  rpc delete (DeleteRecurringScheduleRequestProto) returns (DeleteRecurringScheduleResponseProto) {
+  }
+
+}
+
+message CountRecurringScheduleRequestProto {
+  avenue.financial.protobuf.core.RequestParamProto param = 1;
+  google.protobuf.StringValue search = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+message BulkDeleteRecurringScheduleRequestProto {
+  repeated string id = 1;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
+}
+
+message BulkDeleteRecurringScheduleResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  repeated avenue.financial.protobuf.recurringschedule.RecurringScheduleProto data = 5;
+}
+
+message CountRecurringScheduleResponseProto {
+  int32 limit = 1;
+  int32 page_number = 2;
+  int32 pages_count = 3;
+  int32 total_count = 4;
+}
+
+message ListRecurringScheduleResponseProto {
+  repeated avenue.financial.protobuf.recurringschedule.RecurringScheduleProto data = 1;
+}
+
+message GetRecurringScheduleResponseProto {
+  avenue.financial.protobuf.recurringschedule.RecurringScheduleProto data = 1;
+}
+
+message GetRecurringScheduleRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.core.RequestParamProto param = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+message ListRecurringScheduleRequestProto {
+  avenue.financial.protobuf.core.RequestParamProto param = 1;
+  google.protobuf.StringValue search = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+
+
+
+message AddRecurringScheduleRequestProto {
+  avenue.financial.protobuf.recurringschedule.AddRecurringScheduleProto data = 1;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
+}
+
+message UpdateRecurringScheduleRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.recurringschedule.UpdateRecurringScheduleProto data = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+message DeleteRecurringScheduleRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
+}
+
+
+message AddRecurringScheduleResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.recurringschedule.RecurringScheduleProto data = 5;
+}
+
+message UpdateRecurringScheduleResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.recurringschedule.RecurringScheduleProto data = 5;
+}
+
+message DeleteRecurringScheduleResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.recurringschedule.RecurringScheduleProto data = 5;
+}
+
+
+
+
+
+
+
+

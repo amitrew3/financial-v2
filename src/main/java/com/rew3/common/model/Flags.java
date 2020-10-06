@@ -119,6 +119,7 @@ public abstract class Flags {
 
 
     }
+
     public enum ProductSide {
         PURCHASE, SALE, BOTH
 
@@ -558,6 +559,21 @@ public abstract class Flags {
 
 
     }
+
+    public enum RecurringRuleType {
+        ON,
+        NEVER,
+        AFTER
+
+    }
+    public enum RecurringScheduleType {
+        DAY,
+        WEEK,
+        MONTH,
+        YEAR
+
+    }
+
 
 
 }

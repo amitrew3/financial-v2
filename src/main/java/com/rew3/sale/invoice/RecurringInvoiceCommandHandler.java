@@ -64,12 +64,12 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
             recurringInvoice = (RecurringInvoice) new RecurringInvoiceQueryHandler().getById(c.get("id").toString());
             isNew = false;
         }
-        if (c.has("startDate")) {
-            recurringInvoice.setStartDate(Rew3Date.convertToUTC(c.get("startDate").toString()));
-        }
-        if (c.has("endDate")) {
-            recurringInvoice.setEndDate(Rew3Date.convertToUTC(c.get("endDate").toString()));
-        }
+//        if (c.has("startDate")) {
+//            recurringInvoice.setStartDate(Rew3Date.convertToUTC(c.get("startDate").toString()));
+//        }
+//        if (c.has("endDate")) {
+//            recurringInvoice.setEndDate(Rew3Date.convertToUTC(c.get("endDate").toString()));
+//        }
 
 
         if (c.has("status")) {

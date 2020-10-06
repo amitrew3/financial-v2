@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "avenue/financial/protobuf/core/core_messages_description.proto";
+import "avenue/financial/protobuf/customer/customer_messages_description.proto";
+import "avenue/financial/protobuf/paymentterm/paymentterm_messages_description.proto";
+import "avenue/financial/protobuf/product/product_messages_description.proto";
+import "avenue/financial/protobuf/salestax/salestax_messages_description.proto";
+
+option java_multiple_files = true;
+option java_package = "com.avenue.financial.services.grpc.proto.recurringschedule";
+option java_outer_classname = "RecurringScheduleMessagesDescriptionProto";
+
+package avenue.financial.protobuf.recurringschedule;
+
+message RecurringScheduleProto{
+  google.protobuf.StringValue _id = 1;
+  avenue.financial.protobuf.core.MetaProto meta = 2;
+  avenue.financial.protobuf.core.MiniUserProto owner = 3;
+  avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 4;
+  avenue.financial.protobuf.core.VisibilityTypeProto visibility = 5;
+  RecurringScheduleInfoProto recurring_schedule_info = 6;
+
+}
+
+message RecurringScheduleInfoProto{
+  google.protobuf.StringValue title = 1;
+  RecurringScheduleTypeProto schedule_type = 2;
+  google.protobuf.Int32Value day_index = 3;
+  google.protobuf.Int32Value month_index = 4;
+  google.protobuf.StringValue week_day_index = 5;
+  google.protobuf.Int32Value count = 6;
+  google.protobuf.StringValue description = 7;
+
+}
+message AddRecurringScheduleProto{
+
+  avenue.financial.protobuf.core.MiniUserProto owner = 1;
+  avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 2;
+  avenue.financial.protobuf.core.VisibilityTypeProto visibility = 3;
+  RecurringScheduleInfoProto recurring_schedule_info = 4;
+
+
+}
+
+message UpdateRecurringScheduleProto{
+  google.protobuf.StringValue _id = 1;
+  avenue.financial.protobuf.core.MiniUserProto owner = 2;
+  avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 3;
+  avenue.financial.protobuf.core.VisibilityTypeProto visibility = 4;
+  RecurringScheduleInfoProto recurring_schedule_info = 5;
+
+}
+enum RecurringScheduleTypeProto{
+  DAY = 0;
+  WEEK = 1;
+  MONTH = 2;
+  YEAR = 3;
+
+}
+
+
+
+

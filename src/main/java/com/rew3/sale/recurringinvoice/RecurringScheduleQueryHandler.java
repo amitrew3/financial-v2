@@ -15,7 +15,7 @@ import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
 import java.util.HashMap;
 import java.util.List;
 
-public class RecurringInvoiceQueryHandler implements IQueryHandler {
+public class RecurringScheduleQueryHandler implements IQueryHandler {
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {

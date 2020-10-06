@@ -1,0 +1,136 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+
+import "avenue/financial/protobuf/core/core_messages_description.proto";
+import "avenue/financial/protobuf/recurringinvoice/recurring_invoice_messages_description.proto";
+
+
+
+//Platform
+
+option java_multiple_files = true;
+option java_package = "com.avenue.financial.services.grpc.proto.recurringinvoice";
+option java_outer_classname = "RecurringInvoiceServiceDescriptionProto";
+
+package avenue.rms.protobuf.recurringinvoice;
+
+service RecurringInvoiceServiceProto {
+
+  rpc list (ListRecurringInvoiceRequestProto) returns (ListRecurringInvoiceResponseProto) {
+  }
+
+  rpc get (GetRecurringInvoiceRequestProto) returns (GetRecurringInvoiceResponseProto) {
+  }
+
+
+  rpc add (AddRecurringInvoiceRequestProto) returns (AddRecurringInvoiceResponseProto) {
+  }
+
+  rpc update (UpdateRecurringInvoiceRequestProto) returns (UpdateRecurringInvoiceResponseProto) {
+  }
+
+  rpc delete (DeleteRecurringInvoiceRequestProto) returns (DeleteRecurringInvoiceResponseProto) {
+  }
+
+}
+
+message CountRecurringInvoiceRequestProto {
+  avenue.financial.protobuf.core.RequestParamProto param = 1;
+  google.protobuf.StringValue search = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+message BulkDeleteRecurringInvoiceRequestProto {
+  repeated string id = 1;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
+}
+
+message BulkDeleteRecurringInvoiceResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  repeated avenue.financial.protobuf.recurringinvoice.RecurringInvoiceProto data = 5;
+}
+
+message CountRecurringInvoiceResponseProto {
+  int32 limit = 1;
+  int32 page_number = 2;
+  int32 pages_count = 3;
+  int32 total_count = 4;
+}
+
+message ListRecurringInvoiceResponseProto {
+  repeated avenue.financial.protobuf.recurringinvoice.RecurringInvoiceProto data = 1;
+}
+
+message GetRecurringInvoiceResponseProto {
+  avenue.financial.protobuf.recurringinvoice.RecurringInvoiceProto data = 1;
+}
+
+message GetRecurringInvoiceRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.core.RequestParamProto param = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+message ListRecurringInvoiceRequestProto {
+  avenue.financial.protobuf.core.RequestParamProto param = 1;
+  google.protobuf.StringValue search = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+
+
+
+message AddRecurringInvoiceRequestProto {
+  avenue.financial.protobuf.recurringinvoice.AddRecurringInvoiceProto data = 1;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
+}
+
+message UpdateRecurringInvoiceRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.recurringinvoice.UpdateRecurringInvoiceProto data = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+message DeleteRecurringInvoiceRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
+}
+
+
+message AddRecurringInvoiceResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.recurringinvoice.RecurringInvoiceProto data = 5;
+}
+
+message UpdateRecurringInvoiceResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.recurringinvoice.RecurringInvoiceProto data = 5;
+}
+
+message DeleteRecurringInvoiceResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.recurringinvoice.RecurringInvoiceProto data = 5;
+}
+
+
+
+
+
+
+
+

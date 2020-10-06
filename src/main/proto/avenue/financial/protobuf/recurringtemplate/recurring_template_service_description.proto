@@ -1,0 +1,129 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+
+import "avenue/financial/protobuf/core/core_messages_description.proto";
+import "avenue/financial/protobuf/recurringtemplate/recurring_template_messages_description.proto";
+
+
+
+//Platform
+
+option java_multiple_files = true;
+option java_package = "com.avenue.financial.services.grpc.proto.recurringinvoice.recurringtemplate";
+option java_outer_classname = "RecurringTemplateServiceDescriptionProto";
+
+package avenue.rms.protobuf.recurringinvoice.recurringtemplate;
+
+service RecurringTemplateServiceProto {
+
+  rpc list (ListRecurringTemplateRequestProto) returns (ListRecurringTemplateResponseProto) {
+  }
+
+  rpc get (GetRecurringTemplateRequestProto) returns (GetRecurringTemplateResponseProto) {
+  }
+
+
+  rpc add (AddRecurringTemplateRequestProto) returns (AddRecurringTemplateResponseProto) {
+  }
+
+  rpc update (UpdateRecurringTemplateRequestProto) returns (UpdateRecurringTemplateResponseProto) {
+  }
+
+  rpc delete (DeleteRecurringTemplateRequestProto) returns (DeleteRecurringTemplateResponseProto) {
+  }
+
+}
+
+message CountRecurringTemplateRequestProto {
+  avenue.financial.protobuf.core.RequestParamProto param = 1;
+  google.protobuf.StringValue search = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+message BulkDeleteRecurringTemplateRequestProto {
+  repeated string id = 1;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
+}
+
+
+message CountRecurringTemplateResponseProto {
+  int32 limit = 1;
+  int32 page_number = 2;
+  int32 pages_count = 3;
+  int32 total_count = 4;
+}
+
+message ListRecurringTemplateResponseProto {
+  repeated avenue.financial.protobuf.recurringtemplate.RecurringTemplateProto data = 1;
+}
+
+message GetRecurringTemplateResponseProto {
+  avenue.financial.protobuf.recurringtemplate.RecurringTemplateProto data = 1;
+}
+
+message GetRecurringTemplateRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.core.RequestParamProto param = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+message ListRecurringTemplateRequestProto {
+  avenue.financial.protobuf.core.RequestParamProto param = 1;
+  google.protobuf.StringValue search = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+
+
+
+message AddRecurringTemplateRequestProto {
+  avenue.financial.protobuf.recurringtemplate.AddRecurringTemplateProto data = 1;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
+}
+
+message UpdateRecurringTemplateRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.recurringtemplate.UpdateRecurringTemplateProto data = 2;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 3;
+}
+
+message DeleteRecurringTemplateRequestProto {
+  string id = 1;
+  avenue.financial.protobuf.core.RequestContextProto request_context = 2;
+}
+
+
+message AddRecurringTemplateResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.recurringtemplate.RecurringTemplateProto data = 5;
+}
+
+message UpdateRecurringTemplateResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.recurringtemplate.RecurringTemplateProto data = 5;
+}
+
+message DeleteRecurringTemplateResponseProto {
+  string id = 1;
+  string action = 2;
+  string message = 3;
+  avenue.financial.protobuf.core.StatusTypeProto status = 4;
+  avenue.financial.protobuf.recurringtemplate.RecurringTemplateProto data = 5;
+}
+
+
+
+
+
+
+
+

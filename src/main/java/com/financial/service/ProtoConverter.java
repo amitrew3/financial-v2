@@ -23,6 +23,16 @@ import com.avenue.financial.services.grpc.proto.paymentterm.PaymentTermProto;
 import com.avenue.financial.services.grpc.proto.product.ProductInfoProto;
 import com.avenue.financial.services.grpc.proto.product.ProductProto;
 import com.avenue.financial.services.grpc.proto.product.ProductSideProto;
+import com.avenue.financial.services.grpc.proto.recurringinvoice.AddRecurringInvoiceItemProto;
+import com.avenue.financial.services.grpc.proto.recurringinvoice.RecurringInvoiceInfoProto;
+import com.avenue.financial.services.grpc.proto.recurringinvoice.RecurringInvoiceItemProto;
+import com.avenue.financial.services.grpc.proto.recurringinvoice.RecurringInvoiceProto;
+import com.avenue.financial.services.grpc.proto.recurringschedule.RecurringScheduleInfoProto;
+import com.avenue.financial.services.grpc.proto.recurringschedule.RecurringScheduleProto;
+import com.avenue.financial.services.grpc.proto.recurringschedule.RecurringScheduleTypeProto;
+import com.avenue.financial.services.grpc.proto.recurringtemplate.RecurringRuleTypeProto;
+import com.avenue.financial.services.grpc.proto.recurringtemplate.RecurringTemplateInfoProto;
+import com.avenue.financial.services.grpc.proto.recurringtemplate.RecurringTemplateProto;
 import com.avenue.financial.services.grpc.proto.salestax.SalesTaxInfoProto;
 import com.avenue.financial.services.grpc.proto.salestax.SalesTaxProto;
 import com.avenue.financial.services.grpc.proto.vendor.VendorInfoProto;
@@ -32,6 +42,7 @@ import com.rew3.catalog.product.ProductQueryHandler;
 import com.rew3.catalog.product.model.Product;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
+import com.rew3.common.model.Flags;
 import com.rew3.common.shared.model.Address;
 import com.rew3.common.shared.model.Meta;
 import com.rew3.common.shared.model.MiniUser;
@@ -48,6 +59,10 @@ import com.rew3.sale.estimate.model.Estimate;
 import com.rew3.sale.estimate.model.EstimateItem;
 import com.rew3.sale.invoice.model.Invoice;
 import com.rew3.sale.invoice.model.InvoiceItem;
+import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
+import com.rew3.sale.recurringinvoice.model.RecurringInvoiceItem;
+import com.rew3.sale.recurringinvoice.model.RecurringSchedule;
+import com.rew3.sale.recurringinvoice.model.RecurringTemplate;
 import com.rew3.salestax.SalesTaxQueryHandler;
 import com.rew3.salestax.model.SalesTax;
 
@@ -61,6 +76,24 @@ public class ProtoConverter {
     public static List<InvoiceProto> convertToInvoiceProtos(List<Object> all) {
         List<InvoiceProto> list = all.stream().map(x -> (Invoice) x).map(x -> {
             return convertToInvoiceProto(x);
+        }).collect(Collectors.toList());
+        return list;
+    }
+    public static List<RecurringTemplateProto> convertToRecurringTemplateProtos(List<Object> all) {
+        List<RecurringTemplateProto> list = all.stream().map(x -> (RecurringTemplate) x).map(x -> {
+            return convertToRecurringTemplateProto(x);
+        }).collect(Collectors.toList());
+        return list;
+    }
+    public static List<RecurringInvoiceProto> convertToRecurringInvoiceProtos(List<Object> all) {
+        List<RecurringInvoiceProto> list = all.stream().map(x -> (RecurringInvoice) x).map(x -> {
+            return convertToRecurringInvoiceProto(x);
+        }).collect(Collectors.toList());
+        return list;
+    }
+    public static List<RecurringScheduleProto> convertToRecurringScheduleProtos(List<Object> all) {
+        List<RecurringScheduleProto> list = all.stream().map(x -> (RecurringSchedule) x).map(x -> {
+            return convertToRecurringScheduleProto(x);
         }).collect(Collectors.toList());
         return list;
     }
@@ -115,6 +148,45 @@ public class ProtoConverter {
         Optional.ofNullable(x.getOwner()).ifPresent(y -> builder.setOwner(miniUserProto(y)));
         Optional.ofNullable(x.getVisibility()).ifPresent(y -> builder.setVisibility(VisibilityTypeProto.valueOf(x.getVisibility())));
         Optional.ofNullable(x).ifPresent(y -> builder.setInvoiceInfo(convertToInvoiceInfoProto(y)));
+
+        return builder.build();
+
+    }
+    public static RecurringTemplateProto convertToRecurringTemplateProto(RecurringTemplate x) {
+        RecurringTemplateProto.Builder builder = RecurringTemplateProto.newBuilder();
+        Optional.ofNullable(x.get_id()).ifPresent(y -> builder.setId(StringValue.of(y)));
+
+        Optional.ofNullable(x.getMeta()).ifPresent(y -> builder.setMeta(convertToMetaProto(y)));
+
+        Optional.ofNullable(x.getOwner()).ifPresent(y -> builder.setOwner(miniUserProto(y)));
+        Optional.ofNullable(x.getVisibility()).ifPresent(y -> builder.setVisibility(VisibilityTypeProto.valueOf(x.getVisibility())));
+        Optional.ofNullable(x).ifPresent(y -> builder.setRecurringTemplateInfo(convertToRecurringTemplateInfoProto(y)));
+
+        return builder.build();
+
+    }
+    public static RecurringInvoiceProto convertToRecurringInvoiceProto(RecurringInvoice x) {
+        RecurringInvoiceProto.Builder builder = RecurringInvoiceProto.newBuilder();
+        Optional.ofNullable(x.get_id()).ifPresent(y -> builder.setId(StringValue.of(y)));
+
+        Optional.ofNullable(x.getMeta()).ifPresent(y -> builder.setMeta(convertToMetaProto(y)));
+
+        Optional.ofNullable(x.getOwner()).ifPresent(y -> builder.setOwner(miniUserProto(y)));
+        Optional.ofNullable(x.getVisibility()).ifPresent(y -> builder.setVisibility(VisibilityTypeProto.valueOf(x.getVisibility())));
+        Optional.ofNullable(x).ifPresent(y -> builder.setRecurringInvoiceInfo(convertToRecurringInvoiceInfoProto(y)));
+
+        return builder.build();
+
+    }
+    public static RecurringScheduleProto convertToRecurringScheduleProto(RecurringSchedule x) {
+        RecurringScheduleProto.Builder builder = RecurringScheduleProto.newBuilder();
+        Optional.ofNullable(x.get_id()).ifPresent(y -> builder.setId(StringValue.of(y)));
+
+        Optional.ofNullable(x.getMeta()).ifPresent(y -> builder.setMeta(convertToMetaProto(y)));
+
+        Optional.ofNullable(x.getOwner()).ifPresent(y -> builder.setOwner(miniUserProto(y)));
+        Optional.ofNullable(x.getVisibility()).ifPresent(y -> builder.setVisibility(VisibilityTypeProto.valueOf(x.getVisibility())));
+        Optional.ofNullable(x).ifPresent(y -> builder.setRecurringScheduleInfo(convertToRecurringScheduleInfoProto(y)));
 
         return builder.build();
 
@@ -183,6 +255,13 @@ public class ProtoConverter {
         return items;
     }
 
+    private static Set<RecurringInvoiceItemProto> convertToRecurringInvoiceItemsProtos(Set<RecurringInvoiceItem> invoiceItems) {
+        Set<RecurringInvoiceItemProto> items = invoiceItems.stream().map(x -> {
+            return convertToRecurringInvoiceItemProto(x);
+        }).collect(Collectors.toSet());
+        return items;
+    }
+
     private static Set<EstimateItemProto> convertToEstimateItemsProtos(Set<EstimateItem> invoiceItems) {
         Set<EstimateItemProto> items = invoiceItems.stream().map(x -> {
             return convertToEstimateItemProto(x);
@@ -190,6 +269,17 @@ public class ProtoConverter {
         return items;
     }
 
+    private static RecurringInvoiceItemProto convertToRecurringInvoiceItemProto(RecurringInvoiceItem x) {
+        RecurringInvoiceItemProto.Builder builder = RecurringInvoiceItemProto.newBuilder();
+        Optional.ofNullable(x.getUom()).ifPresent(y -> builder.setUom(StringValue.of(y)));
+        Optional.ofNullable(x.getQuantity()).ifPresent(y -> builder.setQuantity(Int32Value.of(y)));
+        Optional.ofNullable(x.getPrice()).ifPresent(y -> builder.setPrice(DoubleValue.of(y)));
+        Optional.ofNullable(x.getProduct()).ifPresent(y -> builder.setProduct(convertToProductProto(y)));
+        Optional.ofNullable(x.getTax1()).ifPresent(y -> builder.setTax1(convertToSalesTaxProto(y)));
+        Optional.ofNullable(x.getTax1()).ifPresent(y -> builder.setTax2(convertToSalesTaxProto(y)));
+
+        return builder.build();
+    }
     private static InvoiceItemProto convertToInvoiceItemProto(InvoiceItem x) {
         InvoiceItemProto.Builder builder = InvoiceItemProto.newBuilder();
         Optional.ofNullable(x.getUom()).ifPresent(y -> builder.setUom(StringValue.of(y)));
@@ -250,7 +340,51 @@ public class ProtoConverter {
         Optional.ofNullable(x.getItems()).ifPresent(y -> builder.addAllItems(convertToInvoiceItemsProtos(y)));
         return builder.build();
     }
+    private static RecurringTemplateInfoProto convertToRecurringTemplateInfoProto(RecurringTemplate x) {
+        RecurringTemplateInfoProto.Builder builder = RecurringTemplateInfoProto.newBuilder();
+        Optional.ofNullable(x.getTitle()).ifPresent(y -> builder.setTitle(StringValue.of(y)));
+        Optional.ofNullable(x.getDescription()).ifPresent(y -> builder.setDescription(StringValue.of(y)));
+        Optional.ofNullable(x.getStartDate()).ifPresent(y -> builder.setStartDate(StringValue.of(y.toString())));
+        Optional.ofNullable(x.getEndDate()).ifPresent(y -> builder.setStartDate(StringValue.of(y.toString())));
+        Optional.ofNullable(x.getAfterCount()).ifPresent(y -> builder.setAfterCount(Int32Value.of(y)));
+        Optional.ofNullable(x.getRuleType()).ifPresent(y -> builder.setRecurringRuleTypeProto(RecurringRuleTypeProto.valueOf(y)));
 
+        return builder.build();
+    }
+    private static RecurringInvoiceInfoProto convertToRecurringInvoiceInfoProto(RecurringInvoice x) {
+        RecurringInvoiceInfoProto.Builder builder = RecurringInvoiceInfoProto.newBuilder();
+        Optional.ofNullable(x.getInvoiceNumber()).ifPresent(y -> builder.setInvoiceNumber(StringValue.of(y)));
+        Optional.ofNullable(x.getPoSoNumber()).ifPresent(y -> builder.setPoSoNumber(StringValue.of(y)));
+        Optional.ofNullable(x.getInvoiceDate()).ifPresent(y -> builder.setInvoiceDate(StringValue.of(y.toString())));
+        Optional.ofNullable(x.getDueDate()).ifPresent(y -> builder.setDueDate(StringValue.of(y.toString())));
+        Optional.ofNullable(x.getCustomer()).ifPresent(y -> builder.setCustomer(convertToCustomerProto(y)));
+        Optional.ofNullable(x.getPaymentTerm()).ifPresent(y -> builder.setPaymentTerm(convertToPaymentTermProto(y)));
+        Optional.ofNullable(x.getMemos()).ifPresent(y -> builder.setMemos(StringValue.of(y)));
+
+
+     //  Optional.ofNullable(x.getPaymentStatus()).ifPresent(y -> builder.setPaymentStatus(PaymentStatusProto.valueOf(y));
+        Optional.ofNullable(x.getSendDateTime()).ifPresent(y -> builder.setSendDateTime(StringValue.of(y.toString())));
+        Optional.ofNullable(x.getInternalNotes()).ifPresent(y -> builder.setInternalNotes(StringValue.of(y)));
+        Optional.ofNullable(x.getFooterNotes()).ifPresent(y -> builder.setFooterNotes(StringValue.of(y)));
+        Optional.ofNullable(x.getSubTotal()).ifPresent(y -> builder.setSubTotal(DoubleValue.of(y)));
+        Optional.ofNullable(x.getTaxTotal()).ifPresent(y -> builder.setTaxTotal(DoubleValue.of(y)));
+        Optional.ofNullable(x.getTotal()).ifPresent(y -> builder.setTotal(DoubleValue.of(y)));
+        Optional.ofNullable(x.isSent()).ifPresent(y -> builder.setIsInvoiceSent(BoolValue.of(y)));
+        Optional.ofNullable(x.getAddress()).ifPresent(y -> builder.setBillingAddress(convertToAddressProto(y)));
+        Optional.ofNullable(x.getItems()).ifPresent(y -> builder.addAllItems(convertToRecurringInvoiceItemsProtos(y)));
+        return builder.build();
+    }
+    private static RecurringScheduleInfoProto convertToRecurringScheduleInfoProto(RecurringSchedule x) {
+        RecurringScheduleInfoProto.Builder builder = RecurringScheduleInfoProto.newBuilder();
+        Optional.ofNullable(x.getTitle()).ifPresent(y -> builder.setTitle(StringValue.of(y)));
+        Optional.ofNullable(x.getScheduleType()).ifPresent(y -> builder.setScheduleType(RecurringScheduleTypeProto.valueOf(y)));
+        Optional.ofNullable(x.getDayIndex()).ifPresent(y -> builder.setDayIndex(Int32Value.of(y)));
+        Optional.ofNullable(x.getMonthIndex()).ifPresent(y -> builder.setMonthIndex(Int32Value.of(y)));
+        Optional.ofNullable(x.getDescription()).ifPresent(y -> builder.setDescription(StringValue.of(y)));
+        Optional.ofNullable(x.getWeekDayIndex()).ifPresent(y -> builder.setWeekDayIndex(StringValue.of(y)));
+        Optional.ofNullable(x.getCount()).ifPresent(y -> builder.setCount(Int32Value.of(y)));
+        return builder.build();
+    }
 
     private static MetaProto convertToMetaProto(Meta meta) {
         MetaProto.Builder builder = MetaProto.newBuilder();
@@ -793,4 +927,59 @@ public class ProtoConverter {
     }
 
 
+    public static RecurringInvoiceItem convertToAddRecurringInvoiceItem(AddRecurringInvoiceItemProto x) {
+        RecurringInvoiceItem item = new RecurringInvoiceItem();
+//        Optional.ofNullable(x.getInvoiceId()).ifPresent(y -> {
+//            item.setProduct(y.getValue());
+//        });
+        Optional.ofNullable(x.getQuantity()).ifPresent(y -> {
+            item.setQuantity(y.getValue());
+        });
+        Optional.ofNullable(x.getUom()).ifPresent(y -> {
+            item.setUom(y.getValue());
+        });
+        Optional.ofNullable(x.getPrice()).ifPresent(y -> {
+            item.setPrice(y.getValue());
+        });
+        Optional.ofNullable(x.getProductId()).ifPresent(y -> {
+            ProductQueryHandler productQueryHandler = new ProductQueryHandler();
+            try {
+                Product product = (Product) productQueryHandler.getById(y.getValue());
+                item.setProduct(product);
+            } catch (CommandException e) {
+                e.printStackTrace();
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+        Optional.ofNullable(x.getTax1Id()).ifPresent(y -> {
+            SalesTaxQueryHandler taxQueryHandler = new SalesTaxQueryHandler();
+            try {
+                SalesTax tax1 = (SalesTax) taxQueryHandler.getById(y.getValue());
+                item.setTax1(tax1);
+
+
+            } catch (CommandException e) {
+                e.printStackTrace();
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+        Optional.ofNullable(x.getTax2Id()).ifPresent(y -> {
+            SalesTaxQueryHandler taxQueryHandler = new SalesTaxQueryHandler();
+            try {
+                SalesTax tax2 = (SalesTax) taxQueryHandler.getById(y.getValue());
+                item.setTax2(tax2);
+
+
+            } catch (CommandException e) {
+                e.printStackTrace();
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+
+
+        return item;
+    }
 }

@@ -30,12 +30,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class RecurringInvoiceCommandHandler implements ICommandHandler {
+public class RecurringScheduleCommandHandler implements ICommandHandler {
 
     public static void registerCommands() {
-        CommandRegister.getInstance().registerHandler(CreateRecurringInvoice.class, RecurringInvoiceCommandHandler.class);
-        CommandRegister.getInstance().registerHandler(UpdateRecurringInvoice.class, RecurringInvoiceCommandHandler.class);
-        CommandRegister.getInstance().registerHandler(DeleteRecurringInvoice.class, RecurringInvoiceCommandHandler.class);
+        CommandRegister.getInstance().registerHandler(CreateRecurringInvoice.class, RecurringScheduleCommandHandler.class);
+        CommandRegister.getInstance().registerHandler(UpdateRecurringInvoice.class, RecurringScheduleCommandHandler.class);
+        CommandRegister.getInstance().registerHandler(DeleteRecurringInvoice.class, RecurringScheduleCommandHandler.class);
 
     }
 
@@ -246,6 +246,15 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
                 Customer customer = (Customer) new CustomerQueryHandler().getById(invoiceInfo.getCustomerId().getValue());
                 invoice.setCustomer(customer);
             }
+            if (invoiceInfo.hasRecurringScheduleId()) {
+                Customer customer = (Customer) new CustomerQueryHandler().getById(invoiceInfo.getCustomerId().getValue());
+                invoice.setCustomer(customer);
+            }
+            if (invoiceInfo.hasRecurringTemplateId()) {
+                Customer customer = (Customer) new CustomerQueryHandler().getById(invoiceInfo.getCustomerId().getValue());
+                invoice.setCustomer(customer);
+            }
+
         }
 
 

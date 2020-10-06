@@ -17,22 +17,20 @@ public class RecurringSchedule extends AbstractEntity {
     private String title;
 
     @Column(name = DB.Field.RecurringSchedule.SCHEDULE_TYPE)
-    private Timestamp scheduleType;
+    private String scheduleType;
+
+    @Column(name = DB.Field.RecurringSchedule.COUNT)
+    private int count;
 
     @Column(name = DB.Field.RecurringSchedule.DAY_INDEX)
-    private Timestamp dayIndex;
+    private int dayIndex;
 
     @Column(name = DB.Field.RecurringSchedule.MONTH_INDEX)
-    private String monthIndex;
+    private int monthIndex;
 
-    @Column(name = DB.Field.RecurringSchedule.WEEK_INDEX)
-    private String weekIndex;
 
     @Column(name = DB.Field.RecurringSchedule.WEEK_DAY_INDEX)
     private String weekDayIndex;
-
-    @Column(name = DB.Field.RecurringSchedule.YEAR_INDEX)
-    private String yearIndex;
 
     @Column(name = DB.Field.RecurringSchedule.DESCRIPTION)
     private String description;
@@ -45,36 +43,36 @@ public class RecurringSchedule extends AbstractEntity {
         this.title = title;
     }
 
-    public Timestamp getScheduleType() {
+    public String getScheduleType() {
         return scheduleType;
     }
 
-    public void setScheduleType(Timestamp scheduleType) {
+    public void setScheduleType(String scheduleType) {
         this.scheduleType = scheduleType;
     }
 
-    public Timestamp getDayIndex() {
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public Integer getDayIndex() {
         return dayIndex;
     }
 
-    public void setDayIndex(Timestamp dayIndex) {
+    public void setDayIndex(int dayIndex) {
         this.dayIndex = dayIndex;
     }
 
-    public String getMonthIndex() {
+    public Integer getMonthIndex() {
         return monthIndex;
     }
 
-    public void setMonthIndex(String monthIndex) {
+    public void setMonthIndex(int monthIndex) {
         this.monthIndex = monthIndex;
-    }
-
-    public String getWeekIndex() {
-        return weekIndex;
-    }
-
-    public void setWeekIndex(String weekIndex) {
-        this.weekIndex = weekIndex;
     }
 
     public String getWeekDayIndex() {
@@ -83,14 +81,6 @@ public class RecurringSchedule extends AbstractEntity {
 
     public void setWeekDayIndex(String weekDayIndex) {
         this.weekDayIndex = weekDayIndex;
-    }
-
-    public String getYearIndex() {
-        return yearIndex;
-    }
-
-    public void setYearIndex(String yearIndex) {
-        this.yearIndex = yearIndex;
     }
 
     public String getDescription() {
