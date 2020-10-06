@@ -96,7 +96,7 @@ public class RecurringTemplateCommandHandler implements ICommandHandler {
                 invoice.setEndDate(Rew3Date.convertToUTC((String) invoiceInfo.getEndDate().getValue()));
             }
             if (invoiceInfo.hasAfterCount()) {
-                invoice.setAfterCount(invoiceInfo.getTitle().getValue());
+                invoice.setAfterCount(invoiceInfo.getAfterCount().getValue());
             }
             invoice.setRuleType(Flags.RecurringRuleType.valueOf(invoiceInfo.getRecurringRuleTypeProto().name()));
             if (c.hasOwner()) {
@@ -138,7 +138,7 @@ public class RecurringTemplateCommandHandler implements ICommandHandler {
                 invoice.setEndDate(Rew3Date.convertToUTC((String) invoiceInfo.getEndDate().getValue()));
             }
             if (invoiceInfo.hasAfterCount()) {
-                invoice.setAfterCount(invoiceInfo.getTitle().getValue());
+                invoice.setAfterCount(invoiceInfo.getAfterCount().getValue());
             }
             invoice.setRuleType(Flags.RecurringRuleType.valueOf(invoiceInfo.getRecurringRuleTypeProto().name()));
             if (c.hasOwner()) {

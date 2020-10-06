@@ -93,6 +93,8 @@ public class DB {
         public static final String JOURNAL = "journal";
         public static final String TRANSACTION_JOURNAL = "transaction_journal";
         public static final String INVOICEPAYMENT = "invoice_payment";
+        public static final String RECURRINGINVOICEPAYMENT = "invoice_payment";
+
         public static final String BILLPAYMENT = "bill_payment";
         public static final String SALESTAX = "sales_tax";
 
@@ -875,6 +877,14 @@ public class DB {
         }
         public static class InvoicePayment {
             public static final String INVOICE_ID = "invoice_id";
+            public static final String CUSTOMER_ID = "customer_id";
+            public static final String AMOUNT = "amount";
+            public static final String DATE = "date";
+            public static final String NOTES = "notes";
+
+        }
+        public static class RecurringInvoicePayment {
+            public static final String RECURRING_INVOICE_ID = "reecurring_invoice_id";
             public static final String CUSTOMER_ID = "customer_id";
             public static final String AMOUNT = "amount";
             public static final String DATE = "date";

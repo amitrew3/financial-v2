@@ -57,27 +57,7 @@ public class PaymentService {
     }
 
 
-    public RecurringInvoice createRecurringInvoice(HashMap<String, Object> requestData) throws Exception {
 
-
-        CreateRecurringInvoice command = new CreateRecurringInvoice(requestData);
-        CommandRegister.getInstance().process(command);
-        RecurringInvoice recurringInvoice = (RecurringInvoice) command.getObject();
-
-        return recurringInvoice;
-
-    }
-
-    public RecurringInvoice updateRecurringInvoice(HashMap<String, Object> requestData) throws Exception {
-
-
-        UpdateRecurringInvoice command = new UpdateRecurringInvoice(requestData);
-        CommandRegister.getInstance().process(command);
-        RecurringInvoice recurringInvoice = (RecurringInvoice) command.getObject();
-
-        return recurringInvoice;
-
-    }
 
     public RecurringInvoiceDTO getRecurringInvoiceById(String id) throws NotFoundException, CommandException {
         RecurringInvoice recurringInvoice = (RecurringInvoice) new RecurringInvoiceQueryHandler().getById(id);

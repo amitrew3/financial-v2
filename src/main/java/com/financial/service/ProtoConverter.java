@@ -27,6 +27,8 @@ import com.avenue.financial.services.grpc.proto.recurringinvoice.AddRecurringInv
 import com.avenue.financial.services.grpc.proto.recurringinvoice.RecurringInvoiceInfoProto;
 import com.avenue.financial.services.grpc.proto.recurringinvoice.RecurringInvoiceItemProto;
 import com.avenue.financial.services.grpc.proto.recurringinvoice.RecurringInvoiceProto;
+import com.avenue.financial.services.grpc.proto.recurringinvoicepayment.RecurringInvoicePaymentInfoProto;
+import com.avenue.financial.services.grpc.proto.recurringinvoicepayment.RecurringInvoicePaymentProto;
 import com.avenue.financial.services.grpc.proto.recurringschedule.RecurringScheduleInfoProto;
 import com.avenue.financial.services.grpc.proto.recurringschedule.RecurringScheduleProto;
 import com.avenue.financial.services.grpc.proto.recurringschedule.RecurringScheduleTypeProto;
@@ -49,6 +51,7 @@ import com.rew3.common.shared.model.MiniUser;
 import com.rew3.common.utils.Parser;
 import com.rew3.payment.billpayment.model.BillPayment;
 import com.rew3.payment.invoicepayment.model.InvoicePayment;
+import com.rew3.payment.recurringinvoicepayment.model.RecurringInvoicePayment;
 import com.rew3.paymentterm.model.PaymentTerm;
 import com.rew3.purchase.bill.model.Bill;
 import com.rew3.purchase.bill.model.BillItem;
@@ -76,6 +79,12 @@ public class ProtoConverter {
     public static List<InvoiceProto> convertToInvoiceProtos(List<Object> all) {
         List<InvoiceProto> list = all.stream().map(x -> (Invoice) x).map(x -> {
             return convertToInvoiceProto(x);
+        }).collect(Collectors.toList());
+        return list;
+    }
+    public static List<RecurringInvoicePaymentProto> convertToRecurringInvoicePaymentProtos(List<Object> all) {
+        List<RecurringInvoicePaymentProto> list = all.stream().map(x -> (RecurringInvoicePayment) x).map(x -> {
+            return convertToRecurringInvoicePaymentProto(x);
         }).collect(Collectors.toList());
         return list;
     }
@@ -148,6 +157,19 @@ public class ProtoConverter {
         Optional.ofNullable(x.getOwner()).ifPresent(y -> builder.setOwner(miniUserProto(y)));
         Optional.ofNullable(x.getVisibility()).ifPresent(y -> builder.setVisibility(VisibilityTypeProto.valueOf(x.getVisibility())));
         Optional.ofNullable(x).ifPresent(y -> builder.setInvoiceInfo(convertToInvoiceInfoProto(y)));
+
+        return builder.build();
+
+    }
+    public static RecurringInvoicePaymentProto convertToRecurringInvoicePaymentProto(RecurringInvoicePayment x) {
+        RecurringInvoicePaymentProto.Builder builder = RecurringInvoicePaymentProto.newBuilder();
+        Optional.ofNullable(x.get_id()).ifPresent(y -> builder.setId(StringValue.of(y)));
+
+        Optional.ofNullable(x.getMeta()).ifPresent(y -> builder.setMeta(convertToMetaProto(y)));
+
+        Optional.ofNullable(x.getOwner()).ifPresent(y -> builder.setOwner(miniUserProto(y)));
+        Optional.ofNullable(x.getVisibility()).ifPresent(y -> builder.setVisibility(VisibilityTypeProto.valueOf(x.getVisibility())));
+        Optional.ofNullable(x).ifPresent(y -> builder.setInvoicePaymentInfo(convertToRecurringInvoicePaymentInfoProto(y)));
 
         return builder.build();
 
@@ -912,6 +934,15 @@ public class ProtoConverter {
         Optional.ofNullable(x.getAmount()).ifPresent(y -> builder.setAmount(DoubleValue.of(y)));
         Optional.ofNullable(x.getCustomer()).ifPresent(y -> builder.setCustomer(convertToCustomerProto(y)));
         Optional.ofNullable(x.getInvoice()).ifPresent(y -> builder.setInvoice(convertToInvoiceProto(y)));
+        Optional.ofNullable(x.getNotes()).ifPresent(y -> builder.setNotes(StringValue.of(y)));
+        Optional.ofNullable(x.getDate()).ifPresent(y -> builder.setDate(StringValue.of(y.toString())));
+        return builder.build();
+    }
+    private static RecurringInvoicePaymentInfoProto convertToRecurringInvoicePaymentInfoProto(RecurringInvoicePayment x) {
+        RecurringInvoicePaymentInfoProto.Builder builder = RecurringInvoicePaymentInfoProto.newBuilder();
+        Optional.ofNullable(x.getAmount()).ifPresent(y -> builder.setAmount(DoubleValue.of(y)));
+        Optional.ofNullable(x.getCustomer()).ifPresent(y -> builder.setCustomer(convertToCustomerProto(y)));
+        Optional.ofNullable(x.getRecurringInvoice()).ifPresent(y -> builder.setInvoice(convertToRecurringInvoiceProto(y)));
         Optional.ofNullable(x.getNotes()).ifPresent(y -> builder.setNotes(StringValue.of(y)));
         Optional.ofNullable(x.getDate()).ifPresent(y -> builder.setDate(StringValue.of(y.toString())));
         return builder.build();
