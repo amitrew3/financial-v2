@@ -547,9 +547,9 @@ public class Rew3StringBuiler {
         HashMap<String, Object> mappings = new HashMap<>();
         mappings.putAll(getMetaMapping());
 
-        mappings.put("name", new TypeAndValue("STRING", "t.name"));
-        mappings.put("value", new TypeAndValue("STRING", "t.value"));
-        mappings.put("description", new TypeAndValue("STRING", "t.value"));
+        mappings.put("paymentterm_info.title", new TypeAndValue("STRING", "t.title"));
+        mappings.put("paymentterm_info.value", new TypeAndValue("INTEGER", "t.value"));
+        mappings.put("paymentterm_info.description", new TypeAndValue("STRING", "t.description"));
 
 
 

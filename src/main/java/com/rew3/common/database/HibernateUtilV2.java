@@ -1012,9 +1012,19 @@ public class HibernateUtilV2 {
             if (numberRangeMatcher.find() && !inMatchers.find() && !notInMatchers.find()) {
 
                 String filteredKey = Rew3StringBuiler.getFilteredKey(requestKey, t).getValue();
+                String filteredType = Rew3StringBuiler.getFilteredKey(requestKey, t).getType();
                 hql += " AND " + filteredKey + " BETWEEN :value1 AND :value2";
                 sqlParams.put("value1", Double.parseDouble(numberRangeMatcher.group(1)));
                 sqlParams.put("value2", Double.parseDouble(numberRangeMatcher.group(2)));
+                if (filteredType.equals("INTEGER")) {
+                    sqlParams.put("value1", Integer.parseInt(numberRangeMatcher.group(1)));
+                    sqlParams.put("value2", Integer.parseInt(numberRangeMatcher.group(2)));
+                } else if (filteredType.equals("DOUBLE")) {
+                    sqlParams.put("value1", Double.parseDouble(numberRangeMatcher.group(1)));
+                    sqlParams.put("value2", Double.parseDouble(numberRangeMatcher.group(2)));
+                }
+//                sqlParams.put("value1", Integer.parseInt(numberRangeMatcher.group(1)));
+//                sqlParams.put("value2", Integer.parseInt(numberRangeMatcher.group(2)));
 
 
             }

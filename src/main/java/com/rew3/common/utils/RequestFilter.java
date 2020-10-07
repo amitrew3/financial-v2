@@ -42,6 +42,9 @@ public class RequestFilter {
         } else if (t.equals(SalesTax.class)) {
             map = Rew3StringBuiler.getSalesTaxMapping();
         }
+        else if (t.equals(PaymentTerm.class)) {
+            map = Rew3StringBuiler.getPaymentTermMapping();
+        }
 
 
         for (Map.Entry<String, Object> fieldMap : map.entrySet()) {
