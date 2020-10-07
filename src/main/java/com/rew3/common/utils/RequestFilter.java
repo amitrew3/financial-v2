@@ -1,5 +1,6 @@
 package com.rew3.common.utils;
 
+import com.rew3.catalog.product.model.Product;
 import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.paymentterm.model.PaymentTerm;
 import com.rew3.purchase.expense.model.Expense;
@@ -22,7 +23,6 @@ public class RequestFilter {
     public static <T> void doFilter(Query q, HashMap<String, Object> sqlParams, Rew3StringBuiler builder, T t) {
         Map<String, Object> map = new HashMap<>();
 
-
         if (t == RmsTransaction.class) {
             map = Rew3StringBuiler.getRmsTransactionMapping();
         } else if (t.equals(CommissionPlan.class)) {
@@ -41,9 +41,10 @@ public class RequestFilter {
             map = Rew3StringBuiler.getExpenseMapping();
         } else if (t.equals(SalesTax.class)) {
             map = Rew3StringBuiler.getSalesTaxMapping();
-        }
-        else if (t.equals(PaymentTerm.class)) {
+        } else if (t.equals(PaymentTerm.class)) {
             map = Rew3StringBuiler.getPaymentTermMapping();
+        } else if (t.equals(Product.class)) {
+            map = Rew3StringBuiler.getProductMapping();
         }
 
 

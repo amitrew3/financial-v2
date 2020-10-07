@@ -430,55 +430,61 @@ public class Rew3StringBuiler {
                 return (TypeAndValue) allFields.get(field);
             }
         }
-        if (clazz == Customer.class) {
-            HashMap<String, Object> allFields = getNormalUserMapping();
+        else if (clazz == Customer.class) {
+            HashMap<String, Object> allFields = getCustomerMapping();
             if (allFields.containsKey(field)) {
                 return (TypeAndValue) allFields.get(field);
             }
         }
-        if (clazz == Acp.class) {
+        else if (clazz == Customer.class) {
+            HashMap<String, Object> allFields = getCustomerMapping();
+            if (allFields.containsKey(field)) {
+                return (TypeAndValue) allFields.get(field);
+            }
+        }
+        else if (clazz == Acp.class) {
             HashMap<String, Object> allFields = getAssociatePlanMapping();
             if (allFields.containsKey(field)) {
                 return (TypeAndValue) allFields.get(field);
             }
         }
-        if (clazz == Invoice.class) {
+        else if (clazz == Invoice.class) {
             HashMap<String, Object> allFields = getInvoiceMapping();
             if (allFields.containsKey(field)) {
                 return (TypeAndValue) allFields.get(field);
             }
         }
-        if (clazz == PaymentTerm.class) {
+        else if (clazz == PaymentTerm.class) {
             HashMap<String, Object> allFields = getPaymentTermMapping();
             if (allFields.containsKey(field)) {
                 return (TypeAndValue) allFields.get(field);
             }
         }
-        if (clazz == CommissionPlan.class) {
+        else if (clazz == CommissionPlan.class) {
             HashMap<String, Object> allFields = getCommissionPlanMapping();
             if (allFields.containsKey(field)) {
                 return (TypeAndValue) allFields.get(field);
             }
         }
-        if (clazz == RecurringInvoice.class) {
+        else if (clazz == RecurringInvoice.class) {
             HashMap<String, Object> allFields = getRecurringInvoiceMapping();
             if (allFields.containsKey(field)) {
                 return (TypeAndValue) allFields.get(field);
             }
         }
-        if (clazz == Account.class) {
+        else if (clazz == Account.class) {
             HashMap<String, Object> allFields = getAccountingCodeMapping();
             if (allFields.containsKey(field)) {
                 return (TypeAndValue) allFields.get(field);
             }
         }
-        if (clazz == AccountGroup.class) {
+        else if (clazz == AccountGroup.class) {
             HashMap<String, Object> allFields = getSubAccountingHeadMapping();
             if (allFields.containsKey(field)) {
                 return (TypeAndValue) allFields.get(field);
             }
         }
-        if (clazz == Expense.class) {
+        else if (clazz == Expense.class) {
             HashMap<String, Object> allFields = getExpenseMapping();
             if (allFields.containsKey(field)) {
                 return (TypeAndValue) allFields.get(field);
@@ -551,10 +557,81 @@ public class Rew3StringBuiler {
         mappings.put("paymentterm_info.value", new TypeAndValue("INTEGER", "t.value"));
         mappings.put("paymentterm_info.description", new TypeAndValue("STRING", "t.description"));
 
+        return mappings;
+    }
 
+
+    public static HashMap<String, Object> getCustomerMapping() {
+
+        HashMap<String, Object> mappings = new HashMap<>();
+        mappings.putAll(getMetaMapping());
+
+        mappings.put("customer_info.first_name", new TypeAndValue("STRING", "t.firstName"));
+        mappings.put("customer_info.middle_name", new TypeAndValue("STRING", "t.middleName"));
+        mappings.put("customer_info.last_name", new TypeAndValue("STRING", "t.lastName"));
+        mappings.put("customer_info.email", new TypeAndValue("STRING", "t.email"));
+        mappings.put("customer_info.company", new TypeAndValue("STRING", "t.company"));
+        mappings.put("customer_info.phone1", new TypeAndValue("STRING", "t.phone1"));
+        mappings.put("customer_info.phone2", new TypeAndValue("STRING", "t.phone2"));
+        mappings.put("customer_info.fax", new TypeAndValue("STRING", "t.fax"));
+        mappings.put("customer_info.website", new TypeAndValue("STRING", "t.website"));
+        mappings.put("customer_info.toll_free", new TypeAndValue("STRING", "t.tollFree"));
+        mappings.put("customer_info.internal_notes", new TypeAndValue("STRING", "t.internalNotes"));
+        mappings.put("customer_info.account_number", new TypeAndValue("STRING", "t.accountNumber"));
+        mappings.put("customer_info.delivery_instructions", new TypeAndValue("STRING", "t.deliveryInstructions"));
+        mappings.put("customer_info.ship_to_contact", new TypeAndValue("STRING", "t.shipToContact"));
+
+        mappings.put("customer_info.billing_address.street", new TypeAndValue("STRING", "t.billingAddress.street"));
+        mappings.put("customer_info.billing_address.town", new TypeAndValue("STRING", "t.billingAddress.town"));
+        mappings.put("customer_info.billing_address.province", new TypeAndValue("STRING", "t.billingAddress.province"));
+        mappings.put("customer_info.billing_address.postal_code", new TypeAndValue("STRING", "t.billingAddress.postalCode"));
+        mappings.put("customer_info.billing_address.country", new TypeAndValue("STRING", "t.billingAddress.country"));
+
+        mappings.put("customer_info.shipping_address.street", new TypeAndValue("STRING", "t.billingAddress.street"));
+        mappings.put("customer_info.shipping_address.town", new TypeAndValue("STRING", "t.billingAddress.town"));
+        mappings.put("customer_info.shipping_address.province", new TypeAndValue("STRING", "t.billingAddress.province"));
+        mappings.put("customer_info.shipping_address.postal_code", new TypeAndValue("STRING", "t.billingAddress.postalCode"));
+        mappings.put("customer_info.shipping_address.country", new TypeAndValue("STRING", "t.billingAddress.country"));
 
         return mappings;
     }
+
+
+    public static HashMap<String, Object> getVendorMapping() {
+
+        HashMap<String, Object> mappings = new HashMap<>();
+        mappings.putAll(getMetaMapping());
+
+        mappings.put("vendor_info.first_name", new TypeAndValue("STRING", "t.firstName"));
+        mappings.put("vendor_info.middle_name", new TypeAndValue("STRING", "t.middleName"));
+        mappings.put("vendor_info.last_name", new TypeAndValue("STRING", "t.lastName"));
+        mappings.put("vendor_info.email", new TypeAndValue("STRING", "t.email"));
+        mappings.put("vendor_info.company", new TypeAndValue("STRING", "t.company"));
+        mappings.put("vendor_info.phone1", new TypeAndValue("STRING", "t.phone1"));
+        mappings.put("vendor_info.phone2", new TypeAndValue("STRING", "t.phone2"));
+        mappings.put("vendor_info.fax", new TypeAndValue("STRING", "t.fax"));
+        mappings.put("vendor_info.website", new TypeAndValue("STRING", "t.website"));
+        mappings.put("vendor_info.toll_free", new TypeAndValue("STRING", "t.tollFree"));
+        mappings.put("vendor_info.internal_notes", new TypeAndValue("STRING", "t.internalNotes"));
+        mappings.put("vendor_info.account_number", new TypeAndValue("STRING", "t.accountNumber"));
+
+        mappings.put("vendor_info.billing_address.street", new TypeAndValue("STRING", "t.billingAddress.street"));
+        mappings.put("vendor_info.billing_address.town", new TypeAndValue("STRING", "t.billingAddress.town"));
+        mappings.put("vendor_info.billing_address.province", new TypeAndValue("STRING", "t.billingAddress.province"));
+        mappings.put("vendor_info.billing_address.postal_code", new TypeAndValue("STRING", "t.billingAddress.postalCode"));
+        mappings.put("vendor_info.billing_address.country", new TypeAndValue("STRING", "t.billingAddress.country"));
+
+        mappings.put("vendor_info.shipping_address.street", new TypeAndValue("STRING", "t.billingAddress.street"));
+        mappings.put("vendor_info.shipping_address.town", new TypeAndValue("STRING", "t.billingAddress.town"));
+        mappings.put("vendor_info.shipping_address.province", new TypeAndValue("STRING", "t.billingAddress.province"));
+        mappings.put("vendor_info.shipping_address.postal_code", new TypeAndValue("STRING", "t.billingAddress.postalCode"));
+        mappings.put("vendor_info.shipping_address.country", new TypeAndValue("STRING", "t.billingAddress.country"));
+
+        return mappings;
+    }
+
+
+
 
     public static HashMap<String, Object> getRecurringInvoiceMapping() {
 
