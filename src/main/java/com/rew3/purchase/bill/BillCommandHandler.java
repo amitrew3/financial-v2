@@ -189,7 +189,7 @@ public class BillCommandHandler implements ICommandHandler {
                 bill.setPoSoNumber(billInfo.getPoSoNumber().getValue());
             }
             if (billInfo.hasNotes()) {
-                bill.setNote(billInfo.getNotes().getValue());
+                bill.setNotes(billInfo.getNotes().getValue());
             }
             if (billInfo.hasBillDate()) {
                 bill.setBillDate(Rew3Date.convertToUTC((String) billInfo.getBillDate().getValue()));

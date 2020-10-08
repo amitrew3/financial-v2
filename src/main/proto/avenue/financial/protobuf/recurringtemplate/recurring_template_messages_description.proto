@@ -27,7 +27,7 @@ message AddRecurringTemplateInfoProto{
   google.protobuf.StringValue title = 1;
   google.protobuf.StringValue start_date = 2;
   google.protobuf.StringValue end_date = 3;
-  RecurringRuleTypeProto recurring_rule_type_proto = 4;
+  RecurringRuleTypeProto recurring_rule_type= 4;
   google.protobuf.Int32Value after_count = 5;
   google.protobuf.StringValue description = 6;
 }
@@ -35,7 +35,7 @@ message RecurringTemplateInfoProto{
   google.protobuf.StringValue title = 1;
   google.protobuf.StringValue start_date = 2;
   google.protobuf.StringValue end_date = 3;
-  RecurringRuleTypeProto recurring_rule_type_proto = 4;
+  RecurringRuleTypeProto recurring_rule_type = 4;
   google.protobuf.Int32Value after_count = 5;
   google.protobuf.StringValue description = 6;
 

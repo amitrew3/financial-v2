@@ -1,16 +1,21 @@
 package com.rew3.common.utils;
 
 import com.rew3.catalog.product.model.Product;
+import com.rew3.common.cqrs.Query;
 import com.rew3.common.database.HibernateUtilV2;
+import com.rew3.payment.billpayment.model.BillPayment;
+import com.rew3.payment.invoicepayment.model.InvoicePayment;
+import com.rew3.payment.recurringinvoicepayment.model.RecurringInvoicePayment;
 import com.rew3.paymentterm.model.PaymentTerm;
+import com.rew3.purchase.bill.model.Bill;
 import com.rew3.purchase.expense.model.Expense;
+import com.rew3.purchase.vendor.model.Vendor;
+import com.rew3.sale.customer.model.Customer;
+import com.rew3.sale.estimate.model.Estimate;
 import com.rew3.sale.invoice.model.Invoice;
 import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
-import com.rew3.brokerage.commissionplan.model.CommissionPlan;
-import com.rew3.brokerage.transaction.model.RmsTransaction;
-import com.rew3.common.cqrs.Query;
-import com.rew3.accounting.account.model.Account;
-import com.rew3.accounting.account.model.AccountGroup;
+import com.rew3.sale.recurringinvoice.model.RecurringSchedule;
+import com.rew3.sale.recurringinvoice.model.RecurringTemplate;
 import com.rew3.salestax.model.SalesTax;
 
 import java.sql.Timestamp;
@@ -22,31 +27,37 @@ public class RequestFilter {
 
     public static <T> void doFilter(Query q, HashMap<String, Object> sqlParams, Rew3StringBuiler builder, T t) {
         Map<String, Object> map = new HashMap<>();
-
-        if (t == RmsTransaction.class) {
-            map = Rew3StringBuiler.getRmsTransactionMapping();
-        } else if (t.equals(CommissionPlan.class)) {
-            map = Rew3StringBuiler.getCommissionPlanMapping();
-        } else if (t.equals(PaymentTerm.class)) {
+        if (t.equals(PaymentTerm.class)) {
             map = Rew3StringBuiler.getPaymentTermMapping();
-        } else if (t.equals(AccountGroup.class)) {
-            map = Rew3StringBuiler.getSubAccountingHeadMapping();
-        } else if (t.equals(Account.class)) {
-            map = Rew3StringBuiler.getAccountingCodeMapping();
-        } else if (t.equals(Invoice.class)) {
-            map = Rew3StringBuiler.getInvoiceMapping();
-        } else if (t.equals(RecurringInvoice.class)) {
-            map = Rew3StringBuiler.getRecurringInvoiceMapping();
-        } else if (t.equals(Expense.class)) {
-            map = Rew3StringBuiler.getExpenseMapping();
         } else if (t.equals(SalesTax.class)) {
             map = Rew3StringBuiler.getSalesTaxMapping();
-        } else if (t.equals(PaymentTerm.class)) {
-            map = Rew3StringBuiler.getPaymentTermMapping();
         } else if (t.equals(Product.class)) {
             map = Rew3StringBuiler.getProductMapping();
+        } else if (t.equals(Customer.class)) {
+            map = Rew3StringBuiler.getCustomerMapping();
+        } else if (t.equals(Vendor.class)) {
+            map = Rew3StringBuiler.getVendorMapping();
+        } else if (t.equals(Invoice.class)) {
+            map = Rew3StringBuiler.getInvoiceMapping();
+        }  else if (t.equals(Bill.class)) {
+            map = Rew3StringBuiler.getBillMapping();
+        } else if (t.equals(Estimate.class)) {
+            map = Rew3StringBuiler.getEstimateMapping();
+        } else if (t.equals(Expense.class)) {
+            map = Rew3StringBuiler.getExpenseMapping();
+        }else if (t.equals(RecurringInvoice.class)) {
+            map = Rew3StringBuiler.getRecurringInvoiceMapping();
+        }else if (t.equals(RecurringTemplate.class)) {
+            map = Rew3StringBuiler.getRecurringTemplateMapping();
+        }else if (t.equals(RecurringSchedule.class)) {
+            map = Rew3StringBuiler.getRecurringScheduleMapping();
+        }else if (t.equals(InvoicePayment.class)) {
+            map = Rew3StringBuiler.getInvoicePaymentMapping();
+        }else if (t.equals(BillPayment.class)) {
+            map = Rew3StringBuiler.getBillPaymentMapping();
+        }else if (t.equals(RecurringInvoicePayment.class)) {
+            map = Rew3StringBuiler.getRecurringInvoicePaymentMapping();
         }
-
 
         for (Map.Entry<String, Object> fieldMap : map.entrySet()) {
             for (Map.Entry<String, Object> requestMap : q.getQuery().entrySet()) {
@@ -68,11 +79,11 @@ public class RequestFilter {
 
                         if (!matcher.matches()) {
                             builder.append("AND");
-                            String sqlKey = requestMap.getKey().replace('.','_');
+                            String sqlKey = requestMap.getKey().replace('.', '_');
 
                             builder.append(field + " = :" + sqlKey);
                             Timestamp filterValue = Rew3Date.convertToUTC(requestMap.getValue().toString());
-                           // String vvv=HibernateUtilV2.s(filterValue.toString());
+                            // String vvv=HibernateUtilV2.s(filterValue.toString());
                             sqlParams.put(sqlKey, filterValue);
                         }
                     }

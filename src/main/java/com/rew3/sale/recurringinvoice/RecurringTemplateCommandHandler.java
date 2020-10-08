@@ -98,7 +98,7 @@ public class RecurringTemplateCommandHandler implements ICommandHandler {
             if (invoiceInfo.hasAfterCount()) {
                 invoice.setAfterCount(invoiceInfo.getAfterCount().getValue());
             }
-            invoice.setRuleType(Flags.RecurringRuleType.valueOf(invoiceInfo.getRecurringRuleTypeProto().name()));
+            invoice.setRuleType(Flags.RecurringRuleType.valueOf(invoiceInfo.getRecurringRuleType().name()));
             if (c.hasOwner()) {
                 MiniUserProto miniUserProto = c.getOwner();
                 if (miniUserProto.hasId()) {
@@ -140,7 +140,7 @@ public class RecurringTemplateCommandHandler implements ICommandHandler {
             if (invoiceInfo.hasAfterCount()) {
                 invoice.setAfterCount(invoiceInfo.getAfterCount().getValue());
             }
-            invoice.setRuleType(Flags.RecurringRuleType.valueOf(invoiceInfo.getRecurringRuleTypeProto().name()));
+            invoice.setRuleType(Flags.RecurringRuleType.valueOf(invoiceInfo.getRecurringRuleType().name()));
             if (c.hasOwner()) {
                 MiniUserProto miniUserProto = c.getOwner();
                 if (miniUserProto.hasId()) {

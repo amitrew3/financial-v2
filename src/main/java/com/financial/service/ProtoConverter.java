@@ -44,7 +44,6 @@ import com.rew3.catalog.product.ProductQueryHandler;
 import com.rew3.catalog.product.model.Product;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
-import com.rew3.common.model.Flags;
 import com.rew3.common.shared.model.Address;
 import com.rew3.common.shared.model.Meta;
 import com.rew3.common.shared.model.MiniUser;
@@ -369,7 +368,7 @@ public class ProtoConverter {
         Optional.ofNullable(x.getStartDate()).ifPresent(y -> builder.setStartDate(StringValue.of(y.toString())));
         Optional.ofNullable(x.getEndDate()).ifPresent(y -> builder.setStartDate(StringValue.of(y.toString())));
         Optional.ofNullable(x.getAfterCount()).ifPresent(y -> builder.setAfterCount(Int32Value.of(y)));
-        Optional.ofNullable(x.getRuleType()).ifPresent(y -> builder.setRecurringRuleTypeProto(RecurringRuleTypeProto.valueOf(y)));
+        Optional.ofNullable(x.getRuleType()).ifPresent(y -> builder.setRecurringRuleType(RecurringRuleTypeProto.valueOf(y)));
 
         return builder.build();
     }
@@ -763,7 +762,7 @@ public class ProtoConverter {
         Optional.ofNullable(x.getVendor()).ifPresent(y -> builder.setVendor(convertToVendorProto(y)));
 
 
-        Optional.ofNullable(x.getNote()).ifPresent(y -> builder.setNotes(StringValue.of(y)));
+        Optional.ofNullable(x.getNotes()).ifPresent(y -> builder.setNotes(StringValue.of(y)));
         Optional.ofNullable(x.getSubTotal()).ifPresent(y -> builder.setSubTotal(DoubleValue.of(y)));
         Optional.ofNullable(x.getTaxTotal()).ifPresent(y -> builder.setTaxTotal(DoubleValue.of(y)));
         Optional.ofNullable(x.getTotal()).ifPresent(y -> builder.setTotal(DoubleValue.of(y)));

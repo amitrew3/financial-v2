@@ -33,7 +33,7 @@ public class Bill extends AbstractEntity {
 
 
     @Column(name = DB.Field.Bill.NOTES)
-    private String note;
+    private String notes;
 
     @Column(name = DB.Field.Bill.SUB_TOTAL)
     private Double subTotal;
@@ -93,12 +93,12 @@ public class Bill extends AbstractEntity {
         this.vendor = vendor;
     }
 
-    public String getNote() {
-        return note;
+    public String getNotes() {
+        return notes;
     }
 
-    public void setNote(String note) {
-        this.note = note;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public Double getSubTotal() {
