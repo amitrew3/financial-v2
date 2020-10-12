@@ -19,7 +19,6 @@ import com.rew3.paymentterm.PaymentTermQueryHandler;
 import com.rew3.paymentterm.model.PaymentTerm;
 import com.rew3.sale.customer.CustomerQueryHandler;
 import com.rew3.sale.customer.model.Customer;
-import com.rew3.sale.invoice.RecurringInvoiceQueryHandler;
 import com.rew3.sale.invoice.command.UpdateRecurringInvoice;
 import com.rew3.sale.recurringinvoice.command.CreateRecurringInvoice;
 import com.rew3.sale.recurringinvoice.command.DeleteRecurringInvoice;
@@ -96,7 +95,14 @@ public class RecurringScheduleCommandHandler implements ICommandHandler {
         List<AddRecurringInvoiceItemProto> protos = c.getItemsList();
         final RecurringInvoice finalRecurringInvoice = invoice;
         Set<RecurringInvoiceItem> items = protos.stream().map(x -> {
-            RecurringInvoiceItem item = ProtoConverter.convertToAddRecurringInvoiceItem(x);
+            RecurringInvoiceItem item = null;
+            try {
+                item = ProtoConverter.convertToAddRecurringInvoiceItem(x);
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            } catch (CommandException e) {
+                e.printStackTrace();
+            }
             item.setRecurringInvoice(finalRecurringInvoice);
             return item;
         }).collect(Collectors.toSet());
@@ -187,7 +193,14 @@ public class RecurringScheduleCommandHandler implements ICommandHandler {
         List<AddRecurringInvoiceItemProto> protos = c.getItemsList();
         final RecurringInvoice finalRecurringInvoice = invoice;
         Set<RecurringInvoiceItem> items = protos.stream().map(x -> {
-            RecurringInvoiceItem item = ProtoConverter.convertToAddRecurringInvoiceItem(x);
+            RecurringInvoiceItem item = null;
+            try {
+                item = ProtoConverter.convertToAddRecurringInvoiceItem(x);
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            } catch (CommandException e) {
+                e.printStackTrace();
+            }
             item.setRecurringInvoice(finalRecurringInvoice);
             return item;
         }).collect(Collectors.toSet());

@@ -19,7 +19,6 @@ import com.rew3.paymentterm.PaymentTermQueryHandler;
 import com.rew3.paymentterm.model.PaymentTerm;
 import com.rew3.sale.customer.CustomerQueryHandler;
 import com.rew3.sale.customer.model.Customer;
-import com.rew3.sale.invoice.RecurringInvoiceQueryHandler;
 import com.rew3.sale.invoice.command.UpdateRecurringInvoice;
 import com.rew3.sale.recurringinvoice.command.CreateRecurringInvoice;
 import com.rew3.sale.recurringinvoice.command.DeleteRecurringInvoice;

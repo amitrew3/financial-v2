@@ -87,7 +87,14 @@ public class EstimateCommandHandler implements ICommandHandler {
         List<AddEstimateItemProto> protos = c.getItemsList();
         final Estimate finalEstimate = estimate;
         Set<EstimateItem> items = protos.stream().map(x -> {
-            EstimateItem item = ProtoConverter.convertToAddEstimateItem(x);
+            EstimateItem item = null;
+            try {
+                item = ProtoConverter.convertToAddEstimateItem(x);
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            } catch (CommandException e) {
+                e.printStackTrace();
+            }
             item.setEstimate(finalEstimate);
             return item;
         }).collect(Collectors.toSet());
@@ -162,7 +169,14 @@ public class EstimateCommandHandler implements ICommandHandler {
         List<AddEstimateItemProto> protos = c.getItemsList();
         final Estimate finalEstimate = estimate;
         Set<EstimateItem> items = protos.stream().map(x -> {
-            EstimateItem item = ProtoConverter.convertToAddEstimateItem(x);
+            EstimateItem item = null;
+            try {
+                item = ProtoConverter.convertToAddEstimateItem(x);
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            } catch (CommandException e) {
+                e.printStackTrace();
+            }
             item.setEstimate(finalEstimate);
             return item;
         }).collect(Collectors.toSet());

@@ -20,7 +20,7 @@ import com.rew3.purchase.vendor.VendorCommandHandler;
 import com.rew3.sale.customer.CustomerCommandHandler;
 import com.rew3.sale.estimate.EstimateCommandHandler;
 import com.rew3.sale.invoice.InvoiceCommandHandler;
-import com.rew3.sale.invoice.RecurringInvoiceCommandHandler;
+import com.rew3.sale.recurringinvoice.RecurringInvoiceCommandHandler;
 import com.rew3.salestax.SalesTaxCommandHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
