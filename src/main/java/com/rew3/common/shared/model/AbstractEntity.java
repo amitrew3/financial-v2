@@ -27,8 +27,7 @@ import java.sql.Timestamp;
 @MappedSuperclass
 public class AbstractEntity  implements Serializable {
 
-    @NotNull(
-            message = "Id must not be null",
+    @NotNull(message = "Id must not be null",
             groups = {EditAction.class}
     )
     @Id

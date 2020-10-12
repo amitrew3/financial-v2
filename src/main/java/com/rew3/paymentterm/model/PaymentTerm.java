@@ -15,18 +15,14 @@ import javax.validation.constraints.NotNull;
 public class PaymentTerm extends AbstractEntity {
 
 
-    @NotNull(
-            message = "Title must not be null"
-
-    )
+    @NotNull(message = "Title must not be null")
     @Column(name = DB.Field.PaymentTerm.TITLE)
     private String title;
-    @NotNull(
-            message = "Value must not be null"
 
-    )
+    @NotNull(message = "Value must not be null")
     @Column(name = DB.Field.PaymentTerm.VALUE)
     private Integer value;
+
     @Column(name = DB.Field.PaymentTerm.DESCRIPTION)
     private String description;
 
