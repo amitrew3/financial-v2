@@ -10,6 +10,7 @@ import com.rew3.sale.customer.model.Customer;
 
 import javax.persistence.*;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Set;
 
@@ -24,12 +25,20 @@ public class Invoice extends AbstractEntity {
     @Column(name = DB.Field.Invoice.PO_SO_NUMBER)
     private String poSoNumber;
 
+    @NotNull(
+            message = "Invoice Date must not be null"
+
+    )
     @Column(name = DB.Field.Invoice.INVOICE_DATE)
     private Timestamp invoiceDate;
 
     @Column(name = DB.Field.Invoice.DUE_DATE)
     private Timestamp dueDate;
 
+    @NotNull(
+            message = "Customer Id must not be null"
+
+    )
     @JoinColumn(name = DB.Field.Invoice.CUSTOMER_ID)
     @OneToOne
     private Customer customer;

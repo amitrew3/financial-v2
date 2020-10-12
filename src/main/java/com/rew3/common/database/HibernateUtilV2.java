@@ -10,12 +10,18 @@ import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.model.Flags;
 import com.rew3.common.shared.model.AbstractEntity;
 import com.rew3.common.utils.*;
+import com.rew3.sale.invoice.model.Car;
 import org.hibernate.*;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.transform.AliasToEntityMapResultTransformer;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import javax.validation.groups.Default;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -961,6 +967,30 @@ public class HibernateUtilV2 {
 
     public static <T> List<T> select(String hql, HashMap<String, Object> params, HashMap<String, Object> requestParams,
                                      int limit, int offset, T t) {
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+//            Set<ConstraintViolation<Car>> constraintViolations = validator.validate(car);
+//           constraintViolations.forEach(x-> System.out.println(x.getMessage()));
+
+        Car car = new Car("AA",null, "D", 10);
+
+
+        Set<ConstraintViolation<Car>> constraintViolations = validator.validate(car, Default.class);
+
+        System.out.println("------this point-------");
+        constraintViolations.forEach(x -> System.out.println(x.getMessage()));
+
+        System.out.println("hrere");
+
+
+
+
+
+
+
+
+
         Session session = null;
         List<T> results = null;
         Transaction tx = null;

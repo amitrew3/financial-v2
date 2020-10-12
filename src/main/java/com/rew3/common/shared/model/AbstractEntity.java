@@ -29,7 +29,7 @@ public class AbstractEntity  implements Serializable {
 
     @NotNull(
             message = "Id must not be null",
-            groups = EditAction.class
+            groups = {EditAction.class}
     )
     @Id
     @GeneratedValue(generator = "UUID")

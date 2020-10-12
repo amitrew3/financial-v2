@@ -20,14 +20,22 @@ import com.rew3.paymentterm.model.PaymentTerm;
 import com.rew3.sale.customer.CustomerQueryHandler;
 import com.rew3.sale.customer.model.Customer;
 import com.rew3.sale.invoice.command.*;
+import com.rew3.sale.invoice.model.Car;
 import com.rew3.sale.invoice.model.Invoice;
 import com.rew3.sale.invoice.model.InvoiceItem;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import javax.validation.groups.Default;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class InvoiceCommandHandler implements ICommandHandler {
+    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    Validator validator = factory.getValidator();
 
     public static void registerCommands() {
         CommandRegister.getInstance().registerHandler(CreateInvoice.class, InvoiceCommandHandler.class);
@@ -49,13 +57,15 @@ public class InvoiceCommandHandler implements ICommandHandler {
     }
 
     public void handle(CreateInvoice c) throws Exception {
-        // Transaction trx = c.getTransaction();
+        Car car = new Car(null, "D", 4);
+//
+//
+//            List<Object> all = repository.get(new Query());
+
+
         try {
             Invoice invoice = this._handleSaveInvoice(c.addInvoiceProto);
             if (invoice != null) {
-//                if (c.isCommittable()) {
-//                    HibernateUtils.commitTransaction(trx);
-//                }
                 c.setObject(invoice);
             }
         } catch (Exception ex) {
@@ -66,14 +76,19 @@ public class InvoiceCommandHandler implements ICommandHandler {
         }
     }
 
+    private boolean validate(Invoice invoice) {
+        Set<ConstraintViolation<Invoice>> constraintViolations = validator.validate(invoice, Default.class);
+        constraintViolations.forEach(x -> System.out.println(x.getMessage()));
+        if (constraintViolations.size() == 0) {
+            return true;
+        } else return false;
+
+    }
+
     public void handle(UpdateInvoice c) throws Exception {
-        // Transaction trx = c.getTransaction();
         try {
             Invoice invoice = this._handleUpdateInvoice(c.updateInvoiceProto);
             if (invoice != null) {
-//                if (c.isCommittable()) {
-//                    HibernateUtils.commitTransaction(trx);
-//                }
                 c.setObject(invoice);
             }
         } catch (Exception ex) {
@@ -85,17 +100,21 @@ public class InvoiceCommandHandler implements ICommandHandler {
     }
 
     private Invoice _handleUpdateInvoice(UpdateInvoiceProto c) throws Exception {
-        Invoice invoice = null;
-        if (c.hasId()) {
-            invoice = (Invoice) new InvoiceQueryHandler().getById(c.getId().getValue());
-        }
-        AddInvoiceInfoProto invoiceInfo = null;
+        Invoice invoice = (Invoice) new InvoiceQueryHandler().getById(c.getId().getValue());
 
+        AddInvoiceInfoProto invoiceInfo = null;
 
         List<AddInvoiceItemProto> protos = c.getItemsList();
         final Invoice finalInvoice = invoice;
         Set<InvoiceItem> items = protos.stream().map(x -> {
-            InvoiceItem item = ProtoConverter.convertToAddInvoiceItem(x);
+            InvoiceItem item = null;
+            try {
+                item = ProtoConverter.convertToAddInvoiceItem(x);
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            } catch (CommandException e) {
+                e.printStackTrace();
+            }
             item.setInvoice(finalInvoice);
             return item;
         }).collect(Collectors.toSet());
@@ -105,101 +124,20 @@ public class InvoiceCommandHandler implements ICommandHandler {
             invoice.getItems().addAll(items);
         }
         double subtotal = 0;
+        double taxtotal1 = 0;
+        double taxtotal2 = 0;
         double taxtotal = 0;
+
         double total = 0;
         for (InvoiceItem item : items) {
             subtotal = item.getPrice() * item.getQuantity();
-            taxtotal = item.getPrice() * item.getTax1().getRate() / 100;
-            total = subtotal + taxtotal;
-        }
-
-
-        if (c.hasInvoiceInfo()) {
-            invoiceInfo = c.getInvoiceInfo();
-            if (invoiceInfo.hasInvoiceNumber()) {
-                invoice.setInvoiceNumber(invoiceInfo.getInvoiceNumber().getValue());
+            if (item.getTax1() != null) {
+                taxtotal1 = item.getPrice() * item.getTax1().getRate() / 100;
             }
-            if (invoiceInfo.hasPoSoNumber()) {
-                invoice.setPoSoNumber(invoiceInfo.getPoSoNumber().getValue());
+            if (item.getTax2() != null) {
+                taxtotal2 = item.getPrice() * item.getTax2().getRate() / 100;
             }
-            if (invoiceInfo.hasInvoiceDate()) {
-                invoice.setInvoiceDate(Rew3Date.convertToUTC((String) invoiceInfo.getInvoiceDate().getValue()));
-            }
-            if (invoiceInfo.hasDueDate()) {
-                invoice.setInvoiceDate(Rew3Date.convertToUTC((String) invoiceInfo.getDueDate().getValue()));
-            }
-            invoice.setPaymentStatus(Flags.InvoicePaymentStatus.valueOf(invoiceInfo.getPaymentStatus().name()));
-            if (invoiceInfo.hasSendDateTime()) {
-                invoice.setSendDateTime(Rew3Date.convertToUTC((String) invoiceInfo.getSendDateTime().getValue()));
-            }
-
-            if (invoiceInfo.hasInternalNotes()) {
-                invoice.setInternalNotes(invoiceInfo.getInternalNotes().getValue());
-            }
-            invoice.setFooterNotes(invoiceInfo.getFooterNotes().getValue());
-            if (invoiceInfo.hasSubTotal()) {
-                invoice.setSubTotal(subtotal);
-            }
-            if (invoiceInfo.hasTaxTotal()) {
-                invoice.setTaxTotal(taxtotal);
-            }
-            if (invoiceInfo.hasTotal()) {
-                invoice.setTotal(total);
-            }
-            if (invoiceInfo.hasIsDraft()) {
-                invoice.setDraft(invoiceInfo.getIsDraft().getValue());
-            }
-            if (invoiceInfo.hasBillingAddress()) {
-                invoice.setAddress(ProtoConverter.convertToAddress(invoiceInfo.getBillingAddress()));
-            }
-            if (invoiceInfo.hasPaymentTermId()) {
-                PaymentTerm term = (PaymentTerm) new PaymentTermQueryHandler().getById(invoiceInfo.getPaymentTermId().getValue());
-                invoice.setPaymentTerm(term);
-            }
-        }
-
-        if (invoice.getItems().size() != 0) {
-            invoice.getItems().clear();
-            invoice.getItems().addAll(items);
-        }
-        if (c.hasOwner()) {
-            MiniUserProto miniUserProto = c.getOwner();
-            if (miniUserProto.hasId()) {
-                invoice.setOwnerId(miniUserProto.getId().getValue());
-            }
-            if (miniUserProto.hasFirstName()) {
-                invoice.setOwnerFirstName(miniUserProto.getId().getValue());
-            }
-            if (miniUserProto.hasLastName()) {
-                invoice.setOwnerLastName(miniUserProto.getId().getValue());
-            }
-        }
-        invoice = (Invoice) HibernateUtilV2.update(invoice);
-        return invoice;
-
-    }
-
-
-    private Invoice _handleSaveInvoice(AddInvoiceProto c) throws Exception {
-        Invoice invoice = new Invoice();
-        AddInvoiceInfoProto invoiceInfo = null;
-
-
-        List<AddInvoiceItemProto> protos = c.getItemsList();
-        final Invoice finalInvoice = invoice;
-        Set<InvoiceItem> items = protos.stream().map(x -> {
-            InvoiceItem item = ProtoConverter.convertToAddInvoiceItem(x);
-            item.setInvoice(finalInvoice);
-            return item;
-        }).collect(Collectors.toSet());
-
-        invoice.setItems(items);
-        double subtotal = 0;
-        double taxtotal = 0;
-        double total = 0;
-        for (InvoiceItem item : items) {
-            subtotal = item.getPrice() * item.getQuantity();
-            taxtotal = item.getPrice() * item.getTax1().getRate() / 100;
+            taxtotal = taxtotal1 + taxtotal2;
             total = subtotal + taxtotal;
         }
 
@@ -265,7 +203,118 @@ public class InvoiceCommandHandler implements ICommandHandler {
                 invoice.setOwnerLastName(miniUserProto.getId().getValue());
             }
         }
-        invoice = (Invoice) HibernateUtilV2.save(invoice);
+        invoice = (Invoice) HibernateUtilV2.update(invoice);
+        return invoice;
+
+    }
+
+
+    private Invoice _handleSaveInvoice(AddInvoiceProto c) throws Exception {
+        Invoice invoice = new Invoice();
+        AddInvoiceInfoProto invoiceInfo = null;
+
+
+        List<AddInvoiceItemProto> protos = c.getItemsList();
+        final Invoice finalInvoice = invoice;
+        Set<InvoiceItem> items = protos.stream().map(x -> {
+            InvoiceItem item = null;
+            try {
+                item = ProtoConverter.convertToAddInvoiceItem(x);
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            } catch (CommandException e) {
+                e.printStackTrace();
+            }
+            item.setInvoice(finalInvoice);
+            return item;
+        }).collect(Collectors.toSet());
+
+        invoice.setItems(items);
+        double subtotal = 0;
+        double taxtotal1 = 0;
+        double taxtotal2 = 0;
+        double taxtotal = 0;
+
+        double total = 0;
+        for (InvoiceItem item : items) {
+            subtotal = item.getPrice() * item.getQuantity();
+            if (item.getTax1() != null) {
+                taxtotal1 = item.getPrice() * item.getTax1().getRate() / 100;
+            }
+            if (item.getTax2() != null) {
+                taxtotal2 = item.getPrice() * item.getTax2().getRate() / 100;
+            }
+            taxtotal = taxtotal1 + taxtotal2;
+            total = subtotal + taxtotal;
+        }
+
+
+        if (c.hasInvoiceInfo()) {
+            invoiceInfo = c.getInvoiceInfo();
+            if (invoiceInfo.hasInvoiceNumber()) {
+                invoice.setInvoiceNumber(invoiceInfo.getInvoiceNumber().getValue());
+            }
+            if (invoiceInfo.hasPoSoNumber()) {
+                invoice.setPoSoNumber(invoiceInfo.getPoSoNumber().getValue());
+            }
+            if (invoiceInfo.hasInvoiceDate()) {
+                invoice.setInvoiceDate(Rew3Date.convertToUTC((String) invoiceInfo.getInvoiceDate().getValue()));
+            }
+            if (invoiceInfo.hasDueDate()) {
+                invoice.setInvoiceDate(Rew3Date.convertToUTC((String) invoiceInfo.getDueDate().getValue()));
+            }
+            invoice.setPaymentStatus(Flags.InvoicePaymentStatus.valueOf(invoiceInfo.getPaymentStatus().name()));
+            if (invoiceInfo.hasSendDateTime()) {
+                invoice.setSendDateTime(Rew3Date.convertToUTC((String) invoiceInfo.getSendDateTime().getValue()));
+            }
+
+            if (invoiceInfo.hasInternalNotes()) {
+                invoice.setInternalNotes(invoiceInfo.getInternalNotes().getValue());
+            }
+            invoice.setFooterNotes(invoiceInfo.getFooterNotes().getValue());
+            if (invoiceInfo.hasSubTotal()) {
+                invoice.setSubTotal(subtotal);
+            }
+            if (invoiceInfo.hasTaxTotal()) {
+                invoice.setTaxTotal(taxtotal);
+            }
+            if (invoiceInfo.hasTotal()) {
+                invoice.setTotal(total);
+            }
+            if (invoiceInfo.hasIsDraft()) {
+                invoice.setDraft(invoiceInfo.getIsDraft().getValue());
+            }
+            if (invoiceInfo.hasBillingAddress()) {
+                invoice.setAddress(ProtoConverter.convertToAddress(invoiceInfo.getBillingAddress()));
+            }
+            if (invoiceInfo.hasPaymentTermId()) {
+                PaymentTerm term = (PaymentTerm) new PaymentTermQueryHandler().getById(invoiceInfo.getPaymentTermId().getValue());
+                invoice.setPaymentTerm(term);
+            }
+            if (invoiceInfo.hasCustomerId()) {
+                Customer customer = (Customer) new CustomerQueryHandler().getById(invoiceInfo.getCustomerId().getValue());
+                invoice.setCustomer(customer);
+            }
+        }
+
+
+        if (c.hasOwner()) {
+            MiniUserProto miniUserProto = c.getOwner();
+            if (miniUserProto.hasId()) {
+                invoice.setOwnerId(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasFirstName()) {
+                invoice.setOwnerFirstName(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasLastName()) {
+                invoice.setOwnerLastName(miniUserProto.getId().getValue());
+            }
+        }
+        boolean isValid = validate(invoice);
+        if (isValid) {
+
+            invoice = (Invoice) HibernateUtilV2.save(invoice);
+        }
         return invoice;
     }
 

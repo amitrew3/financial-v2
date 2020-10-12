@@ -6,17 +6,26 @@ import com.rew3.common.shared.model.AbstractEntity;
 import com.rew3.common.shared.model.Address;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = DB.Table.VENDOR)
 public class Vendor extends AbstractEntity {
 
+    @NotNull(
+            message = "First Name must not be null"
+
+    )
     @Column(name = DB.Field.Vendor.FIRST_NAME)
     private String firstName;
 
     @Column(name = DB.Field.Vendor.MIDDLE_NAME)
     private String middleName;
 
+    @NotNull(
+            message = "Last Name must not be null"
+
+    )
     @Column(name = DB.Field.Vendor.LAST_NAME)
     private String lastName;
 

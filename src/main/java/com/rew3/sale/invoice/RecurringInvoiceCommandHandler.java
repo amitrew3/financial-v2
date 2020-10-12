@@ -38,8 +38,8 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
 
 
     public void handle(CreateRecurringInvoice c) throws Exception {
-        RecurringInvoice commissionPlan = this._handleSaveRecurringInvoice(c);
-        c.setObject(commissionPlan);
+        RecurringInvoice recurringInvoice = this._handleSaveRecurringInvoice(c);
+        c.setObject(recurringInvoice);
 
 
     }

@@ -1,7 +1,6 @@
 package com.rew3.sale.invoice.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rew3.catalog.product.model.Product;
 import com.rew3.common.model.DB;
 import com.rew3.salestax.model.SalesTax;
@@ -16,7 +15,6 @@ public class InvoiceItem {
 
 
     @Id
-    @JsonIgnore
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
             name = "UUID",
@@ -26,25 +24,29 @@ public class InvoiceItem {
     private String id;
 
 
-    @JsonIgnore
     @JoinColumn(name = DB.Field.InvoiceItem.INVOICE_ID)
     @ManyToOne
     private Invoice invoice;
 
-    @JsonIgnore
+    @NotNull(
+            message = "Product must not be null"
+    )
     @JoinColumn(name = DB.Field.InvoiceItem.PRODUCT_ID)
     @ManyToOne
     private Product product;
 
-    @NotNull
+    @NotNull(
+            message = "Quantity must not be null"
+    )
     @Column(name = DB.Field.InvoiceItem.QUANTITY)
     private Integer quantity;
 
-    @NotNull
     @Column(name = DB.Field.InvoiceItem.UOM)
     private String uom;
 
-    @NotNull
+    @NotNull(
+            message = "Price must not be null"
+    )
     @Column(name = DB.Field.InvoiceItem.PRICE)
     private Double price;
 

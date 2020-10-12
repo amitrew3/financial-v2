@@ -96,7 +96,14 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
         List<AddRecurringInvoiceItemProto> protos = c.getItemsList();
         final RecurringInvoice finalRecurringInvoice = invoice;
         Set<RecurringInvoiceItem> items = protos.stream().map(x -> {
-            RecurringInvoiceItem item = ProtoConverter.convertToAddRecurringInvoiceItem(x);
+            RecurringInvoiceItem item = null;
+            try {
+                item = ProtoConverter.convertToAddRecurringInvoiceItem(x);
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            } catch (CommandException e) {
+                e.printStackTrace();
+            }
             item.setRecurringInvoice(finalRecurringInvoice);
             return item;
         }).collect(Collectors.toSet());
@@ -187,7 +194,14 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
         List<AddRecurringInvoiceItemProto> protos = c.getItemsList();
         final RecurringInvoice finalRecurringInvoice = invoice;
         Set<RecurringInvoiceItem> items = protos.stream().map(x -> {
-            RecurringInvoiceItem item = ProtoConverter.convertToAddRecurringInvoiceItem(x);
+            RecurringInvoiceItem item = null;
+            try {
+                item = ProtoConverter.convertToAddRecurringInvoiceItem(x);
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            } catch (CommandException e) {
+                e.printStackTrace();
+            }
             item.setRecurringInvoice(finalRecurringInvoice);
             return item;
         }).collect(Collectors.toSet());

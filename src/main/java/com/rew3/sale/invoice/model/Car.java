@@ -13,16 +13,18 @@ public class Car {
 
     @NotNull(
             message = "Id must not be null",
-            groups = EditAction.class
+            groups = {EditAction.class}
     )
-    @Null(groups = Default.class)
+    //@Null(groups = Default.class)
     private String id;
+
+
 
     @NotNull(message = "Manu must be not null")
     private String manufacturer;
 
     @NotNull
-    @Size(min = 2, max = 14, message = "")
+    @Size(min = 2, max = 14, message = "between 2 and 14 ")
     private String licensePlate;
 
     @Max(5)

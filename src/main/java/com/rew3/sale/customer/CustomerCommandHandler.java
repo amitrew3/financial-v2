@@ -17,7 +17,16 @@ import com.rew3.sale.customer.command.DeleteCustomer;
 import com.rew3.sale.customer.command.UpdateCustomer;
 import com.rew3.sale.customer.model.Customer;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import javax.validation.groups.Default;
+import java.util.Set;
+
 public class CustomerCommandHandler implements ICommandHandler {
+    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    Validator validator = factory.getValidator();
 
     public static void registerCommands() {
         CommandRegister.getInstance().registerHandler(CreateCustomer.class, CustomerCommandHandler.class);
@@ -128,11 +137,25 @@ public class CustomerCommandHandler implements ICommandHandler {
             }
 
         }
+        boolean isValid = validate(customer);
 
-        customer = (Customer) HibernateUtilV2.save(customer);
+
+        if (isValid) {
+
+            customer = (Customer) HibernateUtilV2.save(customer);
+        }
 
         return customer;
 
+
+    }
+
+    private boolean validate(Customer customer) {
+        Set<ConstraintViolation<Customer>> constraintViolations = validator.validate(customer, Default.class);
+        constraintViolations.forEach(x -> System.out.println(x.getMessage()));
+        if (constraintViolations.size() == 0) {
+            return true;
+        } else return false;
 
     }
 

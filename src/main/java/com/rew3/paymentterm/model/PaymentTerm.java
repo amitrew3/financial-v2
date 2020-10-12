@@ -7,15 +7,24 @@ import com.rew3.common.shared.model.AbstractEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
 @Table(name = DB.Table.PAYMENT_TERM)
 public class PaymentTerm extends AbstractEntity {
 
+
+    @NotNull(
+            message = "Title must not be null"
+
+    )
     @Column(name = DB.Field.PaymentTerm.TITLE)
     private String title;
+    @NotNull(
+            message = "Value must not be null"
 
+    )
     @Column(name = DB.Field.PaymentTerm.VALUE)
     private Integer value;
     @Column(name = DB.Field.PaymentTerm.DESCRIPTION)

@@ -21,15 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class PaymentService {
-    public Invoice createCustomerInvoice(HashMap<String, Object> requestData) throws Exception {
-
-
-        CreateInvoice command = new CreateInvoice(requestData);
-        CommandRegister.getInstance().process(command);
-        Invoice invoice = (Invoice) command.getObject();
-        return invoice;
-
-    }
 
 
     public InvoiceDTO getInvoiceById(String id) throws NotFoundException, CommandException {

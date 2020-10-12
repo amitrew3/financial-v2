@@ -465,109 +465,82 @@ public class ProtoConverter {
     }
 
 
-    public static InvoiceItem convertToAddInvoiceItem(AddInvoiceItemProto x) {
+    public static InvoiceItem convertToAddInvoiceItem(AddInvoiceItemProto x) throws NotFoundException, CommandException {
         InvoiceItem item = new InvoiceItem();
-//        Optional.ofNullable(x.getInvoiceId()).ifPresent(y -> {
-//            item.setProduct(y.getValue());
-//        });
-        Optional.ofNullable(x.getQuantity()).ifPresent(y -> {
-            item.setQuantity(y.getValue());
-        });
-        Optional.ofNullable(x.getUom()).ifPresent(y -> {
-            item.setUom(y.getValue());
-        });
-        Optional.ofNullable(x.getPrice()).ifPresent(y -> {
-            item.setPrice(y.getValue());
-        });
-        Optional.ofNullable(x.getProductId()).ifPresent(y -> {
+
+        if(x.hasProductId()){
             ProductQueryHandler productQueryHandler = new ProductQueryHandler();
-            try {
-                Product product = (Product) productQueryHandler.getById(y.getValue());
-                item.setProduct(product);
-            } catch (CommandException e) {
-                e.printStackTrace();
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            }
-        });
-        Optional.ofNullable(x.getTax1Id()).ifPresent(y -> {
+
+            Product product = (Product) productQueryHandler.getById(x.getProductId().getValue());
+            item.setProduct(product);
+
+        }
+        if(x.hasTax1Id()){
             SalesTaxQueryHandler taxQueryHandler = new SalesTaxQueryHandler();
-            try {
-                SalesTax tax1 = (SalesTax) taxQueryHandler.getById(y.getValue());
+
+            SalesTax tax1 = (SalesTax) taxQueryHandler.getById(x.getTax1Id().getValue());
+            item.setTax1(tax1);
+
+        }
+        if(x.hasTax2Id()){
+                SalesTaxQueryHandler taxQueryHandler = new SalesTaxQueryHandler();
+
+                SalesTax tax1 = (SalesTax) taxQueryHandler.getById(x.getTax2Id().getValue());
                 item.setTax1(tax1);
 
+        }
+        if(x.hasPrice()){
+            item.setPrice(x.getPrice().getValue());
 
-            } catch (CommandException e) {
-                e.printStackTrace();
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            }
-        });
-        Optional.ofNullable(x.getTax2Id()).ifPresent(y -> {
-            SalesTaxQueryHandler taxQueryHandler = new SalesTaxQueryHandler();
-            try {
-                SalesTax tax2 = (SalesTax) taxQueryHandler.getById(y.getValue());
-                item.setTax2(tax2);
+        }
+        if(x.hasQuantity()){
+            item.setQuantity(x.getQuantity().getValue());
 
+        }
+        if(x.hasUom()){
+            item.setUom(x.getUom().getValue());
 
-            } catch (CommandException e) {
-                e.printStackTrace();
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            }
-        });
-
+        }
 
         return item;
     }
 
-    public static EstimateItem convertToAddEstimateItem(AddEstimateItemProto x) {
+    public static EstimateItem convertToAddEstimateItem(AddEstimateItemProto x) throws NotFoundException, CommandException {
         EstimateItem item = new EstimateItem();
-        Optional.ofNullable(x.getQuantity()).ifPresent(y -> {
-            item.setQuantity(y.getValue());
-        });
-        Optional.ofNullable(x.getUom()).ifPresent(y -> {
-            item.setUom(y.getValue());
-        });
-        Optional.ofNullable(x.getPrice()).ifPresent(y -> {
-            item.setPrice(y.getValue());
-        });
-        Optional.ofNullable(x.getProductId()).ifPresent(y -> {
+
+        if(x.hasProductId()){
             ProductQueryHandler productQueryHandler = new ProductQueryHandler();
-            try {
-                Product product = (Product) productQueryHandler.getById(y.getValue());
-                item.setProduct(product);
-            } catch (CommandException e) {
-                e.printStackTrace();
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            }
-        });
-        Optional.ofNullable(x.getTax1Id()).ifPresent(y -> {
+
+            Product product = (Product) productQueryHandler.getById(x.getProductId().getValue());
+            item.setProduct(product);
+
+        }
+        if(x.hasTax1Id()){
             SalesTaxQueryHandler taxQueryHandler = new SalesTaxQueryHandler();
-            try {
-                SalesTax tax1 = (SalesTax) taxQueryHandler.getById(y.getValue());
-                item.setTax1(tax1);
 
+            SalesTax tax1 = (SalesTax) taxQueryHandler.getById(x.getTax1Id().getValue());
+            item.setTax1(tax1);
 
-            } catch (CommandException e) {
-                e.printStackTrace();
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            }
-        });
-        Optional.ofNullable(x.getTax2Id()).ifPresent(y -> {
+        }
+        if(x.hasTax2Id()){
             SalesTaxQueryHandler taxQueryHandler = new SalesTaxQueryHandler();
-            try {
-                SalesTax tax2 = (SalesTax) taxQueryHandler.getById(y.getValue());
-                item.setTax2(tax2);
-            } catch (CommandException e) {
-                e.printStackTrace();
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            }
-        });
 
+            SalesTax tax1 = (SalesTax) taxQueryHandler.getById(x.getTax2Id().getValue());
+            item.setTax1(tax1);
+
+        }
+        if(x.hasPrice()){
+            item.setPrice(x.getPrice().getValue());
+
+        }
+        if(x.hasQuantity()){
+            item.setQuantity(x.getQuantity().getValue());
+
+        }
+        if(x.hasUom()){
+            item.setUom(x.getUom().getValue());
+
+        }
 
         return item;
     }
@@ -872,60 +845,45 @@ public class ProtoConverter {
         return list;
     }
 
-    public static BillItem convertToAddBillItem(AddBillItemProto x) {
+    public static BillItem convertToAddBillItem(AddBillItemProto x) throws NotFoundException, CommandException {
         BillItem item = new BillItem();
-//        Optional.ofNullable(x.getInvoiceId()).ifPresent(y -> {
-//            item.setProduct(y.getValue());
-//        });
-        Optional.ofNullable(x.getQuantity()).ifPresent(y -> {
-            item.setQuantity(y.getValue());
-        });
-        Optional.ofNullable(x.getUom()).ifPresent(y -> {
-            item.setUom(y.getValue());
-        });
-        Optional.ofNullable(x.getPrice()).ifPresent(y -> {
-            item.setPrice(y.getValue());
-        });
-        Optional.ofNullable(x.getProductId()).ifPresent(y -> {
+
+        if(x.hasProductId()){
             ProductQueryHandler productQueryHandler = new ProductQueryHandler();
-            try {
-                Product product = (Product) productQueryHandler.getById(y.getValue());
-                item.setProduct(product);
-            } catch (CommandException e) {
-                e.printStackTrace();
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            }
-        });
-        Optional.ofNullable(x.getTax1Id()).ifPresent(y -> {
+
+            Product product = (Product) productQueryHandler.getById(x.getProductId().getValue());
+            item.setProduct(product);
+
+        }
+        if(x.hasTax1Id()){
             SalesTaxQueryHandler taxQueryHandler = new SalesTaxQueryHandler();
-            try {
-                SalesTax tax1 = (SalesTax) taxQueryHandler.getById(y.getValue());
-                item.setTax1(tax1);
 
+            SalesTax tax1 = (SalesTax) taxQueryHandler.getById(x.getTax1Id().getValue());
+            item.setTax1(tax1);
 
-            } catch (CommandException e) {
-                e.printStackTrace();
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            }
-        });
-        Optional.ofNullable(x.getTax2Id()).ifPresent(y -> {
+        }
+        if(x.hasTax2Id()){
             SalesTaxQueryHandler taxQueryHandler = new SalesTaxQueryHandler();
-            try {
-                SalesTax tax2 = (SalesTax) taxQueryHandler.getById(y.getValue());
-                item.setTax2(tax2);
 
+            SalesTax tax1 = (SalesTax) taxQueryHandler.getById(x.getTax2Id().getValue());
+            item.setTax1(tax1);
 
-            } catch (CommandException e) {
-                e.printStackTrace();
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            }
-        });
+        }
+        if(x.hasPrice()){
+            item.setPrice(x.getPrice().getValue());
 
+        }
+        if(x.hasQuantity()){
+            item.setQuantity(x.getQuantity().getValue());
+
+        }
+        if(x.hasUom()){
+            item.setUom(x.getUom().getValue());
+
+        }
 
         return item;
+
     }
 
     private static InvoicePaymentInfoProto convertToInvoicePaymentInfoProto(InvoicePayment x) {
@@ -957,59 +915,41 @@ public class ProtoConverter {
     }
 
 
-    public static RecurringInvoiceItem convertToAddRecurringInvoiceItem(AddRecurringInvoiceItemProto x) {
+    public static RecurringInvoiceItem convertToAddRecurringInvoiceItem(AddRecurringInvoiceItemProto x) throws NotFoundException, CommandException {
         RecurringInvoiceItem item = new RecurringInvoiceItem();
-//        Optional.ofNullable(x.getInvoiceId()).ifPresent(y -> {
-//            item.setProduct(y.getValue());
-//        });
-        Optional.ofNullable(x.getQuantity()).ifPresent(y -> {
-            item.setQuantity(y.getValue());
-        });
-        Optional.ofNullable(x.getUom()).ifPresent(y -> {
-            item.setUom(y.getValue());
-        });
-        Optional.ofNullable(x.getPrice()).ifPresent(y -> {
-            item.setPrice(y.getValue());
-        });
-        Optional.ofNullable(x.getProductId()).ifPresent(y -> {
+
+        if(x.hasProductId()){
             ProductQueryHandler productQueryHandler = new ProductQueryHandler();
-            try {
-                Product product = (Product) productQueryHandler.getById(y.getValue());
-                item.setProduct(product);
-            } catch (CommandException e) {
-                e.printStackTrace();
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            }
-        });
-        Optional.ofNullable(x.getTax1Id()).ifPresent(y -> {
+
+            Product product = (Product) productQueryHandler.getById(x.getProductId().getValue());
+            item.setProduct(product);
+
+        }
+        if(x.hasTax1Id()){
             SalesTaxQueryHandler taxQueryHandler = new SalesTaxQueryHandler();
-            try {
-                SalesTax tax1 = (SalesTax) taxQueryHandler.getById(y.getValue());
-                item.setTax1(tax1);
 
+            SalesTax tax1 = (SalesTax) taxQueryHandler.getById(x.getTax1Id().getValue());
+            item.setTax1(tax1);
 
-            } catch (CommandException e) {
-                e.printStackTrace();
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            }
-        });
-        Optional.ofNullable(x.getTax2Id()).ifPresent(y -> {
+        }
+        if(x.hasTax2Id()){
             SalesTaxQueryHandler taxQueryHandler = new SalesTaxQueryHandler();
-            try {
-                SalesTax tax2 = (SalesTax) taxQueryHandler.getById(y.getValue());
-                item.setTax2(tax2);
 
+            SalesTax tax1 = (SalesTax) taxQueryHandler.getById(x.getTax2Id().getValue());
+            item.setTax1(tax1);
 
-            } catch (CommandException e) {
-                e.printStackTrace();
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            }
-        });
+        }
+        if(x.hasPrice()){
+            item.setPrice(x.getPrice().getValue());
 
+        }
+        if(x.hasQuantity()){
+            item.setQuantity(x.getQuantity().getValue());
 
+        }
+        if(x.hasUom()){
+            item.setUom(x.getUom().getValue());
+        }
         return item;
     }
 }

@@ -6,15 +6,23 @@ import com.rew3.common.shared.model.AbstractEntity;
 import com.rew3.salestax.model.SalesTax;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = DB.Table.PRODUCT)
 public class Product extends AbstractEntity {
 
+    @NotNull(
+            message = "Title must not be null"
 
+    )
     @Column(name = DB.Field.Product.TITLE)
     private String title;
 
+    @NotNull(
+            message = "Price must not be null"
+
+    )
     @Column(name = DB.Field.Product.PRICE)
     private Double price;
 

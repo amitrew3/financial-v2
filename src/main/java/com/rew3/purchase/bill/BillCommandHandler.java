@@ -90,7 +90,14 @@ public class BillCommandHandler implements ICommandHandler {
         List<AddBillItemProto> protos = c.getItemsList();
         final Bill finalBill = bill;
         Set<BillItem> items = protos.stream().map(x -> {
-            BillItem item = ProtoConverter.convertToAddBillItem(x);
+            BillItem item = null;
+            try {
+                item = ProtoConverter.convertToAddBillItem(x);
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            } catch (CommandException e) {
+                e.printStackTrace();
+            }
             item.setBill(finalBill);
             return item;
         }).collect(Collectors.toSet());
@@ -164,7 +171,14 @@ public class BillCommandHandler implements ICommandHandler {
         List<AddBillItemProto> protos = c.getItemsList();
         final Bill finalBill = bill;
         Set<BillItem> items = protos.stream().map(x -> {
-            BillItem item = ProtoConverter.convertToAddBillItem(x);
+            BillItem item = null;
+            try {
+                item = ProtoConverter.convertToAddBillItem(x);
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            } catch (CommandException e) {
+                e.printStackTrace();
+            }
             item.setBill(finalBill);
             return item;
         }).collect(Collectors.toSet());
