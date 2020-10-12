@@ -17,7 +17,6 @@ public class RecurringInvoiceItem {
 
 
     @Id
-    @JsonIgnore
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
             name = "UUID",
@@ -27,17 +26,17 @@ public class RecurringInvoiceItem {
     private String id;
 
 
-    @JsonIgnore
+    
     @JoinColumn(name = DB.Field.InvoiceItem.INVOICE_ID)
     @ManyToOne
     private RecurringInvoice recurringInvoice;
 
-    @JsonIgnore
+    @NotNull(message = "Product must not be null")
     @JoinColumn(name = DB.Field.InvoiceItem.PRODUCT_ID)
     @ManyToOne
     private Product product;
 
-    @NotNull
+    @NotNull(message = "Quantity must not be null")
     @Column(name = DB.Field.InvoiceItem.QUANTITY)
     private Integer quantity;
 
@@ -45,7 +44,7 @@ public class RecurringInvoiceItem {
     @Column(name = DB.Field.InvoiceItem.UOM)
     private String uom;
 
-    @NotNull
+    @NotNull(message = "Price must not be null")
     @Column(name = DB.Field.InvoiceItem.PRICE)
     private Double price;
 

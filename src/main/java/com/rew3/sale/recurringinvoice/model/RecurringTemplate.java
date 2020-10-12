@@ -5,6 +5,7 @@ import com.rew3.common.model.Flags;
 import com.rew3.common.shared.model.AbstractEntity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 
@@ -13,6 +14,7 @@ import java.sql.Timestamp;
 public class RecurringTemplate extends AbstractEntity {
 
 
+    @NotNull(message = "Title must not be null")
     @Column(name = DB.Field.RecurringInvoiceTemplate.TITLE)
     private String title;
 

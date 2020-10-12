@@ -6,6 +6,7 @@ import com.rew3.common.shared.model.AbstractEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 
@@ -13,6 +14,7 @@ import java.sql.Timestamp;
 @Table(name = DB.Table.RECURRING_SCHEDULE)
 public class RecurringSchedule extends AbstractEntity {
 
+    @NotNull(message = "Title must not be null")
     @Column(name = DB.Field.RecurringSchedule.TITLE)
     private String title;
 

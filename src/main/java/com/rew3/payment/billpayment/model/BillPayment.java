@@ -7,6 +7,7 @@ import com.rew3.purchase.bill.model.Bill;
 import com.rew3.purchase.vendor.model.Vendor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 
@@ -14,17 +15,21 @@ import java.sql.Timestamp;
 @Table(name = DB.Table.BILLPAYMENT)
 public class BillPayment extends AbstractEntity {
 
+    @NotNull(message = "Bill id must not be null")
     @JoinColumn(name = DB.Field.BillPayment.BILL_ID)
     @ManyToOne
     private Bill bill;
 
+    @NotNull(message = "Vendor id must not be null")
     @JoinColumn(name = DB.Field.BillPayment.VENDOR_ID)
     @ManyToOne
     private Vendor vendor;
 
+    @NotNull(message = "Amount must not be null")
     @Column(name=DB.Field.BillPayment.AMOUNT)
     private Double amount;
 
+    @NotNull(message = "Date must not be null")
     @Column(name = DB.Field.BillPayment.DATE)
     private Timestamp date;
 

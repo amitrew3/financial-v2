@@ -47,7 +47,6 @@ public class Estimate extends AbstractEntity {
     private Double total;
 
     @Valid
-    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "estimate", cascade = CascadeType.ALL, orphanRemoval = true)
     public Set<EstimateItem> items;
 

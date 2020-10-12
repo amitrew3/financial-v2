@@ -53,7 +53,6 @@ public class RecurringInvoice  extends AbstractEntity {
     private Timestamp sendDateTime;
 
 
-    //Status of refund for invoice
     @Column(name = DB.Field.RecurringInvoice.INTERNAL_NOTES)
     private String internalNotes;
 
@@ -88,7 +87,7 @@ public class RecurringInvoice  extends AbstractEntity {
 
     @Valid
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "recurringInvoice", cascade = CascadeType.ALL, orphanRemoval = true)
     public Set<RecurringInvoiceItem> items;
 
 

@@ -7,6 +7,7 @@ import com.rew3.sale.customer.model.Customer;
 import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 
@@ -14,17 +15,21 @@ import java.sql.Timestamp;
 @Table(name = DB.Table.INVOICEPAYMENT)
 public class RecurringInvoicePayment extends AbstractEntity {
 
+    @NotNull(message = "Invoice must not be null")
     @JoinColumn(name = DB.Field.RecurringInvoicePayment.RECURRING_INVOICE_ID)
     @ManyToOne
     private RecurringInvoice invoice;
 
+    @NotNull(message = "Customer id must not be null")
     @JoinColumn(name = DB.Field.RecurringInvoicePayment.CUSTOMER_ID)
     @ManyToOne
     private Customer customer;
 
+    @NotNull(message = "Amount must not be null")
     @Column(name=DB.Field.RecurringInvoicePayment.AMOUNT)
     private Double amount;
 
+    @NotNull(message = "Date must not be null")
     @Column(name = DB.Field.RecurringInvoicePayment.DATE)
     private Timestamp date;
 
