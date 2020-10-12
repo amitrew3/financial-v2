@@ -17,7 +17,6 @@ public class BillItem {
 
 
     @Id
-    @JsonIgnore
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
             name = "UUID",
@@ -26,18 +25,16 @@ public class BillItem {
     @Column(name = DB.Field.BillItem.ID, updatable = false)
     private String id;
 
-
-    @JsonIgnore
     @JoinColumn(name = DB.Field.BillItem.BILL_ID)
     @ManyToOne
     private Bill bill;
 
-    @JsonIgnore
+    @NotNull(message = "Product must not be null")
     @JoinColumn(name = DB.Field.BillItem.PRODUCT_ID)
     @ManyToOne
     private Product product;
 
-    @NotNull
+    @NotNull(message = "Quantity must not be null")
     @Column(name = DB.Field.BillItem.QUANTITY)
     private Integer quantity;
 
@@ -45,7 +42,7 @@ public class BillItem {
     @Column(name = DB.Field.BillItem.UOM)
     private String uom;
 
-    @NotNull
+    @NotNull(message = "Price must not be null")
     @Column(name = DB.Field.BillItem.PRICE)
     private Double price;
 

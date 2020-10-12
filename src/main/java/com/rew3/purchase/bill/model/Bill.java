@@ -7,6 +7,7 @@ import com.rew3.purchase.vendor.model.Vendor;
 
 import javax.persistence.*;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Set;
 
@@ -21,12 +22,14 @@ public class Bill extends AbstractEntity {
     @Column(name = DB.Field.Bill.PO_SO_NUMBER)
     private String poSoNumber;
 
+    @NotNull(message = "Invoice Date must not be null")
     @Column(name = DB.Field.Bill.BILL_DATE)
     private Timestamp billDate;
 
     @Column(name = DB.Field.Bill.DUE_DATE)
     private Timestamp dueDate;
 
+    @NotNull(message = "Vendor Id must not be null")
     @JoinColumn(name = DB.Field.Bill.VENDOR_ID)
     @OneToOne
     private Vendor vendor;

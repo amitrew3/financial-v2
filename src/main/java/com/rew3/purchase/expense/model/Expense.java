@@ -5,6 +5,7 @@ import com.rew3.common.shared.model.AbstractEntity;
 import com.rew3.common.model.DB;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Set;
 
@@ -15,9 +16,11 @@ public class Expense extends AbstractEntity {
     @Column(name = DB.Field.Expense.EXPENSE_NUMBER)
     private String expenseNumber;
 
+    @NotNull(message = "Title must not be null")
     @Column(name = DB.Field.Expense.TITLE)
     private String title;
 
+    @NotNull(message = "Title must not be null")
     @Column(name = DB.Field.Expense.DATE)
     private Timestamp date;
 
@@ -33,6 +36,7 @@ public class Expense extends AbstractEntity {
     @Column(name = DB.Field.Expense.CURRENCY)
     private String currency;
 
+    @NotNull(message = "Total must not be null")
     @Column(name = DB.Field.Expense.TOTAL)
     private double total;
 

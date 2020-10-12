@@ -24,6 +24,7 @@ public class Estimate extends AbstractEntity {
     @Column(name = DB.Field.Estimate.ESTIMATE_DATE)
     private Timestamp estimateDate;
 
+
     @JoinColumn(name = DB.Field.Estimate.CUSTOMER_ID)
     @OneToOne
     private Customer customer;

@@ -20,7 +20,6 @@ public class EstimateItem {
 
 
     @Id
-    @JsonIgnore
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
             name = "UUID",
@@ -30,17 +29,17 @@ public class EstimateItem {
     private String id;
 
 
-    @JsonIgnore
+
     @JoinColumn(name = DB.Field.EstimateItem.ESTIMATE_ID)
     @ManyToOne
     private Estimate estimate;
 
-    @JsonIgnore
+    @NotNull(message = "Product must not be null")
     @JoinColumn(name = DB.Field.EstimateItem.PRODUCT_ID)
     @ManyToOne
     private Product product;
 
-    @NotNull
+    @NotNull(message = "Quantity must not be null")
     @Column(name = DB.Field.EstimateItem.QUANTITY)
     private Integer quantity;
 
@@ -48,7 +47,7 @@ public class EstimateItem {
     @Column(name = DB.Field.EstimateItem.UOM)
     private String uom;
 
-    @NotNull
+    @NotNull(message = "Quantity must not be null")
     @Column(name = DB.Field.EstimateItem.PRICE)
     private Double price;
 

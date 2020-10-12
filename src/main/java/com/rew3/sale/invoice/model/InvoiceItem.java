@@ -28,25 +28,19 @@ public class InvoiceItem {
     @ManyToOne
     private Invoice invoice;
 
-    @NotNull(
-            message = "Product must not be null"
-    )
+    @NotNull(message = "Product must not be null")
     @JoinColumn(name = DB.Field.InvoiceItem.PRODUCT_ID)
     @ManyToOne
     private Product product;
 
-    @NotNull(
-            message = "Quantity must not be null"
-    )
+    @NotNull(message = "Quantity must not be null")
     @Column(name = DB.Field.InvoiceItem.QUANTITY)
     private Integer quantity;
 
     @Column(name = DB.Field.InvoiceItem.UOM)
     private String uom;
 
-    @NotNull(
-            message = "Price must not be null"
-    )
+    @NotNull(message = "Price must not be null")
     @Column(name = DB.Field.InvoiceItem.PRICE)
     private Double price;
 

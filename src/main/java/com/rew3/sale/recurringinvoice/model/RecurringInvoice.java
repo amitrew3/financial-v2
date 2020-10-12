@@ -10,6 +10,7 @@ import com.rew3.sale.customer.model.Customer;
 
 import javax.persistence.*;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Set;
 
@@ -24,12 +25,14 @@ public class RecurringInvoice  extends AbstractEntity {
     @Column(name = DB.Field.Invoice.PO_SO_NUMBER)
     private String poSoNumber;
 
+    @NotNull(message = "Invoice date must not be null")
     @Column(name = DB.Field.RecurringInvoice.INVOICE_DATE)
     private Timestamp invoiceDate;
 
     @Column(name = DB.Field.RecurringInvoice.DUE_DATE)
     private Timestamp dueDate;
 
+    @NotNull(message = "Customer Id must not be null")
     @JoinColumn(name = DB.Field.RecurringInvoice.CUSTOMER_ID)
     @OneToOne
     private Customer customer;
