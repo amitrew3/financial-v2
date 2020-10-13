@@ -120,10 +120,10 @@ public class SalesTaxCommandHandler implements ICommandHandler {
                 tax.setOwnerId(miniUserProto.getId().getValue());
             }
             if (miniUserProto.hasFirstName()) {
-                tax.setOwnerFirstName(miniUserProto.getId().getValue());
+                tax.setOwnerFirstName(miniUserProto.getFirstName().getValue());
             }
             if (miniUserProto.hasLastName()) {
-                tax.setOwnerLastName(miniUserProto.getId().getValue());
+                tax.setOwnerLastName(miniUserProto.getLastName().getValue());
             }
         }
         if (c.hasSalestaxInfo()) {
@@ -154,10 +154,10 @@ public class SalesTaxCommandHandler implements ICommandHandler {
                 tax.setOwnerId(miniUserProto.getId().getValue());
             }
             if (miniUserProto.hasFirstName()) {
-                tax.setOwnerFirstName(miniUserProto.getId().getValue());
+                tax.setOwnerFirstName(miniUserProto.getFirstName().getValue());
             }
             if (miniUserProto.hasLastName()) {
-                tax.setOwnerLastName(miniUserProto.getId().getValue());
+                tax.setOwnerLastName(miniUserProto.getLastName().getValue());
             }
         }
 

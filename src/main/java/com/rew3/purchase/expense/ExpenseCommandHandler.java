@@ -96,10 +96,10 @@ public class ExpenseCommandHandler implements ICommandHandler {
                 expense.setOwnerId(miniUserProto.getId().getValue());
             }
             if (miniUserProto.hasFirstName()) {
-                expense.setOwnerFirstName(miniUserProto.getId().getValue());
+                expense.setOwnerFirstName(miniUserProto.getFirstName().getValue());
             }
             if (miniUserProto.hasLastName()) {
-                expense.setOwnerLastName(miniUserProto.getId().getValue());
+                expense.setOwnerLastName(miniUserProto.getLastName().getValue());
             }
 
         }
@@ -160,10 +160,10 @@ public class ExpenseCommandHandler implements ICommandHandler {
                 expense.setOwnerId(miniUserProto.getId().getValue());
             }
             if (miniUserProto.hasFirstName()) {
-                expense.setOwnerFirstName(miniUserProto.getId().getValue());
+                expense.setOwnerFirstName(miniUserProto.getFirstName().getValue());
             }
             if (miniUserProto.hasLastName()) {
-                expense.setOwnerLastName(miniUserProto.getId().getValue());
+                expense.setOwnerLastName(miniUserProto.getLastName().getValue());
             }
         }
         if (rew3Validation.validateForUpdate(expense)) {

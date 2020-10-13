@@ -116,10 +116,10 @@ public class VendorCommandHandler implements ICommandHandler {
                 vendor.setOwnerId(miniUserProto.getId().getValue());
             }
             if (miniUserProto.hasFirstName()) {
-                vendor.setOwnerFirstName(miniUserProto.getId().getValue());
+                vendor.setOwnerFirstName(miniUserProto.getFirstName().getValue());
             }
             if (miniUserProto.hasLastName()) {
-                vendor.setOwnerLastName(miniUserProto.getId().getValue());
+                vendor.setOwnerLastName(miniUserProto.getLastName().getValue());
             }
 
         }
@@ -195,10 +195,10 @@ public class VendorCommandHandler implements ICommandHandler {
                 vendor.setOwnerId(miniUserProto.getId().getValue());
             }
             if (miniUserProto.hasFirstName()) {
-                vendor.setOwnerFirstName(miniUserProto.getId().getValue());
+                vendor.setOwnerFirstName(miniUserProto.getFirstName().getValue());
             }
             if (miniUserProto.hasLastName()) {
-                vendor.setOwnerLastName(miniUserProto.getId().getValue());
+                vendor.setOwnerLastName(miniUserProto.getLastName().getValue());
             }
 
         }

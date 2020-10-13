@@ -91,10 +91,10 @@ public class    ProductCommandHandler implements ICommandHandler {
                 product.setOwnerId(miniUserProto.getId().getValue());
             }
             if (miniUserProto.hasFirstName()) {
-                product.setOwnerFirstName(miniUserProto.getId().getValue());
+                product.setOwnerFirstName(miniUserProto.getFirstName().getValue());
             }
             if (miniUserProto.hasLastName()) {
-                product.setOwnerLastName(miniUserProto.getId().getValue());
+                product.setOwnerLastName(miniUserProto.getLastName().getValue());
             }
 
         }
@@ -148,10 +148,10 @@ public class    ProductCommandHandler implements ICommandHandler {
                 product.setOwnerId(miniUserProto.getId().getValue());
             }
             if (miniUserProto.hasFirstName()) {
-                product.setOwnerFirstName(miniUserProto.getId().getValue());
+                product.setOwnerFirstName(miniUserProto.getFirstName().getValue());
             }
             if (miniUserProto.hasLastName()) {
-                product.setOwnerLastName(miniUserProto.getId().getValue());
+                product.setOwnerLastName(miniUserProto.getLastName().getValue());
             }
 
         }

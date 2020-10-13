@@ -124,10 +124,10 @@ public class CustomerCommandHandler implements ICommandHandler {
                 customer.setOwnerId(miniUserProto.getId().getValue());
             }
             if (miniUserProto.hasFirstName()) {
-                customer.setOwnerFirstName(miniUserProto.getId().getValue());
+                customer.setOwnerFirstName(miniUserProto.getFirstName().getValue());
             }
             if (miniUserProto.hasLastName()) {
-                customer.setOwnerLastName(miniUserProto.getId().getValue());
+                customer.setOwnerLastName(miniUserProto.getLastName().getValue());
             }
 
         }
@@ -217,10 +217,10 @@ public class CustomerCommandHandler implements ICommandHandler {
                 customer.setOwnerId(miniUserProto.getId().getValue());
             }
             if (miniUserProto.hasFirstName()) {
-                customer.setOwnerFirstName(miniUserProto.getId().getValue());
+                customer.setOwnerFirstName(miniUserProto.getFirstName().getValue());
             }
             if (miniUserProto.hasLastName()) {
-                customer.setOwnerLastName(miniUserProto.getId().getValue());
+                customer.setOwnerLastName(miniUserProto.getLastName().getValue());
             }
 
         }

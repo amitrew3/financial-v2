@@ -103,10 +103,10 @@ public class BillPaymentCommandHandler implements ICommandHandler {
                 payment.setOwnerId(miniUserProto.getId().getValue());
             }
             if (miniUserProto.hasFirstName()) {
-                payment.setOwnerFirstName(miniUserProto.getId().getValue());
+                payment.setOwnerFirstName(miniUserProto.getFirstName().getValue());
             }
             if (miniUserProto.hasLastName()) {
-                payment.setOwnerLastName(miniUserProto.getId().getValue());
+                payment.setOwnerLastName(miniUserProto.getLastName().getValue());
             }
         }
         if (rew3Validation.validateForUpdate(payment)) {
@@ -152,10 +152,10 @@ public class BillPaymentCommandHandler implements ICommandHandler {
                 payment.setOwnerId(miniUserProto.getId().getValue());
             }
             if (miniUserProto.hasFirstName()) {
-                payment.setOwnerFirstName(miniUserProto.getId().getValue());
+                payment.setOwnerFirstName(miniUserProto.getFirstName().getValue());
             }
             if (miniUserProto.hasLastName()) {
-                payment.setOwnerLastName(miniUserProto.getId().getValue());
+                payment.setOwnerLastName(miniUserProto.getLastName().getValue());
             }
         }
         if (rew3Validation.validateForAdd(payment)) {

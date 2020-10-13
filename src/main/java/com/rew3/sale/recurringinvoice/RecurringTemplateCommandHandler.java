@@ -43,13 +43,9 @@ public class RecurringTemplateCommandHandler implements ICommandHandler {
     }
 
     public void handle(CreateRecurringTemplate c) throws Exception {
-        // Transaction trx = c.getTransaction();
         try {
             RecurringTemplate template = this._handleSaveRecurringTemplate(c.addRecurringTemplateProto);
             if (template != null) {
-//                if (c.isCommittable()) {
-//                    HibernateUtils.commitTransaction(trx);
-//                }
                 c.setObject(template);
             }
         } catch (Exception ex) {
@@ -61,13 +57,9 @@ public class RecurringTemplateCommandHandler implements ICommandHandler {
     }
 
     public void handle(UpdateRecurringTemplate c) throws Exception {
-        // Transaction trx = c.getTransaction();
         try {
             RecurringTemplate template = this._handleUpdateRecurringTemplate(c.updateRecurringTemplateProto);
             if (template != null) {
-//                if (c.isCommittable()) {
-//                    HibernateUtils.commitTransaction(trx);
-//                }
                 c.setObject(template);
             }
         } catch (Exception ex) {
@@ -110,10 +102,10 @@ public class RecurringTemplateCommandHandler implements ICommandHandler {
                     template.setOwnerId(miniUserProto.getId().getValue());
                 }
                 if (miniUserProto.hasFirstName()) {
-                    template.setOwnerFirstName(miniUserProto.getId().getValue());
+                    template.setOwnerFirstName(miniUserProto.getFirstName().getValue());
                 }
                 if (miniUserProto.hasLastName()) {
-                    template.setOwnerLastName(miniUserProto.getId().getValue());
+                    template.setOwnerLastName(miniUserProto.getLastName().getValue());
                 }
             }
         }
@@ -153,10 +145,10 @@ public class RecurringTemplateCommandHandler implements ICommandHandler {
                     template.setOwnerId(miniUserProto.getId().getValue());
                 }
                 if (miniUserProto.hasFirstName()) {
-                    template.setOwnerFirstName(miniUserProto.getId().getValue());
+                    template.setOwnerFirstName(miniUserProto.getFirstName().getValue());
                 }
                 if (miniUserProto.hasLastName()) {
-                    template.setOwnerLastName(miniUserProto.getId().getValue());
+                    template.setOwnerLastName(miniUserProto.getLastName().getValue());
                 }
             }
         }

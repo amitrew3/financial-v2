@@ -5,7 +5,6 @@ import com.avenue.financial.services.grpc.proto.recurringschedule.AddRecurringSc
 import com.avenue.financial.services.grpc.proto.recurringschedule.RecurringScheduleInfoProto;
 import com.avenue.financial.services.grpc.proto.recurringschedule.UpdateRecurringScheduleProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.financial.service.ProtoConverter;
 import com.rew3.common.Rew3Validation;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
@@ -14,20 +13,10 @@ import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags;
-import com.rew3.common.utils.Rew3Date;
-import com.rew3.paymentterm.PaymentTermQueryHandler;
-import com.rew3.paymentterm.model.PaymentTerm;
-import com.rew3.sale.customer.CustomerQueryHandler;
-import com.rew3.sale.customer.model.Customer;
 import com.rew3.sale.recurringinvoice.command.CreateRecurringSchedule;
 import com.rew3.sale.recurringinvoice.command.DeleteRecurringSchedule;
 import com.rew3.sale.recurringinvoice.command.UpdateRecurringSchedule;
-import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
 import com.rew3.sale.recurringinvoice.model.RecurringSchedule;
-
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class RecurringScheduleCommandHandler implements ICommandHandler {
     Rew3Validation<RecurringSchedule> rew3Validation = new Rew3Validation<RecurringSchedule>();
@@ -50,13 +39,9 @@ public class RecurringScheduleCommandHandler implements ICommandHandler {
     }
 
     public void handle(CreateRecurringSchedule c) throws Exception {
-        // Transaction trx = c.getTransaction();
         try {
             RecurringSchedule invoice = this._handleSaveRecurringSchedule(c.addRecurringScheduleProto);
             if (invoice != null) {
-//                if (c.isCommittable()) {
-//                    HibernateUtils.commitTransaction(trx);
-//                }
                 c.setObject(invoice);
             }
         } catch (Exception ex) {
@@ -68,13 +53,9 @@ public class RecurringScheduleCommandHandler implements ICommandHandler {
     }
 
     public void handle(UpdateRecurringSchedule c) throws Exception {
-        // Transaction trx = c.getTransaction();
         try {
             RecurringSchedule invoice = this._handleUpdateRecurringSchedule(c.updateRecurringScheduleProto);
             if (invoice != null) {
-//                if (c.isCommittable()) {
-//                    HibernateUtils.commitTransaction(trx);
-//                }
                 c.setObject(invoice);
             }
         } catch (Exception ex) {
@@ -116,6 +97,18 @@ public class RecurringScheduleCommandHandler implements ICommandHandler {
                 schedule.setDescription(invoiceInfo.getDescription().getValue());
             }
         }
+        if (c.hasOwner()) {
+            MiniUserProto miniUserProto = c.getOwner();
+            if (miniUserProto.hasId()) {
+                schedule.setOwnerId(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasFirstName()) {
+                schedule.setOwnerFirstName(miniUserProto.getFirstName().getValue());
+            }
+            if (miniUserProto.hasLastName()) {
+                schedule.setOwnerLastName(miniUserProto.getLastName().getValue());
+            }
+        }
         if (rew3Validation.validateForUpdate(schedule)) {
             schedule = (RecurringSchedule) HibernateUtilV2.update(schedule);
         }
@@ -152,6 +145,18 @@ public class RecurringScheduleCommandHandler implements ICommandHandler {
             }
             if (invoiceInfo.hasDescription()) {
                 schedule.setDescription(invoiceInfo.getDescription().getValue());
+            }
+        }
+        if (c.hasOwner()) {
+            MiniUserProto miniUserProto = c.getOwner();
+            if (miniUserProto.hasId()) {
+                schedule.setOwnerId(miniUserProto.getId().getValue());
+            }
+            if (miniUserProto.hasFirstName()) {
+                schedule.setOwnerFirstName(miniUserProto.getFirstName().getValue());
+            }
+            if (miniUserProto.hasLastName()) {
+                schedule.setOwnerLastName(miniUserProto.getLastName().getValue());
             }
         }
         if (rew3Validation.validateForAdd(schedule)) {

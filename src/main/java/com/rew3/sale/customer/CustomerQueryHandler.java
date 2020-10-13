@@ -80,7 +80,7 @@ public class CustomerQueryHandler implements IQueryHandler {
 
 
         List<Object> terms = HibernateUtilV2.select("SELECT distinct t FROM Customer t " + builder.getValue(), sqlParams, q.getQuery(), limit, offset,
-                SalesTax.class);
+                Customer.class);
 
         return terms;
     }

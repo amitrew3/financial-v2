@@ -156,10 +156,10 @@ public class EstimateCommandHandler implements ICommandHandler {
                 estimate.setOwnerId(miniUserProto.getId().getValue());
             }
             if (miniUserProto.hasFirstName()) {
-                estimate.setOwnerFirstName(miniUserProto.getId().getValue());
+                estimate.setOwnerFirstName(miniUserProto.getFirstName().getValue());
             }
             if (miniUserProto.hasLastName()) {
-                estimate.setOwnerLastName(miniUserProto.getId().getValue());
+                estimate.setOwnerLastName(miniUserProto.getLastName().getValue());
             }
         }
         if (rew3Validation.validateForUpdate(estimate)) {
@@ -242,10 +242,10 @@ public class EstimateCommandHandler implements ICommandHandler {
                 estimate.setOwnerId(miniUserProto.getId().getValue());
             }
             if (miniUserProto.hasFirstName()) {
-                estimate.setOwnerFirstName(miniUserProto.getId().getValue());
+                estimate.setOwnerFirstName(miniUserProto.getFirstName().getValue());
             }
             if (miniUserProto.hasLastName()) {
-                estimate.setOwnerLastName(miniUserProto.getId().getValue());
+                estimate.setOwnerLastName(miniUserProto.getLastName().getValue());
             }
         }
         if (rew3Validation.validateForAdd(estimate)) {

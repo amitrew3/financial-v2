@@ -156,10 +156,10 @@ public class BillCommandHandler implements ICommandHandler {
                 bill.setOwnerId(miniUserProto.getId().getValue());
             }
             if (miniUserProto.hasFirstName()) {
-                bill.setOwnerFirstName(miniUserProto.getId().getValue());
+                bill.setOwnerFirstName(miniUserProto.getFirstName().getValue());
             }
             if (miniUserProto.hasLastName()) {
-                bill.setOwnerLastName(miniUserProto.getId().getValue());
+                bill.setOwnerLastName(miniUserProto.getLastName().getValue());
             }
         }
         if (rew3Validation.validateForUpdate(bill)) {
@@ -244,10 +244,10 @@ public class BillCommandHandler implements ICommandHandler {
                 bill.setOwnerId(miniUserProto.getId().getValue());
             }
             if (miniUserProto.hasFirstName()) {
-                bill.setOwnerFirstName(miniUserProto.getId().getValue());
+                bill.setOwnerFirstName(miniUserProto.getFirstName().getValue());
             }
             if (miniUserProto.hasLastName()) {
-                bill.setOwnerLastName(miniUserProto.getId().getValue());
+                bill.setOwnerLastName(miniUserProto.getLastName().getValue());
             }
         }
 

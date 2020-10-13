@@ -181,10 +181,10 @@ public class InvoiceCommandHandler implements ICommandHandler {
                 invoice.setOwnerId(miniUserProto.getId().getValue());
             }
             if (miniUserProto.hasFirstName()) {
-                invoice.setOwnerFirstName(miniUserProto.getId().getValue());
+                invoice.setOwnerFirstName(miniUserProto.getFirstName().getValue());
             }
             if (miniUserProto.hasLastName()) {
-                invoice.setOwnerLastName(miniUserProto.getId().getValue());
+                invoice.setOwnerLastName(miniUserProto.getLastName().getValue());
             }
         }
         if (rew3Validation.validateForUpdate(invoice)) {
@@ -286,10 +286,10 @@ public class InvoiceCommandHandler implements ICommandHandler {
                 invoice.setOwnerId(miniUserProto.getId().getValue());
             }
             if (miniUserProto.hasFirstName()) {
-                invoice.setOwnerFirstName(miniUserProto.getId().getValue());
+                invoice.setOwnerFirstName(miniUserProto.getFirstName().getValue());
             }
             if (miniUserProto.hasLastName()) {
-                invoice.setOwnerLastName(miniUserProto.getId().getValue());
+                invoice.setOwnerLastName(miniUserProto.getLastName().getValue());
             }
         }
         if (rew3Validation.validateForAdd(invoice)) {

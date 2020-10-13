@@ -187,10 +187,10 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
                 invoice.setOwnerId(miniUserProto.getId().getValue());
             }
             if (miniUserProto.hasFirstName()) {
-                invoice.setOwnerFirstName(miniUserProto.getId().getValue());
+                invoice.setOwnerFirstName(miniUserProto.getFirstName().getValue());
             }
             if (miniUserProto.hasLastName()) {
-                invoice.setOwnerLastName(miniUserProto.getId().getValue());
+                invoice.setOwnerLastName(miniUserProto.getLastName().getValue());
             }
         }
         invoice.setSent(false);
@@ -297,10 +297,10 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
                 invoice.setOwnerId(miniUserProto.getId().getValue());
             }
             if (miniUserProto.hasFirstName()) {
-                invoice.setOwnerFirstName(miniUserProto.getId().getValue());
+                invoice.setOwnerFirstName(miniUserProto.getFirstName().getValue());
             }
             if (miniUserProto.hasLastName()) {
-                invoice.setOwnerLastName(miniUserProto.getId().getValue());
+                invoice.setOwnerLastName(miniUserProto.getLastName().getValue());
             }
         }
         invoice.setSent(false);

@@ -12,19 +12,14 @@ import javax.validation.constraints.NotNull;
 @Table(name = DB.Table.CUSTOMER)
 public class Customer extends AbstractEntity {
 
-    @NotNull(
-            message = "First Name must not be null"
-
-    )
+    @NotNull(message = "First Name must not be null")
     @Column(name = DB.Field.Customer.FIRST_NAME)
     private String firstName;
 
     @Column(name = DB.Field.Customer.MIDDLE_NAME)
     private String middleName;
 
-    @NotNull(
-            message = "Last Name must not be null"
-    )
+    @NotNull(message = "Last Name must not be null")
     @Column(name = DB.Field.Customer.LAST_NAME)
     private String lastName;
 
