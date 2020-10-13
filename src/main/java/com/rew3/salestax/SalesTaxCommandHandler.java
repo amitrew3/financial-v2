@@ -5,18 +5,22 @@ import com.avenue.financial.services.grpc.proto.salestax.AddSalesTaxProto;
 import com.avenue.financial.services.grpc.proto.salestax.SalesTaxInfoProto;
 import com.avenue.financial.services.grpc.proto.salestax.UpdateSalesTaxProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.rew3.catalog.product.model.Product;
+import com.rew3.common.Rew3Validation;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
 import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.database.HibernateUtilV2;
+import com.rew3.sale.customer.model.Customer;
 import com.rew3.salestax.command.CreateSalesTax;
 import com.rew3.salestax.command.DeleteSalesTax;
 import com.rew3.salestax.command.UpdateSalesTax;
 import com.rew3.salestax.model.SalesTax;
 
 public class SalesTaxCommandHandler implements ICommandHandler {
+    Rew3Validation<SalesTax> rew3Validation = new Rew3Validation<SalesTax>();
 
     public static void registerCommands() {
         CommandRegister.getInstance().registerHandler(CreateSalesTax.class, SalesTaxCommandHandler.class);
@@ -89,6 +93,9 @@ public class SalesTaxCommandHandler implements ICommandHandler {
                 tax.setOwnerLastName(miniUserProto.getId().getValue());
             }
         }
+        if (rew3Validation.validateForAdd(tax)) {
+            tax = (SalesTax) HibernateUtilV2.save(tax);
+        }
 
         tax = (SalesTax) HibernateUtilV2.save(tax);
 
@@ -155,6 +162,9 @@ public class SalesTaxCommandHandler implements ICommandHandler {
         }
 
         tax = (SalesTax) HibernateUtilV2.update(tax);
+        if (rew3Validation.validateForUpdate(tax)) {
+            tax = (SalesTax) HibernateUtilV2.save(tax);
+        }
 
         return tax;
 

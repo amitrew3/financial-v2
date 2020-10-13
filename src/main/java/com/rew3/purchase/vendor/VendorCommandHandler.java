@@ -5,6 +5,8 @@ import com.avenue.financial.services.grpc.proto.vendor.AddVendorProto;
 import com.avenue.financial.services.grpc.proto.vendor.UpdateVendorProto;
 import com.avenue.financial.services.grpc.proto.vendor.VendorInfoProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.rew3.catalog.product.model.Product;
+import com.rew3.common.Rew3Validation;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
@@ -15,8 +17,15 @@ import com.rew3.purchase.vendor.command.CreateVendor;
 import com.rew3.purchase.vendor.command.DeleteVendor;
 import com.rew3.purchase.vendor.command.UpdateVendor;
 import com.rew3.purchase.vendor.model.Vendor;
+import com.rew3.sale.customer.model.Customer;
+
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 public class VendorCommandHandler implements ICommandHandler {
+    Rew3Validation<Vendor> rew3Validation = new Rew3Validation<Vendor>();
+
 
     public static void registerCommands() {
         CommandRegister.getInstance().registerHandler(CreateVendor.class, VendorCommandHandler.class);
@@ -115,7 +124,9 @@ public class VendorCommandHandler implements ICommandHandler {
 
         }
 
-        vendor = (Vendor) HibernateUtilV2.save(vendor);
+        if (rew3Validation.validateForAdd(vendor)) {
+            vendor = (Vendor) HibernateUtilV2.save(vendor);
+        }
 
         return vendor;
 
@@ -191,7 +202,10 @@ public class VendorCommandHandler implements ICommandHandler {
             }
 
         }
-        vendor = (Vendor) HibernateUtilV2.update(vendor);
+
+        if (rew3Validation.validateForUpdate(vendor)) {
+            vendor = (Vendor) HibernateUtilV2.save(vendor);
+        }
 
         return vendor;
 

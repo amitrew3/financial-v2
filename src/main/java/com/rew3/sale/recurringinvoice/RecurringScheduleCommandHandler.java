@@ -1,12 +1,12 @@
 package com.rew3.sale.recurringinvoice;
 
 import com.avenue.base.grpc.proto.core.MiniUserProto;
-import com.avenue.financial.services.grpc.proto.recurringinvoice.AddRecurringInvoiceInfoProto;
-import com.avenue.financial.services.grpc.proto.recurringinvoice.AddRecurringInvoiceItemProto;
-import com.avenue.financial.services.grpc.proto.recurringinvoice.AddRecurringInvoiceProto;
-import com.avenue.financial.services.grpc.proto.recurringinvoice.UpdateRecurringInvoiceProto;
+import com.avenue.financial.services.grpc.proto.recurringschedule.AddRecurringScheduleProto;
+import com.avenue.financial.services.grpc.proto.recurringschedule.RecurringScheduleInfoProto;
+import com.avenue.financial.services.grpc.proto.recurringschedule.UpdateRecurringScheduleProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.financial.service.ProtoConverter;
+import com.rew3.common.Rew3Validation;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
@@ -19,39 +19,40 @@ import com.rew3.paymentterm.PaymentTermQueryHandler;
 import com.rew3.paymentterm.model.PaymentTerm;
 import com.rew3.sale.customer.CustomerQueryHandler;
 import com.rew3.sale.customer.model.Customer;
-import com.rew3.sale.invoice.command.UpdateRecurringInvoice;
-import com.rew3.sale.recurringinvoice.command.CreateRecurringInvoice;
-import com.rew3.sale.recurringinvoice.command.DeleteRecurringInvoice;
+import com.rew3.sale.recurringinvoice.command.CreateRecurringSchedule;
+import com.rew3.sale.recurringinvoice.command.DeleteRecurringSchedule;
+import com.rew3.sale.recurringinvoice.command.UpdateRecurringSchedule;
 import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
-import com.rew3.sale.recurringinvoice.model.RecurringInvoiceItem;
+import com.rew3.sale.recurringinvoice.model.RecurringSchedule;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class RecurringScheduleCommandHandler implements ICommandHandler {
+    Rew3Validation<RecurringSchedule> rew3Validation = new Rew3Validation<RecurringSchedule>();
 
     public static void registerCommands() {
-        CommandRegister.getInstance().registerHandler(CreateRecurringInvoice.class, RecurringScheduleCommandHandler.class);
-        CommandRegister.getInstance().registerHandler(UpdateRecurringInvoice.class, RecurringScheduleCommandHandler.class);
-        CommandRegister.getInstance().registerHandler(DeleteRecurringInvoice.class, RecurringScheduleCommandHandler.class);
+        CommandRegister.getInstance().registerHandler(CreateRecurringSchedule.class, RecurringScheduleCommandHandler.class);
+        CommandRegister.getInstance().registerHandler(UpdateRecurringSchedule.class, RecurringScheduleCommandHandler.class);
+        CommandRegister.getInstance().registerHandler(DeleteRecurringSchedule.class, RecurringScheduleCommandHandler.class);
 
     }
 
     public void handle(ICommand c) throws Exception {
-        if (c instanceof CreateRecurringInvoice) {
-            handle((CreateRecurringInvoice) c);
-        } else if (c instanceof UpdateRecurringInvoice) {
-            handle((UpdateRecurringInvoice) c);
-        } else if (c instanceof DeleteRecurringInvoice) {
-            handle((DeleteRecurringInvoice) c);
+        if (c instanceof CreateRecurringSchedule) {
+            handle((CreateRecurringSchedule) c);
+        } else if (c instanceof UpdateRecurringSchedule) {
+            handle((UpdateRecurringSchedule) c);
+        } else if (c instanceof DeleteRecurringSchedule) {
+            handle((DeleteRecurringSchedule) c);
         }
     }
 
-    public void handle(CreateRecurringInvoice c) throws Exception {
+    public void handle(CreateRecurringSchedule c) throws Exception {
         // Transaction trx = c.getTransaction();
         try {
-            RecurringInvoice invoice = this._handleSaveRecurringInvoice(c.addRecurringInvoiceProto);
+            RecurringSchedule invoice = this._handleSaveRecurringSchedule(c.addRecurringScheduleProto);
             if (invoice != null) {
 //                if (c.isCommittable()) {
 //                    HibernateUtils.commitTransaction(trx);
@@ -66,10 +67,10 @@ public class RecurringScheduleCommandHandler implements ICommandHandler {
         }
     }
 
-    public void handle(UpdateRecurringInvoice c) throws Exception {
+    public void handle(UpdateRecurringSchedule c) throws Exception {
         // Transaction trx = c.getTransaction();
         try {
-            RecurringInvoice invoice = this._handleUpdateRecurringInvoice(c.updateRecurringInvoiceProto);
+            RecurringSchedule invoice = this._handleUpdateRecurringSchedule(c.updateRecurringScheduleProto);
             if (invoice != null) {
 //                if (c.isCommittable()) {
 //                    HibernateUtils.commitTransaction(trx);
@@ -84,223 +85,94 @@ public class RecurringScheduleCommandHandler implements ICommandHandler {
         }
     }
 
-    private RecurringInvoice _handleUpdateRecurringInvoice(UpdateRecurringInvoiceProto c) throws Exception {
-        RecurringInvoice invoice = null;
+    private RecurringSchedule _handleUpdateRecurringSchedule(UpdateRecurringScheduleProto c) throws Exception {
+        RecurringSchedule schedule = null;
         if (c.hasId()) {
-            invoice = (RecurringInvoice) new RecurringInvoiceQueryHandler().getById(c.getId().getValue());
+            schedule = (RecurringSchedule) new RecurringScheduleQueryHandler().getById(c.getId().getValue());
         }
-        AddRecurringInvoiceInfoProto invoiceInfo = null;
+        RecurringScheduleInfoProto invoiceInfo = null;
 
 
-        List<AddRecurringInvoiceItemProto> protos = c.getItemsList();
-        final RecurringInvoice finalRecurringInvoice = invoice;
-        Set<RecurringInvoiceItem> items = protos.stream().map(x -> {
-            RecurringInvoiceItem item = null;
-            try {
-                item = ProtoConverter.convertToAddRecurringInvoiceItem(x);
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            } catch (CommandException e) {
-                e.printStackTrace();
+        if (c.hasRecurringScheduleInfo()) {
+            invoiceInfo = c.getRecurringScheduleInfo();
+            if (invoiceInfo.hasTitle()) {
+                schedule.setTitle(invoiceInfo.getTitle().getValue());
             }
-            item.setRecurringInvoice(finalRecurringInvoice);
-            return item;
-        }).collect(Collectors.toSet());
+            schedule.setScheduleType(Flags.RecurringScheduleType.valueOf(invoiceInfo.getScheduleType().name()));
 
-        if (invoice.getItems().size() != 0) {
-            invoice.getItems().clear();
-            invoice.getItems().addAll(items);
-        }
-        double subtotal = 0;
-        double taxtotal = 0;
-        double total = 0;
-        for (RecurringInvoiceItem item : items) {
-            subtotal = item.getPrice() * item.getQuantity();
-            taxtotal = item.getPrice() * item.getTax1().getRate() / 100;
-            total = subtotal + taxtotal;
-        }
-
-
-        if (c.hasRecurringInvoiceInfo()) {
-            invoiceInfo = c.getRecurringInvoiceInfo();
-            if (invoiceInfo.hasRecurringInvoiceNumber()) {
-                invoice.setInvoiceNumber(invoiceInfo.getRecurringInvoiceNumber().getValue());
+            if (invoiceInfo.hasDayIndex()) {
+                schedule.setDayIndex(invoiceInfo.getDayIndex().getValue());
             }
-            if (invoiceInfo.hasPoSoNumber()) {
-                invoice.setPoSoNumber(invoiceInfo.getPoSoNumber().getValue());
+            if (invoiceInfo.hasMonthIndex()) {
+                schedule.setDayIndex(invoiceInfo.getDayIndex().getValue());
             }
-            if (invoiceInfo.hasRecurringInvoiceDate()) {
-                invoice.setInvoiceDate(Rew3Date.convertToUTC((String) invoiceInfo.getRecurringInvoiceDate().getValue()));
+            if (invoiceInfo.hasWeekDayIndex()) {
+                schedule.setWeekDayIndex(invoiceInfo.getWeekDayIndex().getValue());
             }
-            if (invoiceInfo.hasDueDate()) {
-                invoice.setDueDate(Rew3Date.convertToUTC((String) invoiceInfo.getDueDate().getValue()));
+            if (invoiceInfo.hasCount()) {
+                schedule.setCount(invoiceInfo.getCount().getValue());
             }
-            invoice.setPaymentStatus(Flags.InvoicePaymentStatus.valueOf(invoiceInfo.getPaymentStatus().name()));
-            if (invoiceInfo.hasSendDateTime()) {
-                invoice.setSendDateTime(Rew3Date.convertToUTC((String) invoiceInfo.getSendDateTime().getValue()));
-            }
-
-            if (invoiceInfo.hasInternalNotes()) {
-                invoice.setInternalNotes(invoiceInfo.getInternalNotes().getValue());
-            }
-            invoice.setFooterNotes(invoiceInfo.getFooterNotes().getValue());
-            if (invoiceInfo.hasSubTotal()) {
-                invoice.setSubTotal(subtotal);
-            }
-            if (invoiceInfo.hasTaxTotal()) {
-                invoice.setTaxTotal(taxtotal);
-            }
-            if (invoiceInfo.hasTotal()) {
-                invoice.setTotal(total);
-            }
-            if (invoiceInfo.hasBillingAddress()) {
-                invoice.setAddress(ProtoConverter.convertToAddress(invoiceInfo.getBillingAddress()));
-            }
-            if (invoiceInfo.hasPaymentTermId()) {
-                PaymentTerm term = (PaymentTerm) new PaymentTermQueryHandler().getById(invoiceInfo.getPaymentTermId().getValue());
-                invoice.setPaymentTerm(term);
+            if (invoiceInfo.hasDescription()) {
+                schedule.setDescription(invoiceInfo.getDescription().getValue());
             }
         }
-
-        if (invoice.getItems().size() != 0) {
-            invoice.getItems().clear();
-            invoice.getItems().addAll(items);
+        if (rew3Validation.validateForUpdate(schedule)) {
+            schedule = (RecurringSchedule) HibernateUtilV2.update(schedule);
         }
-        if (c.hasOwner()) {
-            MiniUserProto miniUserProto = c.getOwner();
-            if (miniUserProto.hasId()) {
-                invoice.setOwnerId(miniUserProto.getId().getValue());
-            }
-            if (miniUserProto.hasFirstName()) {
-                invoice.setOwnerFirstName(miniUserProto.getId().getValue());
-            }
-            if (miniUserProto.hasLastName()) {
-                invoice.setOwnerLastName(miniUserProto.getId().getValue());
-            }
-        }
-        invoice.setSent(false);
-        invoice = (RecurringInvoice) HibernateUtilV2.update(invoice);
-        return invoice;
+        return schedule;
 
     }
 
 
-    private RecurringInvoice _handleSaveRecurringInvoice(AddRecurringInvoiceProto c) throws Exception {
-        RecurringInvoice invoice = new RecurringInvoice();
-        AddRecurringInvoiceInfoProto invoiceInfo = null;
+    private RecurringSchedule _handleSaveRecurringSchedule(AddRecurringScheduleProto c) throws Exception {
+        RecurringSchedule schedule = new RecurringSchedule();
 
 
-        List<AddRecurringInvoiceItemProto> protos = c.getItemsList();
-        final RecurringInvoice finalRecurringInvoice = invoice;
-        Set<RecurringInvoiceItem> items = protos.stream().map(x -> {
-            RecurringInvoiceItem item = null;
-            try {
-                item = ProtoConverter.convertToAddRecurringInvoiceItem(x);
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            } catch (CommandException e) {
-                e.printStackTrace();
-            }
-            item.setRecurringInvoice(finalRecurringInvoice);
-            return item;
-        }).collect(Collectors.toSet());
-
-        invoice.setItems(items);
-        double subtotal = 0;
-        double taxtotal = 0;
-        double total = 0;
-        for (RecurringInvoiceItem item : items) {
-            subtotal = item.getPrice() * item.getQuantity();
-            taxtotal = item.getPrice() * item.getTax1().getRate() / 100;
-            total = subtotal + taxtotal;
-        }
+        RecurringScheduleInfoProto invoiceInfo = null;
 
 
-        if (c.hasRecurringInvoiceInfo()) {
-            invoiceInfo = c.getRecurringInvoiceInfo();
-            if (invoiceInfo.hasRecurringInvoiceNumber()) {
-                invoice.setInvoiceNumber(invoiceInfo.getRecurringInvoiceNumber().getValue());
+        if (c.hasRecurringScheduleInfo()) {
+            invoiceInfo = c.getRecurringScheduleInfo();
+            if (invoiceInfo.hasTitle()) {
+                schedule.setTitle(invoiceInfo.getTitle().getValue());
             }
-            if (invoiceInfo.hasPoSoNumber()) {
-                invoice.setPoSoNumber(invoiceInfo.getPoSoNumber().getValue());
-            }
-            if (invoiceInfo.hasRecurringInvoiceDate()) {
-                invoice.setInvoiceDate(Rew3Date.convertToUTC((String) invoiceInfo.getRecurringInvoiceDate().getValue()));
-            }
-            if (invoiceInfo.hasDueDate()) {
-                invoice.setDueDate(Rew3Date.convertToUTC((String) invoiceInfo.getDueDate().getValue()));
-            }
-            invoice.setPaymentStatus(Flags.InvoicePaymentStatus.valueOf(invoiceInfo.getPaymentStatus().name()));
-            if (invoiceInfo.hasSendDateTime()) {
-                invoice.setSendDateTime(Rew3Date.convertToUTC((String) invoiceInfo.getSendDateTime().getValue()));
-            }
+            schedule.setScheduleType(Flags.RecurringScheduleType.valueOf(invoiceInfo.getScheduleType().name()));
 
-            if (invoiceInfo.hasInternalNotes()) {
-                invoice.setInternalNotes(invoiceInfo.getInternalNotes().getValue());
+            if (invoiceInfo.hasDayIndex()) {
+                schedule.setDayIndex(invoiceInfo.getDayIndex().getValue());
             }
-            invoice.setFooterNotes(invoiceInfo.getFooterNotes().getValue());
-            if (invoiceInfo.hasSubTotal()) {
-                invoice.setSubTotal(subtotal);
+            if (invoiceInfo.hasMonthIndex()) {
+                schedule.setDayIndex(invoiceInfo.getDayIndex().getValue());
             }
-            if (invoiceInfo.hasTaxTotal()) {
-                invoice.setTaxTotal(taxtotal);
+            if (invoiceInfo.hasWeekDayIndex()) {
+                schedule.setWeekDayIndex(invoiceInfo.getWeekDayIndex().getValue());
             }
-            if (invoiceInfo.hasTotal()) {
-                invoice.setTotal(total);
+            if (invoiceInfo.hasCount()) {
+                schedule.setCount(invoiceInfo.getCount().getValue());
             }
-            if (invoiceInfo.hasBillingAddress()) {
-                invoice.setAddress(ProtoConverter.convertToAddress(invoiceInfo.getBillingAddress()));
-            }
-            if (invoiceInfo.hasPaymentTermId()) {
-                PaymentTerm term = (PaymentTerm) new PaymentTermQueryHandler().getById(invoiceInfo.getPaymentTermId().getValue());
-                invoice.setPaymentTerm(term);
-            }
-            if (invoiceInfo.hasCustomerId()) {
-                Customer customer = (Customer) new CustomerQueryHandler().getById(invoiceInfo.getCustomerId().getValue());
-                invoice.setCustomer(customer);
-            }
-            if (invoiceInfo.hasRecurringScheduleId()) {
-                Customer customer = (Customer) new CustomerQueryHandler().getById(invoiceInfo.getCustomerId().getValue());
-                invoice.setCustomer(customer);
-            }
-            if (invoiceInfo.hasRecurringTemplateId()) {
-                Customer customer = (Customer) new CustomerQueryHandler().getById(invoiceInfo.getCustomerId().getValue());
-                invoice.setCustomer(customer);
-            }
-
-        }
-
-
-        if (c.hasOwner()) {
-            MiniUserProto miniUserProto = c.getOwner();
-            if (miniUserProto.hasId()) {
-                invoice.setOwnerId(miniUserProto.getId().getValue());
-            }
-            if (miniUserProto.hasFirstName()) {
-                invoice.setOwnerFirstName(miniUserProto.getId().getValue());
-            }
-            if (miniUserProto.hasLastName()) {
-                invoice.setOwnerLastName(miniUserProto.getId().getValue());
+            if (invoiceInfo.hasDescription()) {
+                schedule.setDescription(invoiceInfo.getDescription().getValue());
             }
         }
-        invoice = (RecurringInvoice) HibernateUtilV2.save(invoice);
-        invoice.setSent(false);
+        if (rew3Validation.validateForAdd(schedule)) {
+            schedule = (RecurringSchedule) HibernateUtilV2.update(schedule);
+        }
+        return schedule;
 
-        return invoice;
     }
 
 
-    public void handle(DeleteRecurringInvoice c) throws NotFoundException, CommandException, JsonProcessingException {
+    public void handle(DeleteRecurringSchedule c) throws NotFoundException, CommandException, JsonProcessingException {
 
         String id = c.id;
-        RecurringInvoice invoice = (RecurringInvoice) new RecurringInvoiceQueryHandler().getById(id);
+        RecurringSchedule schedule = (RecurringSchedule) new RecurringScheduleQueryHandler().getById(id);
 
-        if (invoice != null) {
+        if (schedule != null) {
 
-            invoice.setStatus(Flags.EntityStatus.DELETED);
-            invoice = (RecurringInvoice) HibernateUtilV2.saveAsDeleted(invoice);
+            schedule.setStatus(Flags.EntityStatus.DELETED);
+            schedule = (RecurringSchedule) HibernateUtilV2.saveAsDeleted(schedule);
         }
-        c.setObject(invoice);
+        c.setObject(schedule);
     }
 
 

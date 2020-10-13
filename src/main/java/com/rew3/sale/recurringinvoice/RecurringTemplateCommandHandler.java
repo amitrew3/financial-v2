@@ -1,10 +1,12 @@
-package com.rew3.sale.recurringinvoice;
+package com.rew3.sale.recurringtemplate;
 
 import com.avenue.base.grpc.proto.core.MiniUserProto;
 import com.avenue.financial.services.grpc.proto.recurringtemplate.AddRecurringTemplateInfoProto;
 import com.avenue.financial.services.grpc.proto.recurringtemplate.AddRecurringTemplateProto;
 import com.avenue.financial.services.grpc.proto.recurringtemplate.UpdateRecurringTemplateProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.rew3.catalog.product.model.Product;
+import com.rew3.common.Rew3Validation;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
@@ -13,12 +15,15 @@ import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags;
 import com.rew3.common.utils.Rew3Date;
+import com.rew3.purchase.expense.model.Expense;
+import com.rew3.sale.recurringinvoice.RecurringTemplateQueryHandler;
 import com.rew3.sale.recurringinvoice.command.CreateRecurringTemplate;
 import com.rew3.sale.recurringinvoice.command.DeleteRecurringTemplate;
 import com.rew3.sale.recurringinvoice.command.UpdateRecurringTemplate;
 import com.rew3.sale.recurringinvoice.model.RecurringTemplate;
 
 public class RecurringTemplateCommandHandler implements ICommandHandler {
+    Rew3Validation<RecurringTemplate> rew3Validation = new Rew3Validation<RecurringTemplate>();
 
     public static void registerCommands() {
         CommandRegister.getInstance().registerHandler(CreateRecurringTemplate.class, RecurringTemplateCommandHandler.class);
@@ -40,12 +45,12 @@ public class RecurringTemplateCommandHandler implements ICommandHandler {
     public void handle(CreateRecurringTemplate c) throws Exception {
         // Transaction trx = c.getTransaction();
         try {
-            RecurringTemplate invoice = this._handleSaveRecurringTemplate(c.addRecurringTemplateProto);
-            if (invoice != null) {
+            RecurringTemplate template = this._handleSaveRecurringTemplate(c.addRecurringTemplateProto);
+            if (template != null) {
 //                if (c.isCommittable()) {
 //                    HibernateUtils.commitTransaction(trx);
 //                }
-                c.setObject(invoice);
+                c.setObject(template);
             }
         } catch (Exception ex) {
 
@@ -58,12 +63,12 @@ public class RecurringTemplateCommandHandler implements ICommandHandler {
     public void handle(UpdateRecurringTemplate c) throws Exception {
         // Transaction trx = c.getTransaction();
         try {
-            RecurringTemplate invoice = this._handleUpdateRecurringTemplate(c.updateRecurringTemplateProto);
-            if (invoice != null) {
+            RecurringTemplate template = this._handleUpdateRecurringTemplate(c.updateRecurringTemplateProto);
+            if (template != null) {
 //                if (c.isCommittable()) {
 //                    HibernateUtils.commitTransaction(trx);
 //                }
-                c.setObject(invoice);
+                c.setObject(template);
             }
         } catch (Exception ex) {
 
@@ -74,88 +79,91 @@ public class RecurringTemplateCommandHandler implements ICommandHandler {
     }
 
     private RecurringTemplate _handleUpdateRecurringTemplate(UpdateRecurringTemplateProto c) throws Exception {
-        RecurringTemplate invoice = null;
+        RecurringTemplate template = null;
         if (c.hasId()) {
-            invoice = (RecurringTemplate) new RecurringTemplateQueryHandler().getById(c.getId().getValue());
+            template = (RecurringTemplate) new RecurringTemplateQueryHandler().getById(c.getId().getValue());
         }
-        AddRecurringTemplateInfoProto invoiceInfo = null;
+        AddRecurringTemplateInfoProto templateInfo = null;
 
 
         if (c.hasRecurringTemplateInfo()) {
-            invoiceInfo = c.getRecurringTemplateInfo();
-            if (invoiceInfo.hasTitle()) {
-                invoice.setTitle(invoiceInfo.getTitle().getValue());
+            templateInfo = c.getRecurringTemplateInfo();
+            if (templateInfo.hasTitle()) {
+                template.setTitle(templateInfo.getTitle().getValue());
             }
-            if (invoiceInfo.hasDescription()) {
-                invoice.setDescription(invoiceInfo.getDescription().getValue());
+            if (templateInfo.hasDescription()) {
+                template.setDescription(templateInfo.getDescription().getValue());
             }
-            if (invoiceInfo.hasStartDate()) {
-                invoice.setStartDate(Rew3Date.convertToUTC((String) invoiceInfo.getStartDate().getValue()));
+            if (templateInfo.hasStartDate()) {
+                template.setStartDate(Rew3Date.convertToUTC((String) templateInfo.getStartDate().getValue()));
             }
-            if (invoiceInfo.hasEndDate()) {
-                invoice.setEndDate(Rew3Date.convertToUTC((String) invoiceInfo.getEndDate().getValue()));
+            if (templateInfo.hasEndDate()) {
+                template.setEndDate(Rew3Date.convertToUTC((String) templateInfo.getEndDate().getValue()));
             }
-            if (invoiceInfo.hasAfterCount()) {
-                invoice.setAfterCount(invoiceInfo.getAfterCount().getValue());
+            if (templateInfo.hasAfterCount()) {
+                template.setAfterCount(templateInfo.getAfterCount().getValue());
             }
-            invoice.setRuleType(Flags.RecurringRuleType.valueOf(invoiceInfo.getRecurringRuleType().name()));
+            template.setRuleType(Flags.RecurringRuleType.valueOf(templateInfo.getRecurringRuleType().name()));
             if (c.hasOwner()) {
                 MiniUserProto miniUserProto = c.getOwner();
                 if (miniUserProto.hasId()) {
-                    invoice.setOwnerId(miniUserProto.getId().getValue());
+                    template.setOwnerId(miniUserProto.getId().getValue());
                 }
                 if (miniUserProto.hasFirstName()) {
-                    invoice.setOwnerFirstName(miniUserProto.getId().getValue());
+                    template.setOwnerFirstName(miniUserProto.getId().getValue());
                 }
                 if (miniUserProto.hasLastName()) {
-                    invoice.setOwnerLastName(miniUserProto.getId().getValue());
+                    template.setOwnerLastName(miniUserProto.getId().getValue());
                 }
             }
         }
-        invoice = (RecurringTemplate) HibernateUtilV2.update(invoice);
-        return invoice;
+        if (rew3Validation.validateForUpdate(template)) {
+            template = (RecurringTemplate) HibernateUtilV2.update(template);
+        }        return template;
 
     }
 
 
     private RecurringTemplate _handleSaveRecurringTemplate(AddRecurringTemplateProto c) throws Exception {
-        RecurringTemplate invoice = null;
-        AddRecurringTemplateInfoProto invoiceInfo = null;
+        RecurringTemplate template = null;
+        AddRecurringTemplateInfoProto templateInfo = null;
 
 
         if (c.hasRecurringTemplateInfo()) {
-            invoiceInfo = c.getRecurringTemplateInfo();
-            if (invoiceInfo.hasTitle()) {
-                invoice.setTitle(invoiceInfo.getTitle().getValue());
+            templateInfo = c.getRecurringTemplateInfo();
+            if (templateInfo.hasTitle()) {
+                template.setTitle(templateInfo.getTitle().getValue());
             }
-            if (invoiceInfo.hasDescription()) {
-                invoice.setDescription(invoiceInfo.getDescription().getValue());
+            if (templateInfo.hasDescription()) {
+                template.setDescription(templateInfo.getDescription().getValue());
             }
-            if (invoiceInfo.hasStartDate()) {
-                invoice.setStartDate(Rew3Date.convertToUTC((String) invoiceInfo.getStartDate().getValue()));
+            if (templateInfo.hasStartDate()) {
+                template.setStartDate(Rew3Date.convertToUTC((String) templateInfo.getStartDate().getValue()));
             }
-            if (invoiceInfo.hasEndDate()) {
-                invoice.setEndDate(Rew3Date.convertToUTC((String) invoiceInfo.getEndDate().getValue()));
+            if (templateInfo.hasEndDate()) {
+                template.setEndDate(Rew3Date.convertToUTC((String) templateInfo.getEndDate().getValue()));
             }
-            if (invoiceInfo.hasAfterCount()) {
-                invoice.setAfterCount(invoiceInfo.getAfterCount().getValue());
+            if (templateInfo.hasAfterCount()) {
+                template.setAfterCount(templateInfo.getAfterCount().getValue());
             }
-            invoice.setRuleType(Flags.RecurringRuleType.valueOf(invoiceInfo.getRecurringRuleType().name()));
+            template.setRuleType(Flags.RecurringRuleType.valueOf(templateInfo.getRecurringRuleType().name()));
             if (c.hasOwner()) {
                 MiniUserProto miniUserProto = c.getOwner();
                 if (miniUserProto.hasId()) {
-                    invoice.setOwnerId(miniUserProto.getId().getValue());
+                    template.setOwnerId(miniUserProto.getId().getValue());
                 }
                 if (miniUserProto.hasFirstName()) {
-                    invoice.setOwnerFirstName(miniUserProto.getId().getValue());
+                    template.setOwnerFirstName(miniUserProto.getId().getValue());
                 }
                 if (miniUserProto.hasLastName()) {
-                    invoice.setOwnerLastName(miniUserProto.getId().getValue());
+                    template.setOwnerLastName(miniUserProto.getId().getValue());
                 }
             }
         }
-        invoice = (RecurringTemplate) HibernateUtilV2.save(invoice);
-        return invoice;
+        if (rew3Validation.validateForAdd(template)) {
+            template = (RecurringTemplate) HibernateUtilV2.save(template);
+        }
+        return template;
 
     }
 
@@ -163,14 +171,14 @@ public class RecurringTemplateCommandHandler implements ICommandHandler {
     public void handle(DeleteRecurringTemplate c) throws NotFoundException, CommandException, JsonProcessingException {
 
         String id = c.id;
-        RecurringTemplate invoice = (RecurringTemplate) new RecurringTemplateQueryHandler().getById(id);
+        RecurringTemplate template = (RecurringTemplate) new RecurringTemplateQueryHandler().getById(id);
 
-        if (invoice != null) {
+        if (template != null) {
 
-            invoice.setStatus(Flags.EntityStatus.DELETED);
-            invoice = (RecurringTemplate) HibernateUtilV2.saveAsDeleted(invoice);
+            template.setStatus(Flags.EntityStatus.DELETED);
+            template = (RecurringTemplate) HibernateUtilV2.saveAsDeleted(template);
         }
-        c.setObject(invoice);
+        c.setObject(template);
     }
 
 

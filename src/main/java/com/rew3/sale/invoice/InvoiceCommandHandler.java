@@ -7,6 +7,8 @@ import com.avenue.financial.services.grpc.proto.invoice.AddInvoiceProto;
 import com.avenue.financial.services.grpc.proto.invoice.UpdateInvoiceProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.financial.service.ProtoConverter;
+import com.rew3.catalog.product.model.Product;
+import com.rew3.common.Rew3Validation;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
@@ -34,8 +36,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class InvoiceCommandHandler implements ICommandHandler {
-    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-    Validator validator = factory.getValidator();
+    Rew3Validation<Invoice> rew3Validation = new Rew3Validation<Invoice>();
+
 
     public static void registerCommands() {
         CommandRegister.getInstance().registerHandler(CreateInvoice.class, InvoiceCommandHandler.class);
@@ -76,14 +78,6 @@ public class InvoiceCommandHandler implements ICommandHandler {
         }
     }
 
-    private boolean validate(Invoice invoice) {
-        Set<ConstraintViolation<Invoice>> constraintViolations = validator.validate(invoice, Default.class);
-        constraintViolations.forEach(x -> System.out.println(x.getMessage()));
-        if (constraintViolations.size() == 0) {
-            return true;
-        } else return false;
-
-    }
 
     public void handle(UpdateInvoice c) throws Exception {
         try {
@@ -203,7 +197,10 @@ public class InvoiceCommandHandler implements ICommandHandler {
                 invoice.setOwnerLastName(miniUserProto.getId().getValue());
             }
         }
-        invoice = (Invoice) HibernateUtilV2.update(invoice);
+        if (rew3Validation.validateForUpdate(invoice)) {
+            invoice = (Invoice) HibernateUtilV2.update(invoice);
+        }
+
         return invoice;
 
     }
@@ -310,11 +307,10 @@ public class InvoiceCommandHandler implements ICommandHandler {
                 invoice.setOwnerLastName(miniUserProto.getId().getValue());
             }
         }
-        boolean isValid = validate(invoice);
-        if (isValid) {
-
+        if (rew3Validation.validateForAdd(invoice)) {
             invoice = (Invoice) HibernateUtilV2.save(invoice);
         }
+
         return invoice;
     }
 

@@ -6,6 +6,8 @@ import com.avenue.financial.services.grpc.proto.customer.CustomerInfoProto;
 import com.avenue.financial.services.grpc.proto.customer.UpdateCustomerProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.financial.service.ProtoConverter;
+import com.rew3.catalog.product.model.Product;
+import com.rew3.common.Rew3Validation;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
@@ -17,16 +19,8 @@ import com.rew3.sale.customer.command.DeleteCustomer;
 import com.rew3.sale.customer.command.UpdateCustomer;
 import com.rew3.sale.customer.model.Customer;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import javax.validation.groups.Default;
-import java.util.Set;
-
 public class CustomerCommandHandler implements ICommandHandler {
-    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-    Validator validator = factory.getValidator();
+    Rew3Validation<Customer> rew3Validation = new Rew3Validation<Customer>();
 
     public static void registerCommands() {
         CommandRegister.getInstance().registerHandler(CreateCustomer.class, CustomerCommandHandler.class);
@@ -137,11 +131,7 @@ public class CustomerCommandHandler implements ICommandHandler {
             }
 
         }
-        boolean isValid = validate(customer);
-
-
-        if (isValid) {
-
+        if (rew3Validation.validateForAdd(customer)) {
             customer = (Customer) HibernateUtilV2.save(customer);
         }
 
@@ -150,14 +140,6 @@ public class CustomerCommandHandler implements ICommandHandler {
 
     }
 
-    private boolean validate(Customer customer) {
-        Set<ConstraintViolation<Customer>> constraintViolations = validator.validate(customer, Default.class);
-        constraintViolations.forEach(x -> System.out.println(x.getMessage()));
-        if (constraintViolations.size() == 0) {
-            return true;
-        } else return false;
-
-    }
 
     private Customer _handleUpdateCustomer(UpdateCustomerProto c) throws Exception {
 
@@ -242,8 +224,9 @@ public class CustomerCommandHandler implements ICommandHandler {
             }
 
         }
-
-        customer = (Customer) HibernateUtilV2.update(customer);
+        if (rew3Validation.validateForUpdate(customer)) {
+            customer = (Customer) HibernateUtilV2.update(customer);
+        }
 
         return customer;
 

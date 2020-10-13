@@ -5,6 +5,7 @@ import com.avenue.financial.services.grpc.proto.paymentterm.AddPaymentTermProto;
 import com.avenue.financial.services.grpc.proto.paymentterm.PaymentTermInfoProto;
 import com.avenue.financial.services.grpc.proto.paymentterm.UpdatePaymentTermProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.rew3.common.Rew3Validation;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
@@ -17,6 +18,7 @@ import com.rew3.paymentterm.command.UpdatePaymentTerm;
 import com.rew3.paymentterm.model.PaymentTerm;
 
 public class PaymentTermCommandHandler implements ICommandHandler {
+    Rew3Validation<PaymentTerm> rew3Validation = new Rew3Validation<PaymentTerm>();
 
     public static void registerCommands() {
         CommandRegister.getInstance().registerHandler(CreatePaymentTerm.class, PaymentTermCommandHandler.class);
@@ -82,8 +84,10 @@ public class PaymentTermCommandHandler implements ICommandHandler {
                 term.setOwnerLastName(miniUserProto.getId().getValue());
             }
         }
+        if (rew3Validation.validateForAdd(term)) {
+            term = (PaymentTerm) HibernateUtilV2.save(term);
+        }
 
-        term = (PaymentTerm) HibernateUtilV2.save(term);
 
         return term;
 
@@ -126,13 +130,15 @@ public class PaymentTermCommandHandler implements ICommandHandler {
             }
         }
 
-        term = (PaymentTerm) HibernateUtilV2.update(term);
+
+        if (rew3Validation.validateForAdd(term)) {
+            term = (PaymentTerm) HibernateUtilV2.update(term);
+        }
 
         return term;
 
 
     }
-
 
     public void handle(DeletePaymentTerm c) throws NotFoundException, CommandException, JsonProcessingException {
 

@@ -7,6 +7,7 @@ import com.avenue.financial.services.grpc.proto.recurringinvoice.AddRecurringInv
 import com.avenue.financial.services.grpc.proto.recurringinvoice.UpdateRecurringInvoiceProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.financial.service.ProtoConverter;
+import com.rew3.common.Rew3Validation;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
@@ -15,6 +16,7 @@ import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags;
 import com.rew3.common.utils.Rew3Date;
+import com.rew3.payment.billpayment.model.BillPayment;
 import com.rew3.paymentterm.PaymentTermQueryHandler;
 import com.rew3.paymentterm.model.PaymentTerm;
 import com.rew3.sale.customer.CustomerQueryHandler;
@@ -30,6 +32,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class RecurringInvoiceCommandHandler implements ICommandHandler {
+    Rew3Validation<RecurringInvoice> rew3Validation = new Rew3Validation<RecurringInvoice>();
 
     public static void registerCommands() {
         CommandRegister.getInstance().registerHandler(CreateRecurringInvoice.class, RecurringInvoiceCommandHandler.class);
@@ -179,7 +182,9 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
             }
         }
         invoice.setSent(false);
-        invoice = (RecurringInvoice) HibernateUtilV2.update(invoice);
+        if (rew3Validation.validateForUpdate(invoice)) {
+            invoice = (RecurringInvoice) HibernateUtilV2.update(invoice);
+        }
         return invoice;
 
     }
@@ -274,8 +279,10 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
                 invoice.setOwnerLastName(miniUserProto.getId().getValue());
             }
         }
-        invoice = (RecurringInvoice) HibernateUtilV2.save(invoice);
         invoice.setSent(false);
+        if (rew3Validation.validateForAdd(invoice)) {
+            invoice = (RecurringInvoice) HibernateUtilV2.save(invoice);
+        }
 
         return invoice;
     }

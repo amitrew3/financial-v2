@@ -5,6 +5,7 @@ import com.avenue.financial.services.grpc.proto.invoicepayment.AddInvoicePayment
 import com.avenue.financial.services.grpc.proto.invoicepayment.AddInvoicePaymentProto;
 import com.avenue.financial.services.grpc.proto.invoicepayment.UpdateInvoicePaymentProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.rew3.common.Rew3Validation;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
@@ -16,15 +17,18 @@ import com.rew3.payment.invoicepayment.command.CreateInvoicePayment;
 import com.rew3.payment.invoicepayment.command.DeleteInvoicePayment;
 import com.rew3.payment.invoicepayment.command.UpdateInvoicePayment;
 import com.rew3.payment.invoicepayment.model.InvoicePayment;
+import com.rew3.purchase.expense.model.Expense;
 import com.rew3.purchase.vendor.VendorQueryHandler;
 import com.rew3.purchase.vendor.model.Vendor;
 import com.rew3.sale.customer.CustomerQueryHandler;
 import com.rew3.sale.customer.model.Customer;
 import com.rew3.sale.invoice.InvoiceQueryHandler;
 import com.rew3.sale.invoice.model.Invoice;
+import com.rew3.sale.recurringinvoice.model.RecurringSchedule;
 import org.hibernate.Transaction;
 
 public class InvoicePaymentCommandHandler implements ICommandHandler {
+    Rew3Validation<InvoicePayment> rew3Validation = new Rew3Validation<InvoicePayment>();
 
     public static void registerCommands() {
         CommandRegister.getInstance().registerHandler(CreateInvoicePayment.class, InvoicePaymentCommandHandler.class);
@@ -109,8 +113,9 @@ public class InvoicePaymentCommandHandler implements ICommandHandler {
                 payment.setOwnerLastName(miniUserProto.getId().getValue());
             }
         }
-        payment = (InvoicePayment) HibernateUtilV2.update(payment);
-        return payment;
+        if (rew3Validation.validateForUpdate(payment)) {
+            payment = (InvoicePayment) HibernateUtilV2.save(payment);
+        }        return payment;
     }
 
     private InvoicePayment _handleSaveInvoicePayment(AddInvoicePaymentProto c) throws JsonProcessingException, NotFoundException, CommandException {
@@ -165,8 +170,8 @@ public class InvoicePaymentCommandHandler implements ICommandHandler {
 
     public void handle(DeleteInvoicePayment c) throws NotFoundException, CommandException {
         String id = c.id;
-        InvoicePayment invoice = (InvoicePayment) new InvoicePaymentQueryHandler().getById(id);
-        c.setObject(invoice);
+        InvoicePayment payment = (InvoicePayment) new InvoicePaymentQueryHandler().getById(id);
+        c.setObject(payment);
 
     }
 

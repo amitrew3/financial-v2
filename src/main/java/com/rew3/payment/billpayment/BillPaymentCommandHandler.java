@@ -5,6 +5,7 @@ import com.avenue.financial.services.grpc.proto.billpayment.AddBillPaymentInfoPr
 import com.avenue.financial.services.grpc.proto.billpayment.AddBillPaymentProto;
 import com.avenue.financial.services.grpc.proto.billpayment.UpdateBillPaymentProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.rew3.common.Rew3Validation;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
@@ -18,11 +19,12 @@ import com.rew3.payment.billpayment.command.UpdateBillPayment;
 import com.rew3.payment.billpayment.model.BillPayment;
 import com.rew3.purchase.bill.BillQueryHandler;
 import com.rew3.purchase.bill.model.Bill;
+import com.rew3.purchase.expense.model.Expense;
 import com.rew3.purchase.vendor.VendorQueryHandler;
 import com.rew3.purchase.vendor.model.Vendor;
-import org.hibernate.Transaction;
 
 public class BillPaymentCommandHandler implements ICommandHandler {
+    Rew3Validation<BillPayment> rew3Validation = new Rew3Validation<BillPayment>();
 
     public static void registerCommands() {
         CommandRegister.getInstance().registerHandler(CreateBillPayment.class, BillPaymentCommandHandler.class);
@@ -107,7 +109,9 @@ public class BillPaymentCommandHandler implements ICommandHandler {
                 payment.setOwnerLastName(miniUserProto.getId().getValue());
             }
         }
-        payment = (BillPayment) HibernateUtilV2.update(payment);
+        if (rew3Validation.validateForUpdate(payment)) {
+            payment = (BillPayment) HibernateUtilV2.update(payment);
+        }
         return payment;
     }
 
@@ -154,7 +158,9 @@ public class BillPaymentCommandHandler implements ICommandHandler {
                 payment.setOwnerLastName(miniUserProto.getId().getValue());
             }
         }
-        payment = (BillPayment) HibernateUtilV2.save(payment);
+        if (rew3Validation.validateForAdd(payment)) {
+            payment = (BillPayment) HibernateUtilV2.save(payment);
+        }
         return payment;
 
     }

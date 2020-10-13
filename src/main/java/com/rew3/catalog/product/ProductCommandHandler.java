@@ -9,6 +9,7 @@ import com.rew3.catalog.product.command.CreateProduct;
 import com.rew3.catalog.product.command.DeleteProduct;
 import com.rew3.catalog.product.command.UpdateProduct;
 import com.rew3.catalog.product.model.Product;
+import com.rew3.common.Rew3Validation;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
@@ -16,11 +17,12 @@ import com.rew3.common.cqrs.ICommand;
 import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags;
+import com.rew3.paymentterm.model.PaymentTerm;
 import com.rew3.salestax.SalesTaxQueryHandler;
 import com.rew3.salestax.model.SalesTax;
 
-public class ProductCommandHandler implements ICommandHandler {
-
+public class    ProductCommandHandler implements ICommandHandler {
+    Rew3Validation<Product> rew3Validation = new Rew3Validation<Product>();
     public static void registerCommands() {
         CommandRegister.getInstance().registerHandler(CreateProduct.class, ProductCommandHandler.class);
         CommandRegister.getInstance().registerHandler(UpdateProduct.class, ProductCommandHandler.class);
@@ -96,8 +98,9 @@ public class ProductCommandHandler implements ICommandHandler {
             }
 
         }
-
-        product = (Product) HibernateUtilV2.save(product);
+        if (rew3Validation.validateForAdd(product)) {
+            product = (Product) HibernateUtilV2.save(product);
+        }
 
         return product;
 
@@ -152,7 +155,10 @@ public class ProductCommandHandler implements ICommandHandler {
             }
 
         }
-        product = (Product) HibernateUtilV2.update(product);
+        if (rew3Validation.validateForAdd(product)) {
+            product = (Product) HibernateUtilV2.update(product);
+        }
+
 
         return product;
 

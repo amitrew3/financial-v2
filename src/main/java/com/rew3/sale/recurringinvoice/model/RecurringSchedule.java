@@ -1,6 +1,7 @@
 package com.rew3.sale.recurringinvoice.model;
 
 import com.rew3.common.model.DB;
+import com.rew3.common.model.Flags;
 import com.rew3.common.shared.model.AbstractEntity;
 
 import javax.persistence.Column;
@@ -49,8 +50,8 @@ public class RecurringSchedule extends AbstractEntity {
         return scheduleType;
     }
 
-    public void setScheduleType(String scheduleType) {
-        this.scheduleType = scheduleType;
+    public void setScheduleType(Flags.RecurringScheduleType scheduleType) {
+        this.scheduleType = scheduleType.toString();
     }
 
     public int getCount() {

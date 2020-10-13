@@ -5,6 +5,8 @@ import com.avenue.financial.services.grpc.proto.expense.AddExpenseProto;
 import com.avenue.financial.services.grpc.proto.expense.ExpenseInfoProto;
 import com.avenue.financial.services.grpc.proto.expense.UpdateExpenseProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.rew3.catalog.product.model.Product;
+import com.rew3.common.Rew3Validation;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
@@ -16,8 +18,10 @@ import com.rew3.purchase.expense.command.CreateExpense;
 import com.rew3.purchase.expense.command.DeleteExpense;
 import com.rew3.purchase.expense.command.UpdateExpense;
 import com.rew3.purchase.expense.model.Expense;
+import com.rew3.sale.customer.model.Customer;
 
 public class ExpenseCommandHandler implements ICommandHandler {
+    Rew3Validation<Expense> rew3Validation = new Rew3Validation<Expense>();
 
     public static void registerCommands() {
         CommandRegister.getInstance().registerHandler(CreateExpense.class, ExpenseCommandHandler.class);
@@ -100,7 +104,9 @@ public class ExpenseCommandHandler implements ICommandHandler {
 
         }
 
-        expense = (Expense) HibernateUtilV2.save(expense);
+        if (rew3Validation.validateForAdd(expense)) {
+            expense = (Expense) HibernateUtilV2.save(expense);
+        }
 
         return expense;
 
@@ -160,7 +166,10 @@ public class ExpenseCommandHandler implements ICommandHandler {
                 expense.setOwnerLastName(miniUserProto.getId().getValue());
             }
         }
-        expense = (Expense) HibernateUtilV2.update(expense);
+        if (rew3Validation.validateForUpdate(expense)) {
+            expense = (Expense) HibernateUtilV2.update(expense);
+        }
+
 
         return expense;
 

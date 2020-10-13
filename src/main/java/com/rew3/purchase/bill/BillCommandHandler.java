@@ -7,6 +7,8 @@ import com.avenue.financial.services.grpc.proto.bill.AddBillProto;
 import com.avenue.financial.services.grpc.proto.bill.UpdateBillProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.financial.service.ProtoConverter;
+import com.rew3.catalog.product.model.Product;
+import com.rew3.common.Rew3Validation;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
@@ -22,12 +24,14 @@ import com.rew3.purchase.bill.model.Bill;
 import com.rew3.purchase.bill.model.BillItem;
 import com.rew3.purchase.vendor.VendorQueryHandler;
 import com.rew3.purchase.vendor.model.Vendor;
+import com.rew3.sale.customer.model.Customer;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class BillCommandHandler implements ICommandHandler {
+    Rew3Validation<Bill> rew3Validation = new Rew3Validation<Bill>();
 
     public static void registerCommands() {
         CommandRegister.getInstance().registerHandler(CreateBill.class, BillCommandHandler.class);
@@ -157,7 +161,9 @@ public class BillCommandHandler implements ICommandHandler {
                 bill.setOwnerLastName(miniUserProto.getId().getValue());
             }
         }
-        bill = (Bill) HibernateUtilV2.update(bill);
+        if (rew3Validation.validateForUpdate(bill)) {
+            bill = (Bill) HibernateUtilV2.save(bill);
+        }
         return bill;
 
     }
@@ -239,6 +245,7 @@ public class BillCommandHandler implements ICommandHandler {
                 bill.setOwnerLastName(miniUserProto.getId().getValue());
             }
         }
+
         bill = (Bill) HibernateUtilV2.save(bill);
         return bill;
     }

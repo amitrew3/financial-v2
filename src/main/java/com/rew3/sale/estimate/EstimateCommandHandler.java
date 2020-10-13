@@ -7,6 +7,8 @@ import com.avenue.financial.services.grpc.proto.estimate.AddEstimateProto;
 import com.avenue.financial.services.grpc.proto.estimate.UpdateEstimateProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.financial.service.ProtoConverter;
+import com.rew3.catalog.product.model.Product;
+import com.rew3.common.Rew3Validation;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
 import com.rew3.common.cqrs.CommandRegister;
@@ -30,6 +32,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class EstimateCommandHandler implements ICommandHandler {
+    Rew3Validation<Estimate> rew3Validation = new Rew3Validation<Estimate>();
 
     public static void registerCommands() {
         CommandRegister.getInstance().registerHandler(CreateEstimate.class, EstimateCommandHandler.class);
@@ -155,7 +158,10 @@ public class EstimateCommandHandler implements ICommandHandler {
                 estimate.setOwnerLastName(miniUserProto.getId().getValue());
             }
         }
-        estimate = (Estimate) HibernateUtilV2.update(estimate);
+        if (rew3Validation.validateForUpdate(estimate)) {
+            estimate = (Estimate) HibernateUtilV2.update(estimate);
+        }
+
         return estimate;
 
     }
@@ -235,7 +241,10 @@ public class EstimateCommandHandler implements ICommandHandler {
                 estimate.setOwnerLastName(miniUserProto.getId().getValue());
             }
         }
-        estimate = (Estimate) HibernateUtilV2.save(estimate);
+        if (rew3Validation.validateForAdd(estimate)) {
+            estimate = (Estimate) HibernateUtilV2.save(estimate);
+        }
+
         return estimate;
     }
 
