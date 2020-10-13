@@ -7,7 +7,6 @@ import com.avenue.financial.services.grpc.proto.invoice.AddInvoiceProto;
 import com.avenue.financial.services.grpc.proto.invoice.UpdateInvoiceProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.financial.service.ProtoConverter;
-import com.rew3.catalog.product.model.Product;
 import com.rew3.common.Rew3Validation;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
@@ -22,15 +21,9 @@ import com.rew3.paymentterm.model.PaymentTerm;
 import com.rew3.sale.customer.CustomerQueryHandler;
 import com.rew3.sale.customer.model.Customer;
 import com.rew3.sale.invoice.command.*;
-import com.rew3.sale.invoice.model.Car;
 import com.rew3.sale.invoice.model.Invoice;
 import com.rew3.sale.invoice.model.InvoiceItem;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import javax.validation.groups.Default;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -59,12 +52,6 @@ public class InvoiceCommandHandler implements ICommandHandler {
     }
 
     public void handle(CreateInvoice c) throws Exception {
-        Car car = new Car(null, "D", 4);
-//
-//
-//            List<Object> all = repository.get(new Query());
-
-
         try {
             Invoice invoice = this._handleSaveInvoice(c.addInvoiceProto);
             if (invoice != null) {
@@ -134,6 +121,9 @@ public class InvoiceCommandHandler implements ICommandHandler {
             taxtotal = taxtotal1 + taxtotal2;
             total = subtotal + taxtotal;
         }
+        invoice.setSubTotal(subtotal);
+        invoice.setTaxTotal(taxtotal);
+        invoice.setTotal(total);
 
 
         if (c.hasInvoiceInfo()) {
@@ -244,6 +234,9 @@ public class InvoiceCommandHandler implements ICommandHandler {
             taxtotal = taxtotal1 + taxtotal2;
             total = subtotal + taxtotal;
         }
+        invoice.setSubTotal(subtotal);
+        invoice.setTaxTotal(taxtotal);
+        invoice.setTotal(total);
 
 
         if (c.hasInvoiceInfo()) {
@@ -269,15 +262,7 @@ public class InvoiceCommandHandler implements ICommandHandler {
                 invoice.setInternalNotes(invoiceInfo.getInternalNotes().getValue());
             }
             invoice.setFooterNotes(invoiceInfo.getFooterNotes().getValue());
-            if (invoiceInfo.hasSubTotal()) {
-                invoice.setSubTotal(subtotal);
-            }
-            if (invoiceInfo.hasTaxTotal()) {
-                invoice.setTaxTotal(taxtotal);
-            }
-            if (invoiceInfo.hasTotal()) {
-                invoice.setTotal(total);
-            }
+
             if (invoiceInfo.hasIsDraft()) {
                 invoice.setDraft(invoiceInfo.getIsDraft().getValue());
             }

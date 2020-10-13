@@ -471,6 +471,8 @@ public class DB {
             public static final String SUB_TOTAL = "sub_total";
             public static final String TAX_TOTAL = "tax_total";
             public static final String TOTAL = "total";
+            public static final String RECURRING_SCHEDULE_ID = "recurring_schedule_id";
+            public static final String RECURRING_TEMPALTE_ID = "recurring_tempalte_id";
 
             public static final String IS_SENT = "is_sent";
         }

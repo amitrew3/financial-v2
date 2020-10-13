@@ -41,6 +41,14 @@ public class RecurringInvoice  extends AbstractEntity {
     @OneToOne
     private PaymentTerm paymentTerm;
 
+    @JoinColumn(name = DB.Field.RecurringInvoice.RECURRING_SCHEDULE_ID)
+    @OneToOne
+    private RecurringSchedule recurringSchedule;
+
+    @JoinColumn(name = DB.Field.RecurringInvoice.RECURRING_TEMPALTE_ID)
+    @OneToOne
+    private RecurringTemplate recurringTemplate;
+
 
     @Column(name = DB.Field.RecurringInvoice.MEMOS)
     private String memos;
@@ -232,5 +240,21 @@ public class RecurringInvoice  extends AbstractEntity {
 
     public void setSent(boolean sent) {
         isSent = sent;
+    }
+
+    public RecurringSchedule getRecurringSchedule() {
+        return recurringSchedule;
+    }
+
+    public void setRecurringSchedule(RecurringSchedule recurringSchedule) {
+        this.recurringSchedule = recurringSchedule;
+    }
+
+    public RecurringTemplate getRecurringTemplate() {
+        return recurringTemplate;
+    }
+
+    public void setRecurringTemplate(RecurringTemplate recurringTemplate) {
+        this.recurringTemplate = recurringTemplate;
     }
 }

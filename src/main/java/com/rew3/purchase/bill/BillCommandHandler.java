@@ -25,6 +25,7 @@ import com.rew3.purchase.bill.model.BillItem;
 import com.rew3.purchase.vendor.VendorQueryHandler;
 import com.rew3.purchase.vendor.model.Vendor;
 import com.rew3.sale.customer.model.Customer;
+import com.rew3.sale.estimate.model.EstimateItem;
 
 import java.util.List;
 import java.util.Set;
@@ -111,13 +112,25 @@ public class BillCommandHandler implements ICommandHandler {
             bill.getItems().addAll(items);
         }
         double subtotal = 0;
+        double taxtotal1 = 0;
+        double taxtotal2 = 0;
         double taxtotal = 0;
+
         double total = 0;
         for (BillItem item : items) {
             subtotal = item.getPrice() * item.getQuantity();
-            taxtotal = item.getPrice() * item.getTax1().getRate() / 100;
+            if (item.getTax1() != null) {
+                taxtotal1 = item.getPrice() * item.getTax1().getRate() / 100;
+            }
+            if (item.getTax2() != null) {
+                taxtotal2 = item.getPrice() * item.getTax2().getRate() / 100;
+            }
+            taxtotal = taxtotal1 + taxtotal2;
             total = subtotal + taxtotal;
         }
+        bill.setSubTotal(subtotal);
+        bill.setTaxTotal(taxtotal);
+        bill.setTotal(total);
 
 
         if (c.hasBillInfo()) {
@@ -134,21 +147,9 @@ public class BillCommandHandler implements ICommandHandler {
             if (billInfo.hasDueDate()) {
                 bill.setBillDate(Rew3Date.convertToUTC((String) billInfo.getDueDate().getValue()));
             }
-            if (billInfo.hasSubTotal()) {
-                bill.setSubTotal(subtotal);
-            }
-            if (billInfo.hasTaxTotal()) {
-                bill.setTaxTotal(taxtotal);
-            }
-            if (billInfo.hasTotal()) {
-                bill.setTotal(total);
-            }
+
         }
 
-        if (bill.getItems().size() != 0) {
-            bill.getItems().clear();
-            bill.getItems().addAll(items);
-        }
         if (c.hasOwner()) {
             MiniUserProto miniUserProto = c.getOwner();
             if (miniUserProto.hasId()) {
@@ -162,7 +163,7 @@ public class BillCommandHandler implements ICommandHandler {
             }
         }
         if (rew3Validation.validateForUpdate(bill)) {
-            bill = (Bill) HibernateUtilV2.save(bill);
+            bill = (Bill) HibernateUtilV2.update(bill);
         }
         return bill;
 
@@ -191,13 +192,25 @@ public class BillCommandHandler implements ICommandHandler {
 
         bill.setItems(items);
         double subtotal = 0;
+        double taxtotal1 = 0;
+        double taxtotal2 = 0;
         double taxtotal = 0;
+
         double total = 0;
         for (BillItem item : items) {
             subtotal = item.getPrice() * item.getQuantity();
-            taxtotal = item.getPrice() * item.getTax1().getRate() / 100;
+            if (item.getTax1() != null) {
+                taxtotal1 = item.getPrice() * item.getTax1().getRate() / 100;
+            }
+            if (item.getTax2() != null) {
+                taxtotal2 = item.getPrice() * item.getTax2().getRate() / 100;
+            }
+            taxtotal = taxtotal1 + taxtotal2;
             total = subtotal + taxtotal;
         }
+        bill.setSubTotal(subtotal);
+        bill.setTaxTotal(taxtotal);
+        bill.setTotal(total);
 
 
         if (c.hasBillInfo()) {
@@ -217,15 +230,7 @@ public class BillCommandHandler implements ICommandHandler {
             if (billInfo.hasDueDate()) {
                 bill.setBillDate(Rew3Date.convertToUTC((String) billInfo.getDueDate().getValue()));
             }
-            if (billInfo.hasSubTotal()) {
-                bill.setSubTotal(subtotal);
-            }
-            if (billInfo.hasTaxTotal()) {
-                bill.setTaxTotal(taxtotal);
-            }
-            if (billInfo.hasTotal()) {
-                bill.setTotal(total);
-            }
+
             if (billInfo.hasVendorId()) {
                 Vendor vendor = (Vendor) new VendorQueryHandler().getById(billInfo.getVendorId().getValue());
                 bill.setVendor(vendor);
@@ -246,7 +251,9 @@ public class BillCommandHandler implements ICommandHandler {
             }
         }
 
-        bill = (Bill) HibernateUtilV2.save(bill);
+        if (rew3Validation.validateForAdd(bill)) {
+            bill = (Bill) HibernateUtilV2.save(bill);
+        }
         return bill;
     }
 

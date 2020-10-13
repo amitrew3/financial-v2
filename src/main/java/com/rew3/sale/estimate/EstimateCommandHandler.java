@@ -26,6 +26,7 @@ import com.rew3.sale.estimate.command.DeleteEstimate;
 import com.rew3.sale.estimate.command.UpdateEstimate;
 import com.rew3.sale.estimate.model.Estimate;
 import com.rew3.sale.estimate.model.EstimateItem;
+import com.rew3.sale.invoice.model.InvoiceItem;
 
 import java.util.List;
 import java.util.Set;
@@ -107,13 +108,25 @@ public class EstimateCommandHandler implements ICommandHandler {
             estimate.getItems().addAll(items);
         }
         double subtotal = 0;
+        double taxtotal1 = 0;
+        double taxtotal2 = 0;
         double taxtotal = 0;
+
         double total = 0;
         for (EstimateItem item : items) {
             subtotal = item.getPrice() * item.getQuantity();
-            taxtotal = item.getPrice() * item.getTax1().getRate() / 100;
+            if (item.getTax1() != null) {
+                taxtotal1 = item.getPrice() * item.getTax1().getRate() / 100;
+            }
+            if (item.getTax2() != null) {
+                taxtotal2 = item.getPrice() * item.getTax2().getRate() / 100;
+            }
+            taxtotal = taxtotal1 + taxtotal2;
             total = subtotal + taxtotal;
         }
+        estimate.setSubTotal(subtotal);
+        estimate.setTaxTotal(taxtotal);
+        estimate.setTotal(total);
 
 
         if (c.hasEstimateInfo()) {
@@ -126,15 +139,6 @@ public class EstimateCommandHandler implements ICommandHandler {
             }
             if (estimateInfo.hasEstimateDate()) {
                 estimate.setEstimateDate(Rew3Date.convertToUTC((String) estimateInfo.getEstimateDate().getValue()));
-            }
-            if (estimateInfo.hasSubTotal()) {
-                estimate.setSubTotal(subtotal);
-            }
-            if (estimateInfo.hasTaxTotal()) {
-                estimate.setTaxTotal(taxtotal);
-            }
-            if (estimateInfo.hasTotal()) {
-                estimate.setTotal(total);
             }
             if (estimateInfo.hasPaymentTermId()) {
                 PaymentTerm term = (PaymentTerm) new PaymentTermQueryHandler().getById(estimateInfo.getPaymentTermId().getValue());
@@ -189,13 +193,25 @@ public class EstimateCommandHandler implements ICommandHandler {
 
         estimate.setItems(items);
         double subtotal = 0;
+        double taxtotal1 = 0;
+        double taxtotal2 = 0;
         double taxtotal = 0;
+
         double total = 0;
         for (EstimateItem item : items) {
             subtotal = item.getPrice() * item.getQuantity();
-            taxtotal = item.getPrice() * item.getTax1().getRate() / 100;
+            if (item.getTax1() != null) {
+                taxtotal1 = item.getPrice() * item.getTax1().getRate() / 100;
+            }
+            if (item.getTax2() != null) {
+                taxtotal2 = item.getPrice() * item.getTax2().getRate() / 100;
+            }
+            taxtotal = taxtotal1 + taxtotal2;
             total = subtotal + taxtotal;
         }
+        estimate.setSubTotal(subtotal);
+        estimate.setTaxTotal(taxtotal);
+        estimate.setTotal(total);
 
 
         if (c.hasEstimateInfo()) {
@@ -208,15 +224,6 @@ public class EstimateCommandHandler implements ICommandHandler {
             }
             if (estimateInfo.hasEstimateDate()) {
                 estimate.setEstimateDate(Rew3Date.convertToUTC((String) estimateInfo.getEstimateDate().getValue()));
-            }
-            if (estimateInfo.hasSubTotal()) {
-                estimate.setSubTotal(subtotal);
-            }
-            if (estimateInfo.hasTaxTotal()) {
-                estimate.setTaxTotal(taxtotal);
-            }
-            if (estimateInfo.hasTotal()) {
-                estimate.setTotal(total);
             }
             if (estimateInfo.hasPaymentTermId()) {
                 PaymentTerm term = (PaymentTerm) new PaymentTermQueryHandler().getById(estimateInfo.getPaymentTermId().getValue());
