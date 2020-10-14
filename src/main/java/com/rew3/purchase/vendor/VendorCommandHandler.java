@@ -5,6 +5,7 @@ import com.avenue.financial.services.grpc.proto.vendor.AddVendorProto;
 import com.avenue.financial.services.grpc.proto.vendor.UpdateVendorProto;
 import com.avenue.financial.services.grpc.proto.vendor.VendorInfoProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.financial.service.ProtoConverter;
 import com.rew3.catalog.product.model.Product;
 import com.rew3.common.Rew3Validation;
 import com.rew3.common.application.CommandException;
@@ -108,6 +109,9 @@ public class VendorCommandHandler implements ICommandHandler {
             }
             if (info.hasAccountNumber()) {
                 vendor.setAccountNumber(info.getAccountNumber().getValue());
+            }
+            if (info.hasBillingAddress()) {
+                vendor.setBillingAddress(ProtoConverter.convertToAddress(info.getBillingAddress()));
             }
         }
         if (c.hasOwner()) {

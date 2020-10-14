@@ -82,8 +82,8 @@ public class InvoiceCommandHandler implements ICommandHandler {
 
     private Invoice _handleUpdateInvoice(UpdateInvoiceProto c) throws Exception {
         Invoice invoice = (Invoice) new InvoiceQueryHandler().getById(c.getId().getValue());
-
         AddInvoiceInfoProto invoiceInfo = null;
+
 
         List<AddInvoiceItemProto> protos = c.getItemsList();
         final Invoice finalInvoice = invoice;
@@ -108,19 +108,20 @@ public class InvoiceCommandHandler implements ICommandHandler {
         double taxtotal1 = 0;
         double taxtotal2 = 0;
         double taxtotal = 0;
-
         double total = 0;
+
         for (InvoiceItem item : items) {
-            subtotal = item.getPrice() * item.getQuantity();
+            subtotal += item.getPrice() * item.getQuantity();
             if (item.getTax1() != null) {
-                taxtotal1 = item.getPrice() * item.getTax1().getRate() / 100;
+                taxtotal1 = item.getPrice() * item.getQuantity() * item.getTax1().getRate() / 100;
             }
             if (item.getTax2() != null) {
-                taxtotal2 = item.getPrice() * item.getTax2().getRate() / 100;
+                taxtotal2 = item.getPrice() * item.getQuantity() * item.getTax2().getRate() / 100;
             }
-            taxtotal = taxtotal1 + taxtotal2;
-            total = subtotal + taxtotal;
+            taxtotal += taxtotal1 + taxtotal2;
+
         }
+        total = subtotal + taxtotal;
         invoice.setSubTotal(subtotal);
         invoice.setTaxTotal(taxtotal);
         invoice.setTotal(total);
@@ -138,7 +139,7 @@ public class InvoiceCommandHandler implements ICommandHandler {
                 invoice.setInvoiceDate(Rew3Date.convertToUTC((String) invoiceInfo.getInvoiceDate().getValue()));
             }
             if (invoiceInfo.hasDueDate()) {
-                invoice.setInvoiceDate(Rew3Date.convertToUTC((String) invoiceInfo.getDueDate().getValue()));
+                invoice.setDueDate(Rew3Date.convertToUTC((String) invoiceInfo.getDueDate().getValue()));
             }
             invoice.setPaymentStatus(Flags.InvoicePaymentStatus.valueOf(invoiceInfo.getPaymentStatus().name()));
             if (invoiceInfo.hasSendDateTime()) {
@@ -148,16 +149,7 @@ public class InvoiceCommandHandler implements ICommandHandler {
             if (invoiceInfo.hasInternalNotes()) {
                 invoice.setInternalNotes(invoiceInfo.getInternalNotes().getValue());
             }
-            invoice.setFooterNotes(invoiceInfo.getFooterNotes().getValue());
-            if (invoiceInfo.hasSubTotal()) {
-                invoice.setSubTotal(subtotal);
-            }
-            if (invoiceInfo.hasTaxTotal()) {
-                invoice.setTaxTotal(taxtotal);
-            }
-            if (invoiceInfo.hasTotal()) {
-                invoice.setTotal(total);
-            }
+
             if (invoiceInfo.hasIsDraft()) {
                 invoice.setDraft(invoiceInfo.getIsDraft().getValue());
             }
@@ -171,6 +163,14 @@ public class InvoiceCommandHandler implements ICommandHandler {
             if (invoiceInfo.hasCustomerId()) {
                 Customer customer = (Customer) new CustomerQueryHandler().getById(invoiceInfo.getCustomerId().getValue());
                 invoice.setCustomer(customer);
+            }
+            if (invoiceInfo.hasFooterNotes()) {
+                invoice.setFooterNotes(invoiceInfo.getFooterNotes().getValue());
+
+            }
+            if (invoiceInfo.hasMemos()) {
+                invoice.setMemos(invoiceInfo.getMemos().getValue());
+
             }
         }
 
@@ -187,6 +187,8 @@ public class InvoiceCommandHandler implements ICommandHandler {
                 invoice.setOwnerLastName(miniUserProto.getLastName().getValue());
             }
         }
+
+
         if (rew3Validation.validateForUpdate(invoice)) {
             invoice = (Invoice) HibernateUtilV2.update(invoice);
         }
@@ -224,16 +226,17 @@ public class InvoiceCommandHandler implements ICommandHandler {
 
         double total = 0;
         for (InvoiceItem item : items) {
-            subtotal = item.getPrice() * item.getQuantity();
+            subtotal += item.getPrice() * item.getQuantity();
             if (item.getTax1() != null) {
-                taxtotal1 = item.getPrice() * item.getTax1().getRate() / 100;
+                taxtotal1 = item.getPrice() * item.getQuantity() * item.getTax1().getRate() / 100;
             }
             if (item.getTax2() != null) {
-                taxtotal2 = item.getPrice() * item.getTax2().getRate() / 100;
+                taxtotal2 = item.getPrice() * item.getQuantity() * item.getTax2().getRate() / 100;
             }
-            taxtotal = taxtotal1 + taxtotal2;
-            total = subtotal + taxtotal;
+            taxtotal += taxtotal1 + taxtotal2;
+
         }
+        total = subtotal + taxtotal;
         invoice.setSubTotal(subtotal);
         invoice.setTaxTotal(taxtotal);
         invoice.setTotal(total);
@@ -251,7 +254,7 @@ public class InvoiceCommandHandler implements ICommandHandler {
                 invoice.setInvoiceDate(Rew3Date.convertToUTC((String) invoiceInfo.getInvoiceDate().getValue()));
             }
             if (invoiceInfo.hasDueDate()) {
-                invoice.setInvoiceDate(Rew3Date.convertToUTC((String) invoiceInfo.getDueDate().getValue()));
+                invoice.setDueDate(Rew3Date.convertToUTC((String) invoiceInfo.getDueDate().getValue()));
             }
             invoice.setPaymentStatus(Flags.InvoicePaymentStatus.valueOf(invoiceInfo.getPaymentStatus().name()));
             if (invoiceInfo.hasSendDateTime()) {
@@ -261,7 +264,6 @@ public class InvoiceCommandHandler implements ICommandHandler {
             if (invoiceInfo.hasInternalNotes()) {
                 invoice.setInternalNotes(invoiceInfo.getInternalNotes().getValue());
             }
-            invoice.setFooterNotes(invoiceInfo.getFooterNotes().getValue());
 
             if (invoiceInfo.hasIsDraft()) {
                 invoice.setDraft(invoiceInfo.getIsDraft().getValue());
@@ -276,6 +278,14 @@ public class InvoiceCommandHandler implements ICommandHandler {
             if (invoiceInfo.hasCustomerId()) {
                 Customer customer = (Customer) new CustomerQueryHandler().getById(invoiceInfo.getCustomerId().getValue());
                 invoice.setCustomer(customer);
+            }
+            if (invoiceInfo.hasFooterNotes()) {
+                invoice.setFooterNotes(invoiceInfo.getFooterNotes().getValue());
+
+            }
+            if (invoiceInfo.hasMemos()) {
+                invoice.setMemos(invoiceInfo.getMemos().getValue());
+
             }
         }
 

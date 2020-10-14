@@ -35,9 +35,9 @@ message AddInvoiceInfoProto{
   google.protobuf.StringValue send_date_time = 9;
   google.protobuf.StringValue internal_notes = 10;
   google.protobuf.StringValue footer_notes = 11;
-  google.protobuf.DoubleValue sub_total = 12;
-  google.protobuf.DoubleValue tax_total = 13;
-  google.protobuf.DoubleValue total = 14;
+//  google.protobuf.DoubleValue sub_total = 12;
+//  google.protobuf.DoubleValue tax_total = 13;
+//  google.protobuf.DoubleValue total = 14;
   google.protobuf.BoolValue is_draft = 15;
   avenue.financial.protobuf.core.AddressProto billing_address = 17;
 }
@@ -83,7 +83,6 @@ message UpdateInvoiceProto{
 }
 
 message AddInvoiceItemProto{
-  google.protobuf.StringValue invoice_id = 1;
   google.protobuf.StringValue product_id = 2;
   google.protobuf.Int32Value quantity = 3;
   google.protobuf.StringValue uom = 4;

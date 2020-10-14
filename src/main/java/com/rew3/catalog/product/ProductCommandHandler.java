@@ -1,6 +1,7 @@
 package com.rew3.catalog.product;
 
 import com.avenue.base.grpc.proto.core.MiniUserProto;
+import com.avenue.financial.services.grpc.proto.product.AddProductInfoProto;
 import com.avenue.financial.services.grpc.proto.product.AddProductProto;
 import com.avenue.financial.services.grpc.proto.product.ProductInfoProto;
 import com.avenue.financial.services.grpc.proto.product.UpdateProductProto;
@@ -61,7 +62,7 @@ public class    ProductCommandHandler implements ICommandHandler {
         Product product = new Product();
 
         if (c.hasProductInfo()) {
-            ProductInfoProto info = c.getProductInfo();
+            AddProductInfoProto info = c.getProductInfo();
 
             if (info.hasTitle()) {
                 product.setTitle(info.getTitle().getValue());
@@ -118,7 +119,7 @@ public class    ProductCommandHandler implements ICommandHandler {
             throw new NotFoundException("Id not found");
         }
         if (c.hasProductInfo()) {
-            ProductInfoProto info = c.getProductInfo();
+            AddProductInfoProto info = c.getProductInfo();
 
             if (info.hasTitle()) {
                 product.setTitle(info.getTitle().getValue());

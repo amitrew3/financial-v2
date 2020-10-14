@@ -2,6 +2,8 @@ syntax = "proto3";
 
 import "google/protobuf/wrappers.proto";
 import "avenue/financial/protobuf/core/core_messages_description.proto";
+import "avenue/financial/protobuf/salestax/salestax_messages_description.proto";
+
 
 
 option java_multiple_files = true;
@@ -25,6 +27,14 @@ message ProductInfoProto{
   google.protobuf.DoubleValue price = 2;
   google.protobuf.StringValue description = 3;
   ProductSideProto side = 4;
+  avenue.financial.protobuf.salestax.SalesTaxProto tax1 = 5;
+  avenue.financial.protobuf.salestax.SalesTaxProto tax2 = 6;
+}
+message AddProductInfoProto{
+  google.protobuf.StringValue title = 1;
+  google.protobuf.DoubleValue price = 2;
+  google.protobuf.StringValue description = 3;
+  ProductSideProto side = 4;
   google.protobuf.StringValue tax1_id = 5;
   google.protobuf.StringValue tax2_id = 6;
 }
@@ -35,7 +45,7 @@ message AddProductProto{
   avenue.financial.protobuf.core.MiniUserProto owner = 1;
   avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 2;
   avenue.financial.protobuf.core.VisibilityTypeProto visibility = 3;
-  ProductInfoProto product_info = 4;
+  AddProductInfoProto product_info = 4;
 
 
 }
@@ -45,7 +55,7 @@ message UpdateProductProto{
   avenue.financial.protobuf.core.MiniUserProto owner = 2;
   avenue.financial.protobuf.core.EntityStatusWrapper.EntityStatus status = 3;
   avenue.financial.protobuf.core.VisibilityTypeProto visibility = 4;
-  ProductInfoProto product_info = 5;
+  AddProductInfoProto product_info = 5;
 }
 
 
