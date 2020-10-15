@@ -118,20 +118,20 @@ public class BillCommandHandler implements ICommandHandler {
 
         double total = 0;
         for (BillItem item : items) {
-            subtotal = item.getPrice() * item.getQuantity();
+            subtotal += item.getPrice() * item.getQuantity();
             if (item.getTax1() != null) {
-                taxtotal1 = item.getPrice() * item.getTax1().getRate() / 100;
+                taxtotal1 = item.getPrice() * item.getQuantity() * item.getTax1().getRate() / 100;
             }
             if (item.getTax2() != null) {
-                taxtotal2 = item.getPrice() * item.getTax2().getRate() / 100;
+                taxtotal2 = item.getPrice() * item.getQuantity() * item.getTax2().getRate() / 100;
             }
-            taxtotal = taxtotal1 + taxtotal2;
-            total = subtotal + taxtotal;
+            taxtotal += taxtotal1 + taxtotal2;
+
         }
+        total = subtotal + taxtotal;
         bill.setSubTotal(subtotal);
         bill.setTaxTotal(taxtotal);
         bill.setTotal(total);
-
 
         if (c.hasBillInfo()) {
             billInfo = c.getBillInfo();
@@ -198,16 +198,17 @@ public class BillCommandHandler implements ICommandHandler {
 
         double total = 0;
         for (BillItem item : items) {
-            subtotal = item.getPrice() * item.getQuantity();
+            subtotal += item.getPrice() * item.getQuantity();
             if (item.getTax1() != null) {
-                taxtotal1 = item.getPrice() * item.getTax1().getRate() / 100;
+                taxtotal1 = item.getPrice() * item.getQuantity() * item.getTax1().getRate() / 100;
             }
             if (item.getTax2() != null) {
-                taxtotal2 = item.getPrice() * item.getTax2().getRate() / 100;
+                taxtotal2 = item.getPrice() * item.getQuantity() * item.getTax2().getRate() / 100;
             }
-            taxtotal = taxtotal1 + taxtotal2;
-            total = subtotal + taxtotal;
+            taxtotal += taxtotal1 + taxtotal2;
+
         }
+        total = subtotal + taxtotal;
         bill.setSubTotal(subtotal);
         bill.setTaxTotal(taxtotal);
         bill.setTotal(total);

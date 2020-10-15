@@ -10,7 +10,7 @@ import com.rew3.common.model.PaginationParams;
 import com.rew3.common.utils.Parser;
 import com.rew3.common.utils.RequestFilter;
 import com.rew3.common.utils.Rew3StringBuiler;
-import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
+import com.rew3.sale.recurringinvoice.model.RecurringSchedule;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,12 +19,12 @@ public class RecurringScheduleQueryHandler implements IQueryHandler {
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
-        RecurringInvoice invoice = (RecurringInvoice) HibernateUtilV2.get(RecurringInvoice.class, id);
+        RecurringSchedule invoice = (RecurringSchedule) HibernateUtilV2.get(RecurringSchedule.class, id);
         if (invoice == null) {
-            throw new NotFoundException("RecurringInvoice id(" + id + ") not found.");
+            throw new NotFoundException("RecurringSchedule id(" + id + ") not found.");
         }
         if (Flags.EntityStatus.valueOf(invoice.getStatus()) == Flags.EntityStatus.DELETED)
-            throw new NotFoundException("RecurringInvoice id(" + id + ") not found.");
+            throw new NotFoundException("RecurringSchedule id(" + id + ") not found.");
 
         return invoice;
 
@@ -69,7 +69,7 @@ public class RecurringScheduleQueryHandler implements IQueryHandler {
         }
 
 
-        RequestFilter.doFilter(q, sqlParams, builder, RecurringInvoice.class);
+        RequestFilter.doFilter(q, sqlParams, builder, RecurringSchedule.class);
 
         if (q.has("page_number")) {
             offset = (limit * (page - 1));
@@ -79,8 +79,8 @@ public class RecurringScheduleQueryHandler implements IQueryHandler {
         }
 
 
-        List<Object> invoices = HibernateUtilV2.select("SELECT distinct t FROM RecurringInvoice t left join t.items tc " + builder.getValue(),
-                sqlParams, q.getQuery(), limit, offset, RecurringInvoice.class);
+        List<Object> invoices = HibernateUtilV2.select("SELECT distinct t FROM RecurringSchedule t " + builder.getValue(),
+                sqlParams, q.getQuery(), limit, offset, RecurringSchedule.class);
 
         return invoices;
     }
@@ -96,10 +96,10 @@ public class RecurringScheduleQueryHandler implements IQueryHandler {
 
         q.set("status", Flags.EntityStatus.ACTIVE.toString());
 
-        RequestFilter.doFilter(q, sqlParams, builder, RecurringInvoice.class);
+        RequestFilter.doFilter(q, sqlParams, builder, RecurringSchedule.class);
 
-        Long count = HibernateUtilV2.count("SELECT count(distinct t) FROM RecurringInvoice t left join t.items tc left join t.reference tr " + builder.getValue(),
-                sqlParams, q.getQuery(), RecurringInvoice.class);
+        Long count = HibernateUtilV2.count("SELECT count(distinct t) FROM RecurringSchedule t " + builder.getValue(),
+                sqlParams, q.getQuery(), RecurringSchedule.class);
 
 
         return count;

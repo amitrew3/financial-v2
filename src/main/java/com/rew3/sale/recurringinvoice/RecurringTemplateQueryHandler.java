@@ -19,14 +19,14 @@ public class RecurringTemplateQueryHandler implements IQueryHandler {
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
-        RecurringTemplate invoice = (RecurringTemplate) HibernateUtilV2.get(RecurringTemplate.class, id);
-        if (invoice == null) {
-            throw new NotFoundException("Recurring Invoice Template id(" + id + ") not found.");
+        RecurringTemplate template = (RecurringTemplate) HibernateUtilV2.get(RecurringTemplate.class, id);
+        if (template == null) {
+            throw new NotFoundException("Recurring Template Template id(" + id + ") not found.");
         }
-        if (Flags.EntityStatus.valueOf(invoice.getStatus()) == Flags.EntityStatus.DELETED)
-            throw new NotFoundException("Recurring Invoice Template id(" + id + ") not found.");
+        if (Flags.EntityStatus.valueOf(template.getStatus()) == Flags.EntityStatus.DELETED)
+            throw new NotFoundException("Recurring Template Template id(" + id + ") not found.");
 
-        return invoice;
+        return template;
 
     }
 
@@ -79,10 +79,10 @@ public class RecurringTemplateQueryHandler implements IQueryHandler {
         }
 
 
-        List<Object> invoices = HibernateUtilV2.select("SELECT distinct t FROM RecurringInvoiceTemplate t left join t.items tc " + builder.getValue(),
+        List<Object> templates = HibernateUtilV2.select("SELECT distinct t FROM RecurringTemplate t " + builder.getValue(),
                 sqlParams, q.getQuery(), limit, offset, RecurringTemplate.class);
 
-        return invoices;
+        return templates;
     }
 
     public Long count(Query q) {
@@ -98,7 +98,7 @@ public class RecurringTemplateQueryHandler implements IQueryHandler {
 
         RequestFilter.doFilter(q, sqlParams, builder, RecurringTemplate.class);
 
-        Long count = HibernateUtilV2.count("SELECT count(distinct t) FROM RecurringInvoiceTemplate t left join t.items tc left join t.reference tr " + builder.getValue(),
+        Long count = HibernateUtilV2.count("SELECT count(distinct t) FROM RecurringTemplate t " + builder.getValue(),
                 sqlParams, q.getQuery(), RecurringTemplate.class);
 
 

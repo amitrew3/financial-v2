@@ -1,11 +1,10 @@
-package com.rew3.sale.recurringtemplate;
+package com.rew3.sale.recurringinvoice;
 
 import com.avenue.base.grpc.proto.core.MiniUserProto;
 import com.avenue.financial.services.grpc.proto.recurringtemplate.AddRecurringTemplateInfoProto;
 import com.avenue.financial.services.grpc.proto.recurringtemplate.AddRecurringTemplateProto;
 import com.avenue.financial.services.grpc.proto.recurringtemplate.UpdateRecurringTemplateProto;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.rew3.catalog.product.model.Product;
 import com.rew3.common.Rew3Validation;
 import com.rew3.common.application.CommandException;
 import com.rew3.common.application.NotFoundException;
@@ -15,8 +14,6 @@ import com.rew3.common.cqrs.ICommandHandler;
 import com.rew3.common.database.HibernateUtilV2;
 import com.rew3.common.model.Flags;
 import com.rew3.common.utils.Rew3Date;
-import com.rew3.purchase.expense.model.Expense;
-import com.rew3.sale.recurringinvoice.RecurringTemplateQueryHandler;
 import com.rew3.sale.recurringinvoice.command.CreateRecurringTemplate;
 import com.rew3.sale.recurringinvoice.command.DeleteRecurringTemplate;
 import com.rew3.sale.recurringinvoice.command.UpdateRecurringTemplate;
@@ -117,7 +114,7 @@ public class RecurringTemplateCommandHandler implements ICommandHandler {
 
 
     private RecurringTemplate _handleSaveRecurringTemplate(AddRecurringTemplateProto c) throws Exception {
-        RecurringTemplate template = null;
+        RecurringTemplate template = new RecurringTemplate();
         AddRecurringTemplateInfoProto templateInfo = null;
 
 

@@ -66,6 +66,9 @@ public class ExpenseCommandHandler implements ICommandHandler {
             if (info.hasTitle()) {
                 expense.setTitle(info.getTitle().getValue());
             }
+            if (info.hasExpenseNumber()) {
+                expense.setExpenseNumber(info.getExpenseNumber().getValue());
+            }
             if (info.hasCurrency()) {
                 expense.setCurrency(info.getCurrency().getValue());
             }
@@ -74,9 +77,6 @@ public class ExpenseCommandHandler implements ICommandHandler {
             }
             if (info.hasMerchant()) {
                 expense.setMerchant(info.getMerchant().getValue());
-            }
-            if (info.hasDescription()) {
-                expense.setDescription(info.getDescription().getValue());
             }
             if (info.hasNotes()) {
                 expense.setNotes(info.getNotes().getValue());
@@ -130,6 +130,9 @@ public class ExpenseCommandHandler implements ICommandHandler {
             if (info.hasTitle()) {
                 expense.setTitle(info.getTitle().getValue());
             }
+            if (info.hasExpenseNumber()) {
+                expense.setExpenseNumber(info.getExpenseNumber().getValue());
+            }
             if (info.hasCurrency()) {
                 expense.setCurrency(info.getCurrency().getValue());
             }
@@ -138,9 +141,6 @@ public class ExpenseCommandHandler implements ICommandHandler {
             }
             if (info.hasMerchant()) {
                 expense.setMerchant(info.getMerchant().getValue());
-            }
-            if (info.hasDescription()) {
-                expense.setDescription(info.getDescription().getValue());
             }
             if (info.hasNotes()) {
                 expense.setNotes(info.getNotes().getValue());
@@ -151,7 +151,6 @@ public class ExpenseCommandHandler implements ICommandHandler {
             if (info.hasTotal()) {
                 expense.setTotal(info.getTotal().getValue());
             }
-
 
         }
         if (c.hasOwner()) {

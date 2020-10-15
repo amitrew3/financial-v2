@@ -21,6 +21,9 @@ import com.rew3.sale.customer.CustomerCommandHandler;
 import com.rew3.sale.estimate.EstimateCommandHandler;
 import com.rew3.sale.invoice.InvoiceCommandHandler;
 import com.rew3.sale.recurringinvoice.RecurringInvoiceCommandHandler;
+import com.rew3.sale.recurringinvoice.RecurringScheduleCommandHandler;
+import com.rew3.sale.recurringinvoice.RecurringTemplateCommandHandler;
+
 import com.rew3.salestax.SalesTaxCommandHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -56,5 +59,7 @@ public class Application {
         AssociateCommandHandler.registerCommands();
         TransactionCommandHandler.registerCommands();
         RecurringInvoiceCommandHandler.registerCommands();
+        RecurringScheduleCommandHandler.registerCommands();
+        RecurringTemplateCommandHandler.registerCommands();
     }
 }

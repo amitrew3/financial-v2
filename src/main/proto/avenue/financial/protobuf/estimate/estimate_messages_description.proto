@@ -30,9 +30,9 @@ message AddEstimateInfoProto{
   google.protobuf.StringValue customer_id = 4;
   google.protobuf.StringValue payment_term_id = 5;
   google.protobuf.StringValue notes = 6;
-  google.protobuf.DoubleValue sub_total = 7;
-  google.protobuf.DoubleValue tax_total = 8;
-  google.protobuf.DoubleValue total = 9;
+//  google.protobuf.DoubleValue sub_total = 7;
+//  google.protobuf.DoubleValue tax_total = 8;
+//  google.protobuf.DoubleValue total = 9;
 }
 message EstimateInfoProto{
   google.protobuf.StringValue estimate_number = 1;

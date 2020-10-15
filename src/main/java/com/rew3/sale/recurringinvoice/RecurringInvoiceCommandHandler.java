@@ -53,13 +53,9 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
     }
 
     public void handle(CreateRecurringInvoice c) throws Exception {
-        // Transaction trx = c.getTransaction();
         try {
             RecurringInvoice invoice = this._handleSaveRecurringInvoice(c.addRecurringInvoiceProto);
             if (invoice != null) {
-//                if (c.isCommittable()) {
-//                    HibernateUtils.commitTransaction(trx);
-//                }
                 c.setObject(invoice);
             }
         } catch (Exception ex) {
@@ -71,13 +67,9 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
     }
 
     public void handle(UpdateRecurringInvoice c) throws Exception {
-        // Transaction trx = c.getTransaction();
         try {
             RecurringInvoice invoice = this._handleUpdateRecurringInvoice(c.updateRecurringInvoiceProto);
             if (invoice != null) {
-//                if (c.isCommittable()) {
-//                    HibernateUtils.commitTransaction(trx);
-//                }
                 c.setObject(invoice);
             }
         } catch (Exception ex) {
@@ -122,16 +114,17 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
 
         double total = 0;
         for (RecurringInvoiceItem item : items) {
-            subtotal = item.getPrice() * item.getQuantity();
+            subtotal += item.getPrice() * item.getQuantity();
             if (item.getTax1() != null) {
-                taxtotal1 = item.getPrice() * item.getTax1().getRate() / 100;
+                taxtotal1 = item.getPrice() * item.getQuantity() * item.getTax1().getRate() / 100;
             }
             if (item.getTax2() != null) {
-                taxtotal2 = item.getPrice() * item.getTax2().getRate() / 100;
+                taxtotal2 = item.getPrice() * item.getQuantity() * item.getTax2().getRate() / 100;
             }
-            taxtotal = taxtotal1 + taxtotal2;
-            total = subtotal + taxtotal;
+            taxtotal += taxtotal1 + taxtotal2;
+
         }
+        total = subtotal + taxtotal;
         invoice.setSubTotal(subtotal);
         invoice.setTaxTotal(taxtotal);
         invoice.setTotal(total);
@@ -230,16 +223,17 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
 
         double total = 0;
         for (RecurringInvoiceItem item : items) {
-            subtotal = item.getPrice() * item.getQuantity();
+            subtotal += item.getPrice() * item.getQuantity();
             if (item.getTax1() != null) {
-                taxtotal1 = item.getPrice() * item.getTax1().getRate() / 100;
+                taxtotal1 = item.getPrice() * item.getQuantity() * item.getTax1().getRate() / 100;
             }
             if (item.getTax2() != null) {
-                taxtotal2 = item.getPrice() * item.getTax2().getRate() / 100;
+                taxtotal2 = item.getPrice() * item.getQuantity() * item.getTax2().getRate() / 100;
             }
-            taxtotal = taxtotal1 + taxtotal2;
-            total = subtotal + taxtotal;
+            taxtotal += taxtotal1 + taxtotal2;
+
         }
+        total = subtotal + taxtotal;
         invoice.setSubTotal(subtotal);
         invoice.setTaxTotal(taxtotal);
         invoice.setTotal(total);
@@ -268,15 +262,7 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
                 invoice.setInternalNotes(invoiceInfo.getInternalNotes().getValue());
             }
             invoice.setFooterNotes(invoiceInfo.getFooterNotes().getValue());
-            if (invoiceInfo.hasSubTotal()) {
-                invoice.setSubTotal(subtotal);
-            }
-            if (invoiceInfo.hasTaxTotal()) {
-                invoice.setTaxTotal(taxtotal);
-            }
-            if (invoiceInfo.hasTotal()) {
-                invoice.setTotal(total);
-            }
+
             if (invoiceInfo.hasBillingAddress()) {
                 invoice.setAddress(ProtoConverter.convertToAddress(invoiceInfo.getBillingAddress()));
             }

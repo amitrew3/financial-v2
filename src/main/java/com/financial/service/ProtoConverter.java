@@ -785,9 +785,11 @@ public class ProtoConverter {
         Optional.ofNullable(x.getEstimateDate()).ifPresent(y -> builder.setEstimateDate(StringValue.of(y.toString())));
         Optional.ofNullable(x.getCustomer()).ifPresent(y -> builder.setCustomer(convertToCustomerProto(y)));
         Optional.ofNullable(x.getPaymentTerm()).ifPresent(y -> builder.setPaymentTerm(convertToPaymentTermProto(y)));
+        Optional.ofNullable(x.getNotes()).ifPresent(y -> builder.setNotes(StringValue.of(y)));
         Optional.ofNullable(x.getSubTotal()).ifPresent(y -> builder.setSubTotal(DoubleValue.of(y)));
         Optional.ofNullable(x.getTaxTotal()).ifPresent(y -> builder.setTaxTotal(DoubleValue.of(y)));
         Optional.ofNullable(x.getTotal()).ifPresent(y -> builder.setTotal(DoubleValue.of(y)));
+
         Optional.ofNullable(x.getItems()).ifPresent(y -> builder.addAllItems(convertToEstimateItemsProtos(y)));
         return builder.build();
     }
@@ -826,7 +828,7 @@ public class ProtoConverter {
 
         Optional.ofNullable(x.getTotal()).ifPresent(y -> builder.setTotal(DoubleValue.of(y)));
 
-        Optional.ofNullable(x.getDate()).ifPresent(y -> builder.setMerchant(StringValue.of(y.toString())));
+        Optional.ofNullable(x.getDate()).ifPresent(y -> builder.setDate(StringValue.of(y.toString())));
 
 
         return builder.build();
@@ -859,8 +861,8 @@ public class ProtoConverter {
         if (x.hasTax2Id()) {
             SalesTaxQueryHandler taxQueryHandler = new SalesTaxQueryHandler();
 
-            SalesTax tax1 = (SalesTax) taxQueryHandler.getById(x.getTax2Id().getValue());
-            item.setTax1(tax1);
+            SalesTax tax2 = (SalesTax) taxQueryHandler.getById(x.getTax2Id().getValue());
+            item.setTax2(tax2);
 
         }
         if (x.hasPrice()) {
@@ -931,8 +933,8 @@ public class ProtoConverter {
         if (x.hasTax2Id()) {
             SalesTaxQueryHandler taxQueryHandler = new SalesTaxQueryHandler();
 
-            SalesTax tax1 = (SalesTax) taxQueryHandler.getById(x.getTax2Id().getValue());
-            item.setTax1(tax1);
+            SalesTax tax2 = (SalesTax) taxQueryHandler.getById(x.getTax2Id().getValue());
+            item.setTax2(tax2);
 
         }
         if (x.hasPrice()) {

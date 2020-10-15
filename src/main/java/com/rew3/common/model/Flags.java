@@ -559,7 +559,7 @@ public abstract class Flags {
 
 
     }
-
+//  Recurring Invoice ends on/never/after
     public enum RecurringRuleType {
         ON,
         NEVER,
