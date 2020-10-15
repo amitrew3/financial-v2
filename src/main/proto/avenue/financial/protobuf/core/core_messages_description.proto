@@ -357,10 +357,11 @@ message EmailProto {
 }
 
 enum AccessTypeProto{
-  privateOpen = 0;
-  publicClose = 1;
-  privateClose = 2;
-  publicOpen = 3;
+  access_type_unknown=0;
+  privateOpen = 1;
+  publicClose = 2;
+  privateClose = 3;
+  publicOpen = 4;
 }
 
 enum VisibilityTypeProto{
@@ -375,9 +376,10 @@ enum VisibilityTypeProto{
 
 message EntityStatusWrapper {
   enum EntityStatus{
-    IN_ACTIVE = 0;
-    ACTIVE = 1;
-    DELETED = 2;
+    ENTITY_STATUS_UNKNOWN = 0;
+    IN_ACTIVE = 1;
+    ACTIVE = 2;
+    DELETED = 3;
 
   }
 }

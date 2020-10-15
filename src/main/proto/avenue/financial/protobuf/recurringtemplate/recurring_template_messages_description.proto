@@ -61,9 +61,10 @@ message UpdateRecurringTemplateProto{
 
 
 enum RecurringRuleTypeProto{
-  ON = 0;
-  NEVER = 1;
-  AFTER = 2;
+  RECURRING_RULE_TYPE_UNKNOWN=0;
+  ON = 1;
+  NEVER = 2;
+  AFTER = 3;
 
 }
 

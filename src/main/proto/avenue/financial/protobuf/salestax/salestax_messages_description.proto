@@ -49,12 +49,6 @@ message UpdateSalesTaxProto{
 }
 
 
-enum SalesTaxSideProto{
-  PURCHASE = 0;
-  SALE = 1;
-  BOTH = 2;
-
-}
 
 
 

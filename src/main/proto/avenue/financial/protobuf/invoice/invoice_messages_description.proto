@@ -102,9 +102,10 @@ message InvoiceItemProto{
 
 }
 enum PaymentStatusProto{
-  UNPAID = 0;
-  PARTIAL_PAID = 1;
-  PAID = 2;
+  PAYMENT_STATUS_UNKNOWN = 0;
+  UNPAID = 1;
+  PARTIAL_PAID = 2;
+  PAID = 3;
 
 }
 

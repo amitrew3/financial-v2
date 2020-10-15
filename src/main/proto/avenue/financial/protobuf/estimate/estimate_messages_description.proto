@@ -30,16 +30,16 @@ message AddEstimateInfoProto{
   google.protobuf.StringValue customer_id = 4;
   google.protobuf.StringValue payment_term_id = 5;
   google.protobuf.StringValue notes = 6;
-//  google.protobuf.DoubleValue sub_total = 7;
-//  google.protobuf.DoubleValue tax_total = 8;
-//  google.protobuf.DoubleValue total = 9;
+  //  google.protobuf.DoubleValue sub_total = 7;
+  //  google.protobuf.DoubleValue tax_total = 8;
+  //  google.protobuf.DoubleValue total = 9;
 }
 message EstimateInfoProto{
   google.protobuf.StringValue estimate_number = 1;
   google.protobuf.StringValue po_so_number = 2;
   google.protobuf.StringValue estimate_date = 3;
-  avenue.financial.protobuf.customer.CustomerProto customer=5;
-  avenue.financial.protobuf.paymentterm.PaymentTermProto payment_term=6;
+  avenue.financial.protobuf.customer.CustomerProto customer = 5;
+  avenue.financial.protobuf.paymentterm.PaymentTermProto payment_term = 6;
   google.protobuf.StringValue notes = 7;
   google.protobuf.DoubleValue sub_total = 12;
   google.protobuf.DoubleValue tax_total = 13;
@@ -88,9 +88,10 @@ message EstimateItemProto{
 
 }
 enum PaymentStatusProto{
-  UNPAID = 0;
-  PARTIAL_PAID = 1;
-  PAID = 2;
+  PAYMENT_STATUS_UNKNOWN = 0;
+  UNPAID = 1;
+  PARTIAL_PAID = 2;
+  PAID = 3;
 
 }
 

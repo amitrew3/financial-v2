@@ -60,9 +60,10 @@ message UpdateProductProto{
 
 
 enum ProductSideProto{
-  PURCHASE = 0;
-  SALE = 1;
-  BOTH = 2;
+  SIDE_UNKNOWN = 0;
+  PURCHASE = 1;
+  SALE = 2;
+  BOTH = 3;
 
 }
 
