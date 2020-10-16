@@ -21,11 +21,13 @@ public class InvoicePaymentQueryHandler implements IQueryHandler {
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
 
-        InvoicePayment po = (InvoicePayment) HibernateUtilV2.get(InvoicePayment.class, id);
-        if(po==null){
-            throw new NotFoundException("Payment id  (" +id + ") not found.");
+        InvoicePayment acp = (InvoicePayment) HibernateUtilV2.get(InvoicePayment.class, id);
+        if (acp == null) {
+            throw new NotFoundException("InvoicePayment  id(" + id + ") not found.");
         }
-        return po;
+        if (acp.getStatus().equals(Flags.EntityStatus.DELETED.toString()))
+            throw new NotFoundException("InvoicePayment  id(" + id + ") not found.");
+        return acp;
 
     }
 

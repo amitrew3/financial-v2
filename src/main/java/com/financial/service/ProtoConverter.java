@@ -204,6 +204,7 @@ public class ProtoConverter {
         Optional.ofNullable(x.getVisibility()).ifPresent(y -> builder.setVisibility(VisibilityTypeProto.valueOf(x.getVisibility())));
         Optional.ofNullable(x).ifPresent(y -> builder.setRecurringInvoiceInfo(convertToRecurringInvoiceInfoProto(y)));
 
+
         return builder.build();
 
     }
@@ -405,6 +406,9 @@ public class ProtoConverter {
         Optional.ofNullable(x.isSent()).ifPresent(y -> builder.setIsInvoiceSent(BoolValue.of(y)));
         Optional.ofNullable(x.getAddress()).ifPresent(y -> builder.setBillingAddress(convertToAddressProto(y)));
         Optional.ofNullable(x.getItems()).ifPresent(y -> builder.addAllItems(convertToRecurringInvoiceItemsProtos(y)));
+        Optional.ofNullable(x.getRecurringSchedule()).ifPresent(y -> builder.setRecurringSchedule(convertToRecurringScheduleProto(y)));
+        Optional.ofNullable(x.getRecurringTemplate()).ifPresent(y -> builder.setRecurringTemplate(convertToRecurringTemplateProto(y)));
+
         return builder.build();
     }
 

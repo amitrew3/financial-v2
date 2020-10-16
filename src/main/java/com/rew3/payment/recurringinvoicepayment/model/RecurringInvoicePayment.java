@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 
 
 @Entity
-@Table(name = DB.Table.INVOICEPAYMENT)
+@Table(name = DB.Table.RECURRING_INVOICE_PAYMENT)
 public class RecurringInvoicePayment extends AbstractEntity {
 
     @NotNull(message = "Invoice must not be null")

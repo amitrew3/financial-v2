@@ -21,12 +21,13 @@ public class RecurringInvoicePaymentQueryHandler implements IQueryHandler {
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
 
-        RecurringInvoicePayment po = (RecurringInvoicePayment) HibernateUtilV2.get(RecurringInvoicePayment.class, id);
-        if(po==null){
-            throw new NotFoundException("Payment id  (" +id + ") not found.");
+        RecurringInvoicePayment acp = (RecurringInvoicePayment) HibernateUtilV2.get(RecurringInvoicePayment.class, id);
+        if (acp == null) {
+            throw new NotFoundException("RecurringInvoicePayment  id(" + id + ") not found.");
         }
-        return po;
-
+        if (acp.getStatus().equals(Flags.EntityStatus.DELETED.toString()))
+            throw new NotFoundException("RecurringInvoicePayment  id(" + id + ") not found.");
+        return acp;
     }
 
     @Override
@@ -77,7 +78,7 @@ public class RecurringInvoicePaymentQueryHandler implements IQueryHandler {
         }
 
 
-        List<Object> invoices = HibernateUtilV2.select("SELECT distinct t FROM InvoicePayment t " + builder.getValue(),
+        List<Object> invoices = HibernateUtilV2.select("SELECT distinct t FROM RecurringInvoicePayment t " + builder.getValue(),
                 sqlParams, q.getQuery(), limit, offset, Invoice.class);
 
         return invoices;
@@ -96,7 +97,7 @@ public class RecurringInvoicePaymentQueryHandler implements IQueryHandler {
 
         RequestFilter.doFilter(q, sqlParams, builder, Invoice.class);
 
-        Long count = HibernateUtilV2.count("SELECT count(distinct t) FROM InvoicePayment t " + builder.getValue(),
+        Long count = HibernateUtilV2.count("SELECT count(distinct t) FROM RecurringInvoicePayment t " + builder.getValue(),
                 sqlParams, q.getQuery(), Invoice.class);
 
 

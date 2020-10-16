@@ -12,6 +12,7 @@ import com.rew3.catalog.product.ProductCommandHandler;
 import com.rew3.common.shared.AddressCommandHandler;
 import com.rew3.payment.billpayment.BillPaymentCommandHandler;
 import com.rew3.payment.invoicepayment.InvoicePaymentCommandHandler;
+import com.rew3.payment.recurringinvoicepayment.RecurringInvoicePaymentCommandHandler;
 import com.rew3.paymentoption.PaymentOptionCommandHandler;
 import com.rew3.paymentterm.PaymentTermCommandHandler;
 import com.rew3.purchase.bill.BillCommandHandler;
@@ -61,5 +62,7 @@ public class Application {
         RecurringInvoiceCommandHandler.registerCommands();
         RecurringScheduleCommandHandler.registerCommands();
         RecurringTemplateCommandHandler.registerCommands();
+        RecurringInvoicePaymentCommandHandler.registerCommands();
+
     }
 }

@@ -20,9 +20,9 @@ import com.rew3.paymentterm.PaymentTermQueryHandler;
 import com.rew3.paymentterm.model.PaymentTerm;
 import com.rew3.sale.customer.CustomerQueryHandler;
 import com.rew3.sale.customer.model.Customer;
-import com.rew3.sale.invoice.command.UpdateRecurringInvoice;
 import com.rew3.sale.recurringinvoice.command.CreateRecurringInvoice;
 import com.rew3.sale.recurringinvoice.command.DeleteRecurringInvoice;
+import com.rew3.sale.recurringinvoice.command.UpdateRecurringInvoice;
 import com.rew3.sale.recurringinvoice.model.RecurringInvoice;
 import com.rew3.sale.recurringinvoice.model.RecurringInvoiceItem;
 import com.rew3.sale.recurringinvoice.model.RecurringSchedule;
@@ -160,12 +160,16 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
                 PaymentTerm term = (PaymentTerm) new PaymentTermQueryHandler().getById(invoiceInfo.getPaymentTermId().getValue());
                 invoice.setPaymentTerm(term);
             }
+            if (invoiceInfo.hasCustomerId()) {
+                Customer customer = (Customer) new CustomerQueryHandler().getById(invoiceInfo.getCustomerId().getValue());
+                invoice.setCustomer(customer);
+            }
             if (invoiceInfo.hasRecurringTemplateId()) {
-                RecurringTemplate template = (RecurringTemplate) new PaymentTermQueryHandler().getById(invoiceInfo.getPaymentTermId().getValue());
+                RecurringTemplate template = (RecurringTemplate) new RecurringTemplateQueryHandler().getById(invoiceInfo.getRecurringTemplateId().getValue());
                 invoice.setRecurringTemplate(template);
             }
             if (invoiceInfo.hasRecurringScheduleId()) {
-                RecurringSchedule schedule = (RecurringSchedule) new RecurringScheduleQueryHandler().getById(invoiceInfo.getPaymentTermId().getValue());
+                RecurringSchedule schedule = (RecurringSchedule) new RecurringScheduleQueryHandler().getById(invoiceInfo.getRecurringScheduleId().getValue());
                 invoice.setRecurringSchedule(schedule);
             }
         }
@@ -273,6 +277,14 @@ public class RecurringInvoiceCommandHandler implements ICommandHandler {
             if (invoiceInfo.hasCustomerId()) {
                 Customer customer = (Customer) new CustomerQueryHandler().getById(invoiceInfo.getCustomerId().getValue());
                 invoice.setCustomer(customer);
+            }
+            if (invoiceInfo.hasRecurringScheduleId()) {
+                RecurringSchedule schedule = (RecurringSchedule) new RecurringScheduleQueryHandler().getById(invoiceInfo.getRecurringScheduleId().getValue());
+                invoice.setRecurringSchedule(schedule);
+            }
+            if (invoiceInfo.hasRecurringTemplateId()) {
+                RecurringTemplate template = (RecurringTemplate) new RecurringTemplateQueryHandler().getById(invoiceInfo.getRecurringTemplateId().getValue());
+                invoice.setRecurringTemplate(template);
             }
         }
 

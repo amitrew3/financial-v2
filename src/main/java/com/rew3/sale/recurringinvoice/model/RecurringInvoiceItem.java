@@ -1,10 +1,8 @@
 package com.rew3.sale.recurringinvoice.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rew3.catalog.product.model.Product;
 import com.rew3.common.model.DB;
-import com.rew3.sale.invoice.model.Invoice;
 import com.rew3.salestax.model.SalesTax;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -12,7 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = DB.Table.INVOICE_ITEM)
+@Table(name = DB.Table.RECURRING_INVOICE_ITEM)
 public class RecurringInvoiceItem {
 
 
@@ -22,30 +20,30 @@ public class RecurringInvoiceItem {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator")
 
-    @Column(name = DB.Field.InvoiceItem.ID, updatable = false)
+    @Column(name = DB.Field.RecurringInvoiceItem.ID, updatable = false)
     private String id;
 
 
     
-    @JoinColumn(name = DB.Field.InvoiceItem.INVOICE_ID)
+    @JoinColumn(name = DB.Field.RecurringInvoiceItem.RECURRING_INVOICE_ID)
     @ManyToOne
     private RecurringInvoice recurringInvoice;
 
     @NotNull(message = "Product must not be null")
-    @JoinColumn(name = DB.Field.InvoiceItem.PRODUCT_ID)
+    @JoinColumn(name = DB.Field.RecurringInvoiceItem.PRODUCT_ID)
     @ManyToOne
     private Product product;
 
     @NotNull(message = "Quantity must not be null")
-    @Column(name = DB.Field.InvoiceItem.QUANTITY)
+    @Column(name = DB.Field.RecurringInvoiceItem.QUANTITY)
     private Integer quantity;
 
-    @NotNull
-    @Column(name = DB.Field.InvoiceItem.UOM)
+    @NotNull(message = "Uom must not be null")
+    @Column(name = DB.Field.RecurringInvoiceItem.UOM)
     private String uom;
 
     @NotNull(message = "Price must not be null")
-    @Column(name = DB.Field.InvoiceItem.PRICE)
+    @Column(name = DB.Field.RecurringInvoiceItem.PRICE)
     private Double price;
 
     @OneToOne

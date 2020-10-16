@@ -5,7 +5,7 @@ import com.rew3.common.cqrs.Command;
 import com.rew3.common.cqrs.ICommand;
 
 public class UpdateRecurringInvoice extends Command implements ICommand {
-   UpdateRecurringInvoiceProto updateRecurringInvoiceProto;
+   public UpdateRecurringInvoiceProto updateRecurringInvoiceProto;
 
     public UpdateRecurringInvoice(UpdateRecurringInvoiceProto updateRecurringInvoiceProto) {
         this.updateRecurringInvoiceProto = updateRecurringInvoiceProto;

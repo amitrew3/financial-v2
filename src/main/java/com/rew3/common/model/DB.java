@@ -41,6 +41,8 @@ public class DB {
         public static final String ESTIMATE = "estimate";
 
         public static final String RECURRING_INVOICE = "recurring_invoice";
+        public static final String RECURRING_INVOICE_ITEM = "recurring_invoice_item";
+
         public static final String RECURRING_INVOICE_TEMPLATE = "recurring_invoice_template";
 
 
@@ -93,7 +95,7 @@ public class DB {
         public static final String JOURNAL = "journal";
         public static final String TRANSACTION_JOURNAL = "transaction_journal";
         public static final String INVOICEPAYMENT = "invoice_payment";
-        public static final String RECURRINGINVOICEPAYMENT = "invoice_payment";
+        public static final String RECURRING_INVOICE_PAYMENT = "recurring_invoice_payment";
 
         public static final String BILLPAYMENT = "bill_payment";
         public static final String SALESTAX = "sales_tax";
@@ -481,6 +483,17 @@ public class DB {
         public static class InvoiceItem {
             public static final String ID = "_id";
             public static final String INVOICE_ID = "invoice_id";
+            public static final String QUANTITY = "quantity";
+            public static final String UOM = "uom";
+            public static final String PRICE = "price";
+            public static final String PRODUCT_ID = "product_id";
+            public static final String TAX1 = "tax1_id";
+            public static final String TAX2 = "tax2_id";
+
+        }
+        public static class RecurringInvoiceItem {
+            public static final String ID = "_id";
+            public static final String RECURRING_INVOICE_ID = "recurring_invoice_id";
             public static final String QUANTITY = "quantity";
             public static final String UOM = "uom";
             public static final String PRICE = "price";
@@ -886,7 +899,7 @@ public class DB {
 
         }
         public static class RecurringInvoicePayment {
-            public static final String RECURRING_INVOICE_ID = "reecurring_invoice_id";
+            public static final String RECURRING_INVOICE_ID = "recurring_invoice_id";
             public static final String CUSTOMER_ID = "customer_id";
             public static final String AMOUNT = "amount";
             public static final String DATE = "date";

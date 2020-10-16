@@ -100,7 +100,6 @@ message UpdateRecurringInvoiceProto{
 }
 
 message AddRecurringInvoiceItemProto{
-  google.protobuf.StringValue recurring_invoice_id = 1;
   google.protobuf.StringValue product_id = 2;
   google.protobuf.Int32Value quantity = 3;
   google.protobuf.StringValue uom = 4;

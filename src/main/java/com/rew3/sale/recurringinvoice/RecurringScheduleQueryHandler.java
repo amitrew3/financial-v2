@@ -19,14 +19,13 @@ public class RecurringScheduleQueryHandler implements IQueryHandler {
 
     @Override
     public Object getById(String id) throws CommandException, NotFoundException {
-        RecurringSchedule invoice = (RecurringSchedule) HibernateUtilV2.get(RecurringSchedule.class, id);
-        if (invoice == null) {
-            throw new NotFoundException("RecurringSchedule id(" + id + ") not found.");
+        RecurringSchedule acp = (RecurringSchedule) HibernateUtilV2.get(RecurringSchedule.class, id);
+        if (acp == null) {
+            throw new NotFoundException("RecurringSchedule  id(" + id + ") not found.");
         }
-        if (Flags.EntityStatus.valueOf(invoice.getStatus()) == Flags.EntityStatus.DELETED)
-            throw new NotFoundException("RecurringSchedule id(" + id + ") not found.");
-
-        return invoice;
+        if (acp.getStatus().equals(Flags.EntityStatus.DELETED.toString()))
+            throw new NotFoundException("RecurringSchedule  id(" + id + ") not found.");
+        return acp;
 
     }
 

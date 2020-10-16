@@ -968,29 +968,6 @@ public class HibernateUtilV2 {
     public static <T> List<T> select(String hql, HashMap<String, Object> params, HashMap<String, Object> requestParams,
                                      int limit, int offset, T t) {
 
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-//            Set<ConstraintViolation<Car>> constraintViolations = validator.validate(car);
-//           constraintViolations.forEach(x-> System.out.println(x.getMessage()));
-
-        Car car = new Car("AA",null, "D", 10);
-
-
-        Set<ConstraintViolation<Car>> constraintViolations = validator.validate(car, Default.class);
-
-        System.out.println("------this point-------");
-        constraintViolations.forEach(x -> System.out.println(x.getMessage()));
-
-        System.out.println("hrere");
-
-
-
-
-
-
-
-
-
         Session session = null;
         List<T> results = null;
         Transaction tx = null;
