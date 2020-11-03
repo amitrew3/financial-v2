@@ -6,6 +6,8 @@ plugins {
     id 'com.google.protobuf' version '0.8.8'
     // Generate IntelliJ IDEA's .idea & .iml project files
     id 'idea'
+    id 'org.springframework.boot' version '2.3.5.RELEASE'
+
 }
 
 group 'com.rew3'
@@ -78,4 +80,7 @@ protobuf {
 configurations.all {
     exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
     exclude group: 'org.springframework.boot', module: 'logback-classic'
+}
+bootRun {
+    main = 'com.wallet.Application'
 }
