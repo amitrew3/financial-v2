@@ -2,15 +2,15 @@ package com.financial.service;
 
 import com.avenue.base.grpc.proto.core.StatusTypeProto;
 import com.avenue.financial.services.grpc.proto.invoice.*;
+import com.rew3.common.application.CommandException;
+import com.rew3.common.application.NotFoundException;
+import com.rew3.common.cqrs.CommandRegister;
+import com.rew3.common.cqrs.Query;
 import com.rew3.sale.invoice.InvoiceQueryHandler;
 import com.rew3.sale.invoice.command.CreateInvoice;
 import com.rew3.sale.invoice.command.DeleteInvoice;
 import com.rew3.sale.invoice.command.UpdateInvoice;
 import com.rew3.sale.invoice.model.Invoice;
-import com.rew3.common.application.CommandException;
-import com.rew3.common.application.NotFoundException;
-import com.rew3.common.cqrs.CommandRegister;
-import com.rew3.common.cqrs.Query;
 import io.grpc.stub.StreamObserver;
 import org.apache.log4j.Logger;
 import org.lognet.springboot.grpc.GRpcService;
@@ -143,6 +143,32 @@ public class InvoiceService extends InvoiceServiceProtoGrpc.InvoiceServiceProtoI
                 .setMessage("Invoice successfully deleted")
                 .setStatus(StatusTypeProto.OK)
                 .setData(ProtoConverter.convertToInvoiceProto(invoice))
+                .build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void count(CountInvoiceRequestProto request,
+                      StreamObserver<CountInvoiceResponseProto> responseObserver) {
+
+        HashMap<String, Object> reqMap = ProtoConverter.convertToRequestMap(request.getParam());
+
+        int totalCount = repository.count(new Query(reqMap)).intValue();
+
+        int limit = request.getParam().getLimit().getValue();
+        int pageNumber = totalCount/ request.getParam().getOffset().getValue();
+
+        int totalPagesCount = totalCount / limit;
+        if (totalCount % limit != 0) {
+            totalPagesCount++;
+        }
+
+        CountInvoiceResponseProto response = CountInvoiceResponseProto.newBuilder()
+                .setLimit(limit)
+                .setPageNumber(pageNumber)
+                .setPagesCount(totalPagesCount)
+                .setTotalCount(totalCount)
                 .build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();

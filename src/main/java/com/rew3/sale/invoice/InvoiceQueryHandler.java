@@ -393,11 +393,11 @@ public class InvoiceQueryHandler implements IQueryHandler {
 
         RequestFilter.doFilter(q, sqlParams, builder, Invoice.class);
 
-        Long count = HibernateUtilV2.count("SELECT count(distinct t) FROM Invoice t left join t.items tc left join t.reference tr " + builder.getValue(),
-                sqlParams, q.getQuery(), Invoice.class);
+        List<Object> invoices = HibernateUtilV2.select("SELECT distinct t FROM Invoice t left join t.items tc " + builder.getValue(),
+                sqlParams, q.getQuery(),  Invoice.class);
 
 
-        return count;
+        return Parser.convertObjectToLong(invoices.size());
 
 
     }

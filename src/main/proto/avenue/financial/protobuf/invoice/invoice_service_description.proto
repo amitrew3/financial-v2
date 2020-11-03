@@ -25,6 +25,8 @@ service InvoiceServiceProto {
   rpc get (GetInvoiceRequestProto) returns (GetInvoiceResponseProto) {
   }
 
+  rpc count (CountInvoiceRequestProto) returns (CountInvoiceResponseProto) {
+  }
 
   rpc add (AddInvoiceRequestProto) returns (AddInvoiceResponseProto) {
   }

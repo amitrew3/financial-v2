@@ -157,9 +157,9 @@ public class HibernateUtilV2 {
         return select(hql, params, null, null);
     }
 
-    public static synchronized List select(String hql) {
-        return select(hql, null, null, null);
-    }
+//    public static synchronized List select(String hql) {
+//        return select(hql, null, null, null);
+//    }
 
     public static synchronized List selectSQL(String sql, Map<String, Object> params, Integer limit, Integer offset) {
         List results = null;
@@ -983,6 +983,37 @@ public class HibernateUtilV2 {
             }
 
             Query query = createQuery(hql, params, limit, offset);
+            results = query.list();
+            tx.commit();
+            //filter datas with active status and with read permisssion
+           /* results = results.stream().map(c -> (AbstractEntity) c).filter(c -> c.hasReadPermission(Authentication.getRew3UserId(), Authentication.getRew3GroupId()))
+                    .collect(Collectors.toList());*/
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeSession();
+        }
+        return results;
+    }
+    public static <T> List<T> select(String hql, HashMap<String, Object> params, HashMap<String, Object> requestParams,
+                                     T t) {
+
+        Session session = null;
+        List<T> results = null;
+        Transaction tx = null;
+
+        try {
+
+            session = openSession();
+            tx = session.beginTransaction();
+
+            if (requestParams.size() > 0) {
+
+                hql = filter(hql, requestParams, params, t);
+            }
+
+            Query query = createQuery(hql, params, null, null);
             results = query.list();
             tx.commit();
             //filter datas with active status and with read permisssion

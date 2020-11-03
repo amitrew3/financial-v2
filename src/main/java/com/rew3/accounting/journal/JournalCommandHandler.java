@@ -243,8 +243,9 @@ public class JournalCommandHandler implements ICommandHandler {
         Integer code = null;
         String query = "SELECT MAX(entryNumber) FROM AccountingJournal";
 
-        List maxResult = HibernateUtilV2.select(query);
+       // List maxResult = HibernateUtilV2.select(query);
 
+        List maxResult=null;
         if (maxResult.size() > 0) {
             code = (Integer) maxResult.get(0);
             if (code == null) {
